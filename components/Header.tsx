@@ -17,9 +17,9 @@ export default function Header() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [user, setUser] = useState<SupabaseUser | null>(null)
-  const supabase = createClient()
 
   useEffect(() => {
+    const supabase = createClient()
     supabase.auth.getUser().then(({ data }) => setUser(data.user))
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
       setUser(session?.user ?? null)
@@ -28,7 +28,7 @@ export default function Header() {
   }, [])
 
   const signOut = async () => {
-    await supabase.auth.signOut()
+    await createClient().auth.signOut()
     setUser(null)
   }
 

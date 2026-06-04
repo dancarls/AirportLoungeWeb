@@ -42,7 +42,6 @@ interface Props { loungeId: string; onSuccess?: () => void }
 
 export default function ReviewForm({ loungeId, onSuccess }: Props) {
   const router = useRouter()
-  const supabase = createClient()
 
   const [form, setForm] = useState({
     title: '', body: '', overall_rating: 0, food_rating: 0,
@@ -64,6 +63,7 @@ export default function ReviewForm({ loungeId, onSuccess }: Props) {
     setSubmitting(true)
     setError(null)
 
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) { router.push('/auth/login'); return }
 
