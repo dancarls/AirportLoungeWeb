@@ -1,145 +1,103 @@
-# Upload lounge images to Supabase Storage
-# Usage: .\scripts\upload-images.ps1 -SupabaseUrl "https://xxx.supabase.co" -ServiceRoleKey "eyJ..."
-#
-# Get your Service Role key from: Supabase Dashboard > Settings > API > service_role (secret)
-# NOTE: Service Role key bypasses RLS — only use in scripts, never in browser code.
-
 param(
-    [Parameter(Mandatory=$true)]
-    [string]$SupabaseUrl,
-
-    [Parameter(Mandatory=$true)]
-    [string]$ServiceRoleKey
+    [Parameter(Mandatory=$true)][string]$SupabaseUrl,
+    [Parameter(Mandatory=$true)][string]$ServiceRoleKey
 )
 
-$Bucket      = "lounge-images"
-$SourceBase  = "C:\Users\danca\airport-lounges\public\Images\Lounges"
-$UploadBase  = "$SupabaseUrl/storage/v1/object/$Bucket"
+$Bucket     = "lounge-images"
+$SourceBase = "C:\Users\danca\airport-lounges\public\Images\Lounges"
+$UploadBase = "$SupabaseUrl/storage/v1/object/$Bucket"
 
-# Maps source IATA folder + filename keyword → lounge slug (storage folder)
-$LoungeMap = @(
-    # YEG
-    @{ Folder="YEG"; KeyWord="";                        Slug="ac-maple-leaf-lounge-yeg" }
-    # YOW
-    @{ Folder="YOW"; KeyWord="";                        Slug="ac-maple-leaf-lounge-yow" }
-    # YSJ (images are actually YYT — St. John's NL)
-    @{ Folder="YSJ"; KeyWord="";                        Slug="ac-maple-leaf-lounge-yyt" }
-    # YTZ
-    @{ Folder="YTZ"; KeyWord="";                        Slug="ac-cafe-ytz" }
-    # YUL — two lounges, split by keyword
-    @{ Folder="YUL"; KeyWord="Maple Leaf";              Slug="ac-maple-leaf-lounge-yul" }
-    @{ Folder="YUL"; KeyWord="Cafe";                    Slug="ac-cafe-yul" }
-    # YVR — seven lounges, split by keyword
-    @{ Folder="YVR"; KeyWord="Air Canada Maple Leaf";   Slug="ac-maple-leaf-lounge-yvr" }
-    @{ Folder="YVR"; KeyWord="Plaza Premium First";     Slug="plaza-premium-first-yvr" }
-    @{ Folder="YVR"; KeyWord="Pier C";                  Slug="plaza-premium-domestic-pier-c-yvr" }
-    @{ Folder="YVR"; KeyWord="Domestic Departures";     Slug="plaza-premium-domestic-yvr" }
-    @{ Folder="YVR"; KeyWord="International Departures";Slug="plaza-premium-international-yvr" }
-    @{ Folder="YVR"; KeyWord="US Departures";           Slug="plaza-premium-us-yvr" }
-    @{ Folder="YVR"; KeyWord="Sky Team";                Slug="skyteam-lounge-yvr" }
-    @{ Folder="YVR"; KeyWord="sky team";                Slug="skyteam-lounge-yvr" }
-    # YWG
-    @{ Folder="YWG"; KeyWord="";                        Slug="ac-maple-leaf-lounge-ywg" }
-    # YYZ — five lounges, split by keyword
-    @{ Folder="YYZ"; KeyWord="Signature Suite";         Slug="ac-signature-suite-yyz" }
-    @{ Folder="YYZ"; KeyWord="Domestic";                Slug="ac-maple-leaf-lounge-domestic-yyz" }
-    @{ Folder="YYZ"; KeyWord="International";           Slug="ac-maple-leaf-lounge-international-yyz" }
-    @{ Folder="YYZ"; KeyWord="Transboarder";            Slug="ac-maple-leaf-lounge-transborder-yyz" }
-    @{ Folder="YYZ"; KeyWord="Cafe";                    Slug="ac-cafe-yyz" }
-)
+function Get-Slug([string]$folder, [string]$name) {
+    if ($folder -eq "YEG") { return "ac-maple-leaf-lounge-yeg" }
+    if ($folder -eq "YOW") { return "ac-maple-leaf-lounge-yow" }
+    if ($folder -eq "YSJ") { return "ac-maple-leaf-lounge-yyt" }
+    if ($folder -eq "YTZ") { return "ac-cafe-ytz" }
+    if ($folder -eq "YWG") { return "ac-maple-leaf-lounge-ywg" }
 
-function Get-ContentType([string]$ext) {
-    switch ($ext.ToLower()) {
-        ".jpg"  { return "image/jpeg" }
-        ".jpeg" { return "image/jpeg" }
-        ".png"  { return "image/png" }
-        ".gif"  { return "image/gif" }
-        ".webp" { return "image/webp" }
-        default { return "application/octet-stream" }
-    }
-}
-
-function Get-LoungeSlug([string]$folder, [string]$filename) {
-    # For folders with only one lounge, return the single match
-    # For multi-lounge folders (YUL, YVR, YYZ), match by keyword in filename
-    $candidates = $LoungeMap | Where-Object { $_.Folder -eq $folder }
-
-    if ($candidates.Count -eq 1) {
-        return $candidates[0].Slug
+    if ($folder -eq "YUL") {
+        if ($name -match "Maple Leaf") { return "ac-maple-leaf-lounge-yul" }
+        return "ac-cafe-yul"
     }
 
-    # Try keyword matches in order (more specific first)
-    $ordered = $candidates | Where-Object { $_.KeyWord -ne "" } |
-               Sort-Object { $_.KeyWord.Length } -Descending
-
-    foreach ($c in $ordered) {
-        if ($filename -match [regex]::Escape($c.KeyWord)) {
-            return $c.Slug
-        }
+    if ($folder -eq "YVR") {
+        if ($name -match "Signature")                { return "ac-signature-suite-yvr" }
+        if ($name -match "Air Canada Maple")         { return "ac-maple-leaf-lounge-yvr" }
+        if ($name -match "Plaza Premium First")      { return "plaza-premium-first-yvr" }
+        if ($name -match "Pier C")                   { return "plaza-premium-domestic-pier-c-yvr" }
+        if ($name -match "Domestic Departures")      { return "plaza-premium-domestic-yvr" }
+        if ($name -match "International Departures") { return "plaza-premium-international-yvr" }
+        if ($name -match "US Departures")            { return "plaza-premium-us-yvr" }
+        if ($name -match "Sky.?[Tt]eam")             { return "skyteam-lounge-yvr" }
+        return "ac-maple-leaf-lounge-yvr"
     }
 
-    # Fallback: first candidate
-    return $candidates[0].Slug
+    if ($folder -eq "YYZ") {
+        if ($name -match "Signature Suite")  { return "ac-signature-suite-yyz" }
+        if ($name -match "Domestic")         { return "ac-maple-leaf-lounge-domestic-yyz" }
+        if ($name -match "International")    { return "ac-maple-leaf-lounge-international-yyz" }
+        if ($name -match "Transboarder")     { return "ac-maple-leaf-lounge-transborder-yyz" }
+        if ($name -match "Cafe")             { return "ac-cafe-yyz" }
+        return "ac-maple-leaf-lounge-domestic-yyz"
+    }
+
+    return $folder.ToLower()
 }
 
-# Track per-slug upload count for sequential numbering
-$Counter = @{}
-
-$headers = @{
-    "Authorization" = "Bearer $ServiceRoleKey"
+function Get-Mime([string]$ext) {
+    if ($ext -eq ".jpg" -or $ext -eq ".jpeg") { return "image/jpeg" }
+    if ($ext -eq ".png")  { return "image/png" }
+    if ($ext -eq ".gif")  { return "image/gif" }
+    if ($ext -eq ".webp") { return "image/webp" }
+    return "application/octet-stream"
 }
 
-$totalFiles = 0
-$uploaded   = 0
-$failed     = 0
+$counter  = @{}
+$uploaded = 0
+$failed   = 0
 
-Write-Host "`nScanning $SourceBase...`n" -ForegroundColor Cyan
+$headers = @{ "Authorization" = "Bearer $ServiceRoleKey" }
 
-Get-ChildItem -Path $SourceBase -Recurse -File |
-    Where-Object { $_.Extension -match '\.(jpg|jpeg|png|gif|webp)$' } |
-    ForEach-Object {
-        $file    = $_
-        $folder  = $file.Directory.Name
-        $slug    = Get-LoungeSlug $folder $file.Name
-        $ext     = $file.Extension.ToLower()
-        $totalFiles++
+Write-Host ""
+Write-Host "Scanning $SourceBase ..." -ForegroundColor Cyan
+Write-Host ""
 
-        if (-not $Counter.ContainsKey($slug)) { $Counter[$slug] = 0 }
-        $Counter[$slug]++
-        $index   = $Counter[$slug].ToString("D2")
-        $destPath = "$slug/$index$ext"
-        $uploadUrl = "$UploadBase/$destPath"
-        $contentType = Get-ContentType $ext
+$files = Get-ChildItem -Path $SourceBase -Recurse -File |
+         Where-Object { $_.Extension -match "\.(jpg|jpeg|png|gif|webp)$" }
 
-        Write-Host "Uploading: $($file.Name)" -ForegroundColor Gray
-        Write-Host "       to: $destPath" -ForegroundColor DarkGray
+foreach ($file in $files) {
+    $folder = $file.Directory.Name
+    $slug   = Get-Slug $folder $file.Name
+    $ext    = $file.Extension.ToLower()
+    $mime   = Get-Mime $ext
 
-        try {
-            $response = Invoke-RestMethod `
-                -Uri $uploadUrl `
-                -Method POST `
-                -Headers $headers `
-                -ContentType $contentType `
-                -InFile $file.FullName `
-                -ErrorAction Stop
+    if (-not $counter.ContainsKey($slug)) { $counter[$slug] = 0 }
+    $counter[$slug]++
+    $index    = $counter[$slug].ToString("D2")
+    $destPath = "$slug/$index$ext"
+    $url      = "$UploadBase/$destPath"
 
-            Write-Host "       OK" -ForegroundColor Green
+    Write-Host "$($file.Name)" -ForegroundColor Gray
+    Write-Host "  -> $destPath" -ForegroundColor DarkGray
+
+    try {
+        Invoke-RestMethod -Uri $url -Method POST -Headers $headers `
+            -ContentType $mime -InFile $file.FullName -ErrorAction Stop | Out-Null
+        Write-Host "  OK" -ForegroundColor Green
+        $uploaded++
+    } catch {
+        $status = $_.Exception.Response.StatusCode.value__
+        if ($status -eq 409) {
+            Write-Host "  Already exists, skipping" -ForegroundColor Yellow
             $uploaded++
-        } catch {
-            # If file already exists (409), skip gracefully
-            if ($_.Exception.Response.StatusCode.value__ -eq 409) {
-                Write-Host "       already exists, skipping" -ForegroundColor Yellow
-                $uploaded++
-            } else {
-                Write-Host "       FAILED: $($_.Exception.Message)" -ForegroundColor Red
-                $failed++
-            }
+        } else {
+            Write-Host "  FAILED: $($_.Exception.Message)" -ForegroundColor Red
+            $failed++
         }
     }
-
-Write-Host "`n==========================================" -ForegroundColor Cyan
-Write-Host "Done! $uploaded / $totalFiles uploaded successfully." -ForegroundColor Green
-if ($failed -gt 0) {
-    Write-Host "$failed files failed — check the output above." -ForegroundColor Red
 }
-Write-Host "`nNext: run 002_seed_data.sql in your Supabase SQL Editor" -ForegroundColor Cyan
+
+Write-Host ""
+Write-Host "======================================" -ForegroundColor Cyan
+Write-Host "Done: $uploaded uploaded, $failed failed" -ForegroundColor Green
+Write-Host ""
+Write-Host "Next: paste 002_seed_data.sql into Supabase SQL Editor and run it" -ForegroundColor Cyan
