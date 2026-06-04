@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import SearchModule from '@/components/SearchModule'
 import FeaturedLoungeSection from '@/components/FeaturedLoungeSection'
-import TerminalMapSection from '@/components/TerminalMapSection'
+import AirportMapsSection from '@/components/AirportMapsSection'
+import { getWeather } from '@/lib/weather'
 import type { Lounge, Airport } from '@/lib/types'
 
 export const revalidate = 300
@@ -37,7 +38,7 @@ export default async function HomePage() {
       .limit(1)
       .maybeSingle(),
     supabase.from('airports')
-      .select('iata_code, name, city, latitude, longitude, terminal_map_url, lounges!inner(id, name, slug, terminal, rating, review_count, guest_fee, guest_fee_currency)')
+      .select('iata_code, name, city, latitude, longitude, terminal_map_url, lounges(id)')
       .eq('is_active', true)
       .not('latitude', 'is', null)
       .order('name')
@@ -49,6 +50,24 @@ export default async function HomePage() {
   const fl = featuredLounge as (Lounge & { airport?: Airport }) | null
   const flPrimaryImg = fl?.images?.find((i: { is_primary: boolean }) => i.is_primary) ?? fl?.images?.[0]
   const flImgUrl = flPrimaryImg ? getImg(flPrimaryImg.storage_path) : null
+
+  // Fetch weather for each map airport in parallel
+  const weatherResults = mapAirports
+    ? await Promise.all(
+        mapAirports
+          .filter(a => a.latitude && a.longitude)
+          .map(a => getWeather(a.latitude!, a.longitude!).then(w => ({ iata: a.iata_code, weather: w })))
+      )
+    : []
+
+  const weatherData = weatherResults
+    .filter(r => r.weather)
+    .map(r => ({
+      iata:        r.iata,
+      temperature: r.weather!.temperature,
+      icon:        r.weather!.icon,
+      label:       r.weather!.label,
+    }))
 
   // Build real-time intelligence from top lounges
   const recentItems = (topLounges as (Lounge & { airport?: Airport })[])?.slice(0, 3).map(l => ({
@@ -114,9 +133,12 @@ export default async function HomePage() {
         <FeaturedLoungeSection lounge={fl} primaryImageUrl={flImgUrl} />
       )}
 
-      {/* ── INTERACTIVE TERMINAL MAP ─────────────────────────────── */}
+      {/* ── AIRPORT MAPS / TERMINAL NAVIGATION ──────────────────── */}
       {mapAirports && mapAirports.length > 0 && (
-        <TerminalMapSection airports={mapAirports as Parameters<typeof TerminalMapSection>[0]['airports']} />
+        <AirportMapsSection
+          airports={mapAirports as Parameters<typeof AirportMapsSection>[0]['airports']}
+          weatherData={weatherData}
+        />
       )}
 
       {/* ── POPULAR LOUNGES GRID ────────────────────────────────── */}
