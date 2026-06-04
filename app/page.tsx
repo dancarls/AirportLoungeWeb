@@ -1,8 +1,9 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import SearchModule from '@/components/SearchModule'
+import FeaturedLoungeSection from '@/components/FeaturedLoungeSection'
+import TerminalMapSection from '@/components/TerminalMapSection'
 import type { Lounge, Airport } from '@/lib/types'
 
 export const revalidate = 300
@@ -18,6 +19,7 @@ export default async function HomePage() {
     { data: airports },
     { data: topLounges },
     { data: featuredLounge },
+    { data: mapAirports },
     { count: loungeCount },
     { count: airportCount },
   ] = await Promise.all([
@@ -29,24 +31,36 @@ export default async function HomePage() {
       .order('rating', { ascending: false })
       .limit(3),
     supabase.from('lounges')
-      .select('*, airport:airports(name, iata_code, city, latitude, longitude), images:lounge_images(*), amenities(*)')
+      .select('*, airport:airports(*), images:lounge_images(*), amenities(*)')
       .eq('is_active', true)
       .order('rating', { ascending: false, nullsFirst: false })
       .limit(1)
       .maybeSingle(),
+    supabase.from('airports')
+      .select('iata_code, name, city, latitude, longitude, terminal_map_url, lounges!inner(id, name, slug, terminal, rating, review_count, guest_fee, guest_fee_currency)')
+      .eq('is_active', true)
+      .not('latitude', 'is', null)
+      .order('name')
+      .limit(8),
     supabase.from('lounges').select('*', { count: 'exact', head: true }).eq('is_active', true),
     supabase.from('airports').select('*', { count: 'exact', head: true }).eq('is_active', true),
   ])
 
   const fl = featuredLounge as (Lounge & { airport?: Airport }) | null
-  const flIata = fl?.airport?.iata_code
   const flPrimaryImg = fl?.images?.find((i: { is_primary: boolean }) => i.is_primary) ?? fl?.images?.[0]
+  const flImgUrl = flPrimaryImg ? getImg(flPrimaryImg.storage_path) : null
+
+  // Build real-time intelligence from top lounges
+  const recentItems = (topLounges as (Lounge & { airport?: Airport })[])?.slice(0, 3).map(l => ({
+    lounge: l,
+    iata: l.airport?.iata_code,
+    slug: l.slug,
+  })) ?? []
 
   return (
     <>
-      {/* ── HERO ───────────────────────────────────────────────── */}
+      {/* ── HERO ────────────────────────────────────────────────── */}
       <section className="relative min-h-[85vh] flex flex-col justify-center overflow-hidden">
-        {/* Background */}
         <div className="absolute inset-0 z-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -65,29 +79,18 @@ export default async function HomePage() {
             <p className="font-body-lg text-body-lg text-bone-white/90 mb-10 max-w-lg">
               Search by airport, terminal, access card, or amenity. Verified data for a seamless transit experience.
             </p>
-
-            {/* Search */}
             <Suspense fallback={<div className="h-20 bg-bone-white/10 animate-pulse" />}>
               <SearchModule airports={(airports as Airport[]) ?? []} />
             </Suspense>
-
-            {/* Quick Links */}
             <div className="mt-8 flex flex-wrap gap-4 items-center">
               <span className="font-label-caps text-label-caps text-bone-white/60">Quick Search:</span>
-              <Link href="/lounges?amenity=shower" className="text-bone-white border-b border-bone-white/30 hover:border-primary-fixed transition-all text-sm py-1">
-                Lounges with showers
-              </Link>
-              <Link href="/lounges?access=Priority+Pass" className="text-bone-white border-b border-bone-white/30 hover:border-primary-fixed transition-all text-sm py-1">
-                Priority Pass
-              </Link>
-              <Link href="/lounges?sort=rating" className="text-bone-white border-b border-bone-white/30 hover:border-primary-fixed transition-all text-sm py-1">
-                Best in Canada
-              </Link>
+              <Link href="/lounges?amenity=shower"           className="text-bone-white border-b border-bone-white/30 hover:border-primary-fixed transition-all text-sm py-1">Lounges with showers</Link>
+              <Link href="/lounges?access=Priority+Pass"     className="text-bone-white border-b border-bone-white/30 hover:border-primary-fixed transition-all text-sm py-1">Priority Pass</Link>
+              <Link href="/lounges?sort=rating"              className="text-bone-white border-b border-bone-white/30 hover:border-primary-fixed transition-all text-sm py-1">Best in Canada</Link>
             </div>
           </div>
         </div>
 
-        {/* Stats Bar */}
         <div className="absolute bottom-0 left-0 w-full bg-aviation-navy/80 backdrop-blur-md py-6">
           <div className="max-w-container-max mx-auto px-gutter grid grid-cols-3 gap-8">
             <div className="flex items-center gap-4 border-r border-bone-white/10">
@@ -106,172 +109,57 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── FEATURED LOUNGE SPOTLIGHT ──────────────────────────── */}
+      {/* ── FEATURED LOUNGE (with working buttons + modals) ─────── */}
       {fl && (
-        <section className="py-section-gap bg-bone-white">
-          <div className="max-w-container-max mx-auto px-gutter">
-            <div className="flex flex-col lg:flex-row gap-16 items-center">
-              {/* Image */}
-              <div className="w-full lg:w-3/5 relative group">
-                <div className="aspect-[16/9] overflow-hidden">
-                  {flPrimaryImg ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={getImg(flPrimaryImg.storage_path)}
-                      alt={fl.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-secondary-container flex items-center justify-center">
-                      <span className="material-symbols-outlined text-secondary text-6xl">local_bar</span>
-                    </div>
-                  )}
-                </div>
-                <div className="absolute top-6 right-6 bg-bone-white/90 backdrop-blur px-4 py-2 editorial-shadow">
-                  <span className="font-label-caps text-label-caps text-primary">Verified Data</span>
-                </div>
-              </div>
-
-              {/* Details */}
-              <div className="w-full lg:w-2/5">
-                {fl.rating && (
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="material-symbols-outlined text-sand-dark text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                    <span className="font-bold text-primary">{fl.rating.toFixed(1)}</span>
-                    <span className="text-sand-dark text-sm">({fl.review_count.toLocaleString()} Reviews)</span>
-                  </div>
-                )}
-                <h2 className="font-headline-lg text-headline-lg text-primary mb-6">{fl.name}</h2>
-                {fl.airport && (
-                  <p className="font-label-caps text-label-caps text-sand-dark uppercase mb-2">
-                    {fl.airport.iata_code} {fl.terminal ? `Terminal ${fl.terminal}` : ''} {fl.location_detail ? `• ${fl.location_detail}` : ''}
-                  </p>
-                )}
-                {fl.description && (
-                  <p className="text-secondary leading-relaxed mb-10 font-body-lg line-clamp-4">
-                    {fl.description}
-                  </p>
-                )}
-                <div className="grid grid-cols-3 gap-4">
-                  {flIata && (
-                    <Link
-                      href={`/airports/${flIata}/lounges/${fl.slug}`}
-                      className="fine-border py-4 px-2 hover:bg-champagne-glint transition-all flex flex-col items-center gap-2"
-                    >
-                      <span className="material-symbols-outlined text-primary">rate_review</span>
-                      <span className="font-label-caps text-[10px] uppercase">Review</span>
-                    </Link>
-                  )}
-                  <Link
-                    href={`/airports/${flIata ?? ''}`}
-                    className="fine-border py-4 px-2 hover:bg-champagne-glint transition-all flex flex-col items-center gap-2"
-                  >
-                    <span className="material-symbols-outlined text-primary">map</span>
-                    <span className="font-label-caps text-[10px] uppercase">Map</span>
-                  </Link>
-                  {flIata && (
-                    <Link
-                      href={`/airports/${flIata}/lounges/${fl.slug}`}
-                      className="fine-border py-4 px-2 hover:bg-champagne-glint transition-all flex flex-col items-center gap-2"
-                    >
-                      <span className="material-symbols-outlined text-primary">floor_lamp</span>
-                      <span className="font-label-caps text-[10px] uppercase">Details</span>
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <FeaturedLoungeSection lounge={fl} primaryImageUrl={flImgUrl} />
       )}
 
-      {/* ── MAP DISCOVERY ──────────────────────────────────────── */}
-      <section className="py-section-gap bg-secondary-fixed">
-        <div className="max-w-container-max mx-auto px-gutter">
-          <div className="flex justify-between items-end mb-12 flex-wrap gap-4">
-            <div>
-              <h2 className="font-headline-lg text-headline-lg text-primary mb-2">Terminal Navigation</h2>
-              <p className="text-secondary">Precision maps of terminal layouts and lounge locations.</p>
-            </div>
-            <div className="flex gap-2">
-              <Link href="/airports/YYZ" className="bg-primary text-white px-6 py-3 text-sm font-medium">YYZ Pearson</Link>
-              <Link href="/airports/YVR" className="bg-white/50 text-primary px-6 py-3 text-sm font-medium hover:bg-white transition-all">YVR Vancouver</Link>
-            </div>
-          </div>
-          <Link href="/airports/YYZ" className="relative bg-white aspect-[21/9] block editorial-shadow overflow-hidden group">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-1000"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsUQPE62JEQ3D3Ex8UH4OlUeO8t89NrJixOZWymGb11WbLKrjITTElKtDrjJGXvjyEE1pj8XAPDphNzoDJDOjCD-Jf8g1dczO257Fmsgas6ZdEP9nnMvrdXB8bySGbPRduPvh4PY7ykVLZ0MkLhQOROra6vHGv4nnfp68UnfhK8qOuza-Mgj8dEyzMBRlZunD_-6hklCG2DiZz20gLUUsJFAQCoQUhVmMD0I6vK8dNb6f1EkuFGLWIVbeEeSsaYPa0lRTBcjFaGrf_"
-              alt="Toronto Pearson International Terminal Map"
-            />
-            <div className="absolute inset-0 bg-primary/5 flex items-center justify-center pointer-events-none">
-              <div className="p-8 bg-bone-white/90 backdrop-blur-lg border border-primary/20 max-w-sm text-center">
-                <span className="material-symbols-outlined text-primary text-4xl mb-4">touch_app</span>
-                <h3 className="font-headline-md text-primary mb-2">Interactive Preview</h3>
-                <p className="text-sm text-secondary">Click to explore gates, quiet zones, and priority amenities across Pearson International.</p>
-              </div>
-            </div>
-            <div className="absolute top-1/4 left-1/3 w-4 h-4 bg-primary rounded-full animate-pulse border-2 border-white" />
-            <div className="absolute top-1/2 right-1/4 w-4 h-4 bg-primary rounded-full animate-pulse border-2 border-white" />
-          </Link>
-        </div>
-      </section>
+      {/* ── INTERACTIVE TERMINAL MAP ─────────────────────────────── */}
+      {mapAirports && mapAirports.length > 0 && (
+        <TerminalMapSection airports={mapAirports as Parameters<typeof TerminalMapSection>[0]['airports']} />
+      )}
 
-      {/* ── POPULAR LOUNGES GRID ───────────────────────────────── */}
+      {/* ── POPULAR LOUNGES GRID ────────────────────────────────── */}
       <section className="py-section-gap bg-bone-white">
         <div className="max-w-container-max mx-auto px-gutter">
           <div className="text-center mb-16">
             <h2 className="font-headline-lg text-headline-lg text-primary mb-4">Globally Renowned</h2>
-            <p className="text-secondary max-w-xl mx-auto">
-              Discover the world's most sought-after airport sanctuaries, verified by our editorial team.
-            </p>
+            <p className="text-secondary max-w-xl mx-auto">Discover the most sought-after airport sanctuaries, verified by our editorial team.</p>
           </div>
 
           {topLounges && topLounges.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {(topLounges as (Lounge & { airport?: Airport })[]).map(lounge => {
-                const img = lounge.images?.find((i: { is_primary: boolean }) => i.is_primary) ?? lounge.images?.[0]
+                const img  = lounge.images?.find((i: { is_primary: boolean }) => i.is_primary) ?? lounge.images?.[0]
                 const iata = lounge.airport?.iata_code
                 return (
-                  <Link
-                    key={lounge.id}
-                    href={iata ? `/airports/${iata}/lounges/${lounge.slug}` : `/lounges/${lounge.slug}`}
-                    className="bg-white fine-border group cursor-pointer overflow-hidden block"
-                  >
-                    <div className="aspect-[4/3] overflow-hidden relative">
+                  <Link key={lounge.id}
+                    href={iata ? `/airports/${iata}/lounges/${lounge.slug}` : '/lounges'}
+                    className="bg-white fine-border group cursor-pointer overflow-hidden block">
+                    <div className="aspect-[4/3] overflow-hidden relative bg-secondary-container">
                       {img ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={getImg(img.storage_path)}
-                          alt={lounge.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500"
-                        />
+                        <img src={getImg(img.storage_path)} alt={lounge.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
                       ) : (
-                        <div className="w-full h-full bg-secondary-container flex items-center justify-center">
-                          <span className="material-symbols-outlined text-secondary text-5xl">local_bar</span>
+                        <div className="w-full h-full flex items-center justify-center">
+                          <span className="material-symbols-outlined text-secondary" style={{ fontSize: '48px' }}>local_bar</span>
                         </div>
                       )}
-                      {iata && (
-                        <div className="absolute top-4 left-4 bg-primary text-white text-[10px] px-2 py-1 uppercase tracking-tighter">
-                          {iata} {lounge.terminal ? `• T${lounge.terminal}` : ''}
-                        </div>
-                      )}
+                      {iata && <div className="absolute top-4 left-4 bg-primary text-white text-[10px] px-2 py-1 uppercase tracking-tighter">{iata}{lounge.terminal ? ` • T${lounge.terminal}` : ''}</div>}
                     </div>
                     <div className="p-8">
                       <div className="flex justify-between items-start mb-4">
                         <h3 className="font-headline-md text-primary">{lounge.name}</h3>
                         {lounge.rating && (
-                          <div className="flex items-center gap-1 shrink-0">
+                          <div className="flex items-center gap-1">
                             <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                             <span className="font-bold">{lounge.rating.toFixed(1)}</span>
                           </div>
                         )}
                       </div>
-                      {lounge.access_types && Array.isArray(lounge.access_types) && lounge.access_types.slice(0, 2).map((at: { name: string }, i: number) => (
-                        <span key={i} className="inline-block bg-champagne-glint text-sand-dark text-[10px] px-2 py-1 font-semibold uppercase mr-2 mb-4">
-                          {at.name}
-                        </span>
+                      {Array.isArray(lounge.access_types) && (lounge.access_types as { name: string }[]).slice(0,2).map((at, i) => (
+                        <span key={i} className="inline-block bg-champagne-glint text-sand-dark text-[10px] px-2 py-1 font-semibold uppercase mr-2 mb-4">{at.name}</span>
                       ))}
                       <div className="w-full py-3 border-b border-primary/10 group-hover:border-primary transition-all text-primary font-label-caps text-[10px] uppercase flex justify-between">
                         View Details <span className="material-symbols-outlined text-xs">arrow_forward</span>
@@ -282,12 +170,12 @@ export default async function HomePage() {
               })}
             </div>
           ) : (
-            /* Fallback cards when no lounge data yet */
+            /* Fallback showcase */
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {[
-                { name: 'Air Canada Maple Leaf Lounge', airport: 'YYZ', terminal: 'T1', rating: '4.8', tags: ['Business Class', 'Air Canada Altitude'], href: '/airports/YYZ', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAtO22ExhjNghpFztoO3sP7dhkL9RmAYYCKZZO6vsXBlO13JtnaUPQMgO5Q6ooU9QyVsvHyaTaifKN_I9zG2MWkPbB4xAN4aBSDYWyFCIIKTY90N4yjFx2cYS2fsk1BaJa-YufPuoFh6lErDGvo91aDQnNXIYWexA0nzYzUtEcmXmoPEiU0MTN-jpkPcnTRn2QuhmokaUQhcyjp3G1ANGfuiPbpDOnWaLFMfEO_QYqE-vz7Wqe0HeyPnjxQ3_SHLg4pIOOGzxNXn51O' },
-                { name: 'Plaza Premium First Lounge', airport: 'YVR', terminal: 'Intl', rating: '4.7', tags: ['Priority Pass', 'DragonPass'], href: '/airports/YVR', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC9m6f_mOaxYRfeHpcrj1iCfkNykD54AODxJcRgbd7MJzO5BpxlV6KOflL583VaJkdwc1rxNXxz2vJMMsH4cv7IZRbhK0P3WjX78WH5zu_Iybd3rX92jVmqdIN-WgsRgD1xuM6L6kyYf1nb9o0TrJQNQDS6xlfwkjVUq-Ie7Qfn8L1-wR_3qisMCGpieEH3IA_Ry5lPDAqYbye2ESlKRJcOxf5mS0T2xIvYeCVEkRu8SJM__jsRRvGPacnsdCCbhp-li8UZxOCM8jEQ' },
-                { name: 'Air Canada Signature Suite', airport: 'YYZ', terminal: 'T1', rating: '4.9', tags: ['Super Elite 100K', 'Invitation Only'], href: '/airports/YYZ', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCVhhz58CUA54OconUPBzNnuEXlVw1HyiFdYPmiXJeND-guKgs0-b3_OnboFf1KR2oI4Bo4q7TMzDabMVJlGbQy6JUbTFfoyuexjiPOzbTkk3WqiAajL7xEgyQd83esElACwj6YLMsD83ZyYgs6Cv5mRh-2mN51sT8tq41kcS2exYd5HcqX80jTFiAbbpPxC_n7X3uNgm_xKDc4LY2d_5pcXinfNo9Zpu4M7Pf2WFI7JSVqLfdkjVk8W9pXu04bSxciH6mhZjiqbIVo' },
+                { name:'Air Canada Maple Leaf Lounge', airport:'YYZ', terminal:'T1', rating:'4.8', tags:['Business Class','Air Canada Altitude'], href:'/airports/YYZ', img:'https://lh3.googleusercontent.com/aida-public/AB6AXuAtO22ExhjNghpFztoO3sP7dhkL9RmAYYCKZZO6vsXBlO13JtnaUPQMgO5Q6ooU9QyVsvHyaTaifKN_I9zG2MWkPbB4xAN4aBSDYWyFCIIKTY90N4yjFx2cYS2fsk1BaJa-YufPuoFh6lErDGvo91aDQnNXIYWexA0nzYzUtEcmXmoPEiU0MTN-jpkPcnTRn2QuhmokaUQhcyjp3G1ANGfuiPbpDOnWaLFMfEO_QYqE-vz7Wqe0HeyPnjxQ3_SHLg4pIOOGzxNXn51O' },
+                { name:'Plaza Premium First Lounge',    airport:'YVR', terminal:'Intl',rating:'4.7', tags:['Priority Pass','DragonPass'],          href:'/airports/YVR', img:'https://lh3.googleusercontent.com/aida-public/AB6AXuC9m6f_mOaxYRfeHpcrj1iCfkNykD54AODxJcRgbd7MJzO5BpxlV6KOflL583VaJkdwc1rxNXxz2vJMMsH4cv7IZRbhK0P3WjX78WH5zu_Iybd3rX92jVmqdIN-WgsRgD1xuM6L6kyYf1nb9o0TrJQNQDS6xlfwkjVUq-Ie7Qfn8L1-wR_3qisMCGpieEH3IA_Ry5lPDAqYbye2ESlKRJcOxf5mS0T2xIvYeCVEkRu8SJM__jsRRvGPacnsdCCbhp-li8UZxOCM8jEQ' },
+                { name:'Air Canada Signature Suite',    airport:'YYZ', terminal:'T1', rating:'4.9', tags:['Super Elite 100K','Invitation Only'],   href:'/airports/YYZ', img:'https://lh3.googleusercontent.com/aida-public/AB6AXuCVhhz58CUA54OconUPBzNnuEXlVw1HyiFdYPmiXJeND-guKgs0-b3_OnboFf1KR2oI4Bo4q7TMzDabMVJlGbQy6JUbTFfoyuexjiPOzbTkk3WqiAajL7xEgyQd83esElACwj6YLMsD83ZyYgs6Cv5mRh-2mN51sT8tq41kcS2exYd5HcqX80jTFiAbbpPxC_n7X3uNgm_xKDc4LY2d_5pcXinfNo9Zpu4M7Pf2WFI7JSVqLfdkjVk8W9pXu04bSxciH6mhZjiqbIVo' },
               ].map(c => (
                 <Link key={c.name} href={c.href} className="bg-white fine-border group cursor-pointer overflow-hidden block">
                   <div className="aspect-[4/3] overflow-hidden relative">
@@ -298,14 +186,9 @@ export default async function HomePage() {
                   <div className="p-8">
                     <div className="flex justify-between items-start mb-4">
                       <h3 className="font-headline-md text-primary">{c.name}</h3>
-                      <div className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                        <span className="font-bold">{c.rating}</span>
-                      </div>
+                      <div className="flex items-center gap-1"><span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings:"'FILL' 1" }}>star</span><span className="font-bold">{c.rating}</span></div>
                     </div>
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {c.tags.map(t => <span key={t} className="bg-champagne-glint text-sand-dark text-[10px] px-2 py-1 font-semibold uppercase">{t}</span>)}
-                    </div>
+                    <div className="flex flex-wrap gap-2 mb-6">{c.tags.map(t => <span key={t} className="bg-champagne-glint text-sand-dark text-[10px] px-2 py-1 font-semibold uppercase">{t}</span>)}</div>
                     <div className="w-full py-3 border-b border-primary/10 group-hover:border-primary transition-all text-primary font-label-caps text-[10px] uppercase flex justify-between">
                       View Details <span className="material-symbols-outlined text-xs">arrow_forward</span>
                     </div>
@@ -314,88 +197,103 @@ export default async function HomePage() {
               ))}
             </div>
           )}
+
+          <div className="text-center mt-12">
+            <Link href="/lounges" className="inline-flex items-center gap-2 bg-primary text-white px-10 py-4 font-label-caps text-label-caps uppercase tracking-widest hover:opacity-90 transition-all">
+              View All Lounges <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* ── REAL-TIME INTELLIGENCE ─────────────────────────────── */}
+      {/* ── REAL-TIME INTELLIGENCE ───────────────────────────────── */}
       <section className="py-section-gap bg-aviation-navy text-white overflow-hidden">
         <div className="max-w-container-max mx-auto px-gutter">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-1">
               <h2 className="font-headline-lg text-headline-lg mb-6">Real-time Intelligence</h2>
               <p className="text-bone-white/70 mb-8 font-body-lg">
-                Our data scouts and community members update lounge access rules and amenities daily to ensure you never face a closed door.
+                Community members and our editorial team verify lounge access rules, amenities, and operating hours daily — so you never face a closed door.
               </p>
               <Link href="/lounges" className="font-label-caps text-label-caps border-b border-primary-fixed text-primary-fixed pb-2 tracking-widest inline-block hover:opacity-80 transition-all">
                 VIEW ALL LOUNGES
               </Link>
             </div>
-            <div className="lg:col-span-2 space-y-6">
-              {[
-                { icon: 'update',       colour: 'primary-fixed',   title: 'Air Canada Maple Leaf Lounge, YYZ',     desc: 'Guest fee updated. Priority Pass access confirmed.',  time: 'Verified' },
-                { icon: 'new_releases', colour: 'secondary-fixed', title: 'Plaza Premium First, YVR Intl',         desc: 'Full amenity floorplan and review published.',         time: 'Updated' },
-                { icon: 'wifi',         colour: 'primary-fixed',   title: 'Air Canada Signature Suite, YYZ T1',   desc: 'Super Elite 100K access rules confirmed.',            time: 'Verified' },
-              ].map(item => (
-                <div key={item.title} className="bg-white/5 p-6 border-l-2 border-primary-fixed flex items-center justify-between hover:bg-white/10 transition-all">
+            <div className="lg:col-span-2 space-y-4">
+              {recentItems.length > 0 ? recentItems.map(({ lounge, iata, slug }) => (
+                <Link
+                  key={lounge.id}
+                  href={iata ? `/airports/${iata}/lounges/${slug}` : '/lounges'}
+                  className="bg-white/5 p-6 border-l-2 border-primary-fixed flex items-center justify-between hover:bg-white/10 transition-all group"
+                >
                   <div className="flex items-center gap-6">
-                    <div className={`w-12 h-12 rounded-full bg-primary-fixed/20 flex items-center justify-center text-primary-fixed`}>
-                      <span className="material-symbols-outlined">{item.icon}</span>
+                    <div className="w-12 h-12 rounded-full bg-primary-fixed/20 flex items-center justify-center text-primary-fixed shrink-0">
+                      <span className="material-symbols-outlined">verified</span>
                     </div>
                     <div>
-                      <h4 className="font-bold text-lg">{item.title}</h4>
-                      <p className="text-sm text-bone-white/50">{item.desc}</p>
+                      <h4 className="font-bold text-lg group-hover:text-primary-fixed transition-colors">{lounge.name}</h4>
+                      <p className="text-sm text-bone-white/50">
+                        {iata && `${iata} · `}
+                        {lounge.rating ? `${lounge.rating.toFixed(1)}★ · ` : ''}
+                        {lounge.review_count > 0 ? `${lounge.review_count} review${lounge.review_count !== 1 ? 's' : ''}` : 'Be the first to review'}
+                      </p>
                     </div>
                   </div>
-                  <span className="text-[10px] font-label-caps text-primary-fixed uppercase shrink-0 ml-4">{item.time}</span>
-                </div>
-              ))}
+                  <span className="material-symbols-outlined text-primary-fixed shrink-0 ml-4">arrow_forward</span>
+                </Link>
+              )) : (
+                /* Hardcoded fallback linked to real pages */
+                [
+                  { icon:'update',       title:'Air Canada Maple Leaf Lounge, YYZ',  desc:'Access rules verified. Priority Pass confirmed.',      time:'Verified', href:'/airports/YYZ/lounges/ac-maple-leaf-lounge-international-yyz' },
+                  { icon:'new_releases', title:'Plaza Premium First, YVR Intl',       desc:'Full amenity floorplan and review published.',           time:'Updated',  href:'/airports/YVR/lounges/plaza-premium-first-yvr' },
+                  { icon:'wifi',         title:'Air Canada Signature Suite, YYZ T1',  desc:'Super Elite 100K access rules confirmed.',              time:'Verified', href:'/airports/YYZ/lounges/ac-signature-suite-yyz' },
+                ].map(item => (
+                  <Link key={item.title} href={item.href}
+                    className="bg-white/5 p-6 border-l-2 border-primary-fixed flex items-center justify-between hover:bg-white/10 transition-all group">
+                    <div className="flex items-center gap-6">
+                      <div className="w-12 h-12 rounded-full bg-primary-fixed/20 flex items-center justify-center text-primary-fixed shrink-0">
+                        <span className="material-symbols-outlined">{item.icon}</span>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-lg group-hover:text-primary-fixed transition-colors">{item.title}</h4>
+                        <p className="text-sm text-bone-white/50">{item.desc}</p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-label-caps text-primary-fixed uppercase shrink-0 ml-4">{item.time}</span>
+                  </Link>
+                ))
+              )}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── LOUNGE LIBRARY ─────────────────────────────────────── */}
+      {/* ── LOUNGE LIBRARY (Editorial / Guides) ─────────────────── */}
       <section className="py-section-gap bg-bone-white">
         <div className="max-w-container-max mx-auto px-gutter">
-          <div className="flex items-center gap-4 mb-12">
+          <div className="flex items-center gap-4 mb-4">
             <div className="h-[1px] flex-1 bg-sand-dark/20" />
             <h2 className="font-headline-lg text-headline-lg text-primary px-8">The Lounge Library</h2>
             <div className="h-[1px] flex-1 bg-sand-dark/20" />
           </div>
+          <p className="text-center text-secondary text-sm mb-12 max-w-xl mx-auto">
+            Curated guides for navigating airport lounges — from access cards and memberships to the best spots for work, rest, and a decent meal.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
-              {
-                img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA4GKgsqfalzGYSrwo2qoZ5a7TH86XC9a0fEYs7ROAuLwHttLFnFCN9cvMjQQNqHeODB7lG1O_OnLilCJ47_g6E35I0uvirD68A_6Ftu20dlUvIuSZnMAt_uaqwo90S2nYpyCM2BMSPGNoZuSrLc_Fwcbo8QHE1CDsHKeuqXN4GeCd_VSCfmWiiQE6Ue3dTFFcEEjcqogmClb-zLu_dG3mGuBZ6wxXU-GuSu_f22UjBlnTAOlXf8vRe0z4nu-trqO4YT-_o9nxrYq9F',
-                title: 'The 2024 Guide to Priority Pass',
-                desc: 'Everything you need to know about navigating the world\'s largest independent lounge network this year.',
-                href: '/lounges?access=Priority+Pass',
-              },
-              {
-                img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD8pZAtF9WmklahMG9rb0bQHtM7EhGT-B2Z_ZbflBo2waoPYa7mHfxtTa8QZkFnZZgfNzUDyIkiYYH0bhbv7-PsWRRmDDQ7JH_5OCXuiuDy3O6WJcYl4cVcKqBdJG76_A45VXlzYfdZ8w6x725w_9iN2eP5pyRfBuSvkrg4LeUAfzsfQMIT3QkDW2imuCWq23dkP9D4bmZoKs0px7-Z-NCDlUtLmbu8cHTx5EGP2t5Ys0xNk2aNPQgothiJFgk5thErq-uHO_JTiXd1',
-                title: 'Productivity at 35,000 Feet',
-                desc: 'The best lounges for deep work sessions, featuring verified Wi-Fi speeds and quiet zone ratings.',
-                href: '/lounges?amenity=wifi',
-              },
-              {
-                img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCUnXuGcseHQMu4gTYFEYSYxCp89qJww9bZuU8Fif0ZyHEroGdU1RCdaiAKAXpS6Qk0IHuNnqmLQyCgP2GcC64P8I0B0rBIjcEWG6pgRN5lB7lqbazDROXqfAtO4OlCO-akgUjNjNF5TwDko_1y7ftYVenZrVmkS5XdDQShdMdIwXg5j2WiIAH2OuoEg4P_pHuF0fEP8JSqw1hhL21Pm30wIfKTz5RmWhhOsu2MiHMgzh8_tWxbXtVcWKAz6aVUpnRXEbmbZDHX2hKi',
-                title: 'Access Solutions for Teams',
-                desc: 'How corporate travel managers are optimizing transit downtime for global sales and engineering teams.',
-                href: '/lounges',
-              },
+              { img:'https://lh3.googleusercontent.com/aida-public/AB6AXuA4GKgsqfalzGYSrwo2qoZ5a7TH86XC9a0fEYs7ROAuLwHttLFnFCN9cvMjQQNqHeODB7lG1O_OnLilCJ47_g6E35I0uvirD68A_6Ftu20dlUvIuSZnMAt_uaqwo90S2nYpyCM2BMSPGNoZuSrLc_Fwcbo8QHE1CDsHKeuqXN4GeCd_VSCfmWiiQE6Ue3dTFFcEEjcqogmClb-zLu_dG3mGuBZ6wxXU-GuSu_f22UjBlnTAOlXf8vRe0z4nu-trqO4YT-_o9nxrYq9F', title:'The Guide to Priority Pass in Canada', desc:'Every lounge across Canada that accepts Priority Pass — what to expect, peak hours to avoid, and how to bring a guest.', href:'/lounges?access=Priority+Pass' },
+              { img:'https://lh3.googleusercontent.com/aida-public/AB6AXuD8pZAtF9WmklahMG9rb0bQHtM7EhGT-B2Z_ZbflBo2waoPYa7mHfxtTa8QZkFnZZgfNzUDyIkiYYH0bhbv7-PsWRRmDDQ7JH_5OCXuiuDy3O6WJcYl4cVcKqBdJG76_A45VXlzYfdZ8w6x725w_9iN2eP5pyRfBuSvkrg4LeUAfzsfQMIT3QkDW2imuCWq23dkP9D4bmZoKs0px7-Z-NCDlUtLmbu8cHTx5EGP2t5Ys0xNk2aNPQgothiJFgk5thErq-uHO_JTiXd1', title:'Best Lounges for Remote Work', desc:'Verified Wi-Fi speeds, quiet zones, power outlets, and meeting room access — the best Canadian lounges for getting work done.', href:'/lounges?amenity=free-wifi' },
+              { img:'https://lh3.googleusercontent.com/aida-public/AB6AXuCUnXuGcseHQMu4gTYFEYSYxCp89qJww9bZuU8Fif0ZyHEroGdU1RCdaiAKAXpS6Qk0IHuNnqmLQyCgP2GcC64P8I0B0rBIjcEWG6pgRN5lB7lqbazDROXqfAtO4OlCO-akgUjNjNF5TwDko_1y7ftYVenZrVmkS5XdDQShdMdIwXg5j2WiIAH2OuoEg4P_pHuF0fEP8JSqw1hhL21Pm30wIfKTz5RmWhhOsu2MiHMgzh8_tWxbXtVcWKAz6aVUpnRXEbmbZDHX2hKi', title:'Lounges with Shower Access', desc:'Nothing resets a long-haul journey like a proper shower. Here are the best Canadian airport lounges with shower suites.', href:'/lounges?amenity=shower' },
             ].map(article => (
               <article key={article.title} className="group">
                 <div className="aspect-[3/4] overflow-hidden mb-6 editorial-shadow">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
-                    src={article.img}
-                    alt={article.title}
-                  />
+                  <img className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" src={article.img} alt={article.title} />
                 </div>
                 <h3 className="font-headline-md text-primary mb-3">{article.title}</h3>
                 <p className="text-secondary text-sm mb-4 leading-relaxed line-clamp-3">{article.desc}</p>
                 <Link href={article.href} className="text-primary font-bold text-[10px] uppercase tracking-widest border-b border-primary/20 hover:border-primary transition-all pb-1 inline-block">
-                  Read Editorial
+                  Explore Lounges
                 </Link>
               </article>
             ))}
@@ -403,7 +301,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── OPERATOR CTA ───────────────────────────────────────── */}
+      {/* ── OPERATOR CTA ────────────────────────────────────────── */}
       <section className="py-20 bg-champagne-glint">
         <div className="max-w-container-max mx-auto px-gutter">
           <div className="bg-primary p-12 md:p-20 text-center relative overflow-hidden">
@@ -415,12 +313,8 @@ export default async function HomePage() {
                 Partner with AirportLounges.ca to reach premium travellers monthly. Ensure your amenities and access rules are up-to-date.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Link href="/auth/signup" className="bg-primary-fixed text-on-primary-fixed px-10 py-4 font-bold text-[12px] uppercase tracking-widest hover:bg-white transition-all">
-                  Claim Listing Now
-                </Link>
-                <Link href="/auth/signup" className="border border-white/30 text-white px-10 py-4 font-bold text-[12px] uppercase tracking-widest hover:bg-white/10 transition-all">
-                  Partner With Us
-                </Link>
+                <Link href="/auth/signup" className="bg-primary-fixed text-on-primary-fixed px-10 py-4 font-bold text-[12px] uppercase tracking-widest hover:bg-white transition-all">Claim Listing Now</Link>
+                <Link href="/auth/signup" className="border border-white/30 text-white px-10 py-4 font-bold text-[12px] uppercase tracking-widest hover:bg-white/10 transition-all">Partner With Us</Link>
               </div>
             </div>
           </div>
