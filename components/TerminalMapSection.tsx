@@ -92,15 +92,21 @@ export default function TerminalMapSection({ airports }: Props) {
       mapRef.current = new google.maps.Map(containerRef.current, {
         center,
         zoom: 17,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        mapTypeControl: false,
+        mapTypeId: google.maps.MapTypeId.HYBRID,
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+          mapTypeIds: [
+            google.maps.MapTypeId.HYBRID,
+            google.maps.MapTypeId.ROADMAP,
+          ],
+          style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+          position: google.maps.ControlPosition.TOP_LEFT,
+        },
         streetViewControl: false,
         fullscreenControl: true,
         zoomControl: true,
-        styles: [
-          { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] },
-          { featureType: 'transit.station.airport', elementType: 'geometry', stylers: [{ color: '#e9edff' }] },
-        ],
+        scrollwheel: true,
+        gestureHandling: 'greedy',
       })
       infoRef.current = new google.maps.InfoWindow({ maxWidth: 240 })
     } else {
