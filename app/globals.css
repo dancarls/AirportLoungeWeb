@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-gray-50 text-gray-900 antialiased; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-700
+           text-white font-medium rounded-lg transition-colors focus:outline-none
+           focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-gray-50
+           text-gray-700 font-medium rounded-lg border border-gray-200 transition-colors
+           focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
+  }
+  .card {
+    @apply bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  .input {
+    @apply w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm
+           focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent
+           placeholder:text-gray-400;
+  }
+}
+
+/* Mapbox popup styles */
+.mapboxgl-popup-content {
+  @apply rounded-lg shadow-lg border border-gray-100 p-0 overflow-hidden;
+  padding: 0 !important;
+}
+.mapboxgl-popup-close-button {
+  @apply text-gray-400 hover:text-gray-600 p-1;
+  font-size: 18px;
+  top: 4px;
+  right: 6px;
+}
