@@ -48,9 +48,11 @@ export default async function AccountPage() {
         </h2>
         {savedLounges && savedLounges.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {savedLounges.map(({ lounge }) => lounge && (
-              <LoungeCard key={(lounge as Lounge).id} lounge={lounge as Lounge} airportIata={(lounge as Lounge).airport?.iata_code} />
-            ))}
+            {savedLounges.map(({ lounge }) => {
+              if (!lounge) return null
+              const l = lounge as unknown as Lounge
+              return <LoungeCard key={l.id} lounge={l} airportIata={l.airport?.iata_code} />
+            })}
           </div>
         ) : (
           <div className="card p-8 text-center text-gray-400">
