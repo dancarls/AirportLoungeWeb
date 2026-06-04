@@ -200,10 +200,30 @@ export default function TerminalMapSection({ airports }: Props) {
           {/* Error state */}
           {error && (
             <div className="absolute inset-0 flex items-center justify-center bg-secondary-fixed">
-              <div className="text-center">
-                <span className="material-symbols-outlined text-sand-dark text-4xl mb-3 block">map_off</span>
-                <p className="text-sm text-secondary">Map unavailable — check your Google Maps API key.</p>
+              <div className="text-center px-8 max-w-sm">
+                <span className="material-symbols-outlined text-sand-dark mb-3 block" style={{ fontSize: '48px' }}>map</span>
+                <p className="font-headline-md text-primary mb-2">Interactive map coming soon</p>
+                <p className="text-sm text-secondary mb-5">
+                  We're connecting our terminal navigation feature. In the meantime, use the official airport maps below.
+                </p>
+                {airport.terminal_map_url && (
+                  <a href={airport.terminal_map_url} target="_blank" rel="noreferrer"
+                    className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-all">
+                    <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>open_in_new</span>
+                    View Official Terminal Map
+                  </a>
+                )}
               </div>
+            </div>
+          )}
+
+          {/* Floor plan availability notice — shows on top of map once loaded */}
+          {!error && (
+            <div className="absolute bottom-3 left-3 bg-bone-white/90 backdrop-blur-sm px-3 py-1.5 flex items-center gap-2 pointer-events-none" style={{ maxWidth: '320px' }}>
+              <span className="material-symbols-outlined text-sand-dark" style={{ fontSize: '14px' }}>info</span>
+              <p className="font-label-caps text-[9px] text-secondary uppercase tracking-wide">
+                Indoor floor plan appears automatically where Google has terminal data
+              </p>
             </div>
           )}
         </div>
