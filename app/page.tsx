@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import SearchModule from '@/components/SearchModule'
 import FeaturedLoungeSection from '@/components/FeaturedLoungeSection'
 import AirportMapsSection from '@/components/AirportMapsSection'
+import TerminalMapVisual from '@/components/TerminalMapVisual'
 import { getWeather } from '@/lib/weather'
 import type { Lounge, Airport } from '@/lib/types'
 
@@ -133,11 +134,10 @@ export default async function HomePage() {
         <FeaturedLoungeSection lounge={fl} primaryImageUrl={flImgUrl} />
       )}
 
-      {/* ── AIRPORT MAPS / TERMINAL NAVIGATION ──────────────────── */}
+      {/* ── TERMINAL NAVIGATION ──────────────────────────────────── */}
       {mapAirports && mapAirports.length > 0 && (
-        <AirportMapsSection
-          airports={mapAirports as Parameters<typeof AirportMapsSection>[0]['airports']}
-          weatherData={weatherData}
+        <TerminalMapVisual
+          airports={mapAirports as Parameters<typeof TerminalMapVisual>[0]['airports']}
         />
       )}
 
