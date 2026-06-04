@@ -31,18 +31,20 @@ let mapsPromise: Promise<void> | null = null
 
 function loadGoogleMaps(): Promise<void> {
   if (mapsPromise) return mapsPromise
-  if (typeof window !== 'undefined' && window.google?.maps) {
+  if (typeof window !== 'undefined' && window.google?.maps?.Map) {
     mapsPromise = Promise.resolve()
     return mapsPromise
   }
   mapsPromise = new Promise((resolve, reject) => {
     const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY
     if (!key) { reject(new Error('No Google Maps key')); return }
+    // Use callback= so the promise only resolves once the full Maps API
+    // is initialised — google.maps.MapTypeId etc. are guaranteed ready.
+    ;(window as unknown as Record<string, () => void>).__googleMapsInit = resolve
     const script = document.createElement('script')
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&loading=async`
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${key}&callback=__googleMapsInit`
     script.async = true
     script.defer = true
-    script.onload  = () => resolve()
     script.onerror = () => reject(new Error('Google Maps failed to load'))
     document.head.appendChild(script)
   })
