@@ -35,7 +35,7 @@ export default function ReviewCard({ review }: Props) {
                 {review.profile?.display_name ?? 'Anonymous'}
               </span>
               {review.is_verified && (
-                <BadgeCheck className="w-4 h-4 text-brand-500" title="Verified review" />
+                <BadgeCheck className="w-4 h-4 text-brand-500" aria-label="Verified review" />
               )}
             </div>
             <p className="text-xs text-gray-400">
