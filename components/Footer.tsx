@@ -1,42 +1,87 @@
+'use client'
+
 import Link from 'next/link'
-import { Plane } from 'lucide-react'
+import { useState } from 'react'
 
 export default function Footer() {
+  const [email, setEmail] = useState('')
+
   return (
-    <footer className="bg-gray-900 text-gray-400 mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-2 text-white font-bold text-lg mb-3">
-              <Plane className="w-5 h-5" />
-              <span>Lounge<span className="text-gold-400">CA</span></span>
-            </div>
-            <p className="text-sm leading-relaxed max-w-xs">
-              Canada's most complete airport lounge directory. Real reviews, up-to-date access info, and live flight tracking.
-            </p>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-3 text-sm">Explore</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/airports"        className="hover:text-white transition-colors">All Airports</Link></li>
-              <li><Link href="/lounges"          className="hover:text-white transition-colors">All Lounges</Link></li>
-              <li><Link href="/flights"          className="hover:text-white transition-colors">Flight Status</Link></li>
-              <li><Link href="/lounges?access=priority-pass" className="hover:text-white transition-colors">Priority Pass Lounges</Link></li>
-              <li><Link href="/lounges?access=amex"          className="hover:text-white transition-colors">Amex Platinum Lounges</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-3 text-sm">Account</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/auth/signup" className="hover:text-white transition-colors">Create account</Link></li>
-              <li><Link href="/auth/login"  className="hover:text-white transition-colors">Sign in</Link></li>
-              <li><Link href="/account"     className="hover:text-white transition-colors">My saved lounges</Link></li>
-              <li><Link href="/account"     className="hover:text-white transition-colors">My reviews</Link></li>
-            </ul>
+    <footer className="bg-aviation-navy text-secondary-fixed pt-20 pb-10">
+      <div className="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-gutter mb-20">
+
+        {/* Brand */}
+        <div className="col-span-1">
+          <div className="font-headline-md text-headline-md text-bone-white mb-6">AirportLounges.ca</div>
+          <p className="text-sm text-secondary-fixed/60 leading-relaxed mb-8">
+            The Canadian directory for premium airport lounges, terminal maps, and traveller intelligence. Curated for the discerning transit experience.
+          </p>
+          <div className="flex gap-4">
+            <a href="#" className="w-10 h-10 rounded-full border border-bone-white/10 flex items-center justify-center hover:bg-primary-fixed hover:text-primary transition-all">
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>alternate_email</span>
+            </a>
+            <a href="#" className="w-10 h-10 rounded-full border border-bone-white/10 flex items-center justify-center hover:bg-primary-fixed hover:text-primary transition-all">
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>public</span>
+            </a>
           </div>
         </div>
-        <div className="border-t border-gray-800 mt-8 pt-6 text-xs text-center">
-          © {new Date().getFullYear()} LoungeCA. Lounge details subject to change — always verify with the lounge before travelling.
+
+        {/* Explore */}
+        <div>
+          <h4 className="font-label-caps text-label-caps text-bone-white uppercase mb-8">Explore</h4>
+          <ul className="space-y-4">
+            <li><Link href="/lounges"  className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Lounges</Link></li>
+            <li><Link href="/airports" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Terminal Maps</Link></li>
+            <li><Link href="/lounges?access=Priority+Pass" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Priority Pass Lounges</Link></li>
+            <li><Link href="/flights"  className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Flight Status</Link></li>
+            <li><Link href="/lounges?sort=rating" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Best Rated</Link></li>
+          </ul>
+        </div>
+
+        {/* Company */}
+        <div>
+          <h4 className="font-label-caps text-label-caps text-bone-white uppercase mb-8">Company</h4>
+          <ul className="space-y-4">
+            <li><Link href="/auth/signup" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Create Account</Link></li>
+            <li><Link href="/auth/login"  className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Sign In</Link></li>
+            <li><Link href="/account"     className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">My Saved Lounges</Link></li>
+            <li><a href="#" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Privacy Policy</a></li>
+            <li><a href="#" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Terms of Service</a></li>
+          </ul>
+        </div>
+
+        {/* Newsletter */}
+        <div className="col-span-1">
+          <h4 className="font-label-caps text-label-caps text-bone-white uppercase mb-8">Newsletter</h4>
+          <p className="text-sm text-secondary-fixed/60 mb-6">Receive curated lounge guides and travel hacks directly to your inbox.</p>
+          <div className="relative">
+            <input
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              placeholder="Email Address"
+              className="w-full bg-white/5 border border-white/10 px-4 py-3 text-sm focus:ring-1 focus:ring-primary-fixed outline-none text-bone-white placeholder:text-secondary-fixed/40"
+            />
+            <button
+              onClick={() => setEmail('')}
+              className="absolute right-2 top-2 text-primary-fixed hover:opacity-70 transition-opacity"
+              aria-label="Subscribe"
+            >
+              <span className="material-symbols-outlined">send</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="max-w-container-max mx-auto px-gutter pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+        <span className="font-label-caps text-[10px] text-secondary-fixed/40 uppercase tracking-widest">
+          © {new Date().getFullYear()} AirportLounges.ca. All rights reserved.
+        </span>
+        <div className="flex gap-8 text-[10px] font-label-caps uppercase tracking-widest text-secondary-fixed/40">
+          <a href="#" className="hover:text-primary-fixed transition-colors">Sitemap</a>
+          <a href="#" className="hover:text-primary-fixed transition-colors">Cookies</a>
+          <a href="#" className="hover:text-primary-fixed transition-colors">Ad Choices</a>
         </div>
       </div>
     </footer>

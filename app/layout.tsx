@@ -5,27 +5,35 @@ import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: {
-    default: 'Airport Lounges Canada — Find & Review Airport Lounges',
-    template: '%s | Airport Lounges Canada',
+    default: 'AirportLounges.ca | Find the right lounge before you reach the gate.',
+    template: '%s | AirportLounges.ca',
   },
-  description: 'Discover airport lounges across Canada. Find which credit cards, airline status, and memberships get you in. Read real reviews, check amenities, and track your flight.',
-  keywords: ['airport lounge', 'Canada', 'Priority Pass', 'Air Canada Maple Leaf', 'Plaza Premium', 'lounge access', 'credit card lounge'],
+  description: 'Search by airport, terminal, access card, or amenity. Verified lounge data, terminal maps, and real traveller reviews for a seamless transit experience.',
+  keywords: ['airport lounge', 'Canada', 'Priority Pass', 'Air Canada Maple Leaf', 'Plaza Premium', 'lounge access', 'credit card lounge', 'terminal map'],
   openGraph: {
     type: 'website',
     locale: 'en_CA',
-    siteName: 'Airport Lounges Canada',
+    siteName: 'AirportLounges.ca',
   },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-CA">
+    <html lang="en-CA" className="scroll-smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+          rel="stylesheet"
+        />
         <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" />
       </head>
-      <body>
+      <body className="bg-bone-white text-on-surface font-body-md transition-colors duration-300">
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />

@@ -4,28 +4,34 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Plane, Menu, X, User, Heart, LogOut } from 'lucide-react'
-import type { User as SupabaseUser } from '@supabase/supabase-js'
+import type { User } from '@supabase/supabase-js'
 
 const NAV = [
-  { href: '/airports', label: 'Airports' },
-  { href: '/lounges',  label: 'All Lounges' },
-  { href: '/flights',  label: 'Flight Status' },
+  { href: '/lounges',  label: 'Lounges' },
+  { href: '/airports', label: 'Maps' },
+  { href: '/lounges',  label: 'Reviews' },
+  { href: '/flights',  label: 'Guides' },
+  { href: '#',         label: 'For Teams' },
 ]
 
 export default function Header() {
   const pathname = usePathname()
-  const [open, setOpen] = useState(false)
-  const [user, setUser] = useState<SupabaseUser | null>(null)
+  const [dark, setDark]   = useState(false)
+  const [open, setOpen]   = useState(false)
+  const [user, setUser]   = useState<User | null>(null)
 
   useEffect(() => {
     const supabase = createClient()
     supabase.auth.getUser().then(({ data }) => setUser(data.user))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user ?? null)
-    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, s) => setUser(s?.user ?? null))
     return () => subscription.unsubscribe()
   }, [])
+
+  const toggleDark = () => {
+    const html = document.documentElement
+    html.classList.toggle('dark')
+    setDark(html.classList.contains('dark'))
+  }
 
   const signOut = async () => {
     await createClient().auth.signOut()
@@ -33,88 +39,107 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 font-bold text-brand-700 text-lg">
-            <Plane className="w-6 h-6" />
-            <span>Lounge<span className="text-gold-500">CA</span></span>
-          </Link>
+    <header className="sticky top-0 z-50 bg-bone-white/95 dark:bg-aviation-navy/95 border-b border-sand-dark/20 dark:border-outline-variant/20 h-20 flex items-center">
+      <div className="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto">
 
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            {NAV.map(({ href, label }) => (
+        {/* Logo */}
+        <div className="flex items-center gap-4">
+          <Link href="/" className="flex items-center gap-3">
+            <span className="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">
+              AirportLounges.ca
+            </span>
+          </Link>
+        </div>
+
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center space-x-8">
+          {NAV.map(({ href, label }) => {
+            const active = pathname === href
+            return (
               <Link
-                key={href}
+                key={label}
                 href={href}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  pathname.startsWith(href)
-                    ? 'bg-brand-50 text-brand-700'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                className={`font-label-caps text-label-caps transition-colors pb-1 ${
+                  active
+                    ? 'text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed'
+                    : 'text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed'
                 }`}
               >
                 {label}
               </Link>
-            ))}
-          </nav>
+            )
+          })}
+        </nav>
+
+        {/* Actions */}
+        <div className="flex items-center gap-4">
+          {/* Dark mode toggle */}
+          <button
+            onClick={toggleDark}
+            className="p-2 rounded-full hover:bg-champagne-glint dark:hover:bg-primary-container transition-colors"
+            aria-label="Toggle dark mode"
+          >
+            <span className="material-symbols-outlined text-primary dark:text-primary-fixed" style={{ fontSize: '22px' }}>
+              {dark ? 'light_mode' : 'dark_mode'}
+            </span>
+          </button>
 
           {/* Auth */}
-          <div className="hidden md:flex items-center gap-2">
-            {user ? (
-              <>
-                <Link href="/account" className="btn-secondary text-sm py-2">
-                  <User className="w-4 h-4" /> My Account
-                </Link>
-                <button onClick={signOut} className="p-2 text-gray-400 hover:text-gray-600 rounded-lg">
-                  <LogOut className="w-4 h-4" />
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/auth/login"   className="btn-secondary text-sm py-2">Sign in</Link>
-                <Link href="/auth/signup"  className="btn-primary  text-sm py-2">Join free</Link>
-              </>
-            )}
-          </div>
+          {user ? (
+            <div className="hidden lg:flex items-center gap-3">
+              <Link href="/account" className="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">
+                My Account
+              </Link>
+              <button onClick={signOut} className="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">
+                Sign out
+              </button>
+            </div>
+          ) : (
+            <Link href="/auth/login" className="hidden lg:block font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">
+              Sign in
+            </Link>
+          )}
+
+          <Link
+            href="/lounges"
+            className="hidden lg:block bg-primary text-on-primary px-6 py-3 font-label-caps text-label-caps hover:opacity-90 transition-all uppercase tracking-widest"
+          >
+            Find a Lounge
+          </Link>
 
           {/* Mobile hamburger */}
-          <button className="md:hidden p-2" onClick={() => setOpen(o => !o)}>
-            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          <button className="md:hidden" onClick={() => setOpen(o => !o)} aria-label="Menu">
+            <span className="material-symbols-outlined text-primary">
+              {open ? 'close' : 'menu'}
+            </span>
           </button>
         </div>
       </div>
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden border-t border-gray-100 bg-white px-4 pb-4 space-y-1">
+        <div className="absolute top-20 left-0 w-full bg-bone-white dark:bg-aviation-navy border-b border-sand-dark/20 px-gutter pb-6 space-y-4 md:hidden">
           {NAV.map(({ href, label }) => (
             <Link
-              key={href}
+              key={label}
               href={href}
               onClick={() => setOpen(false)}
-              className="block px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="block font-label-caps text-label-caps text-secondary hover:text-primary transition-colors py-2"
             >
               {label}
             </Link>
           ))}
-          <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
-            {user ? (
-              <>
-                <Link href="/account" className="btn-secondary text-sm justify-center" onClick={() => setOpen(false)}>
-                  <User className="w-4 h-4" /> My Account
-                </Link>
-                <button onClick={signOut} className="btn-secondary text-sm justify-center">
-                  <LogOut className="w-4 h-4" /> Sign out
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/auth/login"  className="btn-secondary text-sm justify-center" onClick={() => setOpen(false)}>Sign in</Link>
-                <Link href="/auth/signup" className="btn-primary  text-sm justify-center" onClick={() => setOpen(false)}>Join free</Link>
-              </>
-            )}
-          </div>
+          <Link href="/lounges" onClick={() => setOpen(false)} className="block bg-primary text-on-primary px-6 py-3 font-label-caps text-label-caps uppercase tracking-widest text-center">
+            Find a Lounge
+          </Link>
+          {user ? (
+            <>
+              <Link href="/account" className="block text-sm text-secondary py-1">My Account</Link>
+              <button onClick={signOut} className="block text-sm text-secondary py-1">Sign out</button>
+            </>
+          ) : (
+            <Link href="/auth/login" className="block text-sm text-secondary py-1">Sign in</Link>
+          )}
         </div>
       )}
     </header>

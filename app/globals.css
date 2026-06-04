@@ -2,23 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
-@layer base {
-  html { scroll-behavior: smooth; }
-  body { @apply bg-gray-50 text-gray-900 antialiased; }
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
 }
 
+/* Stitch design utilities */
+.editorial-shadow {
+  box-shadow: 0 24px 48px -12px rgba(0, 77, 77, 0.08);
+}
+.fine-border {
+  border: 1px solid rgba(166, 141, 116, 0.2);
+}
+
+/* Legacy utilities for other pages */
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-brand-600 hover:bg-brand-700
-           text-white font-medium rounded-lg transition-colors focus:outline-none
-           focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
+    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-primary-container hover:bg-primary
+           text-on-primary-container hover:text-white font-medium rounded-lg transition-colors
+           focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   }
   .btn-secondary {
-    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-gray-50
-           text-gray-700 font-medium rounded-lg border border-gray-200 transition-colors
-           focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2;
+    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-bone-white
+           text-on-surface font-medium rounded-lg border border-outline-variant transition-colors
+           focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   }
   .card {
     @apply bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow;
@@ -28,19 +46,19 @@
   }
   .input {
     @apply w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm
-           focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent
+           focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent
            placeholder:text-gray-400;
   }
 }
 
-/* Mapbox popup styles */
+/* Mapbox */
 .mapboxgl-popup-content {
-  @apply rounded-lg shadow-lg border border-gray-100 p-0 overflow-hidden;
+  border-radius: 0.5rem;
   padding: 0 !important;
+  overflow: hidden;
+  border: 1px solid rgba(166,141,116,0.2);
 }
 .mapboxgl-popup-close-button {
-  @apply text-gray-400 hover:text-gray-600 p-1;
+  padding: 4px 6px;
   font-size: 18px;
-  top: 4px;
-  right: 6px;
 }
