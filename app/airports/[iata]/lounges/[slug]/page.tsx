@@ -1,18 +1,16 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import Image from 'next/image'
-import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import StarRating from '@/components/StarRating'
 import AmenityBadge from '@/components/AmenityBadge'
 import ReviewCard from '@/components/ReviewCard'
 import ReviewForm from '@/components/ReviewForm'
 import FlightStatusWidget from '@/components/FlightStatusWidget'
+import LoungeMapClient from '@/components/LoungeMapClient'
 import { MapPin, Phone, Globe, Clock, Users, DollarSign, ChevronLeft } from 'lucide-react'
 import type { Metadata } from 'next'
 import type { Lounge, Review } from '@/lib/types'
-
-const LoungeMap = dynamic(() => import('@/components/LoungeMap'), { ssr: false })
 
 interface Props { params: Promise<{ iata: string; slug: string }> }
 
@@ -252,11 +250,12 @@ export default async function LoungeDetailPage({ params }: Props) {
           {/* Map */}
           {l.airport?.latitude && l.airport?.longitude && (
             <div className="card overflow-hidden">
-              <LoungeMap
+              <LoungeMapClient
                 latitude={l.airport.latitude}
                 longitude={l.airport.longitude}
                 name={l.name}
               />
+
               <div className="p-3 text-xs text-gray-400 text-center">
                 Airport location — check the lounge's website for exact terminal directions
               </div>
