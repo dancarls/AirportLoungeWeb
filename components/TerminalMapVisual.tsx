@@ -53,7 +53,7 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
   const officialMapUrl = airport.terminal_map_url ?? '#'
 
   return (
-    <section className="py-section-gap bg-secondary-fixed">
+    <section id="terminal-navigation" className="py-section-gap bg-secondary-fixed">
       <div className="max-w-container-max mx-auto px-gutter">
 
         {/* Header */}

@@ -5,6 +5,8 @@ import ReviewCard from '@/components/ReviewCard'
 import ReviewForm from '@/components/ReviewForm'
 import FlightStatusWidget from '@/components/FlightStatusWidget'
 import LoungeMapClient from '@/components/LoungeMapClient'
+import WeatherWidget from '@/components/WeatherWidget'
+import { getWeather } from '@/lib/weather'
 import type { Metadata } from 'next'
 import type { Lounge, Review, AccessType } from '@/lib/types'
 
@@ -94,7 +96,7 @@ export default async function LoungeDetailPage({ params }: Props) {
 
   if (!lounge) notFound()
 
-  const [{ data: reviews }, { data: { user } }] = await Promise.all([
+  const [{ data: reviews }, { data: { user } }, weather] = await Promise.all([
     supabase
       .from('reviews')
       .select('*, profile:profiles(display_name, avatar_url)')
@@ -102,6 +104,9 @@ export default async function LoungeDetailPage({ params }: Props) {
       .order('created_at', { ascending: false })
       .limit(20),
     supabase.auth.getUser(),
+    lounge.airport?.latitude && lounge.airport?.longitude
+      ? getWeather(lounge.airport.latitude, lounge.airport.longitude)
+      : Promise.resolve(null),
   ])
 
   const l = lounge as Lounge
@@ -457,6 +462,11 @@ export default async function LoungeDetailPage({ params }: Props) {
                 </div>
               )}
             </div>
+          )}
+
+          {/* Weather */}
+          {weather && l.airport && (
+            <WeatherWidget weather={weather} city={l.airport.city} iata={code} />
           )}
 
           {/* Flight status */}

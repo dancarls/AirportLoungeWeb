@@ -83,8 +83,6 @@ export default async function AirportPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Weather */}
-            <WeatherWidget weather={weather} city={airport.city} iata={code} />
           </div>
         </div>
       </section>
@@ -121,6 +119,9 @@ export default async function AirportPage({ params }: Props) {
 
           {/* Sidebar */}
           <div className="space-y-5">
+
+            {/* Weather */}
+            <WeatherWidget weather={weather} city={airport.city} iata={code} />
 
             {/* Flight status */}
             <FlightStatusWidget />

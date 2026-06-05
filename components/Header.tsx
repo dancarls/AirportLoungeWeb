@@ -7,11 +7,10 @@ import { createClient } from '@/lib/supabase/client'
 import type { User } from '@supabase/supabase-js'
 
 const NAV = [
-  { href: '/lounges',  label: 'Lounges' },
-  { href: '/airports', label: 'Maps' },
-  { href: '/lounges',  label: 'Reviews' },
-  { href: '/flights',  label: 'Guides' },
-  { href: '#',         label: 'For Teams' },
+  { href: '/lounges',              label: 'Lounges' },
+  { href: '/airports',             label: 'Airports' },
+  { href: '/#terminal-navigation', label: 'Maps' },
+  { href: '/flights',              label: 'Guides' },
 ]
 
 export default function Header() {
