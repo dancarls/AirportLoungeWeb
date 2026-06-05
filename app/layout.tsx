@@ -29,6 +29,9 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@airportlounges',
   },
+  verification: {
+    google: 'MqIm81wvmdy1xQCa-LvcLU2-G55iu3uAAxBrpBGwv4k',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
