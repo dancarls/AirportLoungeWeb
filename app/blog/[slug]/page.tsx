@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getPost, getAllPosts } from '@/lib/blog'
 import FlightStatusWidget from '@/components/FlightStatusWidget'
+import WeatherWidget from '@/components/WeatherWidget'
+import { getWeather } from '@/lib/weather'
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -33,6 +35,8 @@ export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
   const post = getPost(slug)
   if (!post) notFound()
+
+  const weather = await getWeather(49.1947, -123.1792)
 
   return (
     <div className="bg-bone-white min-h-screen">
@@ -98,6 +102,16 @@ export default async function BlogPostPage({ params }: Props) {
 
           {/* ── Sidebar ───────────────────────────────────── */}
           <aside className="space-y-6">
+
+            {/* Weather */}
+            {weather && (
+              <div>
+                <h3 className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-3">
+                  Airport Weather
+                </h3>
+                <WeatherWidget weather={weather} city="Vancouver" iata="YVR" />
+              </div>
+            )}
 
             {/* Flight status */}
             <div>

@@ -3,6 +3,8 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import { getAllPosts } from '@/lib/blog'
 import FlightStatusWidget from '@/components/FlightStatusWidget'
+import WeatherWidget from '@/components/WeatherWidget'
+import { getWeather } from '@/lib/weather'
 
 export const metadata: Metadata = {
   title: 'Lounge Guides & Travel Tips | AirportLounges.ca',
@@ -16,8 +18,10 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600
 
-export default function BlogPage() {
+export default async function BlogPage() {
   const posts = getAllPosts()
+  // Default weather to YVR (Vancouver) — most-covered airport on the site
+  const weather = await getWeather(49.1947, -123.1792)
 
   return (
     <div className="bg-bone-white min-h-screen">
@@ -89,6 +93,16 @@ export default function BlogPage() {
 
           {/* ── Sidebar ────────────────────────────────────── */}
           <aside className="space-y-6">
+
+            {/* Weather */}
+            {weather && (
+              <div>
+                <h3 className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-3">
+                  Airport Weather
+                </h3>
+                <WeatherWidget weather={weather} city="Vancouver" iata="YVR" />
+              </div>
+            )}
 
             {/* Flight status */}
             <div>
