@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getWeather } from '@/lib/weather'
 import LoungeCard from '@/components/LoungeCard'
-import FlightStatusWidget from '@/components/FlightStatusWidget'
 import WeatherWidget from '@/components/WeatherWidget'
 import Link from 'next/link'
 import type { Metadata } from 'next'
@@ -122,9 +121,6 @@ export default async function AirportPage({ params }: Props) {
 
             {/* Weather */}
             <WeatherWidget weather={weather} city={airport.city} iata={code} />
-
-            {/* Flight status */}
-            <FlightStatusWidget />
 
             {/* Terminal map link */}
             {airport.terminal_map_url && (

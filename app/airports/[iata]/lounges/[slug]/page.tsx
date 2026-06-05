@@ -3,7 +3,6 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import ReviewCard from '@/components/ReviewCard'
 import ReviewForm from '@/components/ReviewForm'
-import FlightStatusWidget from '@/components/FlightStatusWidget'
 import LoungeMapClient from '@/components/LoungeMapClient'
 import WeatherWidget from '@/components/WeatherWidget'
 import { getWeather } from '@/lib/weather'
@@ -468,9 +467,6 @@ export default async function LoungeDetailPage({ params }: Props) {
           {weather && l.airport && (
             <WeatherWidget weather={weather} city={l.airport.city} iata={code} />
           )}
-
-          {/* Flight status */}
-          <FlightStatusWidget />
 
           {/* Sidebar ad */}
           <div className="bg-bone-white border border-dashed border-outline text-on-surface-variant p-6 rounded-xl flex flex-col items-center text-center">

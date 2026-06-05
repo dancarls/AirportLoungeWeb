@@ -33,7 +33,6 @@ export default function Footer() {
             <li><Link href="/lounges"  className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Lounges</Link></li>
             <li><Link href="/airports" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Terminal Maps</Link></li>
             <li><Link href="/lounges?access=Priority+Pass" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Priority Pass Lounges</Link></li>
-            <li><Link href="/flights"  className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Flight Status</Link></li>
             <li><Link href="/lounges?sort=rating" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Best Rated</Link></li>
           </ul>
         </div>
@@ -45,8 +44,8 @@ export default function Footer() {
             <li><Link href="/auth/signup" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Create Account</Link></li>
             <li><Link href="/auth/login"  className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Sign In</Link></li>
             <li><Link href="/account"     className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">My Saved Lounges</Link></li>
-            <li><a href="#" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Privacy Policy</a></li>
-            <li><a href="#" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Terms of Service</a></li>
+            <li><Link href="/privacy" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Privacy Policy</Link></li>
+            <li><Link href="/terms"   className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Terms of Service</Link></li>
           </ul>
         </div>
 
