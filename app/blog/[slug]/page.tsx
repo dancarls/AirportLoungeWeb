@@ -88,8 +88,13 @@ export default async function BlogPostPage({ params }: Props) {
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
 
+            {/* AI image disclaimer */}
+            <p className="mt-10 text-xs text-secondary/60 italic">
+              Images in this article were created using AI image generation tools for illustrative purposes. Actual lounge interiors, facilities, and appearances may differ from those shown.
+            </p>
+
             {/* Back to guides */}
-            <div className="mt-12 pt-8 border-t border-outline-variant/30">
+            <div className="mt-6 pt-6 border-t border-outline-variant/30">
               <Link
                 href="/blog"
                 className="inline-flex items-center gap-2 font-label-caps text-[10px] uppercase tracking-widest text-primary border-b border-primary/20 hover:border-primary transition-all pb-1"

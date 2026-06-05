@@ -14,6 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/blog`,     priority: 0.8, changeFrequency: 'weekly' },
     { url: `${BASE}/blog/priority-pass-lounges-canada`,       priority: 0.9, changeFrequency: 'monthly' },
     { url: `${BASE}/blog/best-airport-lounges-remote-work-canada`, priority: 0.9, changeFrequency: 'monthly' },
+    { url: `${BASE}/blog/canadian-airport-lounges-shower-access`, priority: 0.9, changeFrequency: 'monthly' },
     { url: `${BASE}/privacy`,  priority: 0.2, changeFrequency: 'yearly' },
     { url: `${BASE}/terms`,    priority: 0.2, changeFrequency: 'yearly' },
   ]

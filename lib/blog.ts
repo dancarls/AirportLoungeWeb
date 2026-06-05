@@ -544,7 +544,421 @@ const remoteWorkContent = `
 <p><em>All data in this guide was compiled as of June 2026. Lounge access policies, hours, Priority Pass eligibility, and physical facilities are subject to change — always verify with the lounge operator or your card issuer before travel.</em></p>
 `
 
+const showerAccessContent = `
+<p><em>Every lounge in Canada with a shower reviewed — facilities, bath products, who gets in free, and how to avoid a long wait. Updated June 2026.</em></p>
+
+<p>A hot shower before boarding changes everything. After a red-eye from Toronto, a transatlantic connection through Vancouver, or a long drive to the airport, freshening up in a proper shower can completely reset how you feel before a flight.</p>
+
+<p>Not every airport lounge in Canada has shower access, and the quality varies enormously — from the limestone-clad, Aesop-stocked suites at the Cathay Pacific Lounge at YVR to a single functional stall with wall-mounted dispensers. A few lounges charge extra for shower access on top of lounge entry. Some require you to book a slot at the desk. And some major lounges — including the Air Canada Maple Leaf in Calgary — have no shower at all.</p>
+
+<p>This guide covers every Canadian airport lounge that currently offers shower access, what to expect when you get there, who qualifies for free access, and how to avoid waiting.</p>
+
+<h2>What Shower Access Actually Means</h2>
+
+<p>Lounges use different formats, and knowing which you are walking into sets the right expectations.</p>
+
+<ul>
+  <li><em>Full shower suite</em> — a private room with its own sink, toilet, and shower. You have the entire space to yourself for the duration.</li>
+  <li><em>Shower stall</em> — a walk-in shower only, with shared bathroom facilities outside.</li>
+  <li><em>Shower with surcharge</em> — lounge entry is covered by your card, but the shower costs extra on top.</li>
+  <li><em>By appointment</em> — you must register at the front desk on arrival. A wait is common at busy times.</li>
+</ul>
+
+<h2>Quick-Reference: Every Canadian Lounge with Shower Access (2026)</h2>
+
+<table style="width:100%; border-collapse:collapse; font-size:0.88em;">
+  <thead>
+    <tr style="background:#1a2e44; color:#ffffff;">
+      <th style="padding:9px 10px; text-align:left; width:8%;">Airport</th>
+      <th style="padding:9px 10px; text-align:left; width:30%;">Lounge</th>
+      <th style="padding:9px 10px; text-align:left; width:22%;">Shower Details</th>
+      <th style="padding:9px 10px; text-align:left; width:25%;">Cost / Access</th>
+      <th style="padding:9px 10px; text-align:center; width:15%;">Priority Pass / DragonPass</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YVR</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Cathay Pacific Lounge (Gate D70, International)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">2 full suites, limestone, rain shower, Aesop products, 1 ADA-accessible</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Included in lounge entry; oneworld/CX passengers and elite status only</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top;">No</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YVR</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Plaza Premium First (Gate D67–68, International)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Spa-like suites, included in PPF entry. Adjacent PPL shower = +$25 CAD</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">PPF from $110 CAD. PP covers PPL entry; shower = +$25 CAD extra</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top;">PP with surcharge</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YVR</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">SkyTeam Lounge (Gate D53, International)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">2 full oversized suites, full amenities, spotlessly maintained</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Included in lounge entry for all eligible guests</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top; color:#1a7a3a; font-weight:600;">Yes — free</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YVR</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">AC Maple Leaf Lounge International (Gate D52)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Individual suites, confirmed present</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Included; AC/Aeroplan cards and status holders</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top;">No</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YVR</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">AC Maple Leaf Lounge Transborder (Gate E84)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">1 oversized accessible suite; functional, dated tiling, good water pressure</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Included; AC/Aeroplan cards and status holders</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top;">No</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YVR</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Plaza Premium Domestic Pier B (Gate B15)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Shower rooms available; Pier C does not have showers</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">PP lounge entry free; shower = +$25 CAD</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top;">PP with surcharge</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YYZ</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">AC Maple Leaf Lounge International (Terminal 1, Gate F)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">2 full suites, rain shower, toilet, sink — waitlist common</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Included; AC/Aeroplan cards and status holders</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top;">No</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YYZ</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Plaza Premium T3-C (Gate C32, International)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Shower rooms included in entry</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Included for PP/DragonPass members</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top; color:#1a7a3a; font-weight:600;">Yes — free</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YYZ</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Plaza Premium T1 Domestic</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Shower rooms included in entry</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Included for PP/DragonPass members</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top; color:#1a7a3a; font-weight:600;">Yes — free</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YYZ</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Plaza Premium T3-B (Gates B22–B24, Domestic)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Shower rooms included in entry</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Included for PP/DragonPass members</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top; color:#1a7a3a; font-weight:600;">Yes — free</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YUL</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Air France Lounge by Plaza Premium (Gate 57, International)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">3 full private suites, walk-in shower, wall-mounted toiletries, towels provided</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">PP free with 2-hr limit; not during peak 3–6 PM</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top; color:#1a7a3a; font-weight:600;">Yes — free</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YUL</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">AC Maple Leaf Lounge International (Gate A52)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Showers confirmed present; limited detail available</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Included; AC/Aeroplan cards and status holders</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top;">No</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">YYC</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">WestJet Elevation Lounge (Concourse B)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Private room with sink, toilet, and large accessible stall. Rocky Mountain Soap Co. products. Heated towel rack. By appointment.</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Included for PP/DragonPass and WestJet status</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; vertical-align:top; color:#1a7a3a; font-weight:600;">Yes — free</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; vertical-align:top;">YVR</td>
+      <td style="padding:9px 10px; vertical-align:top;">WestJet Elevation Lounge (Pier B)</td>
+      <td style="padding:9px 10px; vertical-align:top;">Shower facilities confirmed; charge status for PP members unconfirmed — verify at desk</td>
+      <td style="padding:9px 10px; vertical-align:top;">PP lounge entry free; shower charge unclear</td>
+      <td style="padding:9px 10px; text-align:center; vertical-align:top;">Confirm at desk</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><em>PP upcharge = Priority Pass covers lounge entry but the shower requires an additional payment. Data as of June 2026 — amenities subject to change.</em></p>
+
+<figure>
+  <img src="/blog/premium-shower-lounge-hero.png" alt="Premium airport lounge shower suite with limestone tiles, rain shower, and Aesop bath products" loading="lazy" />
+  <figcaption>The best Canadian airport lounge showers rival what you would find in a boutique hotel — but you need to know which ones to seek out</figcaption>
+</figure>
+
+<h2>The Best Airport Lounge Showers in Canada — Reviewed</h2>
+
+<h3>#1 — Cathay Pacific Lounge, Vancouver (YVR) — Best Shower in Canada</h3>
+
+<p><em>Access: Cathay Pacific or oneworld Business/First class; oneworld Emerald or Sapphire elite status; Marco Polo Club Diamond, Gold, or Silver. Not Priority Pass eligible.</em></p>
+
+<p>The Cathay Pacific Lounge at YVR Gate D70 has the finest shower experience at any Canadian airport, and it is not particularly close. Two full private suites are clad in limestone with a walk-in rain shower, a sink with brass fixtures, and a toilet. One suite is ADA-compliant and fully accessible. Bath products are from Aesop — plush towels and premium amenities are provided in full, and the cleaning standard is consistently praised.</p>
+
+<p>The only quirk noted in reviews: the showerhead placement near the door can cause minor leaking if you are not careful about direction. It does not affect the overall experience. With only two suites and no reservation system, arriving early is the only way to guarantee no wait. The lounge opens in line with Cathay Pacific's two daily YVR departures — morning and evening — so early arrivals almost always walk straight in.</p>
+
+<blockquote>
+<p>Aesop bath products in an airport shower are genuinely rare. If you qualify for access, bring a small bag and make the most of it. With only 2 suites and no booking system, arriving early is your only strategy for avoiding a wait.</p>
+</blockquote>
+
+<h3>#2 — Plaza Premium First, Vancouver (YVR) — Spa-Like, Worth the Upcharge</h3>
+
+<p><em>Access: Plaza Premium First (PPF) from $110 CAD per person for 2-hour access, bookable at plazapremiumgroup.com. Priority Pass covers entry to the adjacent standard Plaza Premium Lounge (PPL); shower at PPL costs +$25 CAD on top.</em></p>
+
+<p>Plaza Premium First opened at YVR Gate D67–D68 in December 2024 and is the most premium independent lounge in Canada. At just under 1,000 square metres, it is the largest and most architecturally considered lounge space at any Canadian airport — and the shower suites reflect that. PPF describes the shower facilities as spa-like and includes them as a complimentary part of the entry package.</p>
+
+<p>For Priority Pass holders who do not want to pay the full PPF entry fee, the adjacent standard Plaza Premium Lounge (PPL) is free to enter with a PP card, and the shower is available there for a $25 CAD surcharge. Both lounges are in the same building, open from 6:30 AM to 1:30 AM daily (PPF from 9 AM on Saturdays). Booking PPF in advance online is recommended on Fridays and Sundays when the international terminal is busiest.</p>
+
+<figure>
+  <img src="/blog/premium-shower-suite-yvr.png" alt="Plaza Premium First lounge shower suite at Vancouver International Airport (YVR)" loading="lazy" />
+  <figcaption>Plaza Premium First at YVR opened in December 2024 — the spa-like shower suites are included in the lounge entry fee</figcaption>
+</figure>
+
+<h3>#3 — SkyTeam Lounge, Vancouver (YVR) — Best Free Shower on Priority Pass</h3>
+
+<p><em>Access: Priority Pass and DragonPass (international flights only); SkyTeam Elite Plus members; SkyTeam Business class passengers; walk-in day pass available. International departures only — not accessible for domestic or US flights from YVR.</em></p>
+
+<p>The SkyTeam Lounge at YVR is consistently rated one of the top Priority Pass lounges in the world — and its shower suites are a meaningful part of that reputation. Two oversized full suites, each with a large walk-in shower, sink, toilet, towels, and bath amenities. The lounge itself is kept spotlessly clean and the showers are no exception. Both suites are self-contained private rooms with no shared changing areas.</p>
+
+<p>The lounge spans 5,600 square feet with floor-to-ceiling windows, runway and mountain views, a made-to-order noodle bar opening at 11 AM, a quiet day-bed zone, and BC craft beer on tap. Showers are available to all eligible guests at no additional charge — there is no surcharge, no booking requirement, and no separate fee. It is the best free shower available to Priority Pass holders anywhere in Canada.</p>
+
+<blockquote>
+<p>With only 2 suites and a lounge that fills up, arrive at least 90 minutes before your flight if a shower is the priority. Peak hours are 10 AM to 2 PM when multiple long-haul departures are preparing. Early morning — before 5 AM — is the least crowded window of the day. Plan your shower before the noodle bar opens at 11 AM to sidestep the busiest period.</p>
+</blockquote>
+
+<figure>
+  <img src="/blog/premium-shower-suite-generic.png" alt="A premium airport lounge shower suite with rain shower and high-end amenities" loading="lazy" />
+  <figcaption>Priority Pass holders can access free shower suites at the SkyTeam Lounge at YVR — two full oversized private suites with no surcharge</figcaption>
+</figure>
+
+<h3>#4 — Air Canada Maple Leaf Lounges — Which Locations Actually Have Showers</h3>
+
+<p><em>Access: Air Canada Business/First class; Star Alliance Gold; Aeroplan 50K+ status; TD, CIBC, or Amex Aeroplan premium cards. Not Priority Pass eligible.</em></p>
+
+<p>Air Canada lists showers as a standard Maple Leaf Lounge amenity, but not every location has them and quality varies. Here is a location-by-location breakdown of what you can actually expect.</p>
+
+<table style="width:100%; border-collapse:collapse; font-size:0.88em;">
+  <thead>
+    <tr style="background:#1a2e44; color:#ffffff;">
+      <th style="padding:9px 10px; text-align:left; width:30%;">Location</th>
+      <th style="padding:9px 10px; text-align:center; width:15%;">Showers?</th>
+      <th style="padding:9px 10px; text-align:left; width:55%;">Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">YYZ International (T1, Gate F)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; color:#1a7a3a; font-weight:600;">Yes — 2 suites</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Rain shower, toilet, and sink. Busy lounge — waitlist common. Ask at the desk immediately on arrival.</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">YYZ Domestic (T1)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; color:#1a7a3a; font-weight:600;">Yes — 2 rooms</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Well-reviewed post-renovation. Early morning visits (5–6 AM) report no wait.</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">YYZ Transborder (T1, Pier F)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; color:#1a7a3a; font-weight:600;">Yes</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Functional standard stalls; smaller than the international suites.</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">YVR International (Gate D52)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; color:#1a7a3a; font-weight:600;">Yes</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Individual suites confirmed. Located in the washroom area near the lounge entrance.</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">YVR Transborder (Gate E84)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; color:#1a7a3a; font-weight:600;">Yes — 1 suite</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Single oversized accessible suite. Tiling is dated but clean. Good water pressure.</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">YVR Domestic (Gate C29)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; color:#1a7a3a; font-weight:600;">Yes</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Basic shower access. Less reviewed than international locations.</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">YUL International (Gate A52)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; color:#1a7a3a; font-weight:600;">Yes</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Showers confirmed but limited reviewer detail available. Ask at the desk on arrival.</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">YYC Domestic</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; color:#b00020; font-weight:600;">No</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Confirmed no showers at the Calgary MLL. Use WestJet Elevation YYC for shower access in Calgary.</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">YOW Domestic/International</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center; color:#b00020; font-weight:600;">No</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Confirmed no shower. Beautiful tarmac views, good food — but no shower facilities.</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">YWG Domestic/International</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">Unconfirmed</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Smaller lounge; shower availability not independently confirmed as of June 2026.</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px;">YEG Domestic/International</td>
+      <td style="padding:9px 10px; text-align:center;">Unconfirmed</td>
+      <td style="padding:9px 10px;">Smaller lounge; shower availability not independently confirmed as of June 2026.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The YYZ International Maple Leaf Lounge is the flagship shower experience in the network — two spacious suites with rain showers, green and brown classic tiling, wall-mounted dispensers, and towels provided. With only two suites serving a large and busy lounge, a waitlist is common. Ask about shower availability the moment you walk in, not when you are ready to use it.</p>
+
+<figure>
+  <img src="/blog/shower-stall-toronto-pearson.png" alt="Air Canada Maple Leaf Lounge shower suite at Toronto Pearson Airport (YYZ)" loading="lazy" />
+  <figcaption>The Air Canada Maple Leaf Lounge International at YYZ has two rain shower suites — ask at the desk immediately on arrival to join the waitlist</figcaption>
+</figure>
+
+<h3>#5 — WestJet Elevation Lounge, Calgary (YYC) — Book the Slot Early</h3>
+
+<p><em>Access: Priority Pass and DragonPass (free); WestJet Rewards Platinum and Gold; WestJet Business class; Delta SkyMiles Diamond, Platinum, and Gold Medallion on WJ/DL itineraries; walk-in from $59 CAD + GST. Domestic and international only — not available for US transborder departures.</em></p>
+
+<p>The WestJet Elevation Lounge at YYC is notable for two reasons. First, it has showers — the nearby Air Canada Maple Leaf Lounge at Calgary does not. Second, showers are by appointment, which is actually useful: you register at the front desk when you arrive, get a time slot, and then go eat and relax until your turn.</p>
+
+<p>The shower room is a private space with a sink, toilet, and large accessible stall. Bath products are Rocky Mountain Soap Company — body wash and conditioner in the shower. A heated towel rack holds both a bath towel and a hand towel. The room is consistently described as clean and bright. The one reported drawback is the lack of a bench or flat surface for laying out a toiletry kit — keep your bag away from the spray zone.</p>
+
+<p>One reviewer reported a 90-minute wait for the next available slot after arriving mid-morning. If your connection is under two hours, head straight to the desk before doing anything else.</p>
+
+<blockquote>
+<p>The lounge opens at 5 AM. Arriving early practically guarantees an immediate shower slot with no wait. Do not leave the shower booking until 30 minutes before your flight — slots may already be full for the hour.</p>
+</blockquote>
+
+<h3>#6 — Air France Lounge (by Plaza Premium), Montréal (YUL) — Best Shower in Montreal for PP Members</h3>
+
+<p><em>Access: Priority Pass free with a 2-hour time limit — not during peak hours approximately 3–6 PM. Air France and KLM Business class; SkyTeam Elite Plus. International departures only.</em></p>
+
+<p>The Air France Lounge at YUL Gate 57, operated by Plaza Premium Group, is the best shower option in Montréal for Priority Pass holders. Three of the seven bathroom rooms are full private shower suites — each is a self-contained space with a sink, toilet, and walk-in shower with a glass shield. Toiletries are unbranded wall-mounted dispensers. Towels are provided. The rooms are described as compact but clean and private.</p>
+
+<p>The significant caveat is timing. The lounge becomes extremely crowded from 3 PM to 7 PM as Air France and KLM transatlantic departures to Paris (CDG) and Amsterdam (AMS) prepare. Priority Pass members can be denied entry during this window even after arriving three hours early — multiple reviewers confirm this. The best window for Priority Pass shower access is 5 AM to 2 PM, when the lounge is quiet and all three shower rooms are available.</p>
+
+<h3>#7 — WestJet Elevation Lounge, Vancouver (YVR)</h3>
+
+<p><em>Access: Priority Pass (lounge entry free; shower charge status unconfirmed — verify at desk); WestJet Rewards Platinum and Gold; walk-in from $59 CAD + GST. Domestic and international only — not US transborder.</em></p>
+
+<p>The WestJet Elevation Lounge at YVR Pier B includes shower facilities, but the charge situation for Priority Pass members is less clearly documented than at the YYC counterpart. WestJet's official access page states "shower facilities (charges may apply)" — which suggests the shower may not be complimentary for all access types at this location. Confirm at the desk when you arrive.</p>
+
+<p>For PP members flying internationally from YVR, the SkyTeam Lounge at Gate D53 is the more reliable option — confirmed free, two full suites, no ambiguity. For domestic departures, Plaza Premium Pier B with a $25 CAD shower surcharge is the cleaner choice.</p>
+
+<h3>#8 — Plaza Premium Domestic Pier B, Vancouver (YVR)</h3>
+
+<p><em>Access: Priority Pass and DragonPass (lounge free; shower = +$25 CAD); walk-in from $48 CAD for 3 hours with shower included in some packages. Domestic terminal only.</em></p>
+
+<p>For domestic departures at YVR, Plaza Premium at Pier B (Gate B15) is the only Priority Pass shower option available — and it comes with a $25 CAD surcharge on top of lounge entry. The lounge itself is free with a PP or DragonPass card. Shower rooms are confirmed present and available during opening hours (5 AM to 10 PM daily).</p>
+
+<p>One important distinction: Plaza Premium Pier C (Gate C29) at YVR does not have showers. Pier B is the only domestic Plaza Premium location at YVR with shower access. If you find yourself at Pier C, you will need to travel to Pier B or look for another option.</p>
+
+<figure>
+  <img src="/blog/modern-lounge-shower-room.png" alt="Clean airport lounge shower room with walk-in stall and towels" loading="lazy" />
+  <figcaption>Most Canadian airport lounge shower rooms are private self-contained spaces — all provide towels and basic bath products at minimum</figcaption>
+</figure>
+
+<h2>Canadian Airport Lounges That Do Not Have Showers</h2>
+
+<p>These are the notable lounges confirmed to have no shower facilities, so you are not walking across the terminal to find out the hard way.</p>
+
+<table style="width:100%; border-collapse:collapse; font-size:0.88em;">
+  <thead>
+    <tr style="background:#1a2e44; color:#ffffff;">
+      <th style="padding:9px 10px; text-align:left; width:40%;">Lounge</th>
+      <th style="padding:9px 10px; text-align:center; width:10%;">Airport</th>
+      <th style="padding:9px 10px; text-align:left; width:50%;">Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Air Canada Maple Leaf Lounge — Domestic</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">YYC</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Confirmed no showers. Use WestJet Elevation YYC instead.</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Air Canada Maple Leaf Lounge</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">YOW</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Confirmed no shower. Good food and views — no shower facilities.</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Aspire Salon Lounge</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">YOW</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Priority Pass accessible; no shower confirmed.</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Desjardins Odyssey Lounge — Transborder</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">YUL</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Reviewed as having no bathrooms in the lounge at all — uses terminal facilities.</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Plaza Premium — US Departures (Gate E88)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">YVR</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Priority Pass accessible; no shower listed or confirmed.</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Plaza Premium — Domestic Pier C (Gate C29)</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">YVR</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">PP accessible; showers only at Pier B, not Pier C.</td>
+    </tr>
+    <tr style="background:#ffffff;">
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">National Bank Lounge</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">YUL</td>
+      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">No shower confirmed in multiple reviews. PP and DragonPass accessible.</td>
+    </tr>
+    <tr style="background:#f7f9fb;">
+      <td style="padding:9px 10px;">AC Maple Leaf Lounge Express — Transborder</td>
+      <td style="padding:9px 10px; text-align:center;">YYZ</td>
+      <td style="padding:9px 10px;">Express format lounge; no shower access.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>7 Tips for Getting a Shower at a Canadian Airport Lounge</h2>
+
+<ol>
+  <li><p><em>Ask about shower availability the moment you arrive.</em> Do not wait until you are ready to use it. Walk in, speak to reception immediately, and get on the list or secure a key right away. At the WestJet Elevation YYC, the AC MLL YYZ International, and the SkyTeam Lounge at YVR, shower demand is high enough that waiting costs you your slot.</p></li>
+  <li><p><em>Arrive at least 90 minutes before your flight if a shower is the priority.</em> Most lounges require a same-day boarding pass, but shower wait times can eat into your pre-flight window fast. A 90-minute wait was specifically reported at WestJet Elevation YYC during mid-morning. The AC MLL YYZ International has only 2 suites serving a large lounge.</p></li>
+  <li><p><em>Early morning is almost always low-wait.</em> Across all reviewed Canadian lounges, 5 AM to 7 AM is consistently the quietest window. If your schedule allows an early arrival, this is the most reliable way to walk straight into a shower. The SkyTeam Lounge at YVR specifically peaks between 10 AM and 2 PM — early morning is the opposite of that.</p></li>
+  <li><p><em>Book Plaza Premium First online in advance.</em> Plaza Premium First at YVR can be pre-booked at plazapremiumgroup.com up to 24 hours ahead. On busy travel days — Fridays and Sundays especially — this is worth doing if you want the best shower experience in Canada and are paying out of pocket.</p></li>
+  <li><p><em>Bring your own kit if product quality matters to you.</em> Most Canadian lounges provide shampoo, conditioner, and body wash in unbranded wall-mounted dispensers. The exceptions are the Cathay Pacific Lounge at YVR (Aesop) and WestJet Elevation YYC (Rocky Mountain Soap Company). Everywhere else, bring a travel kit if you have preferences.</p></li>
+  <li><p><em>You do not need to bring a towel.</em> Every Canadian airport lounge with shower access provides towels — bath towel and floor mat at minimum. The WestJet Elevation YYC also provides a hand towel on a heated rack. You will not need your own.</p></li>
+  <li><p><em>No hard time limits — but keep it to 20 minutes if there is a queue.</em> None of the reviewed Canadian lounges impose a hard time limit on shower use. Staff generally do not knock unless there is a significant delay. If you can see people waiting, 20 minutes is the reasonable courtesy guideline used by frequent lounge travellers.</p></li>
+</ol>
+
+<h2>Frequently Asked Questions: Airport Lounge Showers in Canada</h2>
+
+<h3>Which Canadian airport lounge has the best shower?</h3>
+<p>The Cathay Pacific Lounge at Vancouver International Airport (YVR) has the finest shower experience in Canada — two private limestone-clad suites with Aesop bath products, rain showers, and brass fixtures. Access requires a Cathay Pacific or oneworld Business/First class ticket or elite status. For Priority Pass holders, the SkyTeam Lounge at YVR is the best free option with two full oversized suites at no extra charge.</p>
+
+<h3>Can I use a Priority Pass lounge shower for free in Canada?</h3>
+<p>Yes, at several locations. The SkyTeam Lounge at YVR, the Air France Lounge by Plaza Premium at YUL, the WestJet Elevation Lounge at YYC, and multiple Plaza Premium locations at YYZ all include shower access at no additional charge for Priority Pass members. Plaza Premium Pier B at YVR charges a $25 CAD shower surcharge on top of free lounge entry.</p>
+
+<h3>Does the Air Canada Maple Leaf Lounge in Calgary have a shower?</h3>
+<p>No. The Air Canada Maple Leaf Lounge at Calgary International Airport (YYC) does not have shower facilities. The only lounge with showers in Calgary is the WestJet Elevation Lounge, which accepts Priority Pass, DragonPass, and WestJet status members. Showers there are by appointment — register at the front desk as soon as you arrive.</p>
+
+<h3>Do I need to bring my own towel to an airport lounge shower in Canada?</h3>
+<p>No. Every Canadian airport lounge with shower access provides at least a bath towel and floor mat. Most also provide a hand towel. You do not need to bring your own. If product quality matters to you, bring your own toiletry kit — most lounges use unbranded wall-mounted dispensers, with the Cathay Pacific Lounge (Aesop) and WestJet Elevation YYC (Rocky Mountain Soap Company) as the notable exceptions.</p>
+
+<h3>How long is the wait for a shower at a Canadian airport lounge?</h3>
+<p>It depends on the lounge and time of day. Early morning before 7 AM is consistently low-wait at all reviewed locations. Mid-morning at the WestJet Elevation YYC and the AC MLL YYZ International can involve a 90-minute wait. At the SkyTeam Lounge at YVR, the peak window of 10 AM to 2 PM sees the highest shower demand. Arriving early and registering at the desk immediately is the most reliable strategy across all locations.</p>
+
+<h3>Is the Plaza Premium shower at YVR free for Priority Pass members?</h3>
+<p>Partially. Priority Pass covers lounge entry at standard Plaza Premium locations at YVR at no charge. However, the shower is an additional $25 CAD on top of that free entry at Plaza Premium Pier B. Plaza Premium First (PPF) at Gate D67–D68 is the premium-tier lounge where showers are included — but PPF requires a separate entry fee from approximately $110 CAD, which Priority Pass does not cover.</p>
+
+<h3>Can I shower at an airport lounge if I am only flying domestically in Canada?</h3>
+<p>Yes, at certain locations. WestJet Elevation YYC, Plaza Premium Pier B at YVR (with shower surcharge), the AC Maple Leaf Lounge domestics at YYZ and YVR, and multiple Plaza Premium locations at YYZ all serve domestic passengers and have shower access. The SkyTeam Lounge and the Air France Lounge at YUL are international-only and not available for domestic or US transborder flights.</p>
+
+<p><em>All amenity details in this guide are accurate as of June 2026. Lounge facilities, access policies, and shower availability are subject to change — always confirm with the lounge directly or check the Priority Pass app before travelling.</em></p>
+`
+
 export const blogPosts: BlogPost[] = [
+  {
+    slug: 'canadian-airport-lounges-shower-access',
+    title: 'Canadian Airport Lounges with Shower Access (2026)',
+    excerpt: 'Every Canadian airport lounge with shower access reviewed — facilities, bath products, who gets in free, and how to avoid a long wait. Updated June 2026.',
+    coverImage: '/blog/premium-shower-lounge-hero.png',
+    publishedAt: '2026-06-05',
+    category: 'Lounge Guides',
+    readingTime: '11 min read',
+    metaTitle: 'Canadian Airport Lounges with Showers (2026): Every Location Reviewed',
+    metaDescription: 'Every Canadian airport lounge with shower access reviewed — facilities, bath products, who gets in free, and how to avoid a long wait. June 2026.',
+    content: showerAccessContent,
+  },
   {
     slug: 'best-airport-lounges-remote-work-canada',
     title: 'Top 10 Airport Lounges for Remote Work in Canada (2026)',
