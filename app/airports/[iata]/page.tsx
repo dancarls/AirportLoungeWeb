@@ -12,9 +12,26 @@ interface Props { params: Promise<{ iata: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { iata } = await params
   const code = iata.toUpperCase()
+  const supabase = await createClient()
+  const { data: airport } = await supabase
+    .from('airports')
+    .select('name, city')
+    .eq('iata_code', code)
+    .single()
+
+  const name = airport?.name ?? `${code} Airport`
+  const city = airport?.city ?? code
+  const title = `${code} Airport Lounges — ${city}`
+  const description = `Find every airport lounge at ${name} (${code}). Access requirements, amenities, opening hours, and traveller reviews for all ${city} lounges.`
+
   return {
-    title: `${code} Airport Lounges`,
-    description: `Find and review every airport lounge at ${code}. Access info, hours, amenities, and real traveller reviews.`,
+    title,
+    description,
+    openGraph: {
+      title: `${title} | AirportLounges.ca`,
+      description,
+      url: `https://airportlounges.ca/airports/${code}`,
+    },
   }
 }
 

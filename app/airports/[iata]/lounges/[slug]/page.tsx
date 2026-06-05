@@ -12,10 +12,40 @@ import type { Lounge, Review, AccessType } from '@/lib/types'
 interface Props { params: Promise<{ iata: string; slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
+  const { iata, slug } = await params
+  const code = iata.toUpperCase()
   const supabase = await createClient()
-  const { data } = await supabase.from('lounges').select('name').eq('slug', slug).single()
-  return { title: data?.name ?? 'Lounge' }
+  const { data } = await supabase
+    .from('lounges')
+    .select('name, description, airport:airports(name, city), images:lounge_images(storage_path, is_primary)')
+    .eq('slug', slug)
+    .single()
+
+  if (!data) return { title: 'Lounge Not Found' }
+
+  const airport = data.airport as unknown as { name: string; city: string } | null
+  const imgs = (data.images ?? []) as Array<{ storage_path: string; is_primary: boolean }>
+  const primaryImg = imgs.find(i => i.is_primary) ?? imgs[0]
+  const ogImg = primaryImg
+    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${primaryImg.storage_path}`
+    : null
+
+  const rawDesc = data.description
+    ? data.description.replace(/<[^>]*>/g, '').trim().slice(0, 160)
+    : null
+  const description = rawDesc
+    ?? `${data.name} at ${airport?.name ?? code} — access requirements, amenities, and real traveller reviews.`
+
+  return {
+    title: data.name,
+    description,
+    openGraph: {
+      title: `${data.name} | ${code} Airport Lounge`,
+      description,
+      url: `https://airportlounges.ca/airports/${code}/lounges/${slug}`,
+      ...(ogImg && { images: [{ url: ogImg, width: 1200, height: 630, alt: data.name }] }),
+    },
+  }
 }
 
 export const revalidate = 60
@@ -118,8 +148,50 @@ export default async function LoungeDetailPage({ params }: Props) {
   const heroImg = orderedImages[0]
   const accessTypes = (l.access_types ?? []) as AccessType[]
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: l.name,
+    description: l.description
+      ? l.description.replace(/<[^>]*>/g, '').trim()
+      : `${l.name} — airport lounge at ${l.airport?.name ?? code}`,
+    url: `https://airportlounges.ca/airports/${code}/lounges/${l.slug}`,
+    ...(heroImg && {
+      image: getImageUrl(heroImg.storage_path),
+    }),
+    ...(l.airport && {
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: l.airport.city,
+        addressCountry: 'CA',
+      },
+      containedInPlace: {
+        '@type': 'Airport',
+        name: l.airport.name,
+        iataCode: code,
+      },
+    }),
+    ...(l.rating && l.review_count > 0 && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: l.rating.toFixed(1),
+        reviewCount: l.review_count,
+        bestRating: '5',
+        worstRating: '1',
+      },
+    }),
+    ...(l.guest_fee && {
+      priceRange: `$${l.guest_fee} ${(l as { guest_fee_currency?: string }).guest_fee_currency ?? 'CAD'}`,
+    }),
+    ...(l.website && { sameAs: l.website }),
+  }
+
   return (
     <div className="bg-bone-white min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <div className="max-w-container-max mx-auto px-margin-desktop pt-8">

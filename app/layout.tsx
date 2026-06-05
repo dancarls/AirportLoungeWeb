@@ -15,6 +15,19 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_CA',
     siteName: 'AirportLounges.ca',
+    url: 'https://airportlounges.ca',
+    images: [
+      {
+        url: 'https://airportlounges.ca/og-default.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'AirportLounges.ca — Find the right lounge before you reach the gate',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@airportlounges',
   },
 }
 
