@@ -10,7 +10,7 @@ const NAV = [
   { href: '/lounges',              label: 'Lounges' },
   { href: '/airports',             label: 'Airports' },
   { href: '/#terminal-navigation', label: 'Maps' },
-  { href: '/flights',              label: 'Guides' },
+  { href: '/blog',                 label: 'Guides' },
 ]
 
 export default function Header() {

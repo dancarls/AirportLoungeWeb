@@ -31,7 +31,7 @@ export default async function HomePage() {
       .eq('is_active', true)
       .not('rating', 'is', null)
       .order('rating', { ascending: false })
-      .limit(3),
+      .limit(4),
     supabase.from('lounges')
       .select('*, airport:airports(*), images:lounge_images(*), amenities(*)')
       .eq('is_active', true)
@@ -70,12 +70,20 @@ export default async function HomePage() {
       label:       r.weather!.label,
     }))
 
-  // Build real-time intelligence from top lounges
-  const recentItems = (topLounges as (Lounge & { airport?: Airport })[])?.slice(0, 3).map(l => ({
-    lounge: l,
-    iata: l.airport?.iata_code,
-    slug: l.slug,
-  })) ?? []
+  // Top lounges excluding the featured lounge (for Globally Renowned — must show different content)
+  const renownedLounges = (topLounges as (Lounge & { airport?: Airport })[])
+    ?.filter(l => l.id !== fl?.id)
+    .slice(0, 3) ?? []
+
+  // Build real-time intelligence — top rated lounges (featured lounge also excluded for variety)
+  const recentItems = (topLounges as (Lounge & { airport?: Airport })[])
+    ?.filter(l => l.id !== fl?.id)
+    .slice(0, 3)
+    .map(l => ({
+      lounge: l,
+      iata: l.airport?.iata_code,
+      slug: l.slug,
+    })) ?? []
 
   return (
     <>
@@ -142,9 +150,9 @@ export default async function HomePage() {
             <p className="text-secondary max-w-xl mx-auto">Discover the most sought-after airport sanctuaries, verified by our editorial team.</p>
           </div>
 
-          {topLounges && topLounges.length > 0 ? (
+          {renownedLounges.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-              {(topLounges as (Lounge & { airport?: Airport })[]).map(lounge => {
+              {renownedLounges.map(lounge => {
                 const img  = lounge.images?.find((i: { is_primary: boolean }) => i.is_primary) ?? lounge.images?.[0]
                 const iata = lounge.airport?.iata_code
                 return (
@@ -303,9 +311,9 @@ export default async function HomePage() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
-              { img:'https://lh3.googleusercontent.com/aida-public/AB6AXuA4GKgsqfalzGYSrwo2qoZ5a7TH86XC9a0fEYs7ROAuLwHttLFnFCN9cvMjQQNqHeODB7lG1O_OnLilCJ47_g6E35I0uvirD68A_6Ftu20dlUvIuSZnMAt_uaqwo90S2nYpyCM2BMSPGNoZuSrLc_Fwcbo8QHE1CDsHKeuqXN4GeCd_VSCfmWiiQE6Ue3dTFFcEEjcqogmClb-zLu_dG3mGuBZ6wxXU-GuSu_f22UjBlnTAOlXf8vRe0z4nu-trqO4YT-_o9nxrYq9F', title:'The Guide to Priority Pass in Canada', desc:'Every lounge across Canada that accepts Priority Pass — what to expect, peak hours to avoid, and how to bring a guest.', href:'/lounges?access=Priority+Pass' },
-              { img:'https://lh3.googleusercontent.com/aida-public/AB6AXuD8pZAtF9WmklahMG9rb0bQHtM7EhGT-B2Z_ZbflBo2waoPYa7mHfxtTa8QZkFnZZgfNzUDyIkiYYH0bhbv7-PsWRRmDDQ7JH_5OCXuiuDy3O6WJcYl4cVcKqBdJG76_A45VXlzYfdZ8w6x725w_9iN2eP5pyRfBuSvkrg4LeUAfzsfQMIT3QkDW2imuCWq23dkP9D4bmZoKs0px7-Z-NCDlUtLmbu8cHTx5EGP2t5Ys0xNk2aNPQgothiJFgk5thErq-uHO_JTiXd1', title:'Best Lounges for Remote Work', desc:'Verified Wi-Fi speeds, quiet zones, power outlets, and meeting room access — the best Canadian lounges for getting work done.', href:'/lounges?amenity=free-wifi' },
-              { img:'https://lh3.googleusercontent.com/aida-public/AB6AXuCUnXuGcseHQMu4gTYFEYSYxCp89qJww9bZuU8Fif0ZyHEroGdU1RCdaiAKAXpS6Qk0IHuNnqmLQyCgP2GcC64P8I0B0rBIjcEWG6pgRN5lB7lqbazDROXqfAtO4OlCO-akgUjNjNF5TwDko_1y7ftYVenZrVmkS5XdDQShdMdIwXg5j2WiIAH2OuoEg4P_pHuF0fEP8JSqw1hhL21Pm30wIfKTz5RmWhhOsu2MiHMgzh8_tWxbXtVcWKAz6aVUpnRXEbmbZDHX2hKi', title:'Lounges with Shower Access', desc:'Nothing resets a long-haul journey like a proper shower. Here are the best Canadian airport lounges with shower suites.', href:'/lounges?amenity=shower' },
+              { img:'/blog/guide-priority-pass-canada.png', title:'The Complete Guide to Priority Pass Lounges in Canada', desc:'Every lounge across Canada that accepts Priority Pass — what to expect, peak hours to avoid, and how to bring a guest.', href:'/blog/priority-pass-lounges-canada', cta:'Read Guide' },
+              { img:'https://lh3.googleusercontent.com/aida-public/AB6AXuD8pZAtF9WmklahMG9rb0bQHtM7EhGT-B2Z_ZbflBo2waoPYa7mHfxtTa8QZkFnZZgfNzUDyIkiYYH0bhbv7-PsWRRmDDQ7JH_5OCXuiuDy3O6WJcYl4cVcKqBdJG76_A45VXlzYfdZ8w6x725w_9iN2eP5pyRfBuSvkrg4LeUAfzsfQMIT3QkDW2imuCWq23dkP9D4bmZoKs0px7-Z-NCDlUtLmbu8cHTx5EGP2t5Ys0xNk2aNPQgothiJFgk5thErq-uHO_JTiXd1', title:'Best Lounges for Remote Work', desc:'Verified Wi-Fi speeds, quiet zones, power outlets, and meeting room access — the best Canadian lounges for getting work done.', href:'/lounges?amenity=free-wifi', cta:'Explore Lounges' },
+              { img:'https://lh3.googleusercontent.com/aida-public/AB6AXuCUnXuGcseHQMu4gTYFEYSYxCp89qJww9bZuU8Fif0ZyHEroGdU1RCdaiAKAXpS6Qk0IHuNnqmLQyCgP2GcC64P8I0B0rBIjcEWG6pgRN5lB7lqbazDROXqfAtO4OlCO-akgUjNjNF5TwDko_1y7ftYVenZrVmkS5XdDQShdMdIwXg5j2WiIAH2OuoEg4P_pHuF0fEP8JSqw1hhL21Pm30wIfKTz5RmWhhOsu2MiHMgzh8_tWxbXtVcWKAz6aVUpnRXEbmbZDHX2hKi', title:'Lounges with Shower Access', desc:'Nothing resets a long-haul journey like a proper shower. Here are the best Canadian airport lounges with shower suites.', href:'/lounges?amenity=shower', cta:'Explore Lounges' },
             ].map(article => (
               <article key={article.title} className="group">
                 <div className="aspect-[3/4] overflow-hidden mb-6 editorial-shadow">
@@ -315,7 +323,7 @@ export default async function HomePage() {
                 <h3 className="font-headline-md text-primary mb-3">{article.title}</h3>
                 <p className="text-secondary text-sm mb-4 leading-relaxed line-clamp-3">{article.desc}</p>
                 <Link href={article.href} className="text-primary font-bold text-[10px] uppercase tracking-widest border-b border-primary/20 hover:border-primary transition-all pb-1 inline-block">
-                  Explore Lounges
+                  {article.cta}
                 </Link>
               </article>
             ))}

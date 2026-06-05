@@ -51,6 +51,98 @@
   }
 }
 
+/* Blog / Article prose styles */
+.prose-article {
+  color: #1a1a2e;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+.prose-article h2 {
+  font-family: var(--font-playfair, Georgia, serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #003434;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(166,141,116,0.25);
+}
+.prose-article h3 {
+  font-family: var(--font-playfair, Georgia, serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #003434;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.prose-article p {
+  margin-bottom: 1.25rem;
+}
+.prose-article ul, .prose-article ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+.prose-article li {
+  margin-bottom: 0.5rem;
+}
+.prose-article ul li { list-style-type: disc; }
+.prose-article ol li { list-style-type: decimal; }
+.prose-article blockquote {
+  border-left: 4px solid #c8a96e;
+  margin: 1.75rem 0;
+  padding: 1rem 1.25rem;
+  background: #faf7f2;
+  font-style: italic;
+  color: #3d3d3d;
+}
+.prose-article blockquote p { margin-bottom: 0; }
+.prose-article strong { font-weight: 700; color: #003434; }
+.prose-article em { font-style: italic; }
+.prose-article a { color: #003434; text-decoration: underline; text-underline-offset: 3px; }
+.prose-article a:hover { opacity: 0.75; }
+.prose-article figure {
+  margin: 2rem 0;
+}
+.prose-article figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border: 1px solid rgba(166,141,116,0.2);
+}
+.prose-article figcaption {
+  font-size: 0.8125rem;
+  color: #8a7967;
+  margin-top: 0.5rem;
+  font-style: italic;
+  text-align: center;
+}
+.prose-article table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+.prose-article thead tr {
+  background: #003434;
+  color: #fff;
+}
+.prose-article thead th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.prose-article tbody tr:nth-child(even) { background: #f7f9fb; }
+.prose-article tbody tr:nth-child(odd) { background: #fff; }
+.prose-article td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: top;
+}
+
 /* Mapbox */
 .mapboxgl-popup-content {
   border-radius: 0.5rem;
