@@ -134,13 +134,6 @@ export default async function HomePage() {
         <FeaturedLoungeSection lounge={fl} primaryImageUrl={flImgUrl} />
       )}
 
-      {/* ── TERMINAL NAVIGATION ──────────────────────────────────── */}
-      {mapAirports && mapAirports.length > 0 && (
-        <TerminalMapVisual
-          airports={mapAirports as Parameters<typeof TerminalMapVisual>[0]['airports']}
-        />
-      )}
-
       {/* ── POPULAR LOUNGES GRID ────────────────────────────────── */}
       <section className="py-section-gap bg-bone-white">
         <div className="max-w-container-max mx-auto px-gutter">
@@ -289,6 +282,13 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── TERMINAL NAVIGATION ──────────────────────────────────── */}
+      {mapAirports && mapAirports.length > 0 && (
+        <TerminalMapVisual
+          airports={mapAirports as Parameters<typeof TerminalMapVisual>[0]['airports']}
+        />
+      )}
 
       {/* ── LOUNGE LIBRARY (Editorial / Guides) ─────────────────── */}
       <section className="py-section-gap bg-bone-white">

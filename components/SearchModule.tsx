@@ -22,18 +22,16 @@ export default function SearchModule({ airports }: { airports: Airport[] }) {
   const router  = useRouter()
   const [iata, setIata]     = useState('')
   const [access, setAccess] = useState('')
-  const [amenity, setAmenity] = useState('')
 
   const handleSearch = () => {
     const params = new URLSearchParams()
     if (iata)   params.set('airport', iata)
     if (access) params.set('access', access)
-    if (amenity) params.set('amenity', amenity)
     router.push(`/lounges${params.toString() ? `?${params}` : ''}`)
   }
 
   return (
-    <div className="bg-bone-white editorial-shadow p-2 flex flex-col md:flex-row items-stretch gap-0 border border-sand-dark/10">
+    <div className="bg-bone-white editorial-shadow flex flex-col md:flex-row items-stretch border border-sand-dark/10">
       {/* Location */}
       <div className="flex-1 px-6 py-4 flex flex-col border-b md:border-b-0 md:border-r border-sand-dark/20">
         <label className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-1">Location</label>
@@ -52,7 +50,7 @@ export default function SearchModule({ airports }: { airports: Airport[] }) {
       </div>
 
       {/* Access Type */}
-      <div className="flex-1 px-6 py-4 flex flex-col border-b md:border-b-0 md:border-r border-sand-dark/20">
+      <div className="flex-1 px-6 py-4 flex flex-col">
         <label className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-1">Access Type</label>
         <select
           value={access}
@@ -64,24 +62,13 @@ export default function SearchModule({ airports }: { airports: Airport[] }) {
         </select>
       </div>
 
-      {/* Amenities */}
-      <div className="flex-1 px-6 py-4 flex flex-col">
-        <label className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-1">Amenities</label>
-        <input
-          type="text"
-          value={amenity}
-          onChange={e => setAmenity(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && handleSearch()}
-          placeholder="Showers, Work, Spa..."
-          className="bg-transparent border-none p-0 text-primary focus:ring-0 placeholder:text-sand-dark/50 font-medium text-sm outline-none"
-        />
-      </div>
-
+      {/* Icon-only search trigger */}
       <button
         onClick={handleSearch}
-        className="bg-primary-container text-on-primary-container px-10 py-4 font-label-caps text-label-caps uppercase transition-all hover:bg-primary hover:text-white"
+        aria-label="Search lounges"
+        className="px-7 py-4 bg-primary text-white hover:bg-primary/90 transition-all flex items-center justify-center"
       >
-        Search
+        <span className="material-symbols-outlined" style={{ fontSize: '22px' }}>search</span>
       </button>
     </div>
   )

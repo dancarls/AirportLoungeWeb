@@ -1,16 +1,11 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import Image from 'next/image'
 import Link from 'next/link'
-import StarRating from '@/components/StarRating'
-import AmenityBadge from '@/components/AmenityBadge'
 import ReviewCard from '@/components/ReviewCard'
 import ReviewForm from '@/components/ReviewForm'
 import FlightStatusWidget from '@/components/FlightStatusWidget'
-import LoungeMapClient from '@/components/LoungeMapClient'
-import { MapPin, Phone, Globe, Clock, Users, DollarSign, ChevronLeft } from 'lucide-react'
 import type { Metadata } from 'next'
-import type { Lounge, Review } from '@/lib/types'
+import type { Lounge, Review, AccessType } from '@/lib/types'
 
 interface Props { params: Promise<{ iata: string; slug: string }> }
 
@@ -27,11 +22,46 @@ function getImageUrl(path: string) {
   return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${path}`
 }
 
-const DAY_ORDER = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
-const DAY_LABELS: Record<string, string> = {
-  monday:'Mon', tuesday:'Tue', wednesday:'Wed', thursday:'Thu',
-  friday:'Fri', saturday:'Sat', sunday:'Sun',
+// Icon fallback map when Amenity.icon is null
+const AMENITY_ICON_MAP: Record<string, string> = {
+  wifi: 'wifi', internet: 'wifi',
+  bar: 'local_bar', drink: 'local_bar', alcohol: 'local_bar', cocktail: 'local_bar',
+  restaurant: 'restaurant', dining: 'restaurant', food: 'restaurant', buffet: 'restaurant',
+  shower: 'shower',
+  spa: 'spa', massage: 'spa',
+  business: 'print', printing: 'print',
+  press: 'newspaper', news: 'newspaper', magazine: 'newspaper',
+  coffee: 'coffee', barista: 'coffee',
+  quiet: 'meeting_room', sleep: 'hotel', nap: 'hotel',
+  charging: 'electrical_services', power: 'electrical_services',
+  tv: 'tv', kids: 'family_restroom', family: 'family_restroom',
+  pool: 'pool', gym: 'fitness_center',
 }
+
+function amenityIcon(name: string, icon: string | null): string {
+  if (icon) return icon
+  const lower = name.toLowerCase()
+  for (const [key, sym] of Object.entries(AMENITY_ICON_MAP)) {
+    if (lower.includes(key)) return sym
+  }
+  return 'check_circle'
+}
+
+const ACCESS_ICON_MAP: Record<string, string> = {
+  elite: 'stars', status: 'stars', gold: 'stars', silver: 'stars',
+  credit: 'credit_card', card: 'credit_card', amex: 'credit_card', visa: 'credit_card',
+  class: 'confirmation_number', business: 'confirmation_number', ticket: 'confirmation_number',
+}
+
+function accessIcon(type: string): string {
+  const lower = type.toLowerCase()
+  for (const [key, sym] of Object.entries(ACCESS_ICON_MAP)) {
+    if (lower.includes(key)) return sym
+  }
+  return 'confirmation_number'
+}
+
+const DAY_ORDER = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const
 
 export default async function LoungeDetailPage({ params }: Props) {
   const { iata, slug } = await params
@@ -40,26 +70,21 @@ export default async function LoungeDetailPage({ params }: Props) {
 
   const { data: lounge } = await supabase
     .from('lounges')
-    .select(`*, airport:airports(*), amenities(*), images:lounge_images(*) `)
+    .select('*, airport:airports(*), amenities(*), images:lounge_images(*)')
     .eq('slug', slug)
     .single()
 
   if (!lounge) notFound()
 
-  const { data: reviews } = await supabase
-    .from('reviews')
-    .select('*, profile:profiles(display_name, avatar_url)')
-    .eq('lounge_id', lounge.id)
-    .order('created_at', { ascending: false })
-    .limit(20)
-
-  const { data: crowdData } = await supabase
-    .from('current_crowd_levels')
-    .select('*')
-    .eq('lounge_id', lounge.id)
-    .single()
-
-  const { data: { user } } = await supabase.auth.getUser()
+  const [{ data: reviews }, { data: { user } }] = await Promise.all([
+    supabase
+      .from('reviews')
+      .select('*, profile:profiles(display_name, avatar_url)')
+      .eq('lounge_id', lounge.id)
+      .order('created_at', { ascending: false })
+      .limit(20),
+    supabase.auth.getUser(),
+  ])
 
   const l = lounge as Lounge
   const images = l.images ?? []
@@ -68,89 +93,176 @@ export default async function LoungeDetailPage({ params }: Props) {
     ? [images[primaryIdx], ...images.filter((_, i) => i !== primaryIdx)]
     : images
 
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-        <Link href="/airports" className="hover:text-gray-700">Airports</Link>
-        <span>/</span>
-        <Link href={`/airports/${code}`} className="hover:text-gray-700">{code}</Link>
-        <span>/</span>
-        <span className="text-gray-900 font-medium truncate">{l.name}</span>
-      </nav>
+  const heroImg = orderedImages[0]
+  const apiKey  = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY
+  const terminalMapImg = apiKey && l.airport?.latitude && l.airport?.longitude
+    ? `https://maps.googleapis.com/maps/api/staticmap?center=${l.airport.latitude},${l.airport.longitude}&zoom=16&size=400x200&scale=2&maptype=hybrid&key=${apiKey}`
+    : null
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main content */}
-        <div className="lg:col-span-2 space-y-8">
-          {/* Image gallery */}
-          {orderedImages.length > 0 && (
-            <div className="grid grid-cols-3 gap-2 rounded-2xl overflow-hidden h-72">
-              <div className="col-span-2 relative">
-                <Image src={getImageUrl(orderedImages[0].storage_path)}
-                  alt={orderedImages[0].alt_text ?? l.name} fill className="object-cover" priority />
+  const accessTypes = (l.access_types ?? []) as AccessType[]
+
+  return (
+    <div className="bg-bone-white min-h-screen">
+
+      {/* ── HERO ─────────────────────────────────────────────────── */}
+      <section className="relative h-[614px] min-h-[500px] overflow-hidden">
+        {heroImg ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            className="w-full h-full object-cover"
+            src={getImageUrl(heroImg.storage_path)}
+            alt={heroImg.alt_text ?? l.name}
+          />
+        ) : (
+          <div className="w-full h-full bg-aviation-navy" />
+        )}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(to bottom, rgba(26,36,47,0) 60%, rgba(26,36,47,0.85) 100%)' }}
+        />
+        <div className="absolute bottom-0 left-0 w-full px-margin-desktop max-w-container-max mx-auto pb-12 text-white">
+          <nav className="flex items-center gap-2 mb-4 opacity-80 text-sm">
+            <Link className="hover:underline" href="/airports">Airports</Link>
+            <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+            <Link className="hover:underline" href={`/airports/${code}`}>{code}</Link>
+            <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+            <span>{l.name}</span>
+          </nav>
+          <h1 className="font-display-lg text-display-lg-mobile md:text-display-lg mb-2">{l.name}</h1>
+          <p className="font-headline-md text-headline-md opacity-90">
+            {l.terminal ? `Terminal ${l.terminal}, ` : ''}{l.airport?.name ?? code}
+          </p>
+        </div>
+      </section>
+
+      {/* ── MAIN CONTENT + SIDEBAR ───────────────────────────────── */}
+      <section className="max-w-container-max mx-auto px-margin-desktop py-section-gap grid grid-cols-1 lg:grid-cols-4 gap-gutter">
+
+        {/* Main content (3/4) */}
+        <div className="lg:col-span-3 space-y-12">
+
+          {/* Editorial intro */}
+          <div className="border-b border-outline-variant/30 pb-12">
+            <div className="flex justify-between items-start mb-8 flex-wrap gap-4">
+              <div>
+                <span className="font-label-caps text-label-caps text-sand-dark mb-2 block uppercase tracking-widest">
+                  {l.terminal ? `TERMINAL ${l.terminal}` : code}
+                  {l.location_detail ? ` · ${l.location_detail.toUpperCase()}` : ''}
+                </span>
+                <div className="flex items-center gap-4 flex-wrap">
+                  <h2 className="font-headline-lg text-headline-lg">
+                    {l.description ? 'About This Lounge' : 'A Refined Travel Experience'}
+                  </h2>
+                  {l.rating && (
+                    <div className="bg-primary/5 px-3 py-1 flex items-center gap-1 border border-primary/10">
+                      <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1", fontSize: '18px' }}>star</span>
+                      <span className="font-bold text-primary">{l.rating.toFixed(1)}</span>
+                      <span className="text-on-surface-variant text-sm">/ 5</span>
+                    </div>
+                  )}
+                </div>
               </div>
-              <div className="grid grid-rows-2 gap-2">
-                {orderedImages.slice(1, 3).map((img, i) => (
-                  <div key={img.id} className="relative">
-                    <Image src={getImageUrl(img.storage_path)}
-                      alt={img.alt_text ?? `${l.name} ${i + 2}`} fill className="object-cover" />
+            </div>
+            {l.description ? (
+              <div
+                className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-3xl"
+                dangerouslySetInnerHTML={{ __html: l.description }}
+              />
+            ) : (
+              <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-3xl">
+                {l.name} offers premium travellers a refined sanctuary from the terminal concourse.
+                {l.airport?.name ? ` Located at ${l.airport.name}` : ''}
+                {l.terminal ? `, Terminal ${l.terminal}` : ''}, this lounge delivers premium amenities
+                and attentive service in a calm environment before departure.
+              </p>
+            )}
+          </div>
+
+          {/* Amenities */}
+          {l.amenities && l.amenities.length > 0 && (
+            <div>
+              <h3 className="font-headline-md text-headline-md mb-8">Refined Amenities</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                {l.amenities.map(a => (
+                  <div
+                    key={a.id}
+                    className="flex flex-col items-center p-6 bg-champagne-glint/30 rounded-xl transition-transform hover:-translate-y-1"
+                  >
+                    <span className="material-symbols-outlined text-primary mb-3 text-3xl">
+                      {amenityIcon(a.name, a.icon)}
+                    </span>
+                    <span className="font-label-caps text-[10px] text-center">{a.name}</span>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Title & rating */}
-          <div>
-            <div className="flex items-start justify-between gap-4 flex-wrap mb-2">
-              <h1 className="text-2xl font-bold text-gray-900">{l.name}</h1>
-              {crowdData && (
-                <div className="badge bg-amber-50 text-amber-700 text-sm">
-                  {crowdData.avg_crowd <= 2 ? '🟢 Quiet' : crowdData.avg_crowd <= 3.5 ? '🟡 Moderate' : '🔴 Busy'}
-                  <span className="text-amber-500 ml-1 text-xs">({crowdData.report_count} reports)</span>
-                </div>
-              )}
-            </div>
-            {l.airport && (
-              <p className="text-gray-500 flex items-center gap-1.5 text-sm mb-3">
-                <MapPin className="w-4 h-4" />
-                {l.airport.name} ({code}) {l.terminal && `· Terminal ${l.terminal}`}
-                {l.location_detail && ` · ${l.location_detail}`}
-              </p>
-            )}
-            {l.rating && (
-              <StarRating rating={l.rating} size="lg" showNumber count={l.review_count} />
-            )}
-          </div>
-
-          {/* Description */}
-          {l.description && (
-            <div className="prose prose-sm max-w-none text-gray-600" dangerouslySetInnerHTML={{ __html: l.description }} />
-          )}
-
-          {/* Amenities */}
-          {l.amenities && l.amenities.length > 0 && (
+          {/* Photo gallery */}
+          {orderedImages.length > 1 && (
             <div>
-              <h2 className="font-semibold text-gray-900 mb-3">Amenities</h2>
-              <div className="flex flex-wrap gap-2">
-                {l.amenities.map(a => <AmenityBadge key={a.id} amenity={a} />)}
+              <h3 className="font-headline-md text-headline-md mb-8">Gallery</h3>
+              <div className="grid grid-cols-12 gap-4 h-[420px]">
+                <div className="col-span-8 h-full overflow-hidden rounded">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className="w-full h-full object-cover"
+                    src={getImageUrl(orderedImages[0].storage_path)}
+                    alt={orderedImages[0].alt_text ?? l.name}
+                  />
+                </div>
+                <div className="col-span-4 flex flex-col gap-4">
+                  {orderedImages.slice(1, 3).map((img, i) => (
+                    <div key={img.id} className="h-1/2 overflow-hidden rounded">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className="w-full h-full object-cover"
+                        src={getImageUrl(img.storage_path)}
+                        alt={img.alt_text ?? `${l.name} ${i + 2}`}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
 
-          {/* Access */}
-          {l.access_types && (l.access_types as Lounge['access_types']).length > 0 && (
-            <div>
-              <h2 className="font-semibold text-gray-900 mb-3">How to access this lounge</h2>
-              <div className="space-y-2">
-                {(l.access_types as Lounge['access_types']).map((at, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                    <span className="badge bg-brand-100 text-brand-700 text-xs shrink-0 mt-0.5">
-                      {at.type.replace(/_/g, ' ')}
+          {/* Sponsored slot */}
+          <div className="bg-primary text-white p-8 rounded-xl flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
+            <div className="relative z-10">
+              <span className="font-label-caps text-[10px] opacity-70 mb-2 block uppercase tracking-widest">Sponsored</span>
+              <h4 className="font-headline-md text-headline-md mb-2">Discover Priority Pass</h4>
+              <p className="font-body-md text-body-md opacity-80 max-w-md">
+                Access 1,300+ lounges worldwide — regardless of your airline or class. Apply today.
+              </p>
+            </div>
+            <a
+              href="https://www.prioritypass.com"
+              target="_blank"
+              rel="noreferrer"
+              className="relative z-10 bg-white text-primary px-8 py-3 rounded font-label-caps text-label-caps uppercase tracking-wider hover:bg-champagne-glint transition-colors shrink-0"
+            >
+              Learn More
+            </a>
+            <div className="absolute right-0 top-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20" />
+          </div>
+
+          {/* Access eligibility */}
+          {accessTypes.length > 0 && (
+            <div className="bg-white border border-outline-variant/30 p-10 rounded-xl">
+              <h3 className="font-headline-md text-headline-md mb-8">Access Eligibility</h3>
+              <div className="space-y-6">
+                {accessTypes.map((at, i) => (
+                  <div
+                    key={i}
+                    className={`flex gap-6 pb-6 ${i < accessTypes.length - 1 ? 'border-b border-outline-variant/20' : ''}`}
+                  >
+                    <span className="material-symbols-outlined text-primary text-3xl shrink-0">
+                      {accessIcon(at.type)}
                     </span>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{at.name}</p>
-                      {at.details && <p className="text-xs text-gray-500 mt-0.5">{at.details}</p>}
+                      <h4 className="font-bold text-lg mb-1">{at.name}</h4>
+                      {at.details && <p className="text-on-surface-variant">{at.details}</p>}
                     </div>
                   </div>
                 ))}
@@ -160,49 +272,55 @@ export default async function LoungeDetailPage({ params }: Props) {
 
           {/* Opening hours */}
           {l.opening_hours && Object.keys(l.opening_hours).length > 0 && (
-            <div>
-              <h2 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                <Clock className="w-4 h-4" /> Opening Hours
-              </h2>
+            <div className="bg-white border border-outline-variant/30 p-10 rounded-xl">
+              <h3 className="font-headline-md text-headline-md mb-8 flex items-center gap-3">
+                <span className="material-symbols-outlined text-primary">schedule</span>
+                Opening Hours
+              </h3>
               {l.opening_hours.is_24_7 ? (
-                <p className="text-sm text-green-600 font-medium">Open 24/7</p>
+                <p className="text-green-600 font-bold text-lg">Open 24 / 7</p>
               ) : (
                 <div className="grid grid-cols-2 gap-x-8 gap-y-1">
                   {DAY_ORDER.map(day => {
-                    const hours = l.opening_hours[day as keyof typeof l.opening_hours]
-                    if (!hours || typeof hours !== 'string') return null
-                    const isToday = DAY_ORDER[new Date().getDay() === 0 ? 6 : new Date().getDay() - 1] === day
+                    const hours = l.opening_hours[day]
+                    if (!hours) return null
                     return (
-                      <div key={day} className={`flex justify-between text-sm py-1 ${isToday ? 'font-semibold text-brand-600' : 'text-gray-600'}`}>
-                        <span>{DAY_LABELS[day]}</span>
-                        <span>{hours}</span>
+                      <div key={day} className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                        <span className="capitalize text-on-surface-variant">{day.slice(0, 3)}</span>
+                        <span className="font-medium">{hours}</span>
                       </div>
                     )
                   })}
                 </div>
               )}
               {l.opening_hours.notes && (
-                <p className="text-xs text-gray-500 mt-2">{l.opening_hours.notes}</p>
+                <p className="text-xs text-secondary mt-4">{l.opening_hours.notes}</p>
               )}
             </div>
           )}
 
           {/* Reviews */}
-          <div>
-            <h2 className="font-semibold text-gray-900 mb-4 text-xl">
-              Reviews ({l.review_count})
-            </h2>
+          <div id="reviews">
+            <h3 className="font-headline-md text-headline-md mb-8">
+              Guest Reviews
+              {l.review_count > 0 && (
+                <span className="text-secondary text-lg font-normal ml-2">({l.review_count})</span>
+              )}
+            </h3>
 
             {user ? (
-              <div className="card p-6 mb-6">
-                <h3 className="font-medium text-gray-900 mb-4">Write a review</h3>
+              <div className="bg-white border border-outline-variant/30 p-8 rounded-xl mb-8">
+                <h4 className="font-bold text-lg mb-6">Write a Review</h4>
                 <ReviewForm loungeId={l.id} />
               </div>
             ) : (
-              <div className="card p-5 mb-6 text-center">
-                <p className="text-sm text-gray-600 mb-3">Sign in to leave a review</p>
-                <Link href={`/auth/login?redirectTo=/airports/${code}/lounges/${l.slug}`} className="btn-primary text-sm">
-                  Sign in to review
+              <div className="bg-white border border-outline-variant/30 p-8 rounded-xl mb-8 text-center">
+                <p className="text-secondary mb-4">Sign in to share your experience</p>
+                <Link
+                  href={`/auth/login?redirectTo=/airports/${code}/lounges/${l.slug}`}
+                  className="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-all"
+                >
+                  Sign In to Review
                 </Link>
               </div>
             )}
@@ -212,65 +330,147 @@ export default async function LoungeDetailPage({ params }: Props) {
                 <ReviewCard key={review.id} review={review} />
               ))}
               {(!reviews || reviews.length === 0) && (
-                <p className="text-gray-400 text-sm text-center py-8">No reviews yet — be the first!</p>
+                <div className="text-center py-16 text-secondary">
+                  <span className="material-symbols-outlined mb-3 block" style={{ fontSize: '48px' }}>rate_review</span>
+                  <p>No reviews yet — be the first to share your experience.</p>
+                </div>
               )}
             </div>
           </div>
         </div>
 
-        {/* Sidebar */}
-        <div className="space-y-5">
+        {/* Sidebar (1/4) */}
+        <aside className="space-y-8">
+
           {/* Quick info card */}
-          <div className="card p-5 space-y-3">
-            {l.guest_fee && (
-              <div className="flex items-center gap-2 text-sm">
-                <DollarSign className="w-4 h-4 text-gray-400" />
-                <span className="font-semibold">${l.guest_fee} {l.guest_fee_currency}</span>
-                <span className="text-gray-400">/ guest day pass</span>
+          <div className="bg-white border border-outline-variant/30 p-8 rounded-xl shadow-sm">
+            {l.guest_fee ? (
+              <div className="mb-6">
+                <span className="font-label-caps text-label-caps text-on-surface-variant block mb-1">SINGLE ENTRY</span>
+                <div className="flex items-baseline gap-1">
+                  <span className="font-display-lg text-headline-lg text-primary">${l.guest_fee}</span>
+                  <span className="text-on-surface-variant">{l.guest_fee_currency ?? 'CAD'}</span>
+                </div>
+              </div>
+            ) : (
+              <div className="mb-6">
+                <span className="font-label-caps text-label-caps text-on-surface-variant block mb-1">ACCESS</span>
+                <span className="font-headline-md text-primary">Member / Status</span>
               </div>
             )}
-            {l.capacity && (
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Users className="w-4 h-4 text-gray-400" /> Capacity: ~{l.capacity}
-              </div>
-            )}
-            {l.phone && (
-              <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Phone className="w-4 h-4 text-gray-400" />
-                <a href={`tel:${l.phone}`} className="hover:text-brand-600">{l.phone}</a>
-              </div>
-            )}
+
+            <div className="space-y-3 mb-8">
+              {l.capacity && (
+                <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                  <span className="text-on-surface-variant">Capacity</span>
+                  <span className="font-medium">{l.capacity} guests</span>
+                </div>
+              )}
+              {l.terminal && (
+                <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                  <span className="text-on-surface-variant">Terminal</span>
+                  <span className="font-medium">{l.terminal}</span>
+                </div>
+              )}
+              {l.review_count > 0 && (
+                <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                  <span className="text-on-surface-variant">Reviews</span>
+                  <span className="font-medium">{l.review_count}</span>
+                </div>
+              )}
+              {l.rating && (
+                <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                  <span className="text-on-surface-variant">Rating</span>
+                  <span className="font-medium flex items-center gap-1">
+                    <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1", fontSize: '14px' }}>star</span>
+                    {l.rating.toFixed(1)}
+                  </span>
+                </div>
+              )}
+            </div>
+
             {l.website && (
-              <a href={l.website} target="_blank" rel="noreferrer" className="btn-secondary w-full justify-center text-sm">
-                <Globe className="w-4 h-4" /> Visit website
+              <a
+                href={l.website}
+                target="_blank"
+                rel="noreferrer"
+                className="block w-full text-center bg-primary text-white py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:opacity-90 transition-opacity mb-4"
+              >
+                Visit Website
               </a>
             )}
+            <Link
+              href={`/airports/${code}`}
+              className="block w-full text-center border border-primary text-primary py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:bg-primary/5 transition-colors"
+            >
+              All {code} Lounges
+            </Link>
           </div>
 
-          {/* Map */}
-          {l.airport?.latitude && l.airport?.longitude && (
-            <div className="card overflow-hidden">
-              <LoungeMapClient
-                latitude={l.airport.latitude}
-                longitude={l.airport.longitude}
-                name={l.name}
-              />
-
-              <div className="p-3 text-xs text-gray-400 text-center">
-                Airport location — check the lounge's website for exact terminal directions
-              </div>
+          {/* Terminal location map */}
+          <div className="bg-white border border-outline-variant/30 overflow-hidden rounded-xl">
+            <div className="p-6 border-b border-outline-variant/20">
+              <h4 className="font-bold text-lg">Terminal Location</h4>
             </div>
-          )}
+            <div className="h-48 bg-secondary-fixed relative overflow-hidden">
+              {terminalMapImg ? (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    className="w-full h-full object-cover grayscale opacity-50"
+                    src={terminalMapImg}
+                    alt={`${l.airport?.name ?? code} terminal`}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-4 h-4 bg-primary rounded-full animate-ping" />
+                    <div className="absolute w-3 h-3 bg-primary rounded-full border-2 border-white" />
+                  </div>
+                </>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="material-symbols-outlined text-secondary" style={{ fontSize: '40px' }}>map</span>
+                </div>
+              )}
+            </div>
+            {l.location_detail && (
+              <div className="p-4 bg-champagne-glint/20">
+                <p className="text-xs text-on-surface-variant leading-relaxed">{l.location_detail}</p>
+              </div>
+            )}
+            {l.airport?.terminal_map_url && (
+              <div className="p-4">
+                <a
+                  href={l.airport.terminal_map_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-center gap-2 bg-primary text-white py-3 w-full font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-all"
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>open_in_new</span>
+                  Official Terminal Map
+                </a>
+              </div>
+            )}
+          </div>
 
           {/* Flight status */}
           <FlightStatusWidget />
 
-          {/* Back link */}
-          <Link href={`/airports/${code}`} className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700">
-            <ChevronLeft className="w-4 h-4" /> All lounges at {code}
-          </Link>
-        </div>
-      </div>
+          {/* Sidebar ad */}
+          <div className="bg-bone-white border border-dashed border-outline text-on-surface-variant p-6 rounded-xl flex flex-col items-center text-center">
+            <span className="font-label-caps text-[10px] opacity-40 mb-4 tracking-widest">ADVERTISEMENT</span>
+            <h5 className="font-bold mb-2">Priority Pass</h5>
+            <p className="text-sm opacity-70 mb-6">Access 1,300+ lounges worldwide regardless of your airline.</p>
+            <a
+              href="https://www.prioritypass.com"
+              target="_blank"
+              rel="noreferrer"
+              className="text-primary font-bold text-sm underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
+            >
+              Join Today
+            </a>
+          </div>
+        </aside>
+      </section>
     </div>
   )
 }
