@@ -4,6 +4,7 @@ import Link from 'next/link'
 import ReviewCard from '@/components/ReviewCard'
 import ReviewForm from '@/components/ReviewForm'
 import FlightStatusWidget from '@/components/FlightStatusWidget'
+import LoungeMapClient from '@/components/LoungeMapClient'
 import type { Metadata } from 'next'
 import type { Lounge, Review, AccessType } from '@/lib/types'
 
@@ -22,27 +23,44 @@ function getImageUrl(path: string) {
   return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${path}`
 }
 
-// Icon fallback map when Amenity.icon is null
-const AMENITY_ICON_MAP: Record<string, string> = {
-  wifi: 'wifi', internet: 'wifi',
-  bar: 'local_bar', drink: 'local_bar', alcohol: 'local_bar', cocktail: 'local_bar',
-  restaurant: 'restaurant', dining: 'restaurant', food: 'restaurant', buffet: 'restaurant',
-  shower: 'shower',
-  spa: 'spa', massage: 'spa',
-  business: 'print', printing: 'print',
-  press: 'newspaper', news: 'newspaper', magazine: 'newspaper',
-  coffee: 'coffee', barista: 'coffee',
-  quiet: 'meeting_room', sleep: 'hotel', nap: 'hotel',
-  charging: 'electrical_services', power: 'electrical_services',
-  tv: 'tv', kids: 'family_restroom', family: 'family_restroom',
-  pool: 'pool', gym: 'fitness_center',
-}
+// Reliable Material Symbols icon names for airport lounge amenities.
+// We intentionally ignore the DB icon field — many stored values use
+// names that are not valid Material Symbols ligatures (e.g. "wine", "utensils").
+const AMENITY_ICON_MAP: [string[], string][] = [
+  [['wifi', 'wi-fi', 'internet', 'wireless'],                            'wifi'],
+  [['free wifi', 'high-speed'],                                          'wifi'],
+  [['bar', 'cocktail', 'alcohol', 'spirits', 'wine', 'beer', 'drinks'], 'local_bar'],
+  [['hot food', 'buffet', 'hot buffet', 'dining', 'restaurant', 'meal'],'soup_kitchen'],
+  [['snack', 'light bites', 'sandwiches'],                              'bakery_dining'],
+  [['coffee', 'barista', 'espresso', 'latte'],                          'local_cafe'],
+  [['tea'],                                                              'emoji_food_beverage'],
+  [['shower'],                                                           'shower'],
+  [['spa', 'massage', 'wellness', 'relaxation'],                        'spa'],
+  [['gym', 'fitness', 'exercise'],                                       'fitness_center'],
+  [['pool', 'swimming'],                                                 'pool'],
+  [['business center', 'business centre', 'work'],                      'business_center'],
+  [['printing', 'printer', 'print'],                                    'print'],
+  [['conference', 'meeting room'],                                       'meeting_room'],
+  [['phone', 'telephone', 'landline'],                                   'phone'],
+  [['charging', 'power outlet', 'usb'],                                  'electrical_services'],
+  [['tv', 'television'],                                                  'tv'],
+  [['news', 'newspaper', 'magazine', 'press', 'periodical'],            'newspaper'],
+  [['flight info', 'departure', 'arrivals board', 'flight screen'],      'flight'],
+  [['quiet', 'silent', 'rest zone'],                                     'do_not_disturb'],
+  [['sleep', 'nap', 'daybed', 'day bed'],                               'hotel'],
+  [['family', 'kids', 'children'],                                       'family_restroom'],
+  [['accessible', 'wheelchair', 'disability'],                           'accessible'],
+  [['luggage', 'storage', 'bag drop'],                                   'luggage'],
+  [['atm', 'cash machine'],                                              'local_atm'],
+  [['smoking'],                                                          'smoking_rooms'],
+  [['outdoor', 'terrace', 'deck'],                                       'deck'],
+  [['lounge', 'seating'],                                                'chair'],
+]
 
-function amenityIcon(name: string, icon: string | null): string {
-  if (icon) return icon
-  const lower = name.toLowerCase()
-  for (const [key, sym] of Object.entries(AMENITY_ICON_MAP)) {
-    if (lower.includes(key)) return sym
+function amenityIcon(name: string): string {
+  const lower = name.toLowerCase().trim()
+  for (const [keys, sym] of AMENITY_ICON_MAP) {
+    if (keys.some(k => lower.includes(k))) return sym
   }
   return 'check_circle'
 }
@@ -94,11 +112,6 @@ export default async function LoungeDetailPage({ params }: Props) {
     : images
 
   const heroImg = orderedImages[0]
-  const apiKey  = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY
-  const terminalMapImg = apiKey && l.airport?.latitude && l.airport?.longitude
-    ? `https://maps.googleapis.com/maps/api/staticmap?center=${l.airport.latitude},${l.airport.longitude}&zoom=16&size=400x200&scale=2&maptype=hybrid&key=${apiKey}`
-    : null
-
   const accessTypes = (l.access_types ?? []) as AccessType[]
 
   return (
@@ -146,8 +159,11 @@ export default async function LoungeDetailPage({ params }: Props) {
             <div className="flex justify-between items-start mb-8 flex-wrap gap-4">
               <div>
                 <span className="font-label-caps text-label-caps text-sand-dark mb-2 block uppercase tracking-widest">
-                  {l.terminal ? `TERMINAL ${l.terminal}` : code}
-                  {l.location_detail ? ` · ${l.location_detail.toUpperCase()}` : ''}
+                  {l.location_detail
+                    ? l.location_detail.toUpperCase()
+                    : l.terminal
+                      ? `TERMINAL ${l.terminal}`
+                      : code}
                 </span>
                 <div className="flex items-center gap-4 flex-wrap">
                   <h2 className="font-headline-lg text-headline-lg">
@@ -181,17 +197,17 @@ export default async function LoungeDetailPage({ params }: Props) {
           {/* Amenities */}
           {l.amenities && l.amenities.length > 0 && (
             <div>
-              <h3 className="font-headline-md text-headline-md mb-8">Refined Amenities</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+              <h3 className="font-headline-md text-headline-md mb-6">Refined Amenities</h3>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
                 {l.amenities.map(a => (
                   <div
                     key={a.id}
-                    className="flex flex-col items-center p-6 bg-champagne-glint/30 rounded-xl transition-transform hover:-translate-y-1"
+                    className="flex flex-col items-center gap-2 p-3 bg-champagne-glint/30 rounded-lg transition-transform hover:-translate-y-0.5"
                   >
-                    <span className="material-symbols-outlined text-primary mb-3 text-3xl">
-                      {amenityIcon(a.name, a.icon)}
+                    <span className="material-symbols-outlined text-primary" style={{ fontSize: '24px' }}>
+                      {amenityIcon(a.name)}
                     </span>
-                    <span className="font-label-caps text-[10px] text-center">{a.name}</span>
+                    <span className="font-label-caps text-[9px] text-center leading-tight">{a.name}</span>
                   </div>
                 ))}
               </div>
@@ -407,50 +423,39 @@ export default async function LoungeDetailPage({ params }: Props) {
             </Link>
           </div>
 
-          {/* Terminal location map */}
-          <div className="bg-white border border-outline-variant/30 overflow-hidden rounded-xl">
-            <div className="p-6 border-b border-outline-variant/20">
-              <h4 className="font-bold text-lg">Terminal Location</h4>
-            </div>
-            <div className="h-48 bg-secondary-fixed relative overflow-hidden">
-              {terminalMapImg ? (
-                <>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    className="w-full h-full object-cover grayscale opacity-50"
-                    src={terminalMapImg}
-                    alt={`${l.airport?.name ?? code} terminal`}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-4 h-4 bg-primary rounded-full animate-ping" />
-                    <div className="absolute w-3 h-3 bg-primary rounded-full border-2 border-white" />
-                  </div>
-                </>
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <span className="material-symbols-outlined text-secondary" style={{ fontSize: '40px' }}>map</span>
+          {/* Terminal location map — interactive Mapbox */}
+          {l.airport?.latitude && l.airport?.longitude && (
+            <div className="bg-white border border-outline-variant/30 overflow-hidden rounded-xl">
+              <div className="p-6 border-b border-outline-variant/20">
+                <h4 className="font-bold text-lg">Terminal Location</h4>
+              </div>
+              <div className="h-52 overflow-hidden">
+                <LoungeMapClient
+                  latitude={l.airport.latitude}
+                  longitude={l.airport.longitude}
+                  name={l.name}
+                />
+              </div>
+              {l.location_detail && (
+                <div className="p-4 bg-champagne-glint/20">
+                  <p className="text-xs text-on-surface-variant leading-relaxed">{l.location_detail}</p>
+                </div>
+              )}
+              {l.airport?.terminal_map_url && (
+                <div className="p-4">
+                  <a
+                    href={l.airport.terminal_map_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center justify-center gap-2 bg-primary text-white py-3 w-full font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-all"
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>open_in_new</span>
+                    Official Terminal Map
+                  </a>
                 </div>
               )}
             </div>
-            {l.location_detail && (
-              <div className="p-4 bg-champagne-glint/20">
-                <p className="text-xs text-on-surface-variant leading-relaxed">{l.location_detail}</p>
-              </div>
-            )}
-            {l.airport?.terminal_map_url && (
-              <div className="p-4">
-                <a
-                  href={l.airport.terminal_map_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-center gap-2 bg-primary text-white py-3 w-full font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-all"
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>open_in_new</span>
-                  Official Terminal Map
-                </a>
-              </div>
-            )}
-          </div>
+          )}
 
           {/* Flight status */}
           <FlightStatusWidget />
