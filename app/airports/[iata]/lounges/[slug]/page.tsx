@@ -118,35 +118,37 @@ export default async function LoungeDetailPage({ params }: Props) {
     <div className="bg-bone-white min-h-screen">
 
       {/* ── HERO ─────────────────────────────────────────────────── */}
-      <section className="relative h-[614px] min-h-[500px] overflow-hidden">
-        {heroImg ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            className="w-full h-full object-cover"
-            src={getImageUrl(heroImg.storage_path)}
-            alt={heroImg.alt_text ?? l.name}
+      <div className="max-w-container-max mx-auto px-margin-desktop pt-8">
+        <section className="relative h-[460px] min-h-[360px] overflow-hidden">
+          {heroImg ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              className="w-full h-full object-cover"
+              src={getImageUrl(heroImg.storage_path)}
+              alt={heroImg.alt_text ?? l.name}
+            />
+          ) : (
+            <div className="w-full h-full bg-aviation-navy" />
+          )}
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(to bottom, rgba(26,36,47,0) 55%, rgba(26,36,47,0.85) 100%)' }}
           />
-        ) : (
-          <div className="w-full h-full bg-aviation-navy" />
-        )}
-        <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(to bottom, rgba(26,36,47,0) 60%, rgba(26,36,47,0.85) 100%)' }}
-        />
-        <div className="absolute bottom-0 left-0 w-full px-margin-desktop max-w-container-max mx-auto pb-12 text-white">
-          <nav className="flex items-center gap-2 mb-4 opacity-80 text-sm">
-            <Link className="hover:underline" href="/airports">Airports</Link>
-            <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-            <Link className="hover:underline" href={`/airports/${code}`}>{code}</Link>
-            <span className="material-symbols-outlined text-[14px]">chevron_right</span>
-            <span>{l.name}</span>
-          </nav>
-          <h1 className="font-display-lg text-display-lg-mobile md:text-display-lg mb-2">{l.name}</h1>
-          <p className="font-headline-md text-headline-md opacity-90">
-            {l.terminal ? `Terminal ${l.terminal}, ` : ''}{l.airport?.name ?? code}
-          </p>
-        </div>
-      </section>
+          <div className="absolute bottom-0 left-0 w-full px-10 pb-10 text-white">
+            <nav className="flex items-center gap-2 mb-3 opacity-80 text-sm">
+              <Link className="hover:underline" href="/airports">Airports</Link>
+              <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+              <Link className="hover:underline" href={`/airports/${code}`}>{code}</Link>
+              <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+              <span>{l.name}</span>
+            </nav>
+            <h1 className="font-display-lg text-display-lg-mobile md:text-display-lg mb-2">{l.name}</h1>
+            <p className="font-headline-md text-headline-md opacity-90">
+              {l.terminal ? `Terminal ${l.terminal}, ` : ''}{l.airport?.name ?? code}
+            </p>
+          </div>
+        </section>
+      </div>
 
       {/* ── MAIN CONTENT + SIDEBAR ───────────────────────────────── */}
       <section className="max-w-container-max mx-auto px-margin-desktop py-section-gap grid grid-cols-1 lg:grid-cols-4 gap-gutter">
