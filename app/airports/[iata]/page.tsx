@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getWeather } from '@/lib/weather'
-import LoungeCard from '@/components/LoungeCard'
+import AirportLoungeGrid from '@/components/AirportLoungeGrid'
 import WeatherWidget from '@/components/WeatherWidget'
 import Link from 'next/link'
 import type { Metadata } from 'next'
@@ -125,11 +125,7 @@ export default async function AirportPage({ params }: Props) {
                 <p className="text-sm text-secondary mt-1">Check back soon or suggest a lounge.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {(lounges as Lounge[]).map(lounge => (
-                  <LoungeCard key={lounge.id} lounge={lounge} airportIata={code} />
-                ))}
-              </div>
+              <AirportLoungeGrid lounges={lounges as Lounge[]} airportIata={code} />
             )}
           </div>
 

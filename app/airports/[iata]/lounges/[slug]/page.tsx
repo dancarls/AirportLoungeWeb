@@ -259,7 +259,7 @@ export default async function LoungeDetailPage({ params }: Props) {
             </div>
             {l.description ? (
               <div
-                className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-3xl"
+                className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-3xl [&_h4]:font-semibold [&_h4]:text-primary [&_h4]:text-[17px] [&_h4]:mt-8 [&_h4]:mb-2 [&_h3]:font-semibold [&_h3]:text-primary [&_h3]:text-xl [&_h3]:mt-8 [&_h3]:mb-3 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_strong]:text-on-surface"
                 dangerouslySetInnerHTML={{ __html: l.description }}
               />
             ) : (
