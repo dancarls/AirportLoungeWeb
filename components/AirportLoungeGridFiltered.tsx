@@ -8,11 +8,13 @@ export interface LoungeSummary {
   name: string
   slug: string
   terminal: string | null
+  location_detail: string | null
   description: string | null
   rating: number | null
   review_count: number
   access_types: { type: string; name: string; details?: string }[] | null
   primaryImage: string | null
+  updated_at: string | null
 }
 
 interface Props {
@@ -20,6 +22,47 @@ interface Props {
   iata: string
 }
 
+// ── Access matching ───────────────────────────────────────
+const ACCESS_OPTIONS = [
+  { key: 'priority-pass',   label: 'Priority Pass',      icon: 'credit_card' },
+  { key: 'dragonpass',      label: 'DragonPass',         icon: 'credit_card' },
+  { key: 'ac-altitude',     label: 'AC Altitude',        icon: 'airplane_ticket' },
+  { key: 'westjet',         label: 'WestJet Platinum',   icon: 'airplane_ticket' },
+  { key: 'business-class',  label: 'Business / First',   icon: 'airline_seat_flat' },
+  { key: 'day-pass',        label: 'Day Pass',           icon: 'sell' },
+] as const
+
+type AccessKey = typeof ACCESS_OPTIONS[number]['key']
+
+function canAccess(types: LoungeSummary['access_types'], key: AccessKey): boolean {
+  const t = types ?? []
+  switch (key) {
+    case 'priority-pass':
+      return t.some(a => a.name.toLowerCase().includes('priority pass'))
+    case 'dragonpass':
+      return t.some(a =>
+        a.name.toLowerCase().includes('dragonpass') ||
+        a.name.toLowerCase().includes('dragon pass') ||
+        a.name.toLowerCase().includes('mastercard airport')
+      )
+    case 'ac-altitude':
+      return t.some(a =>
+        (a.type === 'airline_status' && a.name.toLowerCase().includes('air canada')) ||
+        a.type === 'class_of_service'
+      )
+    case 'westjet':
+      return t.some(a =>
+        a.name.toLowerCase().includes('westjet') ||
+        a.type === 'class_of_service'
+      )
+    case 'business-class':
+      return t.some(a => a.type === 'class_of_service')
+    case 'day-pass':
+      return t.some(a => a.type === 'day_pass')
+  }
+}
+
+// ── Helpers ───────────────────────────────────────────────
 function getOperator(name: string): string {
   const n = name.toLowerCase()
   if (n.includes('air canada'))    return 'Air Canada'
@@ -27,7 +70,6 @@ function getOperator(name: string): string {
   if (n.includes('westjet'))       return 'WestJet'
   if (n.includes('swissport'))     return 'Swissport'
   if (n.includes('aspire'))        return 'Aspire'
-  if (n.includes('priority pass')) return 'Priority Pass'
   return 'Independent'
 }
 
@@ -40,108 +82,145 @@ function getLoungeTier(name: string): string | null {
   return null
 }
 
+function formatVerified(updated_at: string | null): string {
+  if (!updated_at) return 'Verified 2026'
+  const d = new Date(updated_at)
+  return `Verified ${d.toLocaleString('en-CA', { month: 'short', year: 'numeric' })}`
+}
+
+// ── Component ─────────────────────────────────────────────
 export default function AirportLoungeGridFiltered({ lounges, iata }: Props) {
+  const [accessFilter,   setAccessFilter]   = useState<AccessKey | ''>('')
   const [operatorFilter, setOperatorFilter] = useState('')
-  const [accessFilter,   setAccessFilter]   = useState('')
   const [terminalFilter, setTerminalFilter] = useState('')
 
   const operators = [...new Set(lounges.map(l => getOperator(l.name)))].sort()
   const terminals = [...new Set(lounges.map(l => l.terminal).filter(Boolean) as string[])].sort()
 
   const filtered = lounges.filter(l => {
-    const matchOp     = !operatorFilter || getOperator(l.name) === operatorFilter
-    const matchTerm   = !terminalFilter || l.terminal === terminalFilter
-    const matchAccess = !accessFilter || (l.access_types ?? []).some(a => a.type === accessFilter)
-    return matchOp && matchTerm && matchAccess
+    const matchAccess   = !accessFilter   || canAccess(l.access_types, accessFilter)
+    const matchOperator = !operatorFilter || getOperator(l.name) === operatorFilter
+    const matchTerminal = !terminalFilter || l.terminal === terminalFilter
+    return matchAccess && matchOperator && matchTerminal
   })
 
-  const hasFilters = operatorFilter || accessFilter || terminalFilter
+  const hasFilters = accessFilter || operatorFilter || terminalFilter
 
   return (
     <>
+      {/* ── Access Calculator ────────────────────────────── */}
+      <section className="mb-10 bg-primary/[0.03] border border-primary/10 p-6">
+        <p className="font-label-caps text-label-caps text-primary mb-1">ACCESS CALCULATOR</p>
+        <p className="text-sm text-secondary mb-5">
+          Select what you have — we&apos;ll show only lounges you can walk into.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {ACCESS_OPTIONS.map(opt => {
+            const active = accessFilter === opt.key
+            const matchCount = lounges.filter(l => canAccess(l.access_types, opt.key)).length
+            return (
+              <button
+                key={opt.key}
+                onClick={() => setAccessFilter(active ? '' : opt.key)}
+                className={`flex items-center gap-2 px-4 py-2 border font-label-caps text-label-caps transition-all text-xs ${
+                  active
+                    ? 'bg-primary text-bone-white border-primary'
+                    : matchCount > 0
+                      ? 'bg-bone-white text-primary border-primary/30 hover:border-primary'
+                      : 'bg-bone-white text-secondary/50 border-sand-dark/20 cursor-not-allowed'
+                }`}
+                disabled={matchCount === 0}
+                title={matchCount === 0 ? `No ${opt.label} access at ${iata}` : `${matchCount} lounge${matchCount !== 1 ? 's' : ''} accessible`}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>{opt.icon}</span>
+                {opt.label}
+                {matchCount > 0 && !active && (
+                  <span className="ml-0.5 text-[10px] text-sand-dark">({matchCount})</span>
+                )}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Access result message */}
+        {accessFilter && (
+          <p className="mt-4 text-sm text-secondary">
+            {filtered.length > 0 ? (
+              <>
+                <span className="font-semibold text-primary">{filtered.length} lounge{filtered.length !== 1 ? 's' : ''}</span> accessible with {ACCESS_OPTIONS.find(o => o.key === accessFilter)?.label}.
+                {' '}<span className="text-xs text-secondary/70">Confirm exact eligibility with your provider before travelling.</span>
+              </>
+            ) : (
+              <span className="text-sand-dark">No lounges match this combination of filters. Try clearing one.</span>
+            )}
+          </p>
+        )}
+      </section>
+
       {/* ── Filter bar ───────────────────────────────────── */}
-      <section className="mb-12">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-sand-dark/20">
+      <section className="mb-10">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-sand-dark/20">
           <h2 className="font-headline-lg text-headline-lg text-primary">
-            Lounges at {iata}
-            {hasFilters && (
-              <span className="text-sm font-normal text-secondary ml-3">
-                ({filtered.length} of {lounges.length})
-              </span>
+            {hasFilters ? (
+              <>
+                {filtered.length}
+                <span className="text-secondary font-normal text-2xl"> of {lounges.length} lounges</span>
+              </>
+            ) : (
+              <>Lounges at {iata}</>
             )}
           </h2>
 
-          <div className="flex flex-wrap gap-4 items-center">
-            {/* Operator */}
+          <div className="flex flex-wrap gap-3 items-center">
             {operators.length > 1 && (
               <div className="relative">
                 <select
                   value={operatorFilter}
                   onChange={e => setOperatorFilter(e.target.value)}
-                  className="appearance-none bg-bone-white border-b-2 border-primary/20 hover:border-primary px-4 py-2 pr-10 text-sm font-medium focus:outline-none focus:border-primary transition-all cursor-pointer"
+                  className="appearance-none bg-bone-white border-b-2 border-primary/20 hover:border-primary px-3 py-1.5 pr-8 text-sm font-medium focus:outline-none focus:border-primary transition-all cursor-pointer"
                 >
                   <option value="">Operator</option>
                   {operators.map(op => <option key={op} value={op}>{op}</option>)}
                 </select>
-                <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-sand-dark text-sm">expand_more</span>
+                <span className="material-symbols-outlined absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none text-sand-dark text-sm">expand_more</span>
               </div>
             )}
 
-            {/* Access type */}
-            <div className="relative">
-              <select
-                value={accessFilter}
-                onChange={e => setAccessFilter(e.target.value)}
-                className="appearance-none bg-bone-white border-b-2 border-primary/20 hover:border-primary px-4 py-2 pr-10 text-sm font-medium focus:outline-none focus:border-primary transition-all cursor-pointer"
-              >
-                <option value="">Access Type</option>
-                <option value="credit_card">Priority Pass / DragonPass</option>
-                <option value="airline_status">Airline Status</option>
-                <option value="class_of_service">Business Class</option>
-                <option value="membership">Membership</option>
-                <option value="day_pass">Day Pass</option>
-              </select>
-              <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-sand-dark text-sm">expand_more</span>
-            </div>
-
-            {/* Terminal — only show if airport has multiple terminals */}
             {terminals.length > 1 && (
               <div className="relative">
                 <select
                   value={terminalFilter}
                   onChange={e => setTerminalFilter(e.target.value)}
-                  className="appearance-none bg-bone-white border-b-2 border-primary/20 hover:border-primary px-4 py-2 pr-10 text-sm font-medium focus:outline-none focus:border-primary transition-all cursor-pointer"
+                  className="appearance-none bg-bone-white border-b-2 border-primary/20 hover:border-primary px-3 py-1.5 pr-8 text-sm font-medium focus:outline-none focus:border-primary transition-all cursor-pointer"
                 >
                   <option value="">Terminal</option>
                   {terminals.map(t => <option key={t} value={t}>T - {t}</option>)}
                 </select>
-                <span className="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-sand-dark text-sm">expand_more</span>
+                <span className="material-symbols-outlined absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none text-sand-dark text-sm">expand_more</span>
               </div>
             )}
 
-            {/* Clear filters */}
             {hasFilters && (
               <button
-                onClick={() => { setOperatorFilter(''); setAccessFilter(''); setTerminalFilter('') }}
-                className="text-xs text-primary underline underline-offset-2 hover:no-underline transition-all"
+                onClick={() => { setAccessFilter(''); setOperatorFilter(''); setTerminalFilter('') }}
+                className="text-xs text-primary underline underline-offset-2 hover:no-underline"
               >
-                Clear
+                Clear all
               </button>
             )}
           </div>
         </div>
       </section>
 
-      {/* ── Lounge cards grid ────────────────────────────── */}
+      {/* ── Lounge cards ─────────────────────────────────── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-        {/* Empty state */}
         {filtered.length === 0 && (
           <div className="col-span-2 border border-sand-dark/20 bg-white p-12 text-center">
             <span className="material-symbols-outlined text-sand-dark text-4xl mb-3 block">search_off</span>
             <p className="font-medium text-on-surface">No lounges match your filters</p>
             <button
-              onClick={() => { setOperatorFilter(''); setAccessFilter(''); setTerminalFilter('') }}
+              onClick={() => { setAccessFilter(''); setOperatorFilter(''); setTerminalFilter('') }}
               className="mt-3 text-sm text-primary underline underline-offset-2"
             >
               Clear all filters
@@ -170,7 +249,6 @@ export default function AirportLoungeGridFiltered({ lounges, iata }: Props) {
                     <span className="material-symbols-outlined text-secondary" style={{ fontSize: '48px' }}>local_bar</span>
                   </div>
                 )}
-                {/* Tier badge */}
                 {tier && (
                   <div className="absolute bottom-4 left-4">
                     <span className="bg-primary-container text-on-primary-container text-[9px] font-label-caps px-2 py-0.5">
@@ -178,28 +256,62 @@ export default function AirportLoungeGridFiltered({ lounges, iata }: Props) {
                     </span>
                   </div>
                 )}
+                {/* Last verified badge */}
+                <div className="absolute top-3 right-3">
+                  <span className="bg-bone-white/90 backdrop-blur-sm text-[9px] font-label-caps text-primary px-2 py-1">
+                    {formatVerified(lounge.updated_at)}
+                  </span>
+                </div>
               </div>
 
               {/* Content */}
-              <div className="p-6 flex-grow flex flex-col">
-                <div className="flex justify-between items-start gap-2 mb-2">
+              <div className="p-5 flex-grow flex flex-col gap-2">
+                <div className="flex justify-between items-start gap-2">
                   <h3 className="font-headline-md text-headline-md text-primary leading-tight">{lounge.name}</h3>
                   {lounge.rating && (
                     <div className="flex items-center text-sand-dark shrink-0">
-                      <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1", fontSize: '14px' }}>star</span>
+                      <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1", fontSize: '14px' }}>star</span>
                       <span className="font-label-caps text-label-caps ml-1">{lounge.rating.toFixed(1)}</span>
                     </div>
                   )}
                 </div>
 
-                {lounge.terminal && (
-                  <p className="font-label-caps text-[10px] text-sand-dark uppercase mb-4">
-                    T - {lounge.terminal}
-                  </p>
+                {/* Terminal + walk direction */}
+                <div className="flex flex-wrap items-start gap-x-4 gap-y-1">
+                  {lounge.terminal && (
+                    <span className="font-label-caps text-[10px] text-sand-dark">
+                      T - {lounge.terminal}
+                    </span>
+                  )}
+                  {lounge.location_detail && (
+                    <span className="flex items-start gap-1 text-[10px] text-secondary leading-tight">
+                      <span className="material-symbols-outlined shrink-0" style={{ fontSize: '12px', marginTop: '1px' }}>directions_walk</span>
+                      {lounge.location_detail}
+                    </span>
+                  )}
+                </div>
+
+                {/* Access tags */}
+                {lounge.access_types && lounge.access_types.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {lounge.access_types.slice(0, 3).map((a, i) => (
+                      <span key={i} className="bg-champagne-glint text-sand-dark text-[9px] font-label-caps px-2 py-0.5 uppercase">
+                        {a.type === 'credit_card'      ? 'Credit Card'
+                        : a.type === 'airline_status'  ? 'Airline Status'
+                        : a.type === 'class_of_service' ? 'Business Class'
+                        : a.type === 'day_pass'        ? 'Day Pass'
+                        : a.type === 'membership'      ? 'Membership'
+                        : a.name}
+                      </span>
+                    ))}
+                    {lounge.access_types.length > 3 && (
+                      <span className="text-[9px] text-secondary/60 self-center">+{lounge.access_types.length - 3} more</span>
+                    )}
+                  </div>
                 )}
 
                 {lounge.description && (
-                  <p className="text-secondary text-sm mb-6 line-clamp-2 flex-1 leading-relaxed">
+                  <p className="text-secondary text-sm line-clamp-2 leading-relaxed flex-1 mt-1">
                     {lounge.description}
                   </p>
                 )}
@@ -224,16 +336,16 @@ export default function AirportLoungeGridFiltered({ lounges, iata }: Props) {
           )
         })}
 
-        {/* CTA bento card — always shown */}
-        <div className="group bg-primary-container shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-center p-8 border border-white/10 min-h-[300px] relative">
+        {/* CTA bento — always shown */}
+        <div className="bg-primary-container shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden flex flex-col justify-center p-8 border border-white/10 min-h-[280px] relative">
           <div className="absolute top-0 right-0 p-4">
-            <span className="material-symbols-outlined text-on-primary-container opacity-20" style={{ fontSize: '64px' }}>travel_explore</span>
+            <span className="material-symbols-outlined text-on-primary-container opacity-15" style={{ fontSize: '64px' }}>travel_explore</span>
           </div>
-          <h3 className="font-headline-md text-headline-md text-on-primary-container mb-4">
+          <h3 className="font-headline-md text-headline-md text-on-primary-container mb-3">
             Discover the Perfect Sanctuary
           </h3>
-          <p className="text-on-primary-container/75 text-sm mb-8 leading-relaxed max-w-xs">
-            Find the shortest walk and best amenities for your next departure. Compare access methods, hours, and reviews.
+          <p className="text-on-primary-container/75 text-sm mb-6 leading-relaxed max-w-xs">
+            Compare access methods, walk times, and amenities across every Canadian lounge.
           </p>
           <Link
             href="/lounges"

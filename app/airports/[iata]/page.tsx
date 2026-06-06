@@ -107,7 +107,7 @@ export default async function AirportPage({ params }: Props) {
   const [{ data: rawLounges }, weather] = await Promise.all([
     supabase
       .from('lounges')
-      .select('id, name, slug, terminal, description, rating, review_count, access_types, images:lounge_images(storage_path, is_primary, sort_order)')
+      .select('id, name, slug, terminal, location_detail, description, rating, review_count, access_types, updated_at, images:lounge_images(storage_path, is_primary, sort_order)')
       .eq('airport_id', airport.id)
       .eq('is_active', true)
       .order('rating', { ascending: false, nullsFirst: false }),
@@ -117,15 +117,17 @@ export default async function AirportPage({ params }: Props) {
   ])
 
   const lounges: LoungeSummary[] = (rawLounges ?? []).map(l => ({
-    id:           l.id,
-    name:         l.name,
-    slug:         l.slug,
-    terminal:     l.terminal,
-    description:  l.description,
-    rating:       l.rating,
-    review_count: l.review_count,
-    access_types: l.access_types as LoungeSummary['access_types'],
-    primaryImage: getPrimaryImageUrl(l.images ?? []),
+    id:             l.id,
+    name:           l.name,
+    slug:           l.slug,
+    terminal:       l.terminal,
+    location_detail: l.location_detail ?? null,
+    description:    l.description,
+    rating:         l.rating,
+    review_count:   l.review_count,
+    access_types:   l.access_types as LoungeSummary['access_types'],
+    updated_at:     l.updated_at ?? null,
+    primaryImage:   getPrimaryImageUrl(l.images ?? []),
   }))
 
   // Unique terminals for the hero badge row
