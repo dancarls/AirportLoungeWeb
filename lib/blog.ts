@@ -946,7 +946,360 @@ const showerAccessContent = `
 <p><em>All amenity details in this guide are accurate as of June 2026. Lounge facilities, access policies, and shower availability are subject to change — always confirm with the lounge directly or check the Priority Pass app before travelling.</em></p>
 `
 
+const guestFeesContent = `
+<p><strong>Most lounge programs in Canada allow guests — but what you actually pay depends on your card, your membership tier, and which lounge you are standing in. Here is every number in one place.</strong></p>
+
+<p>Bringing a travel companion into an airport lounge sounds straightforward, but the actual cost calculation is one of the most confusing aspects of lounge access in Canada. Whether you hold a Priority Pass through a credit card, a DragonPass membership, Air Canada Altitude status, or a WestJet Rewards tier, the guest rules are different — and in some cases, the "complimentary guest" benefit marketed on a credit card is far more limited than it appears.</p>
+
+<p>This guide covers guest fees at every major Canadian airport lounge program as of 2026: what it costs to bring someone in, which cards include free guests, when guests are turned away, and what walk-in day passes actually cost at the major lounges.</p>
+
+<figure>
+  <img src="/blog/couple-checking-in-lounge.png" alt="Couple checking into a Canadian airport lounge" loading="lazy" />
+  <figcaption>Guest access to Canadian airport lounges is widely available — but the cost and rules vary significantly by program, card, and lounge</figcaption>
+</figure>
+
+<h2>The Short Answer: What Guests Actually Pay in Canada (2026)</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Program</th>
+      <th>Guest Fee</th>
+      <th>Free Guest Included?</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Priority Pass (direct membership)</td>
+      <td>~$35 USD per guest, per visit</td>
+      <td>No — unless your tier includes it</td>
+      <td>Charged to your registered payment card</td>
+    </tr>
+    <tr>
+      <td>Priority Pass (via credit card)</td>
+      <td>Varies by card — $0 to $35 USD</td>
+      <td>Some cards include 1–2 free guests per visit</td>
+      <td>Check your card's specific PP benefit guide</td>
+    </tr>
+    <tr>
+      <td>DragonPass / Mastercard Airport Experiences</td>
+      <td>~$32 USD per guest, per visit</td>
+      <td>Depends on your card issuer</td>
+      <td>Confirmed at participating Aspire, WestJet Elevation, and Plaza Premium locations</td>
+    </tr>
+    <tr>
+      <td>Air Canada Maple Leaf Lounge (day pass)</td>
+      <td>$79–$95 CAD per person</td>
+      <td>No free guest — each person pays</td>
+      <td>Pricing varies by location and booking method; online often cheaper than walk-up</td>
+    </tr>
+    <tr>
+      <td>WestJet Elevation Lounge (walk-in)</td>
+      <td>$59 CAD + GST per person</td>
+      <td>No free guest — each person pays</td>
+      <td>YYC and YVR; Priority Pass and DragonPass members can bring guests at the PP/DP guest rate</td>
+    </tr>
+    <tr>
+      <td>Plaza Premium (walk-in)</td>
+      <td>$45–$75 CAD per person (3 hrs)</td>
+      <td>No free guest — each person pays</td>
+      <td>Pricing varies by airport and package; book online for best rates</td>
+    </tr>
+    <tr>
+      <td>Aspire Lounge (walk-in / day pass)</td>
+      <td>$45–$60 CAD per person</td>
+      <td>No — each person pays</td>
+      <td>YYC, YOW; Priority Pass guests at PP guest rate</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><em>Prices accurate as of June 2026. Guest fees are subject to change — always confirm with your card issuer or lounge operator before travel.</em></p>
+
+<h2>Priority Pass Guest Fees in Canada</h2>
+
+<p>Priority Pass is the most widely used lounge access program in Canada, and the guest fee structure is the most misunderstood. The rate — approximately $35 USD per guest per visit — is consistent across most Canadian Priority Pass lounges. However, how and whether that fee is charged depends entirely on how you hold your Priority Pass membership.</p>
+
+<h3>Direct Priority Pass Members</h3>
+
+<p>If you bought your Priority Pass membership directly — Standard, Standard Plus, or Prestige tier — guest fees apply at the standard rate of approximately $35 USD per person per visit. This fee is charged automatically to the credit card on file with Priority Pass. You do not pay at the lounge door; the charge appears on your statement.</p>
+
+<p>One guest limit per cardholder applies at most Canadian lounges, though some locations (like the National Bank Lounge at YUL) officially permit up to seven guests per cardholder with fees applying for each. Confirm the specific lounge's policy in the Priority Pass app before travelling — maximums vary by location.</p>
+
+<h3>Credit Card Priority Pass Members</h3>
+
+<p>Most Canadians access Priority Pass through a credit card rather than a direct membership. The guest rules in this case are set by your card issuer, not by Priority Pass — and they differ substantially from card to card.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Card</th>
+      <th>PP Guest Benefit</th>
+      <th>Guest Fee (if applicable)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>American Express Platinum (Canada)</td>
+      <td>1 free guest per visit included</td>
+      <td>Additional guests at ~$35 USD per person</td>
+    </tr>
+    <tr>
+      <td>Scotiabank Passport Visa Infinite</td>
+      <td>6 complimentary passes per year total — guests count as a pass</td>
+      <td>Additional visits ~$35 USD per person</td>
+    </tr>
+    <tr>
+      <td>TD Aeroplan Visa Infinite Privilege</td>
+      <td>6 complimentary passes/year — guests use a pass</td>
+      <td>Additional visits at guest rate once passes are exhausted</td>
+    </tr>
+    <tr>
+      <td>CIBC Aerogold Visa Infinite Privilege</td>
+      <td>6 complimentary passes/year — guests count as a pass</td>
+      <td>Additional visits at ~$35 USD per person</td>
+    </tr>
+    <tr>
+      <td>RBC Avion Visa Infinite Privilege</td>
+      <td>6 complimentary passes/year — guests included in count</td>
+      <td>Additional visits at guest rate</td>
+    </tr>
+    <tr>
+      <td>BMO World Elite Mastercard</td>
+      <td>Varies — confirm with BMO</td>
+      <td>~$35 USD per guest</td>
+    </tr>
+    <tr>
+      <td>National Bank World Elite Mastercard</td>
+      <td>Varies — confirm with NB</td>
+      <td>~$35 USD per guest</td>
+    </tr>
+  </tbody>
+</table>
+
+<blockquote>
+<p>The Amex Platinum's guest benefit is the strongest of any Canadian credit card with Priority Pass — one free guest included every time you visit, with no annual cap. For couples travelling together, this makes a meaningful difference versus cards that count each person against an annual visit allowance.</p>
+</blockquote>
+
+<figure>
+  <img src="/blog/premium-credit-cards-priority-pass.png" alt="Canadian premium travel credit cards that include Priority Pass access" loading="lazy" />
+  <figcaption>Several Canadian premium credit cards include Priority Pass — but guest rules differ significantly from card to card</figcaption>
+</figure>
+
+<h2>Air Canada Maple Leaf Lounge: Guest Access and Day Pass Pricing</h2>
+
+<p>The Air Canada Maple Leaf Lounge is not accessible via Priority Pass or DragonPass. To bring a guest to a Maple Leaf Lounge, you have two options: invite them as a guest of an eligible status or card holder, or purchase a day pass.</p>
+
+<h3>Guest of a Status or Cardholder</h3>
+
+<p>Air Canada Altitude Super Elite (100K), 75K, and 50K members may bring one complimentary guest to the Maple Leaf Lounge when travelling together on the same flight. Cardholders through Aeroplan premium credit cards (TD, CIBC, or Amex Aeroplan Reserve) generally do not receive a free guest — the card holder alone is eligible for lounge access.</p>
+
+<p>Maple Leaf Club annual subscription members can bring guests at a per-visit guest fee; the current rate is approximately $30–$35 CAD per guest depending on the location.</p>
+
+<h3>Day Pass Pricing (Walk-Up and Online)</h3>
+
+<p>Air Canada sells Maple Leaf Lounge day passes directly through its website and app. Purchasing online is consistently cheaper than walking up and paying at the door.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Airport</th>
+      <th>Lounge</th>
+      <th>Online Day Pass</th>
+      <th>Walk-Up Rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>YYZ</td>
+      <td>Maple Leaf Lounge (T1 International)</td>
+      <td>~$79 CAD</td>
+      <td>~$95 CAD</td>
+    </tr>
+    <tr>
+      <td>YVR</td>
+      <td>Maple Leaf Lounge (International)</td>
+      <td>~$79 CAD</td>
+      <td>~$95 CAD</td>
+    </tr>
+    <tr>
+      <td>YYC</td>
+      <td>Maple Leaf Lounge (Domestic)</td>
+      <td>~$69 CAD</td>
+      <td>~$79 CAD</td>
+    </tr>
+    <tr>
+      <td>YUL</td>
+      <td>Maple Leaf Lounge (International)</td>
+      <td>~$79 CAD</td>
+      <td>~$95 CAD</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><em>Day pass pricing is subject to availability and may vary. Not all locations offer walk-up day passes. Book through aircanada.com for confirmed pricing.</em></p>
+
+<blockquote>
+<p>Air Canada's day passes are non-refundable after entry. If you are buying one for a companion, confirm their flight is departing from the terminal the lounge serves before purchasing — a domestic day pass does not work for international departures.</p>
+</blockquote>
+
+<figure>
+  <img src="/blog/air-canada-maple-leaf-lounge.png" alt="Air Canada Maple Leaf Lounge interior — seating area" loading="lazy" />
+  <figcaption>The Air Canada Maple Leaf Lounge — day passes are available online from around $69–$79 CAD depending on location, less than the walk-up rate</figcaption>
+</figure>
+
+<h2>WestJet Elevation Lounge: Guest Fees and Walk-In Pricing</h2>
+
+<p>The WestJet Elevation Lounge operates at Calgary (YYC) and Vancouver (YVR). It accepts Priority Pass and DragonPass, and also allows walk-in access by purchase.</p>
+
+<h3>Walk-In Day Pass</h3>
+
+<p>The standard walk-in rate at the WestJet Elevation Lounge is $59 CAD plus applicable taxes per person. In Alberta (YYC), GST at 5% applies — making the effective rate $61.95 CAD. In British Columbia (YVR), PST and GST apply.</p>
+
+<p>This per-person pricing means each member of your party pays the full amount — there is no companion rate or group discount. Two travellers walk-in costs $123.90 CAD at YYC before tax on the second person.</p>
+
+<h3>Priority Pass Guests at Elevation</h3>
+
+<p>Priority Pass and DragonPass members who access the Elevation Lounge through their membership can bring guests at the Priority Pass guest rate (approximately $35 USD per guest, charged to your PP account). This is typically cheaper than the walk-in rate for companions of PP members.</p>
+
+<p>Important caveat at both Elevation Lounge locations: when the lounge hits capacity, Priority Pass members are the first group restricted from entry — before status holders and paid walk-ins. If you are planning to bring a guest via PP membership, arrive early. The WestJet Elevation Lounge at YYC has a noted capacity issue during peak morning departure banks (9 AM to noon).</p>
+
+<h2>Plaza Premium: Walk-In and Guest Pricing</h2>
+
+<p>Plaza Premium operates the widest network of Priority Pass lounges in Canada — at YYZ (six locations), YVR, YEG, YWG, and YUL. Walk-in pricing for guests or non-PP travellers is available at most locations and is typically structured as a time-based package.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Airport</th>
+      <th>Location</th>
+      <th>3-Hr Package</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>YVR</td>
+      <td>Plaza Premium International (24-hr)</td>
+      <td>From $48 CAD</td>
+      <td>24-hr access; bookable online at plazapremiumgroup.com</td>
+    </tr>
+    <tr>
+      <td>YVR</td>
+      <td>Plaza Premium First (PPF)</td>
+      <td>From $110 CAD (2 hrs)</td>
+      <td>Premium tier — spa-like showers, made-to-order meals. Not PP-eligible as standard access.</td>
+    </tr>
+    <tr>
+      <td>YYZ</td>
+      <td>Plaza Premium T1 / T3 (various)</td>
+      <td>From $55–$75 CAD</td>
+      <td>Pricing varies by location and time of day; online often cheaper than walk-up</td>
+    </tr>
+    <tr>
+      <td>YEG</td>
+      <td>Plaza Premium (Domestic / International)</td>
+      <td>From $45 CAD</td>
+      <td>Quieter locations — walk-up generally available</td>
+    </tr>
+    <tr>
+      <td>YWG</td>
+      <td>Plaza Premium Domestic</td>
+      <td>From $45 CAD</td>
+      <td>Compact lounge; online booking recommended</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>PP and DragonPass members who bring a guest pay the PP guest rate (approximately $35 USD per guest), not the full walk-in rate. This is charged to your Priority Pass account or DragonPass account directly — you do not pay at the lounge.</p>
+
+<h2>Aspire Lounge Guest Fees (YYC, YOW)</h2>
+
+<p>The Aspire Lounge operates at Calgary International Airport (two locations: International and US Transborder) and Ottawa Macdonald-Cartier International Airport. Both accept Priority Pass, DragonPass, and LoungeKey, and offer walk-in day passes.</p>
+
+<ul>
+  <li><strong>Priority Pass / DragonPass guest fee:</strong> ~$35 USD per guest, charged to your program account</li>
+  <li><strong>Walk-in day pass:</strong> approximately $50–$60 CAD per person depending on location — contact the lounge directly for the current rate</li>
+  <li><strong>LoungeKey guest fee:</strong> similar to PP rate — confirm with your LoungeKey provider</li>
+</ul>
+
+<p>At the Ottawa Aspire Salon Lounge, an unlimited guest policy applies to Priority Pass holders — there is no cap on the number of guests you can bring. Guest fees still apply for each person, but you are not limited to one or two companions.</p>
+
+<h2>When Guests Can Be Turned Away: What to Know</h2>
+
+<p>Guest fee or not, there are circumstances where a lounge can and will deny your companion entry — even with valid payment or a membership card.</p>
+
+<figure>
+  <img src="/blog/couple-enjoying-lounge.png" alt="Two travellers enjoying an airport lounge in Canada" loading="lazy" />
+  <figcaption>Guests must be travelling on the same day as the primary cardholder — boarding passes are required for all guests at all Canadian lounges</figcaption>
+</figure>
+
+<h3>Capacity restrictions</h3>
+
+<p>Every lounge in Canada reserves the right to deny entry when it reaches capacity — and this applies to paying guests and PP members alike. At high-volume locations during peak periods, capacity is the most common reason a guest is turned away. The lounge team cannot be overridden by waving a card or offering to pay more.</p>
+
+<h3>You must be present</h3>
+
+<p>In every Canadian lounge program, the primary cardholder must be physically present with the guest at entry. You cannot send a companion in on your card while you wait at the gate. Staff check boarding passes for all parties.</p>
+
+<h3>Same-day travel required</h3>
+
+<p>All guests must have a same-day boarding pass for a departing flight from that airport. Meeters and greeters, people picking someone up, or anyone without a boarding pass are not eligible for lounge access as guests — regardless of what is offered at the door.</p>
+
+<h3>Flight type must match</h3>
+
+<p>If a lounge serves only international departures, your domestic or US-bound guest does not qualify, even if you do. The flight type eligibility of the guest must match the lounge — not just your own departure. This catches many travellers connecting from different terminals.</p>
+
+<h2>The Cheapest Ways to Bring a Guest to a Canadian Airport Lounge</h2>
+
+<ol>
+  <li><p><em>Hold the Amex Platinum (Canada).</em> One free Priority Pass guest per visit, unlimited annually. For couples who travel frequently, this is the most cost-effective guest access in any Canadian credit card product. Additional guests cost the standard PP guest fee.</p></li>
+  <li><p><em>Book a Plaza Premium or Aspire walk-in package online in advance.</em> Online pricing is consistently 15–25% less than walk-up rates at the door. Two people at a Plaza Premium walk-in can be cheaper than two single Amex Platinum visits at some locations.</p></li>
+  <li><p><em>Purchase an Air Canada day pass before arriving at the airport.</em> Buying through aircanada.com gives a meaningful discount over the door rate. For one companion to access the Maple Leaf Lounge, pre-purchase is the only sensible approach.</p></li>
+  <li><p><em>Use the WestJet Elevation walk-in rate for families travelling together.</em> At $59 CAD + GST per person, two adults cost $123.90 at YYC. If neither holds PP, this is often comparable to or cheaper than purchasing two standalone day passes at a full-service lounge.</p></li>
+  <li><p><em>Consider a Plaza Premium First walk-in at YVR for special occasions.</em> At approximately $110 CAD for two hours including showers, made-to-order food, and spa facilities, PPF at YVR is genuinely competitive with the cost of separately paying for a standard lounge plus a meal at an airport restaurant.</p></li>
+</ol>
+
+<h2>Frequently Asked Questions: Airport Lounge Guest Fees in Canada</h2>
+
+<h3>How much does it cost to bring a guest to a Priority Pass lounge in Canada?</h3>
+<p>The standard Priority Pass guest fee is approximately $35 USD per guest per visit, charged to the credit card on file with Priority Pass. Some Canadian credit cards that include Priority Pass also include one free guest — notably the American Express Platinum Canada, which includes one complimentary guest on every visit. All other cards with bundled Priority Pass access generally charge the standard guest fee or count guests against an annual complimentary visit allowance.</p>
+
+<h3>Can I bring someone who isn't flying to a Canadian airport lounge?</h3>
+<p>No. Every lounge in Canada requires all guests to have a valid same-day boarding pass for a departing flight from that airport. Someone dropping you off, meeting you, or who does not have an outbound flight is not permitted as a guest. This rule is consistently enforced across all programs and lounge operators.</p>
+
+<h3>How much does an Air Canada Maple Leaf Lounge day pass cost for a guest?</h3>
+<p>Air Canada Maple Leaf Lounge day passes for a guest (or any non-status non-cardholder) cost approximately $69–$95 CAD depending on the location and how the pass is purchased. Online pre-purchase through aircanada.com is typically $10–$20 cheaper than the walk-up rate at the door. Day passes are non-refundable after entry and must match the terminal and departure type (domestic, international).</p>
+
+<h3>What is the WestJet Elevation Lounge guest fee?</h3>
+<p>The WestJet Elevation Lounge walk-in rate is $59 CAD plus GST per person at both YYC and YVR. There is no discounted companion rate — each person pays the full amount. Priority Pass and DragonPass members who enter via their membership can bring guests at the PP/DP guest rate (approximately $35 USD per person), which is generally cheaper than the walk-in rate for their companion.</p>
+
+<h3>Does DragonPass charge a guest fee at Canadian lounges?</h3>
+<p>Yes. DragonPass charges a guest fee similar in structure to Priority Pass — approximately $32 USD per guest per visit at participating lounges in Canada. DragonPass is included with several Canadian Mastercards through the Mastercard Airport Experiences program; whether your specific card includes free guest visits depends on your card's benefit guide. Check with your card issuer directly.</p>
+
+<h3>Can a child access a Canadian airport lounge as a guest for free?</h3>
+<p>Most Canadian lounges admit children under 2 years of age at no charge. Children aged 2 and older are typically treated as adult guests and subject to the same fees. Some lounges may admit children under 12 at a reduced rate — confirm directly with the lounge before travel, as policies vary by operator.</p>
+
+<h3>Is it cheaper to buy a lounge day pass in advance or at the door?</h3>
+<p>In nearly every case, purchasing a day pass online in advance is cheaper. Plaza Premium, Air Canada Maple Leaf Lounges, and WestJet Elevation all offer reduced rates for online pre-purchase compared to the walk-up door rate. The savings range from approximately $10 to $25 CAD per person. Online passes also guarantee entry at the purchased time, while walk-up access is subject to capacity.</p>
+
+<p><em>All pricing in this guide is accurate as of June 2026. Lounge fees, guest policies, and access rules are subject to change — verify current rates with your card issuer, Priority Pass, DragonPass, or the lounge operator before your trip.</em></p>
+`
+
 export const blogPosts: BlogPost[] = [
+  {
+    slug: 'airport-lounge-guest-fees-canada',
+    title: 'Airport Lounge Guest Fees in Canada (2026): What You Will Actually Pay',
+    excerpt: "Most lounge programs allow guests — but what you pay depends on your card, your program tier, and which lounge you're standing in. Every fee in one place.",
+    coverImage: '/blog/couple-checking-in-lounge.png',
+    publishedAt: '2026-06-06',
+    category: 'Access Guides',
+    readingTime: '10 min read',
+    metaTitle: 'Airport Lounge Guest Fees in Canada (2026): Complete Guide',
+    metaDescription: 'How much does it cost to bring a guest to a Canadian airport lounge? Priority Pass, Maple Leaf, WestJet Elevation, Plaza Premium — every guest fee explained for 2026.',
+    content: guestFeesContent,
+  },
   {
     slug: 'canadian-airport-lounges-shower-access',
     title: 'Canadian Airport Lounges with Shower Access (2026)',
