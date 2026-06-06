@@ -1,11 +1,13 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import SearchModule from '@/components/SearchModule'
 import FeaturedLoungeSection from '@/components/FeaturedLoungeSection'
 import AirportMapsSection from '@/components/AirportMapsSection'
 import TerminalMapVisual from '@/components/TerminalMapVisual'
 import { getWeather } from '@/lib/weather'
+import { getAllPosts } from '@/lib/blog'
 import type { Lounge, Airport } from '@/lib/types'
 
 export const revalidate = 300
@@ -196,9 +198,9 @@ export default async function HomePage() {
             /* Fallback showcase */
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {[
-                { name:'Air Canada Maple Leaf Lounge', airport:'YYZ', terminal:'T1', rating:'4.8', tags:['Business Class','Air Canada Altitude'], href:'/airports/YYZ', img:'https://lh3.googleusercontent.com/aida-public/AB6AXuAtO22ExhjNghpFztoO3sP7dhkL9RmAYYCKZZO6vsXBlO13JtnaUPQMgO5Q6ooU9QyVsvHyaTaifKN_I9zG2MWkPbB4xAN4aBSDYWyFCIIKTY90N4yjFx2cYS2fsk1BaJa-YufPuoFh6lErDGvo91aDQnNXIYWexA0nzYzUtEcmXmoPEiU0MTN-jpkPcnTRn2QuhmokaUQhcyjp3G1ANGfuiPbpDOnWaLFMfEO_QYqE-vz7Wqe0HeyPnjxQ3_SHLg4pIOOGzxNXn51O' },
-                { name:'Plaza Premium First Lounge',    airport:'YVR', terminal:'Intl',rating:'4.7', tags:['Priority Pass','DragonPass'],          href:'/airports/YVR', img:'https://lh3.googleusercontent.com/aida-public/AB6AXuC9m6f_mOaxYRfeHpcrj1iCfkNykD54AODxJcRgbd7MJzO5BpxlV6KOflL583VaJkdwc1rxNXxz2vJMMsH4cv7IZRbhK0P3WjX78WH5zu_Iybd3rX92jVmqdIN-WgsRgD1xuM6L6kyYf1nb9o0TrJQNQDS6xlfwkjVUq-Ie7Qfn8L1-wR_3qisMCGpieEH3IA_Ry5lPDAqYbye2ESlKRJcOxf5mS0T2xIvYeCVEkRu8SJM__jsRRvGPacnsdCCbhp-li8UZxOCM8jEQ' },
-                { name:'Air Canada Signature Suite',    airport:'YYZ', terminal:'T1', rating:'4.9', tags:['Super Elite 100K','Invitation Only'],   href:'/airports/YYZ', img:'https://lh3.googleusercontent.com/aida-public/AB6AXuCVhhz58CUA54OconUPBzNnuEXlVw1HyiFdYPmiXJeND-guKgs0-b3_OnboFf1KR2oI4Bo4q7TMzDabMVJlGbQy6JUbTFfoyuexjiPOzbTkk3WqiAajL7xEgyQd83esElACwj6YLMsD83ZyYgs6Cv5mRh-2mN51sT8tq41kcS2exYd5HcqX80jTFiAbbpPxC_n7X3uNgm_xKDc4LY2d_5pcXinfNo9Zpu4M7Pf2WFI7JSVqLfdkjVk8W9pXu04bSxciH6mhZjiqbIVo' },
+                { name:'Air Canada Maple Leaf Lounge', airport:'YYZ', terminal:'T1', rating:'4.8', tags:['Business Class','Air Canada Altitude'], href:'/airports/YYZ/lounges/ac-maple-leaf-lounge-international-yyz', img:'https://lh3.googleusercontent.com/aida-public/AB6AXuAtO22ExhjNghpFztoO3sP7dhkL9RmAYYCKZZO6vsXBlO13JtnaUPQMgO5Q6ooU9QyVsvHyaTaifKN_I9zG2MWkPbB4xAN4aBSDYWyFCIIKTY90N4yjFx2cYS2fsk1BaJa-YufPuoFh6lErDGvo91aDQnNXIYWexA0nzYzUtEcmXmoPEiU0MTN-jpkPcnTRn2QuhmokaUQhcyjp3G1ANGfuiPbpDOnWaLFMfEO_QYqE-vz7Wqe0HeyPnjxQ3_SHLg4pIOOGzxNXn51O' },
+                { name:'Plaza Premium First Lounge',    airport:'YVR', terminal:'Intl',rating:'4.7', tags:['Priority Pass','DragonPass'],          href:'/airports/YVR/lounges/plaza-premium-first-yvr', img:'https://lh3.googleusercontent.com/aida-public/AB6AXuC9m6f_mOaxYRfeHpcrj1iCfkNykD54AODxJcRgbd7MJzO5BpxlV6KOflL583VaJkdwc1rxNXxz2vJMMsH4cv7IZRbhK0P3WjX78WH5zu_Iybd3rX92jVmqdIN-WgsRgD1xuM6L6kyYf1nb9o0TrJQNQDS6xlfwkjVUq-Ie7Qfn8L1-wR_3qisMCGpieEH3IA_Ry5lPDAqYbye2ESlKRJcOxf5mS0T2xIvYeCVEkRu8SJM__jsRRvGPacnsdCCbhp-li8UZxOCM8jEQ' },
+                { name:'Air Canada Signature Suite',    airport:'YYZ', terminal:'T1', rating:'4.9', tags:['Super Elite 100K','Invitation Only'],   href:'/airports/YYZ/lounges/ac-signature-suite-yyz', img:'https://lh3.googleusercontent.com/aida-public/AB6AXuCVhhz58CUA54OconUPBzNnuEXlVw1HyiFdYPmiXJeND-guKgs0-b3_OnboFf1KR2oI4Bo4q7TMzDabMVJlGbQy6JUbTFfoyuexjiPOzbTkk3WqiAajL7xEgyQd83esElACwj6YLMsD83ZyYgs6Cv5mRh-2mN51sT8tq41kcS2exYd5HcqX80jTFiAbbpPxC_n7X3uNgm_xKDc4LY2d_5pcXinfNo9Zpu4M7Pf2WFI7JSVqLfdkjVk8W9pXu04bSxciH6mhZjiqbIVo' },
               ].map(c => (
                 <Link key={c.name} href={c.href} className="bg-white fine-border group cursor-pointer overflow-hidden block">
                   <div className="aspect-[4/3] overflow-hidden relative">
@@ -310,23 +312,29 @@ export default async function HomePage() {
             Curated guides for navigating airport lounges — from access cards and memberships to the best spots for work, rest, and a decent meal.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {[
-              { img:'/blog/guide-priority-pass-canada.png', title:'The Complete Guide to Priority Pass Lounges in Canada', desc:'Every lounge across Canada that accepts Priority Pass — what to expect, peak hours to avoid, and how to bring a guest.', href:'/blog/priority-pass-lounges-canada', cta:'Read Guide' },
-              { img:'https://lh3.googleusercontent.com/aida-public/AB6AXuD8pZAtF9WmklahMG9rb0bQHtM7EhGT-B2Z_ZbflBo2waoPYa7mHfxtTa8QZkFnZZgfNzUDyIkiYYH0bhbv7-PsWRRmDDQ7JH_5OCXuiuDy3O6WJcYl4cVcKqBdJG76_A45VXlzYfdZ8w6x725w_9iN2eP5pyRfBuSvkrg4LeUAfzsfQMIT3QkDW2imuCWq23dkP9D4bmZoKs0px7-Z-NCDlUtLmbu8cHTx5EGP2t5Ys0xNk2aNPQgothiJFgk5thErq-uHO_JTiXd1', title:'Best Lounges for Remote Work', desc:'Verified Wi-Fi speeds, quiet zones, power outlets, and meeting room access — the best Canadian lounges for getting work done.', href:'/lounges?amenity=free-wifi', cta:'Explore Lounges' },
-              { img:'https://lh3.googleusercontent.com/aida-public/AB6AXuCUnXuGcseHQMu4gTYFEYSYxCp89qJww9bZuU8Fif0ZyHEroGdU1RCdaiAKAXpS6Qk0IHuNnqmLQyCgP2GcC64P8I0B0rBIjcEWG6pgRN5lB7lqbazDROXqfAtO4OlCO-akgUjNjNF5TwDko_1y7ftYVenZrVmkS5XdDQShdMdIwXg5j2WiIAH2OuoEg4P_pHuF0fEP8JSqw1hhL21Pm30wIfKTz5RmWhhOsu2MiHMgzh8_tWxbXtVcWKAz6aVUpnRXEbmbZDHX2hKi', title:'Lounges with Shower Access', desc:'Nothing resets a long-haul journey like a proper shower. Here are the best Canadian airport lounges with shower suites.', href:'/lounges?amenity=shower', cta:'Explore Lounges' },
-            ].map(article => (
-              <article key={article.title} className="group">
-                <div className="aspect-[3/4] overflow-hidden mb-6 editorial-shadow">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700" src={article.img} alt={article.title} />
-                </div>
-                <h3 className="font-headline-md text-primary mb-3">{article.title}</h3>
-                <p className="text-secondary text-sm mb-4 leading-relaxed line-clamp-3">{article.desc}</p>
-                <Link href={article.href} className="text-primary font-bold text-[10px] uppercase tracking-widest border-b border-primary/20 hover:border-primary transition-all pb-1 inline-block">
-                  {article.cta}
+            {getAllPosts().slice(0, 3).map(post => (
+              <article key={post.slug} className="group">
+                <Link href={`/blog/${post.slug}`} className="block aspect-[3/4] overflow-hidden mb-6 editorial-shadow relative">
+                  <Image
+                    src={post.coverImage}
+                    alt={post.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-all duration-700"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                </Link>
+                <h3 className="font-headline-md text-primary mb-3">{post.title}</h3>
+                <p className="text-secondary text-sm mb-4 leading-relaxed line-clamp-3">{post.excerpt}</p>
+                <Link href={`/blog/${post.slug}`} className="text-primary font-bold text-[10px] uppercase tracking-widest border-b border-primary/20 hover:border-primary transition-all pb-1 inline-block">
+                  Read Guide
                 </Link>
               </article>
             ))}
+          </div>
+          <div className="text-center mt-12">
+            <Link href="/blog" className="inline-flex items-center gap-2 border border-primary text-primary px-8 py-3 font-label-caps text-[10px] uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
+              View All Guides <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>arrow_forward</span>
+            </Link>
           </div>
         </div>
       </section>
