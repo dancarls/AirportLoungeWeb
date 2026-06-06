@@ -79,7 +79,7 @@ export default function LoungeCard({ lounge, airportIata }: Props) {
         {/* IATA + terminal badge */}
         {iata && (
           <div className="absolute top-3 left-3 bg-primary text-white text-[9px] px-2 py-1 font-bold uppercase tracking-wider">
-            {iata}{lounge.terminal ? ` · T${lounge.terminal}` : ''}
+            {iata}{lounge.terminal ? ` · T - ${lounge.terminal}` : ''}
           </div>
         )}
 

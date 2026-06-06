@@ -260,7 +260,7 @@ export default function LoungeGrid({ lounges, airports }: Props) {
                   )}
                   {iata && (
                     <div className="absolute top-4 left-4 bg-primary text-white text-[10px] px-2 py-1 uppercase tracking-tighter">
-                      {iata}{lounge.terminal ? ` • T${lounge.terminal}` : ''}
+                      {iata}{lounge.terminal ? ` • T - ${lounge.terminal}` : ''}
                     </div>
                   )}
                   {openStatus !== null && (

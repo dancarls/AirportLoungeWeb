@@ -171,7 +171,7 @@ export default async function HomePage() {
                           <span className="material-symbols-outlined text-secondary" style={{ fontSize: '48px' }}>local_bar</span>
                         </div>
                       )}
-                      {iata && <div className="absolute top-4 left-4 bg-primary text-white text-[10px] px-2 py-1 uppercase tracking-tighter">{iata}{lounge.terminal ? ` • T${lounge.terminal}` : ''}</div>}
+                      {iata && <div className="absolute top-4 left-4 bg-primary text-white text-[10px] px-2 py-1 uppercase tracking-tighter">{iata}{lounge.terminal ? ` • T - ${lounge.terminal}` : ''}</div>}
                     </div>
                     <div className="p-8">
                       <div className="flex justify-between items-start mb-4">

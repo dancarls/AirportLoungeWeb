@@ -134,7 +134,7 @@ export default function TerminalMapSection({ airports }: Props) {
           scale:        9,
         },
         label: {
-          text: lounge.terminal ? `T${lounge.terminal}` : '✦',
+          text: lounge.terminal ? `T - ${lounge.terminal}` : '✦',
           color: '#ffffff',
           fontSize: '9px',
           fontWeight: '700',

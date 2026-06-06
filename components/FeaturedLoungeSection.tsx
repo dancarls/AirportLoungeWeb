@@ -25,7 +25,7 @@ function DetailsModal({ lounge, iata, onClose }: { lounge: Lounge & { airport?: 
         <div className="bg-primary text-white px-8 py-6 flex items-start justify-between">
           <div>
             <p className="font-label-caps text-[10px] text-primary-fixed uppercase tracking-widest mb-1">
-              {iata} {lounge.terminal ? `• Terminal ${lounge.terminal}` : ''}
+              {iata} {lounge.terminal ? `• T - ${lounge.terminal}` : ''}
             </p>
             <h2 className="font-headline-md text-headline-md">{lounge.name}</h2>
           </div>
@@ -248,7 +248,7 @@ export default function FeaturedLoungeSection({ lounge, primaryImageUrl }: Props
               {lounge.airport && (
                 <p className="font-label-caps text-label-caps text-sand-dark uppercase mb-4">
                   {lounge.airport.iata_code}
-                  {lounge.terminal ? ` • Terminal ${lounge.terminal}` : ''}
+                  {lounge.terminal ? ` • T - ${lounge.terminal}` : ''}
                   {lounge.location_detail ? ` • ${lounge.location_detail}` : ''}
                 </p>
               )}
