@@ -1,32 +1,46 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import type { Lounge, Airport, Amenity } from '@/lib/types'
 
 type FullLounge = Lounge & { airport?: Airport; amenities?: Amenity[]; images?: { storage_path: string; is_primary: boolean }[] }
 
 const ACCESS_OPTIONS = [
-  'All Access',
-  'Priority Pass',
-  'DragonPass',
-  'LoungeKey',
-  'Amex Platinum',
-  'TD Aeroplan Visa Infinite Privilege',
-  'CIBC Aeroplan Visa Infinite Privilege',
-  'Scotiabank Passport Visa Infinite',
-  'Air Canada Altitude',
-  'Business Class',
-  'Day Pass',
+  { label: 'All Access Types', value: '' },
+  // Membership passes
+  { label: 'Priority Pass', value: 'Priority Pass' },
+  { label: 'DragonPass', value: 'DragonPass' },
+  { label: 'LoungeKey', value: 'LoungeKey' },
+  // Credit cards
+  { label: 'Amex Platinum', value: 'Amex Platinum' },
+  { label: 'Amex Centurion', value: 'Centurion' },
+  { label: 'TD Aeroplan Visa Infinite Privilege', value: 'TD Aeroplan Visa Infinite Privilege' },
+  { label: 'CIBC Aeroplan Visa Infinite Privilege', value: 'CIBC Aeroplan Visa Infinite Privilege' },
+  { label: 'Scotiabank Passport Visa Infinite', value: 'Scotiabank Passport Visa Infinite' },
+  { label: 'RBC Avion Visa Infinite Privilege', value: 'RBC Avion' },
+  { label: 'National Bank World Elite', value: 'National Bank' },
+  // Airline status
+  { label: 'Air Canada Altitude', value: 'Air Canada Altitude' },
+  { label: 'Star Alliance Gold', value: 'Star Alliance Gold' },
+  { label: 'Air France / KLM', value: 'Air France' },
+  { label: 'WestJet Rewards', value: 'WestJet' },
+  // Fare class / day pass
+  { label: 'Business Class', value: 'Business Class' },
+  { label: 'Day Pass / Walk-in', value: 'Day Pass' },
+  { label: 'Aspire Lounge', value: 'Aspire' },
 ]
 
 const AMENITY_OPTIONS = [
-  { slug: 'shower',    label: 'Shower' },
-  { slug: 'hot-food',  label: 'Hot Food' },
-  { slug: 'bar',       label: 'Bar' },
-  { slug: 'spa',       label: 'Spa' },
-  { slug: 'free-wifi', label: 'WiFi' },
-  { slug: 'quiet-room',label: 'Quiet Room' },
+  { slug: 'shower',     label: 'Shower' },
+  { slug: 'hot-food',   label: 'Hot Food' },
+  { slug: 'bar',        label: 'Bar' },
+  { slug: 'spa',        label: 'Spa' },
+  { slug: 'free-wifi',  label: 'WiFi' },
+  { slug: 'quiet-room', label: 'Quiet Room' },
+  { slug: 'sleeping-pods', label: 'Sleep Pods' },
+  { slug: 'meeting-rooms', label: 'Meeting Rooms' },
 ]
 
 function getImg(path: string) {
@@ -54,19 +68,50 @@ interface Props {
 }
 
 export default function LoungeGrid({ lounges, airports }: Props) {
-  const [airport,    setAirport]    = useState('')
-  const [access,     setAccess]     = useState('')
-  const [amenity,    setAmenity]    = useState('')
-  const [openNow,    setOpenNow]    = useState(false)
-  const [sort,       setSort]       = useState('rating')
-  const [showFilters, setShowFilters] = useState(false)
+  const searchParams = useSearchParams()
+  const router       = useRouter()
+  const pathname     = usePathname()
+
+  // Initialise from URL params
+  const [airport,  setAirport]  = useState(searchParams.get('airport') ?? '')
+  const [access,   setAccess]   = useState(searchParams.get('access')  ?? '')
+  const [amenity,  setAmenity]  = useState(searchParams.get('amenity') ?? '')
+  const [openNow,  setOpenNow]  = useState(searchParams.get('open') === '1')
+  const [sort,     setSort]     = useState(searchParams.get('sort')    ?? 'rating')
+
+  // Auto-expand if any filter came from URL
+  const hasUrlFilters = !!(searchParams.get('airport') || searchParams.get('access') || searchParams.get('amenity') || searchParams.get('open'))
+  const [showFilters, setShowFilters] = useState(hasUrlFilters)
+
+  // Update URL without scroll
+  function pushParams(overrides: Record<string, string>) {
+    const next = new URLSearchParams()
+    const state = { airport, access, amenity, open: openNow ? '1' : '', sort, ...overrides }
+    if (state.airport)                        next.set('airport', state.airport)
+    if (state.access)                         next.set('access',  state.access)
+    if (state.amenity)                        next.set('amenity', state.amenity)
+    if (state.open === '1')                   next.set('open',    '1')
+    if (state.sort && state.sort !== 'rating') next.set('sort',   state.sort)
+    const qs = next.toString()
+    router.replace(pathname + (qs ? '?' + qs : ''), { scroll: false })
+  }
+
+  function handleAirport(v: string)  { setAirport(v);  pushParams({ airport: v }) }
+  function handleAccess(v: string)   { setAccess(v);   pushParams({ access: v }) }
+  function handleAmenity(v: string)  { setAmenity(v);  pushParams({ amenity: v }) }
+  function handleOpenNow()           { const next = !openNow; setOpenNow(next); pushParams({ open: next ? '1' : '' }) }
+  function handleSort(v: string)     { setSort(v);     pushParams({ sort: v }) }
+  function handleClearAll() {
+    setAirport(''); setAccess(''); setAmenity(''); setOpenNow(false)
+    router.replace(pathname, { scroll: false })
+  }
 
   const filtered = useMemo(() => {
     let result = [...lounges]
 
     if (airport) result = result.filter(l => l.airport?.iata_code === airport)
 
-    if (access && access !== 'All Access') {
+    if (access) {
       result = result.filter(l =>
         Array.isArray(l.access_types) &&
         (l.access_types as { name: string }[]).some(at =>
@@ -77,26 +122,22 @@ export default function LoungeGrid({ lounges, airports }: Props) {
 
     if (amenity) {
       result = result.filter(l =>
-        l.amenities?.some((a: Amenity) => a.slug === amenity || a.name.toLowerCase().includes(amenity))
+        l.amenities?.some((a: Amenity) =>
+          a.slug === amenity || a.name.toLowerCase().includes(amenity.replace('-', ' '))
+        )
       )
     }
 
-    if (openNow) {
-      result = result.filter(l => isOpenNow(l.opening_hours) === true)
-    }
+    if (openNow) result = result.filter(l => isOpenNow(l.opening_hours) === true)
 
-    if (sort === 'rating') {
-      result.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
-    } else if (sort === 'reviews') {
-      result.sort((a, b) => b.review_count - a.review_count)
-    } else {
-      result.sort((a, b) => a.name.localeCompare(b.name))
-    }
+    if (sort === 'rating')  result.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+    else if (sort === 'reviews') result.sort((a, b) => b.review_count - a.review_count)
+    else result.sort((a, b) => a.name.localeCompare(b.name))
 
     return result
   }, [lounges, airport, access, amenity, openNow, sort])
 
-  const activeFilterCount = [airport, access && access !== 'All Access', amenity, openNow].filter(Boolean).length
+  const activeFilterCount = [airport, access, amenity, openNow].filter(Boolean).length
 
   return (
     <div>
@@ -126,7 +167,7 @@ export default function LoungeGrid({ lounges, airports }: Props) {
             <p className="font-label-caps text-[11px] text-secondary">{filtered.length} lounge{filtered.length !== 1 ? 's' : ''}</p>
             <select
               value={sort}
-              onChange={e => setSort(e.target.value)}
+              onChange={e => handleSort(e.target.value)}
               className="border-none bg-transparent font-label-caps text-[11px] text-primary focus:ring-0 outline-none cursor-pointer"
             >
               <option value="rating">Top Rated</option>
@@ -142,7 +183,7 @@ export default function LoungeGrid({ lounges, airports }: Props) {
             {/* Airport */}
             <div>
               <label className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-1 block">Airport</label>
-              <select value={airport} onChange={e => setAirport(e.target.value)}
+              <select value={airport} onChange={e => handleAirport(e.target.value)}
                 className="w-full bg-transparent border border-outline-variant px-3 py-2 text-sm text-on-surface focus:ring-1 focus:ring-primary outline-none">
                 <option value="">All Airports</option>
                 {airports.map(a => <option key={a.iata_code} value={a.iata_code}>{a.iata_code} — {a.name}</option>)}
@@ -151,17 +192,17 @@ export default function LoungeGrid({ lounges, airports }: Props) {
 
             {/* Access */}
             <div>
-              <label className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-1 block">Access Type</label>
-              <select value={access} onChange={e => setAccess(e.target.value)}
+              <label className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-1 block">Access / Pass</label>
+              <select value={access} onChange={e => handleAccess(e.target.value)}
                 className="w-full bg-transparent border border-outline-variant px-3 py-2 text-sm text-on-surface focus:ring-1 focus:ring-primary outline-none">
-                {ACCESS_OPTIONS.map(o => <option key={o} value={o}>{o}</option>)}
+                {ACCESS_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
               </select>
             </div>
 
             {/* Amenity */}
             <div>
               <label className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-1 block">Must Have</label>
-              <select value={amenity} onChange={e => setAmenity(e.target.value)}
+              <select value={amenity} onChange={e => handleAmenity(e.target.value)}
                 className="w-full bg-transparent border border-outline-variant px-3 py-2 text-sm text-on-surface focus:ring-1 focus:ring-primary outline-none">
                 <option value="">Any Amenity</option>
                 {AMENITY_OPTIONS.map(a => <option key={a.slug} value={a.slug}>{a.label}</option>)}
@@ -172,7 +213,7 @@ export default function LoungeGrid({ lounges, airports }: Props) {
             <div>
               <label className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-1 block">Availability</label>
               <button
-                onClick={() => setOpenNow(o => !o)}
+                onClick={handleOpenNow}
                 className={`w-full flex items-center gap-2 px-3 py-2 text-sm border transition-all ${
                   openNow
                     ? 'border-primary bg-primary text-white'
@@ -189,7 +230,7 @@ export default function LoungeGrid({ lounges, airports }: Props) {
             {/* Reset */}
             {activeFilterCount > 0 && (
               <button
-                onClick={() => { setAirport(''); setAccess(''); setAmenity(''); setOpenNow(false) }}
+                onClick={handleClearAll}
                 className="col-span-2 md:col-span-4 text-xs text-sand-dark hover:text-primary underline text-right transition-colors"
               >
                 Clear all filters
@@ -198,13 +239,13 @@ export default function LoungeGrid({ lounges, airports }: Props) {
           </div>
         )}
 
-        {/* Quick amenity chips */}
+        {/* Quick amenity chips — shown when filter panel is collapsed */}
         {!showFilters && (
           <div className="flex gap-2 px-5 py-3 flex-wrap">
-            {AMENITY_OPTIONS.map(a => (
+            {AMENITY_OPTIONS.slice(0, 6).map(a => (
               <button
                 key={a.slug}
-                onClick={() => setAmenity(amenity === a.slug ? '' : a.slug)}
+                onClick={() => handleAmenity(amenity === a.slug ? '' : a.slug)}
                 className={`font-label-caps text-[10px] px-3 py-1.5 uppercase tracking-wide transition-all ${
                   amenity === a.slug
                     ? 'bg-primary text-white'
@@ -215,7 +256,7 @@ export default function LoungeGrid({ lounges, airports }: Props) {
               </button>
             ))}
             <button
-              onClick={() => setOpenNow(o => !o)}
+              onClick={handleOpenNow}
               className={`font-label-caps text-[10px] px-3 py-1.5 uppercase tracking-wide transition-all flex items-center gap-1 ${
                 openNow
                   ? 'bg-green-600 text-white'
@@ -229,12 +270,49 @@ export default function LoungeGrid({ lounges, airports }: Props) {
         )}
       </div>
 
+      {/* Active filter summary */}
+      {activeFilterCount > 0 && (
+        <div className="flex flex-wrap items-center gap-2 mb-6">
+          <span className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest">Filtered by:</span>
+          {airport && (
+            <span className="bg-primary/10 text-primary text-[11px] px-3 py-1 flex items-center gap-1">
+              {airport}
+              <button onClick={() => handleAirport('')} className="ml-1 hover:text-red-500">×</button>
+            </span>
+          )}
+          {access && (
+            <span className="bg-primary/10 text-primary text-[11px] px-3 py-1 flex items-center gap-1">
+              {access}
+              <button onClick={() => handleAccess('')} className="ml-1 hover:text-red-500">×</button>
+            </span>
+          )}
+          {amenity && (
+            <span className="bg-primary/10 text-primary text-[11px] px-3 py-1 flex items-center gap-1">
+              {AMENITY_OPTIONS.find(a => a.slug === amenity)?.label ?? amenity}
+              <button onClick={() => handleAmenity('')} className="ml-1 hover:text-red-500">×</button>
+            </span>
+          )}
+          {openNow && (
+            <span className="bg-green-100 text-green-700 text-[11px] px-3 py-1 flex items-center gap-1">
+              Open Now
+              <button onClick={handleOpenNow} className="ml-1 hover:text-red-500">×</button>
+            </span>
+          )}
+          <button onClick={handleClearAll} className="text-[11px] text-sand-dark underline hover:text-primary ml-2">
+            Clear all
+          </button>
+        </div>
+      )}
+
       {/* Grid */}
       {filtered.length === 0 ? (
         <div className="text-center py-20 text-secondary">
           <span className="material-symbols-outlined text-4xl mb-4 block text-sand-dark">search_off</span>
           <p className="font-headline-md text-headline-md text-primary mb-2">No lounges match your filters</p>
           <p className="text-sm">Try removing a filter or selecting a different airport.</p>
+          <button onClick={handleClearAll} className="mt-6 bg-primary text-white px-8 py-3 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-all">
+            Clear Filters
+          </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -242,10 +320,11 @@ export default function LoungeGrid({ lounges, airports }: Props) {
             const iata = lounge.airport?.iata_code
             const img  = lounge.images?.find(i => i.is_primary) ?? lounge.images?.[0]
             const openStatus = isOpenNow(lounge.opening_hours)
+            const href = iata ? `/airports/${iata}/lounges/${lounge.slug}` : `/lounges/${lounge.slug}`
             return (
               <Link
                 key={lounge.id}
-                href={iata ? `/airports/${iata}/lounges/${lounge.slug}` : `/lounges/${lounge.slug}`}
+                href={href}
                 className="bg-white fine-border group cursor-pointer overflow-hidden block hover:editorial-shadow transition-all"
               >
                 <div className="aspect-[4/3] overflow-hidden relative bg-secondary-container">

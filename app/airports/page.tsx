@@ -36,17 +36,18 @@ const DESCRIPTION: Record<string, string> = {
   YYT: 'Easternmost hub with essential lounges for transatlantic and domestic flyers.',
 }
 
+const SB = 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports'
+
 const AIRPORT_IMAGE: Record<string, string> = {
   YVR: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAXFnLE17iBdV_-CU8Kyip1Y0ksnv_oxgsQxpb9UksaH_B8zHRCwlBT6k8sLx5rokAMyoZP-4d7tebs0e1MZ0ZImTfvfrj-Yx6nRXcKs4_8cOFc2VHodbsdQMEh1s0aEnrLSDw1vJD6eUFQo4YlIICE1SwEnJkXi3BDHPckPQ4IpHcwUIzNw5S04hpCaO_mghJ6a71hLIziVPQCPFa68csyUthMwf1ItKoyJkqjysIF6SnXlYrhSRqTOjTbQLfRzNSKjrFhFr41vSju',
-  YYZ: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAbovCqE7us0SisaDJHkSxwZMRbTk1sYfZWVlSblUqoNrnJRYSlAlOf_wwqw5NeR8-NMYpVjnbn8kltnapwews_SG3ef4C_njrHFWvAWk4zAuPR0POU89GfrqDO4Lp3efRdPmOoEnYfejoYpNYf0CDPfkWp0TNv73gx0TyawGmGYdwIqWnArvAeA3IWwMXhAHeKuSK81Bv_Lia8G2J4CkqDtoLnP-Sd6O2Y5DR7X6gruual8xC7jbM-f-6OMm76GlU8jDgLrX-KXgIV',
-  YTZ: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAbovCqE7us0SisaDJHkSxwZMRbTk1sYfZWVlSblUqoNrnJRYSlAlOf_wwqw5NeR8-NMYpVjnbn8kltnapwews_SG3ef4C_njrHFWvAWk4zAuPR0POU89GfrqDO4Lp3efRdPmOoEnYfejoYpNYf0CDPfkWp0TNv73gx0TyawGmGYdwIqWnArvAeA3IWwMXhAHeKuSK81Bv_Lia8G2J4CkqDtoLnP-Sd6O2Y5DR7X6gruual8xC7jbM-f-6OMm76GlU8jDgLrX-KXgIV',
-  YUL: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDFXjz71KK8tpXS2xkgzu2SJYFAlVA5khvLBwxx1qsdqnTR7ePznYSo-tHyd9LLr3VKg77LnVsRmSSS5_zEd6UJJ1fTYBTOCnfj38mM7hI5qqHniAVT8m4c4A58BG60VnAoWdFFTDqZNS-MolrysNWQOtsWrIkZRCmQCs39lEFu8jUuT5QP0Kxe-4e8frx6KE689JjwAtbn7nJcBxzJWe5kcl8_9sliLGyOWzVkzrRfWDXCbGbzfaCPAh2AhTDWmyt2WX5wedovMZgs',
-  YEG: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBMVqe5uZVkd62eU5zrOH0da2ehRsLgUxPdlWZtDugz-SgFmpqZYFzMSiWhqmavt6slp0IP8ylZfB2Yfe8V3E9-GpdaZnmU4mmUyX4dv7rNKHdwMaVmk6XnXrkx3tDw7RR5FqIrmN8wMzV_4MncYJpfzAS1_7TvtqH6ivQDU23EUyOAz68n40aMcIn3B7JXWX7BqBzvtcJkxSHUqKo5OF-zLHVsM0C90ltlX6jz9cxFFflZzhUEl7BhwKErNbExUu4g2e46rZA7NyrQ',
-  YOW: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZY5JLjcLHfS0lwT-U6IfMTNo7LwttyKULSzANzSEhugDq_ECYvD7_RM08FgljX9oZS5rp1TzfqwHU62m74dKmPIpI7ZClLmXxqrgjRJoDlJ0plh_B-XQHIeYFAc7Q1AUQCsrah2WCgMIWs7RBYlziVidDNPAfZCf6MQBWgpDION5cCF9QwLE4s10G50krpC1Fo0vLXZGxIPggcQXpwsuBlDzFzzF9XKUZkdRTN3xtPaZRyt6MeAJrY6UVTIVzV38NzSPf7qCqCTkp',
+  YYZ: `${SB}/yyz/hero.jpg`,
+  YTZ: `${SB}/ytz/hero.jpg`,
+  YUL: `${SB}/yul/hero.jpg`,
+  YEG: `${SB}/yeg/hero.jpg`,
+  YYC: `${SB}/yyc/hero.jpg`,
+  YOW: `${SB}/yow/hero.jpg`,
+  YYT: `${SB}/yyt/hero.jpg`,
   YWG: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBomsxVophU8psS6w_DgjIiYrLxLWC9qPuBrPKVeuB0eJjAM5XDripIxdVae_nByT7iF3-OqUdYvQjXnUuEngTlAfhD_ErHviEg12cU5YreGzo_nXXNofvvgqaZ75H1IJfThDmhah1bI0U7uUcjQRpG9-581jXWwbSxdc9piUcWqgBZ_cUgVXIHkgsUK2mVaExNA0g39IC-FgcQyEFEfuEWMLeXjFNWF8tg8WCYb2yw6jvaqyv6TRgQJmIJlgVJ1ieIqHNhCgS_5Ys',
-  YYT: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAGBcRfWNR1hrkH0Oq8U1oDQz2i5rHnFeccdgckHg4UMB6-_E6cz8dAXtyRbd-mpCPacfT4XQff83cvQegLJlKCzFlCoE8vbny94j8xN6mg2ByfATh6qQSsifId8HJJ5irlqVTTI1OUDY7GtCQaA4IlojTjlpdh2wgOH9mqHPqYYsNOfetNiBLR59zK3fbbI9JN7sIF9QrHS9iKhZ6Xc_TWH0xwh9ne2_Y2bls1heUZMa1bLQKmbMM7aoxDPD5i5boYedRmLg2d_hHi',
-  // YYC and YHZ use the Alberta/Ontario hero fallbacks until dedicated images are added
-  YYC: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBMVqe5uZVkd62eU5zrOH0da2ehRsLgUxPdlWZtDugz-SgFmpqZYFzMSiWhqmavt6slp0IP8ylZfB2Yfe8V3E9-GpdaZnmU4mmUyX4dv7rNKHdwMaVmk6XnXrkx3tDw7RR5FqIrmN8wMzV_4MncYJpfzAS1_7TvtqH6ivQDU23EUyOAz68n40aMcIn3B7JXWX7BqBzvtcJkxSHUqKo5OF-zLHVsM0C90ltlX6jz9cxFFflZzhUEl7BhwKErNbExUu4g2e46rZA7NyrQ',
   YHZ: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZY5JLjcLHfS0lwT-U6IfMTNo7LwttyKULSzANzSEhugDq_ECYvD7_RM08FgljX9oZS5rp1TzfqwHU62m74dKmPIpI7ZClLmXxqrgjRJoDlJ0plh_B-XQHIeYFAc7Q1AUQCsrah2WCgMIWs7RBYlziVidDNPAfZCf6MQBWgpDION5cCF9QwLE4s10G50krpC1Fo0vLXZGxIPggcQXpwsuBlDzFzzF9XKUZkdRTN3xtPaZRyt6MeAJrY6UVTIVzV38NzSPf7qCqCTkp',
 }
 

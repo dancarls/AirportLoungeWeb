@@ -323,7 +323,9 @@ export default async function HomePage() {
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
                 </Link>
-                <h3 className="font-headline-md text-primary mb-3">{post.title}</h3>
+                <Link href={`/blog/${post.slug}`}>
+                  <h3 className="font-headline-md text-primary mb-3 hover:underline">{post.title}</h3>
+                </Link>
                 <p className="text-secondary text-sm mb-4 leading-relaxed line-clamp-3">{post.excerpt}</p>
                 <Link href={`/blog/${post.slug}`} className="text-primary font-bold text-[10px] uppercase tracking-widest border-b border-primary/20 hover:border-primary transition-all pb-1 inline-block">
                   Read Guide

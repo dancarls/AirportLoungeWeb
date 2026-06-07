@@ -51,6 +51,8 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
 
   const dots = getPulseDots(airport.lounges.length)
   const officialMapUrl = airport.terminal_map_url
+  const mapHref  = officialMapUrl ?? `/airports/${airport.iata_code}`
+  const isExternal = Boolean(officialMapUrl)
 
   return (
     <section id="terminal-navigation" className="py-section-gap bg-secondary-fixed">
@@ -82,10 +84,8 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
 
         {/* Map container — exact stitch design */}
         <a
-          href={officialMapUrl ?? '#'}
-          target={officialMapUrl ? '_blank' : undefined}
-          rel="noreferrer"
-          onClick={e => { if (!officialMapUrl) e.preventDefault() }}
+          href={mapHref}
+          {...(isExternal ? { target: '_blank', rel: 'noreferrer' } : {})}
           className="relative bg-white aspect-[21/9] editorial-shadow overflow-hidden group block"
         >
           {/* Aerial image */}
@@ -123,9 +123,9 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
           {/* Hover state — revealed CTA */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
             <div className="flex items-center gap-3 bg-primary text-white px-8 py-4 editorial-shadow">
-              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>open_in_new</span>
+              <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>{isExternal ? 'open_in_new' : 'arrow_forward'}</span>
               <span className="font-label-caps text-label-caps uppercase tracking-widest">
-                Open Official Terminal Map
+                {isExternal ? 'Open Official Terminal Map' : `View All ${airport.iata_code} Lounges`}
               </span>
             </div>
           </div>

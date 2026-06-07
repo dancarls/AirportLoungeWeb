@@ -216,7 +216,10 @@ export default function FeaturedLoungeSection({ lounge, primaryImageUrl }: Props
           <div className="flex flex-col lg:flex-row gap-16 items-center">
 
             {/* Image */}
-            <div className="w-full lg:w-3/5 relative group">
+            <Link
+              href={iata ? `/airports/${iata}/lounges/${lounge.slug}` : `/lounges/${lounge.slug}`}
+              className="w-full lg:w-3/5 relative group block"
+            >
               <div className="aspect-[16/9] overflow-hidden">
                 {primaryImageUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -231,7 +234,7 @@ export default function FeaturedLoungeSection({ lounge, primaryImageUrl }: Props
               <div className="absolute top-6 right-6 bg-bone-white/90 backdrop-blur px-4 py-2 editorial-shadow">
                 <span className="font-label-caps text-label-caps text-primary">Verified Data</span>
               </div>
-            </div>
+            </Link>
 
             {/* Info */}
             <div className="w-full lg:w-2/5">
@@ -243,7 +246,9 @@ export default function FeaturedLoungeSection({ lounge, primaryImageUrl }: Props
                 </div>
               )}
 
-              <h2 className="font-headline-lg text-headline-lg text-primary mb-4">{lounge.name}</h2>
+              <Link href={iata ? `/airports/${iata}/lounges/${lounge.slug}` : `/lounges/${lounge.slug}`}>
+                <h2 className="font-headline-lg text-headline-lg text-primary mb-4 hover:underline">{lounge.name}</h2>
+              </Link>
 
               {lounge.airport && (
                 <p className="font-label-caps text-label-caps text-sand-dark uppercase mb-4">
