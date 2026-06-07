@@ -40,12 +40,12 @@ const HERO_IMAGE: Record<string, string> = {
   YYC: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yyc/hero.jpg',
   YEG: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yeg/hero.jpg',
   YOW: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yow/hero.jpg',
-  YWG: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBomsxVophU8psS6w_DgjIiYrLxLWC9qPuBrPKVeuB0eJjAM5XDripIxdVae_nByT7iF3-OqUdYvQjXnUuEngTlAfhD_ErHviEg12cU5YreGzo_nXXNofvvgqaZ75H1IJfThDmhah1bI0U7uUcjQRpG9-581jXWwbSxdc9piUcWqgBZ_cUgVXIHkgsUK2mVaExNA0g39IC-FgcQyEFEfuEWMLeXjFNWF8tg8WCYb2yw6jvaqyv6TRgQJmIJlgVJ1ieIqHNhCgS_5Ys',
-  YHZ: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZY5JLjcLHfS0lwT-U6IfMTNo7LwttyKULSzANzSEhugDq_ECYvD7_RM08FgljX9oZS5rp1TzfqwHU62m74dKmPIpI7ZClLmXxqrgjRJoDlJ0plh_B-XQHIeYFAc7Q1AUQCsrah2WCgMIWs7RBYlziVidDNPAfZCf6MQBWgpDION5cCF9QwLE4s10G50krpC1Fo0vLXZGxIPggcQXpwsuBlDzFzzF9XKUZkdRTN3xtPaZRyt6MeAJrY6UVTIVzV38NzSPf7qCqCTkp',
+  YWG: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/ywg/hero.jpg',
+  YHZ: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yhz/hero.jpg',
   YYT: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yyt/hero.jpg',
-  YXE: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBomsxVophU8psS6w_DgjIiYrLxLWC9qPuBrPKVeuB0eJjAM5XDripIxdVae_nByT7iF3-OqUdYvQjXnUuEngTlAfhD_ErHviEg12cU5YreGzo_nXXNofvvgqaZ75H1IJfThDmhah1bI0U7uUcjQRpG9-581jXWwbSxdc9piUcWqgBZ_cUgVXIHkgsUK2mVaExNA0g39IC-FgcQyEFEfuEWMLeXjFNWF8tg8WCYb2yw6jvaqyv6TRgQJmIJlgVJ1ieIqHNhCgS_5Ys',
-  YQR: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBomsxVophU8psS6w_DgjIiYrLxLWC9qPuBrPKVeuB0eJjAM5XDripIxdVae_nByT7iF3-OqUdYvQjXnUuEngTlAfhD_ErHviEg12cU5YreGzo_nXXNofvvgqaZ75H1IJfThDmhah1bI0U7uUcjQRpG9-581jXWwbSxdc9piUcWqgBZ_cUgVXIHkgsUK2mVaExNA0g39IC-FgcQyEFEfuEWMLeXjFNWF8tg8WCYb2yw6jvaqyv6TRgQJmIJlgVJ1ieIqHNhCgS_5Ys',
-  YQB: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDFXjz71KK8tpXS2xkgzu2SJYFAlVA5khvLBwxx1qsdqnTR7ePznYSo-tHyd9LLr3VKg77LnVsRmSSS5_zEd6UJJ1fTYBTOCnfj38mM7hI5qqHniAVT8m4c4A58BG60VnAoWdFFTDqZNS-MolrysNWQOtsWrIkZRCmQCs39lEFu8jUuT5QP0Kxe-4e8frx6KE689JjwAtbn7nJcBxzJWe5kcl8_9sliLGyOWzVkzrRfWDXCbGbzfaCPAh2AhTDWmyt2WX5wedovMZgs',
+  YXE: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yxe/hero.jpg',
+  YQR: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yqr/hero.jpg',
+  YQB: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yqb/hero.jpg',
 }
 
 const ACCESS_GUIDE: Record<string, string> = {

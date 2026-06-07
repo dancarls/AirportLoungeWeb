@@ -21,6 +21,9 @@ const PROVINCE: Record<string, string> = {
   YWG: 'Manitoba',
   YHZ: 'Nova Scotia',
   YYT: 'Newfoundland & Labrador',
+  YXE: 'Saskatchewan',
+  YQR: 'Saskatchewan',
+  YQB: 'Quebec',
 }
 
 const DESCRIPTION: Record<string, string> = {
@@ -34,6 +37,9 @@ const DESCRIPTION: Record<string, string> = {
   YWG: 'A modern prairie gateway with efficient transit lounges and local Canadian flair.',
   YHZ: "Atlantic Canada's primary international hub. Air Canada Maple Leaf Lounge currently closed for renovation (reopening early 2027).",
   YYT: 'Easternmost hub with essential lounges for transatlantic and domestic flyers.',
+  YXE: 'Saskatoon John G. Diefenbaker International — serving Saskatchewan with Air Canada lounge access.',
+  YQR: 'Regina International — Saskatchewan\'s capital city airport with Air Canada Maple Leaf Lounge.',
+  YQB: 'Jean Lesage International — Québec City\'s gateway with growing lounge offerings including an Air Canada Café.',
 }
 
 const SB = 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports'
@@ -47,8 +53,11 @@ const AIRPORT_IMAGE: Record<string, string> = {
   YYC: `${SB}/yyc/hero.jpg`,
   YOW: `${SB}/yow/hero.jpg`,
   YYT: `${SB}/yyt/hero.jpg`,
-  YWG: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBomsxVophU8psS6w_DgjIiYrLxLWC9qPuBrPKVeuB0eJjAM5XDripIxdVae_nByT7iF3-OqUdYvQjXnUuEngTlAfhD_ErHviEg12cU5YreGzo_nXXNofvvgqaZ75H1IJfThDmhah1bI0U7uUcjQRpG9-581jXWwbSxdc9piUcWqgBZ_cUgVXIHkgsUK2mVaExNA0g39IC-FgcQyEFEfuEWMLeXjFNWF8tg8WCYb2yw6jvaqyv6TRgQJmIJlgVJ1ieIqHNhCgS_5Ys',
-  YHZ: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZY5JLjcLHfS0lwT-U6IfMTNo7LwttyKULSzANzSEhugDq_ECYvD7_RM08FgljX9oZS5rp1TzfqwHU62m74dKmPIpI7ZClLmXxqrgjRJoDlJ0plh_B-XQHIeYFAc7Q1AUQCsrah2WCgMIWs7RBYlziVidDNPAfZCf6MQBWgpDION5cCF9QwLE4s10G50krpC1Fo0vLXZGxIPggcQXpwsuBlDzFzzF9XKUZkdRTN3xtPaZRyt6MeAJrY6UVTIVzV38NzSPf7qCqCTkp',
+  YWG: `${SB}/ywg/hero.jpg`,
+  YHZ: `${SB}/yhz/hero.jpg`,
+  YXE: `${SB}/yxe/hero.jpg`,
+  YQR: `${SB}/yqr/hero.jpg`,
+  YQB: `${SB}/yqb/hero.jpg`,
 }
 
 const FALLBACK_IMAGE = AIRPORT_IMAGE.YVR
