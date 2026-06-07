@@ -1,37 +1,45 @@
 import type { MetadataRoute } from 'next'
 import { createClient } from '@supabase/supabase-js'
+import { getAllPosts } from '@/lib/blog'
 
 const BASE = 'https://airportlounges.ca'
+const NOW  = new Date().toISOString()
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   const staticPages: MetadataRoute.Sitemap = [
-    { url: BASE,               priority: 1.0, changeFrequency: 'daily' },
-    { url: `${BASE}/lounges`,  priority: 0.9, changeFrequency: 'daily' },
-    { url: `${BASE}/airports`, priority: 0.8, changeFrequency: 'weekly' },
-    { url: `${BASE}/blog`,     priority: 0.8, changeFrequency: 'weekly' },
-    { url: `${BASE}/blog/priority-pass-lounges-canada`,       priority: 0.9, changeFrequency: 'monthly' },
-    { url: `${BASE}/blog/best-airport-lounges-remote-work-canada`, priority: 0.9, changeFrequency: 'monthly' },
-    { url: `${BASE}/blog/canadian-airport-lounges-shower-access`, priority: 0.9, changeFrequency: 'monthly' },
-    { url: `${BASE}/privacy`,  priority: 0.2, changeFrequency: 'yearly' },
-    { url: `${BASE}/terms`,    priority: 0.2, changeFrequency: 'yearly' },
+    { url: BASE,               priority: 1.0, changeFrequency: 'daily',   lastModified: NOW },
+    { url: `${BASE}/lounges`,  priority: 0.9, changeFrequency: 'daily',   lastModified: NOW },
+    { url: `${BASE}/airports`, priority: 0.8, changeFrequency: 'weekly',  lastModified: NOW },
+    { url: `${BASE}/blog`,     priority: 0.8, changeFrequency: 'weekly',  lastModified: NOW },
+    { url: `${BASE}/privacy`,  priority: 0.2, changeFrequency: 'yearly',  lastModified: NOW },
+    { url: `${BASE}/terms`,    priority: 0.2, changeFrequency: 'yearly',  lastModified: NOW },
   ]
 
-  if (!url || !key) return staticPages
+  // Blog posts — pulled dynamically so new posts appear automatically
+  const blogPages: MetadataRoute.Sitemap = getAllPosts().map(post => ({
+    url: `${BASE}/blog/${post.slug}`,
+    priority: 0.9,
+    changeFrequency: 'monthly' as const,
+    lastModified: post.publishedAt ? new Date(post.publishedAt).toISOString() : NOW,
+  }))
+
+  if (!url || !key) return [...staticPages, ...blogPages]
 
   const supabase = createClient(url, key)
 
   const [{ data: airports }, { data: lounges }] = await Promise.all([
-    supabase.from('airports').select('iata_code').eq('is_active', true),
-    supabase.from('lounges').select('slug, airport:airports!inner(iata_code)').eq('is_active', true),
+    supabase.from('airports').select('iata_code, updated_at').eq('is_active', true),
+    supabase.from('lounges').select('slug, updated_at, airport:airports!inner(iata_code)').eq('is_active', true),
   ])
 
   const airportPages: MetadataRoute.Sitemap = (airports ?? []).map(a => ({
     url: `${BASE}/airports/${a.iata_code}`,
     priority: 0.8,
     changeFrequency: 'weekly' as const,
+    lastModified: a.updated_at ? new Date(a.updated_at).toISOString() : NOW,
   }))
 
   const loungePages: MetadataRoute.Sitemap = (lounges ?? [])
@@ -42,9 +50,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${BASE}/airports/${iata}/lounges/${l.slug}`,
         priority: 0.9,
         changeFrequency: 'weekly' as const,
+        lastModified: l.updated_at ? new Date(l.updated_at).toISOString() : NOW,
       }
     })
     .filter(Boolean) as MetadataRoute.Sitemap
 
-  return [...staticPages, ...airportPages, ...loungePages]
+  return [...staticPages, ...blogPages, ...airportPages, ...loungePages]
 }

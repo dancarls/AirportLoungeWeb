@@ -50,7 +50,7 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
   const fallbackImg = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAsUQPE62JEQ3D3Ex8UH4OlUeO8t89NrJixOZWymGb11WbLKrjITTElKtDrjJGXvjyEE1pj8XAPDphNzoDJDOjCD-Jf8g1dczO257Fmsgas6ZdEP9nnMvrdXB8bySGbPRduPvh4PY7ykVLZ0MkLhQOROra6vHGv4nnfp68UnfhK8qOuza-Mgj8dEyzMBRlZunD_-6hklCG2DiZz20gLUUsJFAQCoQUhVmMD0I6vK8dNb6f1EkuFGLWIVbeEeSsaYPa0lRTBcjFaGrf_'
 
   const dots = getPulseDots(airport.lounges.length)
-  const officialMapUrl = airport.terminal_map_url ?? '#'
+  const officialMapUrl = airport.terminal_map_url
 
   return (
     <section id="terminal-navigation" className="py-section-gap bg-secondary-fixed">
@@ -82,9 +82,10 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
 
         {/* Map container — exact stitch design */}
         <a
-          href={officialMapUrl}
-          target="_blank"
+          href={officialMapUrl ?? '#'}
+          target={officialMapUrl ? '_blank' : undefined}
           rel="noreferrer"
+          onClick={e => { if (!officialMapUrl) e.preventDefault() }}
           className="relative bg-white aspect-[21/9] editorial-shadow overflow-hidden group block"
         >
           {/* Aerial image */}

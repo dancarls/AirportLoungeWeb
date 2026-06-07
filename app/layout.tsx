@@ -4,26 +4,24 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
+const BASE = 'https://airportlounges.ca'
+
 export const metadata: Metadata = {
+  metadataBase: new URL(BASE),
   title: {
     default: 'AirportLounges.ca | Find the right lounge before you reach the gate.',
     template: '%s | AirportLounges.ca',
   },
   description: 'Search by airport, terminal, access card, or amenity. Verified lounge data, terminal maps, and real traveller reviews for a seamless transit experience.',
   keywords: ['airport lounge', 'Canada', 'Priority Pass', 'Air Canada Maple Leaf', 'Plaza Premium', 'lounge access', 'credit card lounge', 'terminal map'],
+  alternates: {
+    canonical: BASE,
+  },
   openGraph: {
     type: 'website',
     locale: 'en_CA',
     siteName: 'AirportLounges.ca',
-    url: 'https://airportlounges.ca',
-    images: [
-      {
-        url: 'https://airportlounges.ca/og-default.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'AirportLounges.ca — Find the right lounge before you reach the gate',
-      },
-    ],
+    url: BASE,
   },
   twitter: {
     card: 'summary_large_image',
@@ -31,6 +29,38 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'MqIm81wvmdy1xQCa-LvcLU2-G55iu3uAAxBrpBGwv4k',
+  },
+}
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'AirportLounges.ca',
+  url: BASE,
+  logo: `${BASE}/favicon.ico`,
+  description: 'Canada\'s airport lounge directory — verified lounge data, access requirements, amenities, and traveller reviews for all major Canadian airports.',
+  sameAs: [],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    email: 'hello@airportlounges.ca',
+    availableLanguage: 'English',
+  },
+}
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'AirportLounges.ca',
+  url: BASE,
+  description: 'Find every airport lounge in Canada — access requirements, amenities, hours, and reviews.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${BASE}/lounges?q={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
   },
 }
 
@@ -49,6 +79,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
         <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
       </head>
       <body className="bg-bone-white text-on-surface font-body-md transition-colors duration-300">
         <Header />

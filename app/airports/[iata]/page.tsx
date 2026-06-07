@@ -13,6 +13,7 @@ const PROVINCE: Record<string, string> = {
   YVR: 'British Columbia', YYZ: 'Ontario', YTZ: 'Ontario',
   YUL: 'Quebec', YYC: 'Alberta', YEG: 'Alberta',
   YOW: 'Ontario', YWG: 'Manitoba', YHZ: 'Nova Scotia', YYT: 'Newfoundland & Labrador',
+  YXE: 'Saskatchewan', YQR: 'Saskatchewan', YQB: 'Quebec',
 }
 
 const HERO_DESCRIPTION: Record<string, string> = {
@@ -26,19 +27,25 @@ const HERO_DESCRIPTION: Record<string, string> = {
   YWG: "Winnipeg Richardson International Airport — the Prairie gateway. A modern, efficient hub serving the heart of Canada with Air Canada lounge access.",
   YHZ: "Halifax Stanfield International Airport — Atlantic Canada's primary international gateway. Note: the Air Canada Maple Leaf Lounge is currently closed for major renovation, expected to reopen early 2027.",
   YYT: "St. John's International Airport — Canada's easternmost major hub, serving transatlantic routes and domestic travel throughout Newfoundland and Labrador.",
+  YXE: "Saskatoon John G. Diefenbaker International Airport — serving Saskatchewan's largest city and gateway to the prairies. Home to an Air Canada Maple Leaf Lounge for eligible travellers.",
+  YQR: "Regina International Airport — capital city gateway for Saskatchewan. Offers an Air Canada Maple Leaf Lounge, one of the most compact in the network, for eligible Air Canada passengers.",
+  YQB: "Québec City Jean Lesage International Airport — gateway to historic Old Québec and the Laurentians. A growing lounge ecosystem including a new independent lounge opening Summer 2026.",
 }
 
 const HERO_IMAGE: Record<string, string> = {
   YVR: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAXFnLE17iBdV_-CU8Kyip1Y0ksnv_oxgsQxpb9UksaH_B8zHRCwlBT6k8sLx5rokAMyoZP-4d7tebs0e1MZ0ZImTfvfrj-Yx6nRXcKs4_8cOFc2VHodbsdQMEh1s0aEnrLSDw1vJD6eUFQo4YlIICE1SwEnJkXi3BDHPckPQ4IpHcwUIzNw5S04hpCaO_mghJ6a71hLIziVPQCPFa68csyUthMwf1ItKoyJkqjysIF6SnXlYrhSRqTOjTbQLfRzNSKjrFhFr41vSju',
-  YYZ: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAbovCqE7us0SisaDJHkSxwZMRbTk1sYfZWVlSblUqoNrnJRYSlAlOf_wwqw5NeR8-NMYpVjnbn8kltnapwews_SG3ef4C_njrHFWvAWk4zAuPR0POU89GfrqDO4Lp3efRdPmOoEnYfejoYpNYf0CDPfkWp0TNv73gx0TyawGmGYdwIqWnArvAeA3IWwMXhAHeKuSK81Bv_Lia8G2J4CkqDtoLnP-Sd6O2Y5DR7X6gruual8xC7jbM-f-6OMm76GlU8jDgLrX-KXgIV',
-  YTZ: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAbovCqE7us0SisaDJHkSxwZMRbTk1sYfZWVlSblUqoNrnJRYSlAlOf_wwqw5NeR8-NMYpVjnbn8kltnapwews_SG3ef4C_njrHFWvAWk4zAuPR0POU89GfrqDO4Lp3efRdPmOoEnYfejoYpNYf0CDPfkWp0TNv73gx0TyawGmGYdwIqWnArvAeA3IWwMXhAHeKuSK81Bv_Lia8G2J4CkqDtoLnP-Sd6O2Y5DR7X6gruual8xC7jbM-f-6OMm76GlU8jDgLrX-KXgIV',
-  YUL: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDFXjz71KK8tpXS2xkgzu2SJYFAlVA5khvLBwxx1qsdqnTR7ePznYSo-tHyd9LLr3VKg77LnVsRmSSS5_zEd6UJJ1fTYBTOCnfj38mM7hI5qqHniAVT8m4c4A58BG60VnAoWdFFTDqZNS-MolrysNWQOtsWrIkZRCmQCs39lEFu8jUuT5QP0Kxe-4e8frx6KE689JjwAtbn7nJcBxzJWe5kcl8_9sliLGyOWzVkzrRfWDXCbGbzfaCPAh2AhTDWmyt2WX5wedovMZgs',
-  YYC: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBMVqe5uZVkd62eU5zrOH0da2ehRsLgUxPdlWZtDugz-SgFmpqZYFzMSiWhqmavt6slp0IP8ylZfB2Yfe8V3E9-GpdaZnmU4mmUyX4dv7rNKHdwMaVmk6XnXrkx3tDw7RR5FqIrmN8wMzV_4MncYJpfzAS1_7TvtqH6ivQDU23EUyOAz68n40aMcIn3B7JXWX7BqBzvtcJkxSHUqKo5OF-zLHVsM0C90ltlX6jz9cxFFflZzhUEl7BhwKErNbExUu4g2e46rZA7NyrQ',
-  YEG: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBMVqe5uZVkd62eU5zrOH0da2ehRsLgUxPdlWZtDugz-SgFmpqZYFzMSiWhqmavt6slp0IP8ylZfB2Yfe8V3E9-GpdaZnmU4mmUyX4dv7rNKHdwMaVmk6XnXrkx3tDw7RR5FqIrmN8wMzV_4MncYJpfzAS1_7TvtqH6ivQDU23EUyOAz68n40aMcIn3B7JXWX7BqBzvtcJkxSHUqKo5OF-zLHVsM0C90ltlX6jz9cxFFflZzhUEl7BhwKErNbExUu4g2e46rZA7NyrQ',
-  YOW: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZY5JLjcLHfS0lwT-U6IfMTNo7LwttyKULSzANzSEhugDq_ECYvD7_RM08FgljX9oZS5rp1TzfqwHU62m74dKmPIpI7ZClLmXxqrgjRJoDlJ0plh_B-XQHIeYFAc7Q1AUQCsrah2WCgMIWs7RBYlziVidDNPAfZCf6MQBWgpDION5cCF9QwLE4s10G50krpC1Fo0vLXZGxIPggcQXpwsuBlDzFzzF9XKUZkdRTN3xtPaZRyt6MeAJrY6UVTIVzV38NzSPf7qCqCTkp',
+  YYZ: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yyz/hero.jpg',
+  YTZ: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/ytz/hero.jpg',
+  YUL: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yul/hero.jpg',
+  YYC: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yyc/hero.jpg',
+  YEG: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yeg/hero.jpg',
+  YOW: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yow/hero.jpg',
   YWG: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBomsxVophU8psS6w_DgjIiYrLxLWC9qPuBrPKVeuB0eJjAM5XDripIxdVae_nByT7iF3-OqUdYvQjXnUuEngTlAfhD_ErHviEg12cU5YreGzo_nXXNofvvgqaZ75H1IJfThDmhah1bI0U7uUcjQRpG9-581jXWwbSxdc9piUcWqgBZ_cUgVXIHkgsUK2mVaExNA0g39IC-FgcQyEFEfuEWMLeXjFNWF8tg8WCYb2yw6jvaqyv6TRgQJmIJlgVJ1ieIqHNhCgS_5Ys',
   YHZ: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBZY5JLjcLHfS0lwT-U6IfMTNo7LwttyKULSzANzSEhugDq_ECYvD7_RM08FgljX9oZS5rp1TzfqwHU62m74dKmPIpI7ZClLmXxqrgjRJoDlJ0plh_B-XQHIeYFAc7Q1AUQCsrah2WCgMIWs7RBYlziVidDNPAfZCf6MQBWgpDION5cCF9QwLE4s10G50krpC1Fo0vLXZGxIPggcQXpwsuBlDzFzzF9XKUZkdRTN3xtPaZRyt6MeAJrY6UVTIVzV38NzSPf7qCqCTkp',
-  YYT: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAGBcRfWNR1hrkH0Oq8U1oDQz2i5rHnFeccdgckHg4UMB6-_E6cz8dAXtyRbd-mpCPacfT4XQff83cvQegLJlKCzFlCoE8vbny94j8xN6mg2ByfATh6qQSsifId8HJJ5irlqVTTI1OUDY7GtCQaA4IlojTjlpdh2wgOH9mqHPqYYsNOfetNiBLR59zK3fbbI9JN7sIF9QrHS9iKhZ6Xc_TWH0xwh9ne2_Y2bls1heUZMa1bLQKmbMM7aoxDPD5i5boYedRmLg2d_hHi',
+  YYT: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yyt/hero.jpg',
+  YXE: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBomsxVophU8psS6w_DgjIiYrLxLWC9qPuBrPKVeuB0eJjAM5XDripIxdVae_nByT7iF3-OqUdYvQjXnUuEngTlAfhD_ErHviEg12cU5YreGzo_nXXNofvvgqaZ75H1IJfThDmhah1bI0U7uUcjQRpG9-581jXWwbSxdc9piUcWqgBZ_cUgVXIHkgsUK2mVaExNA0g39IC-FgcQyEFEfuEWMLeXjFNWF8tg8WCYb2yw6jvaqyv6TRgQJmIJlgVJ1ieIqHNhCgS_5Ys',
+  YQR: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBomsxVophU8psS6w_DgjIiYrLxLWC9qPuBrPKVeuB0eJjAM5XDripIxdVae_nByT7iF3-OqUdYvQjXnUuEngTlAfhD_ErHviEg12cU5YreGzo_nXXNofvvgqaZ75H1IJfThDmhah1bI0U7uUcjQRpG9-581jXWwbSxdc9piUcWqgBZ_cUgVXIHkgsUK2mVaExNA0g39IC-FgcQyEFEfuEWMLeXjFNWF8tg8WCYb2yw6jvaqyv6TRgQJmIJlgVJ1ieIqHNhCgS_5Ys',
+  YQB: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDFXjz71KK8tpXS2xkgzu2SJYFAlVA5khvLBwxx1qsdqnTR7ePznYSo-tHyd9LLr3VKg77LnVsRmSSS5_zEd6UJJ1fTYBTOCnfj38mM7hI5qqHniAVT8m4c4A58BG60VnAoWdFFTDqZNS-MolrysNWQOtsWrIkZRCmQCs39lEFu8jUuT5QP0Kxe-4e8frx6KE689JjwAtbn7nJcBxzJWe5kcl8_9sliLGyOWzVkzrRfWDXCbGbzfaCPAh2AhTDWmyt2WX5wedovMZgs',
 }
 
 const ACCESS_GUIDE: Record<string, string> = {
@@ -52,6 +59,9 @@ const ACCESS_GUIDE: Record<string, string> = {
   YWG: "Winnipeg's lounge is in the domestic departures area. Primary access is via Air Canada Altitude status or compatible premium credit cards. Day passes are available.",
   YHZ: "Halifax's Air Canada Maple Leaf Lounge is currently closed for renovation (expected reopen early 2027). Contact Air Canada directly for alternative arrangements during this period.",
   YYT: "St. John's has a small but welcoming lounge in the domestic area. Access via Air Canada Altitude status or eligible credit cards. Day passes available at the door.",
+  YXE: "Saskatoon's Air Canada Maple Leaf Lounge is the primary lounge option. Access via Air Canada Altitude status or eligible premium Aeroplan credit cards. No Priority Pass or DragonPass accepted.",
+  YQR: "Regina's Air Canada Maple Leaf Lounge is one of the smallest in the network. Access is limited to Air Canada premium cabin passengers and Aeroplan Elite members. No Priority Pass or DragonPass.",
+  YQB: "Québec City's lounge landscape is in transition. The V.I.P. Lounge by Club Med (closed Aug 2025 for renovation) is being replaced by a new independent lounge and Air Canada Café opening Summer 2026.",
 }
 
 const SUPABASE_URL = 'https://ixgbdmrembkrpbkjhtfi.supabase.co'
@@ -80,6 +90,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description: desc,
+    alternates: {
+      canonical: `https://airportlounges.ca/airports/${code}`,
+    },
     openGraph: {
       title: `${code} Lounges — ${city} | AirportLounges.ca`,
       description: desc,
@@ -138,8 +151,38 @@ export default async function AirportPage({ params }: Props) {
   const heroDesc    = HERO_DESCRIPTION[code]   ?? `Explore premium lounges at ${airport.name}.`
   const accessGuide = ACCESS_GUIDE[code]       ?? `Many lounges at ${code} accept Priority Pass, DragonPass, and major Canadian credit cards. Check each lounge for specific access rules.`
 
+  const pageUrl = `https://airportlounges.ca/airports/${code}`
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://airportlounges.ca' },
+      { '@type': 'ListItem', position: 2, name: 'Airports', item: 'https://airportlounges.ca/airports' },
+      { '@type': 'ListItem', position: 3, name: code,       item: pageUrl },
+    ],
+  }
+
+  const itemListSchema = lounges.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `Airport Lounges at ${airport.name}`,
+    url: pageUrl,
+    numberOfItems: lounges.length,
+    itemListElement: lounges.map((l, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: l.name,
+      url: `https://airportlounges.ca/airports/${code}/lounges/${l.slug}`,
+    })),
+  } : null
+
   return (
     <div className="bg-bone-white min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      {itemListSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      )}
 
       {/* ── Hero ──────────────────────────────────────────── */}
       <header className="relative w-full flex items-end overflow-hidden" style={{ height: '70vh', minHeight: '500px' }}>

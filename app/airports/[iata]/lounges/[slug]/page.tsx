@@ -4,6 +4,7 @@ import Link from 'next/link'
 import ReviewCard from '@/components/ReviewCard'
 import ReviewForm from '@/components/ReviewForm'
 import LoungeMapClient from '@/components/LoungeMapClient'
+import GalleryLightbox from '@/components/GalleryLightbox'
 import WeatherWidget from '@/components/WeatherWidget'
 import { getWeather } from '@/lib/weather'
 import type { Metadata } from 'next'
@@ -39,6 +40,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: data.name,
     description,
+    alternates: {
+      canonical: `https://airportlounges.ca/airports/${code}/lounges/${slug}`,
+    },
     openGraph: {
       title: `${data.name} | ${code} Airport Lounge`,
       description,
@@ -148,6 +152,17 @@ export default async function LoungeDetailPage({ params }: Props) {
   const heroImg = orderedImages[0]
   const accessTypes = (l.access_types ?? []) as AccessType[]
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://airportlounges.ca' },
+      { '@type': 'ListItem', position: 2, name: 'Airports', item: 'https://airportlounges.ca/airports' },
+      { '@type': 'ListItem', position: 3, name: code,       item: `https://airportlounges.ca/airports/${code}` },
+      { '@type': 'ListItem', position: 4, name: l.name,     item: `https://airportlounges.ca/airports/${code}/lounges/${l.slug}` },
+    ],
+  }
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -188,10 +203,8 @@ export default async function LoungeDetailPage({ params }: Props) {
 
   return (
     <div className="bg-bone-white min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <div className="max-w-container-max mx-auto px-margin-desktop pt-8">
@@ -293,33 +306,7 @@ export default async function LoungeDetailPage({ params }: Props) {
           )}
 
           {/* Photo gallery */}
-          {orderedImages.length > 1 && (
-            <div>
-              <h3 className="font-headline-md text-headline-md mb-8">Gallery</h3>
-              <div className="grid grid-cols-12 gap-4 h-[420px]">
-                <div className="col-span-8 h-full overflow-hidden rounded">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    className="w-full h-full object-cover"
-                    src={getImageUrl(orderedImages[0].storage_path)}
-                    alt={orderedImages[0].alt_text ?? l.name}
-                  />
-                </div>
-                <div className="col-span-4 flex flex-col gap-4">
-                  {orderedImages.slice(1, 3).map((img, i) => (
-                    <div key={img.id} className="h-1/2 overflow-hidden rounded">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        className="w-full h-full object-cover"
-                        src={getImageUrl(img.storage_path)}
-                        alt={img.alt_text ?? `${l.name} ${i + 2}`}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
+          <GalleryLightbox images={orderedImages} loungeName={l.name} />
 
           {/* Sponsored slot */}
           <div className="bg-primary text-white p-8 rounded-xl flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">

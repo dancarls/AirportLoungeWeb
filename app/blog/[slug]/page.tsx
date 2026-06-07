@@ -20,6 +20,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${post.metaTitle} | AirportLounges.ca`,
     description: post.metaDescription,
+    alternates: {
+      canonical: `https://airportlounges.ca/blog/${post.slug}`,
+    },
     openGraph: {
       title: post.metaTitle,
       description: post.metaDescription,
@@ -38,8 +41,48 @@ export default async function BlogPostPage({ params }: Props) {
 
   const weather = await getWeather(49.1947, -123.1792)
 
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.metaTitle,
+    description: post.metaDescription,
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    url: `https://airportlounges.ca/blog/${post.slug}`,
+    image: post.coverImage
+      ? { '@type': 'ImageObject', url: post.coverImage, width: 1200, height: 630 }
+      : undefined,
+    author: {
+      '@type': 'Organization',
+      name: 'AirportLounges.ca',
+      url: 'https://airportlounges.ca',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'AirportLounges.ca',
+      url: 'https://airportlounges.ca',
+      logo: { '@type': 'ImageObject', url: 'https://airportlounges.ca/favicon.ico' },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://airportlounges.ca/blog/${post.slug}`,
+    },
+  }
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home',          item: 'https://airportlounges.ca' },
+      { '@type': 'ListItem', position: 2, name: 'Lounge Library', item: 'https://airportlounges.ca/blog' },
+      { '@type': 'ListItem', position: 3, name: post.title,      item: `https://airportlounges.ca/blog/${post.slug}` },
+    ],
+  }
+
   return (
     <div className="bg-bone-white min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* ── Hero ──────────────────────────────────────────── */}
       <div className="relative h-[380px] bg-aviation-navy overflow-hidden">
         <Image
