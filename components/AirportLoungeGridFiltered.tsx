@@ -88,6 +88,10 @@ function formatVerified(updated_at: string | null): string {
   return `Verified ${d.toLocaleString('en-CA', { month: 'short', year: 'numeric' })}`
 }
 
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()
+}
+
 // ── Component ─────────────────────────────────────────────
 export default function AirportLoungeGridFiltered({ lounges, iata }: Props) {
   const [accessFilter,   setAccessFilter]   = useState<AccessKey | ''>('')
@@ -231,8 +235,9 @@ export default function AirportLoungeGridFiltered({ lounges, iata }: Props) {
         {filtered.map(lounge => {
           const tier = getLoungeTier(lounge.name)
           return (
-            <div
+            <Link
               key={lounge.id}
+              href={`/airports/${iata}/lounges/${lounge.slug}`}
               className="group bg-surface shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden border border-sand-dark/10 flex flex-col h-full"
             >
               {/* Image */}
@@ -312,27 +317,20 @@ export default function AirportLoungeGridFiltered({ lounges, iata }: Props) {
 
                 {lounge.description && (
                   <p className="text-secondary text-sm line-clamp-2 leading-relaxed flex-1 mt-1">
-                    {lounge.description}
+                    {stripHtml(lounge.description)}
                   </p>
                 )}
 
                 <div className="mt-auto flex items-center justify-between pt-4 border-t border-sand-dark/10">
-                  <Link
-                    href={`/airports/${iata}/lounges/${lounge.slug}`}
-                    className="font-label-caps text-label-caps text-primary hover:underline transition-all"
-                  >
+                  <span className="font-label-caps text-label-caps text-primary group-hover:underline transition-all">
                     VIEW DETAILS
-                  </Link>
-                  <Link
-                    href={`/airports/${iata}/lounges/${lounge.slug}`}
-                    className="text-sand-dark hover:text-primary transition-colors"
-                    aria-label="View lounge details"
-                  >
+                  </span>
+                  <span className="text-sand-dark group-hover:text-primary transition-colors">
                     <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_forward</span>
-                  </Link>
+                  </span>
                 </div>
               </div>
-            </div>
+            </Link>
           )
         })}
 
