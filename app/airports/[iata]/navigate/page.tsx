@@ -99,7 +99,7 @@ export default async function NavigatePage({ params }: Props) {
   }
 
   return (
-    <div className="flex flex-col bg-bone-white" style={{ minHeight: 'calc(100vh - 64px)' }}>
+    <div className="flex flex-col bg-bone-white" style={{ height: 'calc(100vh - 80px)' }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
@@ -124,17 +124,19 @@ export default async function NavigatePage({ params }: Props) {
         )}
       </div>
 
-      <IndoorNavigator
-        airport={{
-          iata_code:        airport.iata_code,
-          name:             airport.name,
-          city:             airport.city,
-          latitude:         airport.latitude,
-          longitude:        airport.longitude,
-          terminal_map_url: airport.terminal_map_url,
-        }}
-        lounges={lounges}
-      />
+      <div className="flex-1 min-h-0">
+        <IndoorNavigator
+          airport={{
+            iata_code:        airport.iata_code,
+            name:             airport.name,
+            city:             airport.city,
+            latitude:         airport.latitude,
+            longitude:        airport.longitude,
+            terminal_map_url: airport.terminal_map_url,
+          }}
+          lounges={lounges}
+        />
+      </div>
     </div>
   )
 }

@@ -54,7 +54,7 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
       style: 'mapbox://styles/mapbox/standard',
       center: [airport.longitude, airport.latitude],
       zoom:   hasIndoor ? INDOOR_ZOOM : 15,
-      pitch:  hasIndoor ? 40 : 0,
+      pitch:  0,
       attributionControl: false,
     })
     mapInstanceRef.current = map
@@ -63,6 +63,7 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
     map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
     map.on('load', () => {
+      map.resize()
       if (hasIndoor) {
         enableIndoor(map)
       } else {
@@ -203,12 +204,19 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
   )
 }
 
+const IATA_PRIORITY = ['YYZ', 'YVR', 'YUL', 'YEG', 'YOW', 'YWG', 'YHZ']
+
 // ── Main component ────────────────────────────────────────
 export default function TerminalMapVisual({ airports }: { airports: AirportData[] }) {
   const valid = airports.filter(a => a.latitude && a.longitude)
-  // Only show indoor-covered airports in the quick nav tabs
+  // Only show indoor-covered airports in the quick nav tabs, sorted largest → smallest
   const displayAirports = valid.filter(a => INDOOR_COVERED.has(a.iata_code))
-  const tabAirports = displayAirports.length > 0 ? displayAirports : valid
+  const unsorted = displayAirports.length > 0 ? displayAirports : valid
+  const tabAirports = [...unsorted].sort((a, b) => {
+    const ai = IATA_PRIORITY.indexOf(a.iata_code)
+    const bi = IATA_PRIORITY.indexOf(b.iata_code)
+    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi)
+  })
 
   const [selected,  setSelected]  = useState(tabAirports[0]?.iata_code ?? '')
   const [mapOpen,   setMapOpen]   = useState(false)

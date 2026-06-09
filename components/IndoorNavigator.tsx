@@ -50,12 +50,10 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
     const map = new mapboxgl.Map({
       container: containerRef.current,
-      style: isIndoorCovered
-        ? 'mapbox://styles/mapbox/standard'
-        : 'mapbox://styles/mapbox/satellite-streets-v12',
+      style: 'mapbox://styles/mapbox/standard',
       center:  [airport.longitude, airport.latitude],
-      zoom:    isIndoorCovered ? INDOOR_ZOOM : 14,
-      pitch:   isIndoorCovered ? 40 : 0,
+      zoom:    isIndoorCovered ? INDOOR_ZOOM : 15,
+      pitch:   0,
       bearing: 0,
       attributionControl: false,
     })
@@ -65,6 +63,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
     map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
     map.on('load', () => {
+      map.resize()
       if (isIndoorCovered) enableIndoor(map)
       setMapReady(true)
     })
@@ -150,7 +149,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
     })
 
     if (match) {
-      map.flyTo({ center: [match.lng, match.lat], zoom: 19.5, pitch: 55, duration: 1800 })
+      map.flyTo({ center: [match.lng, match.lat], zoom: 19.5, pitch: 0, duration: 1800 })
 
       // Switch floor if we can
       if (match.floorId) {
@@ -174,7 +173,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
       map.flyTo({
         center:   [airport.longitude, airport.latitude],
         zoom:     isIndoorCovered ? INDOOR_ZOOM : 15,
-        pitch:    isIndoorCovered ? 45 : 20,
+        pitch:    0,
         duration: 1500,
       })
     }
@@ -184,10 +183,10 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
   const sortedFloors = [...floors].sort((a, b) => b.level - a.level)
 
   return (
-    <div className="flex flex-col md:flex-row" style={{ height: 'calc(100vh - 108px)' }}>
+    <div className="h-full flex flex-col md:flex-row">
 
       {/* ── Map ─────────────────────────────────────────────── */}
-      <div className="relative flex-1 min-h-[55vw] md:min-h-0">
+      <div className="relative h-[50vh] md:h-auto md:flex-1 md:min-h-0">
         <div ref={containerRef} className="absolute inset-0" />
 
         {/* Loading overlay */}
@@ -214,7 +213,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
               </span>
             ) : (
               <span className="bg-black/70 text-white text-[10px] font-label-caps px-3 py-1.5 shadow-lg">
-                SATELLITE VIEW
+                MAP VIEW
               </span>
             )}
           </div>

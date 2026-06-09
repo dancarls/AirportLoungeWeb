@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import mapboxgl from 'mapbox-gl'
-import { INDOOR_COVERED } from '@/lib/mapbox/indoor'
+import { INDOOR_COVERED, enableIndoor } from '@/lib/mapbox/indoor'
 
 interface AirportPin {
   iata_code: string
@@ -43,6 +43,8 @@ export default function AirportMapExplorer({ airports }: Props) {
     map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
     map.on('load', () => {
+      map.resize()
+      enableIndoor(map)
       airports.forEach(airport => {
         const isIndoor = INDOOR_COVERED.has(airport.iata_code)
         const loungeCount = airport.lounges.length
