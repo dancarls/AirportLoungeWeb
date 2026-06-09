@@ -204,10 +204,12 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
   return (
     <div className="flex-1 min-h-0 flex flex-col md:flex-row overflow-hidden">
 
-      {/* ── Map ─────────────────────────────────────────────── */}
-      <div className="relative flex-1 overflow-hidden" style={{ minHeight: '50vh' }}>
-        <div ref={containerRef} className="absolute inset-0" />
-
+      {/* ── Map — ref is on this div directly (same pattern as AirportMapExplorer) */}
+      <div
+        ref={containerRef}
+        className="relative flex-1 overflow-hidden"
+        style={{ minHeight: '50vh' }}
+      >
         {/* Loading overlay */}
         {!mapReady && (
           <div className="absolute inset-0 bg-primary/10 flex items-center justify-center z-10">
