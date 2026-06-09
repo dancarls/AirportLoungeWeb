@@ -62,8 +62,7 @@ export default async function NavigatePage({ params }: Props) {
   const { data: rawLounges } = await supabase
     .from('lounges')
     .select(
-      'id, name, slug, terminal, location_detail, description, rating, review_count, access_types, updated_at, website, phone, opening_hours, images:lounge_images(storage_path, is_primary, sort_order)'
-      // TODO: add ", latitude, longitude" after running supabase/migrations/003_lounge_coordinates.sql
+      'id, name, slug, terminal, location_detail, description, rating, review_count, access_types, updated_at, website, phone, opening_hours, latitude, longitude, images:lounge_images(storage_path, is_primary, sort_order)'
     )
     .eq('airport_id', airport.id)
     .eq('is_active', true)
@@ -84,8 +83,8 @@ export default async function NavigatePage({ params }: Props) {
     website:        l.website ?? null,
     phone:          l.phone   ?? null,
     opening_hours:  l.opening_hours as NavigatorLounge['opening_hours'] ?? null,
-    latitude:       null,   // populated after running 003_lounge_coordinates migration
-    longitude:      null,
+    latitude:       (l.latitude as number | null) ?? null,
+    longitude:      (l.longitude as number | null) ?? null,
   }))
 
   const breadcrumbSchema = {
