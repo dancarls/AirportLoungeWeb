@@ -5,6 +5,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import AirportLoungeGridFiltered, { type LoungeSummary } from '@/components/AirportLoungeGridFiltered'
 import WeatherWidget from '@/components/WeatherWidget'
+import { INDOOR_COVERED } from '@/lib/mapbox/indoor'
 
 interface Props { params: Promise<{ iata: string }> }
 
@@ -348,24 +349,40 @@ export default async function AirportPage({ params }: Props) {
             </p>
           </div>
 
-          {/* Terminal map link */}
-          {airport.terminal_map_url && (
-            <div className="bg-surface border border-sand-dark/10 p-6 shadow-sm">
-              <h4 className="font-label-caps text-label-caps text-sand-dark mb-4">TERMINAL MAP</h4>
-              <p className="text-sm text-secondary mb-5">
-                View the official terminal map to plan your path to the lounge from check-in and security.
-              </p>
+          {/* Indoor Navigation */}
+          <div className="bg-surface border border-sand-dark/10 p-6 shadow-sm">
+            <h4 className="font-label-caps text-label-caps text-sand-dark mb-1">TERMINAL NAVIGATION</h4>
+            {INDOOR_COVERED.has(code) && (
+              <span className="inline-flex items-center gap-1 bg-primary/10 text-primary font-label-caps text-[9px] px-2 py-0.5 mb-3">
+                <span className="material-symbols-outlined" style={{ fontSize: '10px' }}>layers</span>
+                INDOOR MAPS AVAILABLE
+              </span>
+            )}
+            <p className="text-sm text-secondary mb-5 leading-relaxed">
+              {INDOOR_COVERED.has(code)
+                ? `Explore ${code}'s indoor floor plans — locate lounges, gates, and security by level.`
+                : `View an interactive map to plan your path to the lounge from check-in and security.`
+              }
+            </p>
+            <Link
+              href={`/airports/${code}/navigate`}
+              className="flex items-center justify-center gap-2 w-full bg-primary text-bone-white py-3 font-label-caps text-label-caps hover:opacity-90 transition-all"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>explore</span>
+              {INDOOR_COVERED.has(code) ? 'INDOOR NAVIGATOR' : 'NAVIGATE TERMINAL'}
+            </Link>
+            {airport.terminal_map_url && (
               <a
                 href={airport.terminal_map_url}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-center gap-2 w-full bg-primary text-bone-white py-3 font-label-caps text-label-caps hover:opacity-90 transition-all"
+                className="flex items-center justify-center gap-2 w-full mt-3 border border-primary/20 text-primary py-3 font-label-caps text-label-caps hover:bg-champagne-glint transition-all"
               >
                 <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>open_in_new</span>
-                VIEW TERMINAL MAP
+                OFFICIAL TERMINAL MAP
               </a>
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Back to all airports */}
           <Link

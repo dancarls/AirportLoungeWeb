@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import mapboxgl from 'mapbox-gl'
+import { INDOOR_COVERED, INDOOR_ZOOM, enableIndoor, getIndoorManager, type IndoorFloor } from '@/lib/mapbox/indoor'
 
 interface LoungeItem {
   id: string
@@ -37,6 +38,12 @@ function getPulseDots(count: number): { top: string; left: string }[] {
 // ── Interactive map modal ─────────────────────────────────
 function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [floors,        setFloors]        = useState<IndoorFloor[]>([])
+  const [selectedFloor, setSelectedFloor] = useState<IndoorFloor | null>(null)
+  const [indoorActive,  setIndoorActive]  = useState(false)
+  const mapInstanceRef = useRef<mapboxgl.Map | null>(null)
+
+  const hasIndoor = INDOOR_COVERED.has(airport.iata_code)
 
   useEffect(() => {
     if (!containerRef.current || !airport.latitude || !airport.longitude) return
@@ -44,34 +51,59 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
 
     const map = new mapboxgl.Map({
       container: containerRef.current,
-      style: 'mapbox://styles/mapbox/satellite-streets-v12',
+      style:  hasIndoor ? 'mapbox://styles/mapbox/standard' : 'mapbox://styles/mapbox/satellite-streets-v12',
       center: [airport.longitude, airport.latitude],
-      zoom: 14,
+      zoom:   hasIndoor ? INDOOR_ZOOM : 14,
+      pitch:  hasIndoor ? 40 : 0,
       attributionControl: false,
     })
+    mapInstanceRef.current = map
 
     map.addControl(new mapboxgl.NavigationControl(), 'top-right')
     map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
-    // One marker per lounge name (same coords — airport centre)
-    airport.lounges.forEach(l => {
-      new mapboxgl.Marker({ color: '#C9A96E' })
-        .setLngLat([airport.longitude!, airport.latitude!])
-        .setPopup(
-          new mapboxgl.Popup({ offset: 28, closeButton: false })
-            .setHTML(`<div style="font-family:Inter,sans-serif;font-size:12px;font-weight:600;color:#003434;padding:6px 8px;">${l.name}</div>`)
-        )
-        .addTo(map)
+    map.on('load', () => {
+      if (hasIndoor) {
+        enableIndoor(map)
+      } else {
+        // Satellite: one marker per lounge at airport centre
+        airport.lounges.forEach(l => {
+          new mapboxgl.Marker({ color: '#C9A96E' })
+            .setLngLat([airport.longitude!, airport.latitude!])
+            .setPopup(
+              new mapboxgl.Popup({ offset: 28, closeButton: false })
+                .setHTML(`<div style="font-family:Inter,sans-serif;font-size:12px;font-weight:600;color:#003434;padding:6px 8px;">${l.name}</div>`)
+            )
+            .addTo(map)
+        })
+      }
+    })
+
+    map.on('indoor.updated', () => {
+      const indoor = getIndoorManager(map)
+      if (indoor) {
+        const fl = indoor.floors ?? []
+        setFloors([...fl].sort((a, b) => b.level - a.level))
+        setSelectedFloor(indoor.selectedFloor ?? null)
+        setIndoorActive(fl.length > 0)
+      }
     })
 
     return () => { try { map.remove() } catch { /* ignore */ } }
-  }, [airport])
+  }, [airport, hasIndoor])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
+
+  const switchFloor = (floor: IndoorFloor) => {
+    const map = mapInstanceRef.current
+    if (!map) return
+    getIndoorManager(map)?.setFloor(floor.id)
+    setSelectedFloor(floor)
+  }
 
   return (
     <div
@@ -88,6 +120,9 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
           <div>
             <p className="font-label-caps text-[10px] text-primary-fixed uppercase tracking-widest mb-0.5">
               {airport.iata_code} · {airport.city}
+              {hasIndoor && (
+                <span className="ml-2 bg-white/20 px-1.5 py-0.5">INDOOR MAPS</span>
+              )}
             </p>
             <h3 className="font-headline-md text-base">{airport.name}</h3>
           </div>
@@ -101,20 +136,53 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
         </div>
 
         {/* Map */}
-        <div ref={containerRef} style={{ height: '420px', width: '100%' }} />
+        <div className="relative">
+          <div ref={containerRef} style={{ height: '420px', width: '100%' }} />
+
+          {/* Floor selector inside the modal map */}
+          {hasIndoor && indoorActive && floors.length > 0 && (
+            <div className="absolute bottom-4 left-4 bg-white shadow-lg border border-sand-dark/20 z-10">
+              <p className="font-label-caps text-[9px] text-sand-dark px-3 pt-2 pb-1.5 border-b border-sand-dark/10 tracking-widest">FLOOR</p>
+              {floors.map(floor => (
+                <button
+                  key={floor.id}
+                  onClick={() => switchFloor(floor)}
+                  className={`block w-full text-left px-4 py-2 text-xs transition-colors ${
+                    selectedFloor?.id === floor.id
+                      ? 'bg-primary text-white font-semibold'
+                      : 'text-primary hover:bg-champagne-glint'
+                  }`}
+                >
+                  {floor.description || `Level ${floor.level}`}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Footer */}
         <div className="p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between border-t border-sand-dark/10">
           <p className="text-xs text-secondary flex-1">
-            Satellite view of {airport.name}. Lounge markers are pinned at the airport centre — follow terminal signage on arrival.
+            {hasIndoor
+              ? `Indoor floor plans for ${airport.name}. Use the floor selector to explore each level.`
+              : `Satellite view of ${airport.name}. Lounge markers are pinned at the airport centre — follow terminal signage on arrival.`
+            }
           </p>
           <div className="flex gap-3 shrink-0 flex-wrap">
+            <Link
+              href={`/airports/${airport.iata_code}/navigate`}
+              onClick={onClose}
+              className="flex items-center gap-1.5 bg-primary text-white px-5 py-2.5 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-all"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>explore</span>
+              Full Navigator
+            </Link>
             {airport.terminal_map_url && (
               <a
                 href={airport.terminal_map_url}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-1.5 bg-primary text-white px-5 py-2.5 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-all"
+                className="flex items-center gap-1.5 fine-border text-primary px-5 py-2.5 font-label-caps text-[10px] uppercase tracking-widest hover:bg-champagne-glint transition-all"
               >
                 <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>open_in_new</span>
                 Terminal Map
@@ -246,6 +314,14 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
               <span className="font-label-caps text-[10px] text-primary uppercase tracking-widest">
                 {airport.lounges.length} Lounge{airport.lounges.length !== 1 ? 's' : ''} · Click to explore
               </span>
+            </div>
+          )}
+
+          {/* Indoor maps indicator */}
+          {INDOOR_COVERED.has(airport.iata_code) && (
+            <div className="absolute top-5 right-5 bg-primary/90 backdrop-blur text-white px-3 py-1.5 editorial-shadow flex items-center gap-1.5">
+              <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>layers</span>
+              <span className="font-label-caps text-[9px] uppercase tracking-widest">Indoor Maps</span>
             </div>
           )}
         </button>
