@@ -82,45 +82,53 @@ function matchScore(loungeName: string, poiName: string): number {
 }
 
 function autoDetectLoungePositions(
-  map:     mapboxgl.Map,
-  lounges: NavigatorLounge[],
-  markers: Record<string, mapboxgl.Marker>,
+  map:      mapboxgl.Map,
+  lounges:  NavigatorLounge[],
+  markers:  Record<string, mapboxgl.Marker>,
+  airport:  AirportInfo,
 ) {
   try {
-    const rendered = map.queryRenderedFeatures()
-    const pointPOIs = rendered.filter(
-      f => f.geometry?.type === 'Point' && f.properties?.name
-    )
+    const [tcLng, tcLat] = terminalCenter(airport)
+    const MAX_DIST = 0.025  // ~2.5 km — must be inside the airport property
 
-    // Assign each lounge to the best-scoring POI (no double assignment)
+    const rendered = map.queryRenderedFeatures()
+    // Only consider point features whose Mapbox name explicitly contains "lounge".
+    // This prevents snapping to transit stops, hotels, parks, etc.
+    const loungePOIs = rendered.filter(f => {
+      if (f.geometry?.type !== 'Point') return false
+      const name = ((f.properties?.name ?? '') as string).toLowerCase()
+      if (!name.includes('lounge')) return false
+      const [lng, lat] = (f.geometry as GeoJSON.Point).coordinates
+      const dist = Math.sqrt((lng - tcLng) ** 2 + (lat - tcLat) ** 2)
+      return dist < MAX_DIST
+    })
+
+    // Assign each unpositioned lounge to its best-scoring POI (no double assignment)
     const used = new Set<string>()
-    const assignments: Array<{ id: string; coord: [number, number]; score: number }> = []
+    const assignments: Array<{ id: string; coord: [number, number] }> = []
 
     for (const lounge of lounges) {
-      if (lounge.latitude != null && lounge.longitude != null) continue // already precise
+      if (lounge.latitude != null && lounge.longitude != null) continue
 
-      let best: { feat: (typeof pointPOIs)[number]; score: number } | null = null
-      for (const feat of pointPOIs) {
-        const key = `${feat.geometry.type}:${JSON.stringify((feat.geometry as GeoJSON.Point).coordinates)}`
+      let best: { feat: (typeof loungePOIs)[number]; score: number } | null = null
+      for (const feat of loungePOIs) {
+        const key = JSON.stringify((feat.geometry as GeoJSON.Point).coordinates)
         if (used.has(key)) continue
         const score = matchScore(lounge.name, feat.properties!.name as string)
         if (score >= 45 && (!best || score > best.score)) best = { feat, score }
       }
       if (best) {
         const [lng, lat] = (best.feat.geometry as GeoJSON.Point).coordinates
-        const key = `${best.feat.geometry.type}:${JSON.stringify([lng, lat])}`
-        used.add(key)
-        assignments.push({ id: lounge.id, coord: [lng, lat], score: best.score })
+        used.add(JSON.stringify([lng, lat]))
+        assignments.push({ id: lounge.id, coord: [lng, lat] })
       }
     }
 
-    // Move matched markers to their real POI positions
     for (const { id, coord } of assignments) {
       const marker = markers[id]
       if (marker) {
         marker.setLngLat(coord)
-        const popup = marker.getPopup()
-        if (popup) popup.setLngLat(coord)
+        marker.getPopup()?.setLngLat(coord)
       }
     }
   } catch { /* tiles may not be ready */ }
@@ -246,7 +254,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
         container,
         style:   'mapbox://styles/mapbox/standard',
         center:  [tcLng, tcLat],
-        zoom:    15.5,
+        zoom:    16,
         pitch:   0,
         bearing: 0,
         attributionControl: false,
@@ -268,31 +276,57 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
         setMapReady(true)
 
         // Add a marker for every lounge
+        // Material "weekend" (sofa) icon path — visually distinct from restaurant/shop icons
+        const SOFA_PATH = 'M21 9V7c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v2c-1.1 0-2 .9-2 2v5h1.33L4 18h1l1-2h12l1 2h1l1.67-2H22v-5c0-1.1-.9-2-1-2zm-8 0H5V7h8v2zm6 0h-4V7h2c1.1 0 2 .9 2 2z'
+        const STAR_PATH = 'M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'
+
         lounges.forEach((lounge, i) => {
           const [lng, lat] = getLoungeCoords(lounge, i, lounges.length, airport)
 
-          const el    = document.createElement('div')
+          // Premium / first-class lounges get a distinct darker gold + star badge
+          const isPremium = /first|platinum|signature|premier/i.test(lounge.name)
+          const size    = isPremium ? '44px' : '38px'
+          const bgColor = isPremium ? '#9A7020' : '#C9A96E'
+          const border  = isPremium ? '3px solid #F5E0A0' : '3px solid white'
+          const shadow  = '0 3px 14px rgba(0,0,0,0.45), 0 0 0 2px rgba(201,169,110,0.25)'
+
+          const el = document.createElement('div')
+          el.style.cssText = `width:${size};height:${size};cursor:pointer;position:relative;`
+
           const inner = document.createElement('div')
-          Object.assign(el.style,    { width: '32px', height: '32px', cursor: 'pointer' })
-          Object.assign(inner.style, {
-            width:        '100%',
-            height:       '100%',
-            background:   '#C9A96E',
-            border:       '2.5px solid white',
-            borderRadius: '50%',
-            display:      'flex',
-            alignItems:   'center',
-            justifyContent: 'center',
-            boxShadow:    '0 2px 8px rgba(0,0,0,0.3)',
-            fontSize:     '15px',
-            lineHeight:   '1',
-            transition:   'transform 0.15s',
-            transformOrigin: 'center',
-          })
-          inner.textContent = '✈'
-          inner.title       = lounge.name
+          inner.style.cssText = `
+            width:100%;height:100%;
+            background:${bgColor};
+            border:${border};
+            border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            box-shadow:${shadow};
+            transition:transform 0.15s;transform-origin:center;
+          `
+          // Sofa icon (lounge chair) — stands out from restaurant/shop/bathroom icons
+          inner.innerHTML = `<svg width="${isPremium ? 22 : 19}" height="${isPremium ? 22 : 19}" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="${SOFA_PATH}"/>
+          </svg>`
+          inner.title = lounge.name
+
+          // Premium lounges get a small gold star badge in the top-right
+          if (isPremium) {
+            const star = document.createElement('div')
+            star.style.cssText = `
+              position:absolute;top:-4px;right:-4px;
+              width:16px;height:16px;
+              background:#C9A96E;
+              border:2px solid white;
+              border-radius:50%;
+              display:flex;align-items:center;justify-content:center;
+              pointer-events:none;
+            `
+            star.innerHTML = `<svg width="9" height="9" viewBox="0 0 24 24" fill="white"><path d="${STAR_PATH}"/></svg>`
+            el.appendChild(star)
+          }
+
           el.appendChild(inner)
-          inner.addEventListener('mouseenter', () => { inner.style.transform = 'scale(1.2)' })
+          inner.addEventListener('mouseenter', () => { inner.style.transform = 'scale(1.18)' })
           inner.addEventListener('mouseleave', () => { inner.style.transform = 'scale(1)' })
 
           const popup = new mapboxgl.Popup({ offset: 18, closeButton: true, maxWidth: '270px' })
@@ -316,7 +350,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
         map.on('idle', () => {
           if (detected) return
           detected = true
-          autoDetectLoungePositions(map, lounges, markerMapRef.current)
+          autoDetectLoungePositions(map, lounges, markerMapRef.current, airport)
         })
       })
     }
