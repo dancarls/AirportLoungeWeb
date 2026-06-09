@@ -89,7 +89,10 @@ function autoDetectLoungePositions(
 ) {
   try {
     const [tcLng, tcLat] = terminalCenter(airport)
-    const MAX_DIST = 0.025  // ~2.5 km — must be inside the airport property
+    // ~900 m radius — keeps matching inside the main terminal piers but
+    // excludes cargo terminals, crew lounges, pilot lounges in the
+    // operations/airside area that also contain "lounge" in their name.
+    const MAX_DIST = 0.009
 
     const rendered = map.queryRenderedFeatures()
     // Only consider point features whose Mapbox name explicitly contains "lounge".
@@ -411,13 +414,13 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
     <div className="flex-1 min-h-0 flex flex-col md:flex-row overflow-hidden">
 
       {/* ── Map ─────────────────────────────────────────────── */}
-      <div
-        ref={containerRef}
-        className="relative flex-1 overflow-hidden"
-        style={{ minHeight: '50vh' }}
-      >
+      {/* Outer wrapper holds overlays; inner containerRef is kept empty for Mapbox */}
+      <div className="relative flex-1 overflow-hidden" style={{ minHeight: '50vh' }}>
+        <div ref={containerRef} className="absolute inset-0" />
+
+        {/* Overlays are siblings of the map container, never children */}
         {!mapReady && (
-          <div className="absolute inset-0 bg-primary/10 flex items-center justify-center z-10">
+          <div className="absolute inset-0 bg-primary/10 flex items-center justify-center z-10 pointer-events-none">
             <div className="bg-white px-6 py-4 shadow-lg flex items-center gap-3">
               <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               <span className="font-label-caps text-[11px] text-primary">LOADING MAP</span>
