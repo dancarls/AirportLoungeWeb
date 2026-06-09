@@ -48,8 +48,10 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!
 
+    const container = containerRef.current
+
     const map = new mapboxgl.Map({
-      container: containerRef.current,
+      container,
       style: 'mapbox://styles/mapbox/standard',
       center:  [airport.longitude, airport.latitude],
       zoom:    15,
@@ -59,11 +61,16 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
     })
     mapRef.current = map
 
+    // ResizeObserver fires as soon as the container gets real CSS dimensions,
+    // ensuring the canvas is correctly sized even when flex layout settles after init
+    const ro = new ResizeObserver(() => { map.resize() })
+    ro.observe(container)
+
     map.addControl(new mapboxgl.NavigationControl(), 'top-left')
     map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
     map.on('load', () => {
-      requestAnimationFrame(() => map.resize())
+      map.resize()
       if (isIndoorCovered) enableIndoor(map)
       setMapReady(true)
     })
@@ -109,6 +116,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
     map.on('moveend', tryHarvestLounges)
 
     return () => {
+      ro.disconnect()
       markersRef.current.forEach(m => m.remove())
       markersRef.current = []
       try { map.remove() } catch { /* ignore */ }
@@ -183,10 +191,10 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
   const sortedFloors = [...floors].sort((a, b) => b.level - a.level)
 
   return (
-    <div className="flex-1 min-h-0 flex flex-col md:flex-row">
+    <div className="flex-1 min-h-0 flex flex-col md:flex-row overflow-hidden">
 
       {/* ── Map ─────────────────────────────────────────────── */}
-      <div className="relative h-[50vh] md:flex-1 md:min-h-0">
+      <div className="relative flex-1 overflow-hidden" style={{ minHeight: '50vh' }}>
         <div ref={containerRef} className="absolute inset-0" />
 
         {/* Loading overlay */}
