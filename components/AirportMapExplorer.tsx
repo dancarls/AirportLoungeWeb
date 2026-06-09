@@ -46,7 +46,6 @@ export default function AirportMapExplorer({ airports }: Props) {
 
     map.on('load', () => {
       requestAnimationFrame(() => map.resize())
-      enableIndoor(map)
       airports.forEach(airport => {
         const isIndoor = INDOOR_COVERED.has(airport.iata_code)
         const loungeCount = airport.lounges.length
@@ -115,6 +114,14 @@ export default function AirportMapExplorer({ airports }: Props) {
           .setPopup(popup)
           .addTo(map)
       })
+    })
+
+    // Enable indoor only when zoomed in — calling at low zoom crashes on null floor_id
+    let indoorEnabled = false
+    map.on('zoomend', () => {
+      if (indoorEnabled || map.getZoom() < 17.5) return
+      enableIndoor(map)
+      indoorEnabled = true
     })
 
     return () => { try { map.remove() } catch { /* ignore */ } }

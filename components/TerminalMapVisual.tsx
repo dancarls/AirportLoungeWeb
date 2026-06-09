@@ -62,12 +62,18 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
     map.addControl(new mapboxgl.NavigationControl(), 'top-right')
     map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
+    let indoorEnabled = false
+
     map.on('load', () => {
       requestAnimationFrame(() => map.resize())
       if (hasIndoor) {
-        enableIndoor(map)
+        // Modal opens at INDOOR_ZOOM — safe to enable at this zoom level
+        if (map.getZoom() >= INDOOR_ZOOM) {
+          enableIndoor(map)
+          indoorEnabled = true
+        }
       } else {
-        // Satellite: one marker per lounge at airport centre
+        // One marker per lounge at airport centre
         airport.lounges.forEach(l => {
           new mapboxgl.Marker({ color: '#C9A96E' })
             .setLngLat([airport.longitude!, airport.latitude!])
@@ -79,6 +85,14 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
         })
       }
     })
+
+    if (hasIndoor) {
+      map.on('zoomend', () => {
+        if (indoorEnabled || map.getZoom() < INDOOR_ZOOM) return
+        enableIndoor(map)
+        indoorEnabled = true
+      })
+    }
 
     map.on('indoor.updated', () => {
       const indoor = getIndoorManager(map)
