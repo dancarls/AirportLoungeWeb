@@ -2,8 +2,7 @@ import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { INDOOR_COVERED } from '@/lib/mapbox/indoor'
-import type { LoungeSummary } from '@/components/AirportLoungeGridFiltered'
+import type { NavigatorLounge } from '@/components/IndoorNavigator'
 import IndoorNavigator from '@/components/IndoorNavigatorLoader'
 
 interface Props { params: Promise<{ iata: string }> }
@@ -32,18 +31,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     .single()
 
   const name = airport?.name ?? `${code} Airport`
-  const city = airport?.city ?? code
-  const hasIndoor = INDOOR_COVERED.has(code)
 
   return {
-    title: `Navigate ${code} — ${hasIndoor ? 'Indoor Lounge Finder' : 'Terminal Map'} | AirportLounges.ca`,
-    description: `${hasIndoor ? 'Interactive indoor floor plan' : 'Terminal map'} for ${name}. Locate lounges, view floor layouts, and get walking directions from your gate.`,
-    alternates: {
-      canonical: `https://airportlounges.ca/airports/${code}/navigate`,
-    },
+    title: `Navigate ${code} — Lounge Finder & Terminal Map | AirportLounges.ca`,
+    description: `Find every lounge at ${name}. Locate lounges on the terminal map and get walking directions.`,
+    alternates: { canonical: `https://airportlounges.ca/airports/${code}/navigate` },
     openGraph: {
       title: `${code} Terminal Navigator | AirportLounges.ca`,
-      description: `Find every lounge at ${name} (${code}) with ${hasIndoor ? 'live indoor floor plans' : 'a terminal map'}.`,
+      description: `Find every lounge at ${name} (${code}) on an interactive terminal map.`,
       url: `https://airportlounges.ca/airports/${code}/navigate`,
     },
   }
@@ -67,13 +62,14 @@ export default async function NavigatePage({ params }: Props) {
   const { data: rawLounges } = await supabase
     .from('lounges')
     .select(
-      'id, name, slug, terminal, location_detail, description, rating, review_count, access_types, updated_at, images:lounge_images(storage_path, is_primary, sort_order)'
+      'id, name, slug, terminal, location_detail, description, rating, review_count, access_types, updated_at, website, phone, opening_hours, images:lounge_images(storage_path, is_primary, sort_order)'
+      // TODO: add ", latitude, longitude" after running supabase/migrations/003_lounge_coordinates.sql
     )
     .eq('airport_id', airport.id)
     .eq('is_active', true)
     .order('rating', { ascending: false, nullsFirst: false })
 
-  const lounges: LoungeSummary[] = (rawLounges ?? []).map(l => ({
+  const lounges: NavigatorLounge[] = (rawLounges ?? []).map(l => ({
     id:             l.id,
     name:           l.name,
     slug:           l.slug,
@@ -82,9 +78,14 @@ export default async function NavigatePage({ params }: Props) {
     description:    l.description,
     rating:         l.rating,
     review_count:   l.review_count,
-    access_types:   l.access_types as LoungeSummary['access_types'],
+    access_types:   l.access_types as NavigatorLounge['access_types'],
     updated_at:     l.updated_at ?? null,
     primaryImage:   getPrimaryImageUrl(l.images ?? []),
+    website:        l.website ?? null,
+    phone:          l.phone   ?? null,
+    opening_hours:  l.opening_hours as NavigatorLounge['opening_hours'] ?? null,
+    latitude:       null,   // populated after running 003_lounge_coordinates migration
+    longitude:      null,
   }))
 
   const breadcrumbSchema = {
@@ -117,11 +118,6 @@ export default async function NavigatePage({ params }: Props) {
           <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>map</span>
           Navigate
         </span>
-        {INDOOR_COVERED.has(code) && (
-          <span className="ml-auto bg-primary text-white font-label-caps text-[9px] px-2 py-0.5 tracking-widest">
-            INDOOR MAPS
-          </span>
-        )}
       </div>
 
       <IndoorNavigator

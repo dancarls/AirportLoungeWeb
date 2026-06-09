@@ -3,49 +3,158 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import mapboxgl from 'mapbox-gl'
-import { INDOOR_COVERED, INDOOR_ZOOM, getIndoorManager, type IndoorFloor } from '@/lib/mapbox/indoor'
 import type { LoungeSummary } from '@/components/AirportLoungeGridFiltered'
 
+// Extended lounge type used only on the navigate page
+export interface NavigatorLounge extends LoungeSummary {
+  latitude:      number | null
+  longitude:     number | null
+  website:       string | null
+  phone:         string | null
+  opening_hours: Record<string, string> | null
+}
+
 interface AirportInfo {
-  iata_code: string
-  name: string
-  city: string
-  latitude: number
-  longitude: number
+  iata_code:        string
+  name:             string
+  city:             string
+  latitude:         number
+  longitude:        number
   terminal_map_url: string | null
 }
 
 interface Props {
-  airport: AirportInfo
-  lounges: LoungeSummary[]
+  airport:  AirportInfo
+  lounges:  NavigatorLounge[]
 }
 
-interface LoungeFeature {
-  name: string
-  lng: number
-  lat: number
-  floorId: string
+// ── Position helpers ─────────────────────────────────────────
+
+// When a lounge has no coordinates, spread markers in a small circle
+// around the airport centre (~80 m radius) so every marker is clickable.
+function getLoungeCoords(
+  lounge:  NavigatorLounge,
+  index:   number,
+  total:   number,
+  airport: AirportInfo,
+): [number, number] {
+  if (lounge.latitude != null && lounge.longitude != null) {
+    return [lounge.longitude, lounge.latitude]
+  }
+  const angle = (index / Math.max(total, 1)) * 2 * Math.PI
+  const R = 0.0007                             // ~70 m at Canadian latitudes
+  return [
+    airport.longitude + R * Math.cos(angle),
+    airport.latitude  + R * 0.55 * Math.sin(angle),
+  ]
 }
+
+// ── Popup HTML builders ──────────────────────────────────────
+
+function fmtHour(t: string): string {
+  const [h, m] = t.split(':').map(Number)
+  const period = h < 12 ? 'AM' : 'PM'
+  return `${h % 12 || 12}:${String(m ?? 0).padStart(2, '0')} ${period}`
+}
+
+function getTodayHours(hours: Record<string, string> | null): string | null {
+  if (!hours) return null
+  const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday']
+  const raw  = hours[days[new Date().getDay()]]
+  if (!raw || !raw.includes('-')) return null
+  const [open, close] = raw.split('-')
+  return `${fmtHour(open)} – ${fmtHour(close)}`
+}
+
+const ACCESS_LABELS: Record<string, string> = {
+  airline_status:   'Airline Status',
+  class_of_service: 'Business / First',
+  credit_card:      'Credit Card',
+  membership:       'Membership',
+  day_pass:         'Day Pass',
+}
+
+function buildPopupHTML(lounge: NavigatorLounge, iata: string): string {
+  const hours = getTodayHours(lounge.opening_hours)
+
+  const chips = (lounge.access_types ?? [])
+    .slice(0, 3)
+    .map(a => {
+      const label = ACCESS_LABELS[a.type] ?? a.type.replace(/_/g, ' ')
+      return `<span style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;background:#f5f0e8;color:#675d4f;padding:2px 7px;">${label}</span>`
+    })
+    .join('')
+
+  const img = lounge.primaryImage
+    ? `<img src="${lounge.primaryImage}" style="width:100%;height:110px;object-fit:cover;display:block;" loading="lazy" />`
+    : `<div style="width:100%;height:52px;background:linear-gradient(135deg,#003434 0%,#1a5454 100%);display:flex;align-items:center;justify-content:center;"><span style="color:#C9A96E;font-size:20px;">✈</span></div>`
+
+  const badge = lounge.terminal
+    ? `<span style="font-size:9px;font-weight:700;background:#f5f0e8;color:#675d4f;padding:2px 7px;flex-shrink:0;white-space:nowrap;">T${lounge.terminal}</span>`
+    : ''
+
+  const rating = lounge.rating
+    ? `<div style="display:flex;align-items:center;gap:3px;margin-bottom:6px;">
+         <span style="color:#C9A96E;">★</span>
+         <span style="font-size:11px;font-weight:600;color:#003434;">${lounge.rating.toFixed(1)}</span>
+         ${lounge.review_count ? `<span style="font-size:10px;color:#675d4f;">(${lounge.review_count})</span>` : ''}
+       </div>`
+    : ''
+
+  const phone = lounge.phone
+    ? `<p style="font-size:10.5px;color:#675d4f;margin:0 0 4px;">📞 ${lounge.phone}</p>`
+    : ''
+
+  const todayHours = hours
+    ? `<p style="font-size:10.5px;color:#675d4f;margin:0 0 8px;">🕐 Today: ${hours}</p>`
+    : ''
+
+  const websiteBtn = lounge.website
+    ? `<a href="${lounge.website}" target="_blank" rel="noreferrer"
+         style="flex:1;border:1.5px solid #003434;color:#003434;text-align:center;padding:6px 4px;
+                font-size:9px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:0.05em;">
+         Website
+       </a>`
+    : ''
+
+  return `
+<div style="font-family:Inter,-apple-system,sans-serif;width:256px;overflow:hidden;">
+  ${img}
+  <div style="padding:11px 13px;">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:4px;">
+      <p style="font-size:13px;font-weight:700;color:#003434;margin:0;line-height:1.3;">${lounge.name}</p>
+      ${badge}
+    </div>
+    ${lounge.location_detail ? `<p style="font-size:10.5px;color:#675d4f;margin:0 0 6px;line-height:1.4;">${lounge.location_detail}</p>` : ''}
+    ${rating}${phone}${todayHours}
+    ${chips ? `<div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:9px;">${chips}</div>` : ''}
+    <div style="display:flex;gap:5px;">
+      ${websiteBtn}
+      <a href="/airports/${iata}/lounges/${lounge.slug}"
+         style="flex:2;background:#003434;color:white;text-align:center;padding:7px 4px;
+                font-size:9px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:0.05em;">
+        View Details
+      </a>
+    </div>
+  </div>
+</div>`
+}
+
+// ── Component ────────────────────────────────────────────────
 
 export default function IndoorNavigator({ airport, lounges }: Props) {
-  const containerRef    = useRef<HTMLDivElement>(null)
-  const mapRef          = useRef<mapboxgl.Map | null>(null)
-  const markersRef      = useRef<mapboxgl.Marker[]>([])
+  const containerRef = useRef<HTMLDivElement>(null)
+  const mapRef       = useRef<mapboxgl.Map | null>(null)
+  const markersRef   = useRef<mapboxgl.Marker[]>([])
+  const markerMapRef = useRef<Record<string, mapboxgl.Marker>>({})
 
-  const [mapReady,       setMapReady]       = useState(false)
-  const [floors,         setFloors]         = useState<IndoorFloor[]>([])
-  const [selectedFloor,  setSelectedFloor]  = useState<IndoorFloor | null>(null)
-  const [indoorActive,   setIndoorActive]   = useState(false)
-  const [activeLounge,   setActiveLounge]   = useState<string | null>(null)
-  const [activeDetail,   setActiveDetail]   = useState<LoungeSummary | null>(null)
-  const [loungeFeatures, setLoungeFeatures] = useState<LoungeFeature[]>([])
+  const [mapReady,     setMapReady]     = useState(false)
+  const [activeLounge, setActiveLounge] = useState<string | null>(null)
+  const [activeDetail, setActiveDetail] = useState<NavigatorLounge | null>(null)
 
-  const isIndoorCovered = INDOOR_COVERED.has(airport.iata_code)
-
-  // ── Map init ──────────────────────────────────────────────
+  // ── Map init ─────────────────────────────────────────────
   useEffect(() => {
     if (!containerRef.current) return
-
     const container = containerRef.current
     let started = false
 
@@ -57,7 +166,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
       const map = new mapboxgl.Map({
         container,
-        style: 'mapbox://styles/mapbox/standard',
+        style:   'mapbox://styles/mapbox/standard',
         center:  [airport.longitude, airport.latitude],
         zoom:    15,
         pitch:   0,
@@ -71,44 +180,61 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
       map.on('load', () => {
         map.resize()
-        setMapReady(true)
-      })
-
-      map.on('indoor.updated', () => {
-        const indoor = getIndoorManager(map)
-        if (indoor) {
-          const fl = indoor.floors ?? []
-          setFloors(fl)
-          setSelectedFloor(indoor.selectedFloor ?? null)
-          setIndoorActive(fl.length > 0)
-        }
-      })
-
-      const tryHarvestLounges = () => {
+        // Show gates, terminal labels, and POI names on the Standard style
         try {
-          const features = map.querySourceFeatures('indoor', {
-            sourceLayer: 'indoor_label',
-            filter: ['==', ['get', 'icon'], 'lounge'],
-          })
-          if (features.length > 0) {
-            const found: LoungeFeature[] = features
-              .filter(f => f.geometry.type === 'Point')
-              .map(f => {
-                const [lng, lat] = (f.geometry as GeoJSON.Point).coordinates
-                return { name: f.properties?.name ?? '', lng, lat, floorId: f.properties?.floor_id ?? '' }
-              })
-            setLoungeFeatures(found)
-          }
-        } catch { /* source not yet tiled into view */ }
-      }
+          map.setConfigProperty('basemap', 'showPointOfInterestLabels', true)
+          map.setConfigProperty('basemap', 'showPlaceLabels', true)
+          map.setConfigProperty('basemap', 'showTransitLabels', true)
+        } catch {}
 
-      map.on('sourcedata', (e: mapboxgl.MapSourceDataEvent) => {
-        if (e.sourceId === 'indoor' && e.isSourceLoaded) tryHarvestLounges()
+        setMapReady(true)
+
+        // Add a marker for every lounge
+        lounges.forEach((lounge, i) => {
+          const [lng, lat] = getLoungeCoords(lounge, i, lounges.length, airport)
+
+          const el    = document.createElement('div')
+          const inner = document.createElement('div')
+          Object.assign(el.style,    { width: '32px', height: '32px', cursor: 'pointer' })
+          Object.assign(inner.style, {
+            width:        '100%',
+            height:       '100%',
+            background:   '#C9A96E',
+            border:       '2.5px solid white',
+            borderRadius: '50%',
+            display:      'flex',
+            alignItems:   'center',
+            justifyContent: 'center',
+            boxShadow:    '0 2px 8px rgba(0,0,0,0.3)',
+            fontSize:     '15px',
+            lineHeight:   '1',
+            transition:   'transform 0.15s',
+            transformOrigin: 'center',
+          })
+          inner.textContent = '✈'
+          inner.title       = lounge.name
+          el.appendChild(inner)
+          inner.addEventListener('mouseenter', () => { inner.style.transform = 'scale(1.2)' })
+          inner.addEventListener('mouseleave', () => { inner.style.transform = 'scale(1)' })
+
+          const popup = new mapboxgl.Popup({ offset: 18, closeButton: true, maxWidth: '270px' })
+            .setHTML(buildPopupHTML(lounge, airport.iata_code))
+
+          popup.on('open',  () => { setActiveLounge(lounge.id); setActiveDetail(lounge) })
+          popup.on('close', () => { setActiveLounge(prev => prev === lounge.id ? null : prev) })
+
+          const marker = new mapboxgl.Marker({ element: el })
+            .setLngLat([lng, lat])
+            .setPopup(popup)
+            .addTo(map)
+
+          markersRef.current.push(marker)
+          markerMapRef.current[lounge.id] = marker
+        })
       })
-      map.on('moveend', tryHarvestLounges)
     }
 
-    // Defer map creation until container has real dimensions (WebGL needs > 0×0 canvas)
+    // Defer init until the container has real pixel dimensions
     const ro = new ResizeObserver((entries) => {
       const { width, height } = entries[0].contentRect
       if (width > 0 && height > 0) {
@@ -117,99 +243,52 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
       }
     })
     ro.observe(container)
-
-    // Also try immediately — if layout is already settled this fires right away
     const rect = container.getBoundingClientRect()
     if (rect.width > 0 && rect.height > 0) startMap()
 
     return () => {
       ro.disconnect()
       markersRef.current.forEach(m => m.remove())
-      markersRef.current = []
+      markersRef.current  = []
+      markerMapRef.current = {}
       if (mapRef.current) {
-        try { mapRef.current.remove() } catch { /* ignore */ }
+        try { mapRef.current.remove() } catch {}
         mapRef.current = null
       }
     }
-  }, [airport, isIndoorCovered])
+  }, [airport, lounges])
 
-  // ── Clear markers helper ──────────────────────────────────
-  const clearMarkers = useCallback(() => {
-    markersRef.current.forEach(m => m.remove())
-    markersRef.current = []
-  }, [])
-
-  // ── Switch floor ──────────────────────────────────────────
-  const switchFloor = useCallback((floor: IndoorFloor) => {
-    const map = mapRef.current
-    if (!map) return
-    const indoor = getIndoorManager(map)
-    indoor?.setFloor(floor.id)
-    setSelectedFloor(floor)
-  }, [])
-
-  // ── Fly to lounge ─────────────────────────────────────────
-  const flyToLounge = useCallback((lounge: LoungeSummary) => {
+  // ── Fly to lounge + open popup ────────────────────────────
+  const flyToLounge = useCallback((lounge: NavigatorLounge) => {
     const map = mapRef.current
     if (!map) return
 
     setActiveLounge(lounge.id)
     setActiveDetail(lounge)
-    clearMarkers()
 
-    // Try to find lounge in harvested indoor features
-    const lowerName = lounge.name.toLowerCase()
-    const match = loungeFeatures.find(f => {
-      const fn = f.name.toLowerCase()
-      return fn.includes(lowerName) || lowerName.includes(fn) ||
-        // partial match on last two words (e.g. "Maple Leaf Lounge")
-        lowerName.split(' ').slice(-2).some(word => fn.includes(word))
-    })
+    const idx     = lounges.indexOf(lounge)
+    const [lng, lat] = getLoungeCoords(lounge, idx, lounges.length, airport)
+    // Zoom to 18 if we have a real coordinate, else 16 to show the whole terminal
+    const zoom    = (lounge.latitude != null && lounge.longitude != null) ? 18 : 16
 
-    if (match) {
-      map.flyTo({ center: [match.lng, match.lat], zoom: 19.5, pitch: 0, duration: 1800 })
+    map.flyTo({ center: [lng, lat], zoom, pitch: 0, duration: 1400 })
 
-      // Switch floor if we can
-      if (match.floorId) {
-        const indoor = getIndoorManager(map)
-        indoor?.setFloor(match.floorId)
-      }
-
-      const marker = new mapboxgl.Marker({ color: '#C9A96E', scale: 1.3 })
-        .setLngLat([match.lng, match.lat])
-        .setPopup(
-          new mapboxgl.Popup({ offset: 28, closeButton: false })
-            .setHTML(
-              `<div style="font-family:Inter,sans-serif;font-size:12px;font-weight:600;color:#003434;padding:6px 8px;">${lounge.name}</div>`
-            )
-        )
-        .addTo(map)
-      marker.getPopup()?.addTo(map)
-      markersRef.current.push(marker)
-    } else {
-      // Fallback: zoom to airport at indoor level
-      map.flyTo({
-        center:   [airport.longitude, airport.latitude],
-        zoom:     isIndoorCovered ? INDOOR_ZOOM : 15,
-        pitch:    0,
-        duration: 1500,
-      })
-    }
-  }, [airport, isIndoorCovered, loungeFeatures, clearMarkers])
-
-  // ── Sorted floors — highest level first ──────────────────
-  const sortedFloors = [...floors].sort((a, b) => b.level - a.level)
+    // Open the popup after the fly animation has started
+    setTimeout(() => {
+      const marker = markerMapRef.current[lounge.id]
+      if (marker && !marker.getPopup()?.isOpen()) marker.togglePopup()
+    }, 900)
+  }, [airport, lounges])
 
   return (
     <div className="flex-1 min-h-0 flex flex-col md:flex-row overflow-hidden">
 
-      {/* ── Map — ref is on this div directly (same pattern as AirportMapExplorer) */}
+      {/* ── Map ─────────────────────────────────────────────── */}
       <div
         ref={containerRef}
         className="relative flex-1 overflow-hidden"
         style={{ minHeight: '50vh' }}
       >
-        {/* Loading overlay */}
         {!mapReady && (
           <div className="absolute inset-0 bg-primary/10 flex items-center justify-center z-10">
             <div className="bg-white px-6 py-4 shadow-lg flex items-center gap-3">
@@ -218,70 +297,30 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
             </div>
           </div>
         )}
-
-        {/* Status badge */}
-        {mapReady && (
+        {mapReady && lounges.length > 0 && (
           <div className="absolute top-4 right-4 pointer-events-none z-10">
-            {isIndoorCovered && indoorActive ? (
-              <span className="bg-primary text-white text-[10px] font-label-caps px-3 py-1.5 flex items-center gap-1.5 shadow-lg">
-                <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>layers</span>
-                INDOOR MAPS ACTIVE
-              </span>
-            ) : isIndoorCovered ? (
-              <span className="bg-black/70 text-white text-[10px] font-label-caps px-3 py-1.5 shadow-lg">
-                ZOOM IN FOR INDOOR
-              </span>
-            ) : (
-              <span className="bg-black/70 text-white text-[10px] font-label-caps px-3 py-1.5 shadow-lg">
-                MAP VIEW
-              </span>
-            )}
-          </div>
-        )}
-
-        {/* Floor selector — only when indoor is active */}
-        {indoorActive && sortedFloors.length > 0 && (
-          <div className="absolute bottom-8 left-4 z-10 bg-white shadow-xl border border-sand-dark/20">
-            <p className="font-label-caps text-[9px] text-sand-dark px-3 pt-2.5 pb-1.5 border-b border-sand-dark/10 tracking-widest">
-              FLOOR
-            </p>
-            {sortedFloors.map(floor => (
-              <button
-                key={floor.id}
-                onClick={() => switchFloor(floor)}
-                className={`block w-full text-left px-4 py-2.5 text-sm transition-colors ${
-                  selectedFloor?.id === floor.id
-                    ? 'bg-primary text-white font-semibold'
-                    : 'text-primary hover:bg-champagne-glint'
-                }`}
-              >
-                {floor.description || `Level ${floor.level}`}
-              </button>
-            ))}
+            <span className="bg-black/60 text-white text-[10px] font-label-caps px-3 py-1.5 shadow-lg">
+              {lounges.length} LOUNGE{lounges.length !== 1 ? 'S' : ''} MARKED
+            </span>
           </div>
         )}
       </div>
 
-      {/* ── Sidebar panel ────────────────────────────────────── */}
+      {/* ── Sidebar ──────────────────────────────────────────── */}
       <div className="w-full md:w-80 lg:w-96 bg-bone-white border-l border-sand-dark/10 flex flex-col md:overflow-hidden">
 
-        {/* Panel header */}
+        {/* Header */}
         <div className="bg-primary text-white px-5 py-4 shrink-0">
           <p className="font-label-caps text-[10px] text-primary-fixed uppercase tracking-widest mb-0.5">
             {airport.iata_code} · {airport.city}
           </p>
           <h2 className="font-headline-md text-[15px] leading-snug">{airport.name}</h2>
-          {isIndoorCovered ? (
-            <p className="text-[11px] text-primary-fixed/80 mt-1 flex items-center gap-1">
-              <span className="material-symbols-outlined" style={{ fontSize: '11px' }}>layers</span>
-              Interactive indoor floor plans
-            </p>
-          ) : (
-            <p className="text-[11px] text-primary-fixed/70 mt-1">Standard map · Indoor coming soon</p>
-          )}
+          <p className="text-[11px] text-primary-fixed/70 mt-1">
+            Click a lounge below or tap a map marker
+          </p>
         </div>
 
-        {/* Directions panel — shown when lounge is selected */}
+        {/* Active lounge detail strip */}
         {activeDetail && (
           <div className="bg-champagne-glint border-b border-sand-dark/15 px-5 py-4 shrink-0">
             <div className="flex items-start justify-between gap-2 mb-2">
@@ -290,7 +329,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
                 <p className="font-medium text-sm text-primary leading-tight">{activeDetail.name}</p>
               </div>
               <button
-                onClick={() => { setActiveLounge(null); setActiveDetail(null); clearMarkers() }}
+                onClick={() => { setActiveLounge(null); setActiveDetail(null) }}
                 className="text-sand-dark hover:text-primary shrink-0 mt-0.5"
                 aria-label="Clear navigation"
               >
@@ -366,13 +405,8 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
           </div>
         </div>
 
-        {/* Panel footer */}
+        {/* Footer */}
         <div className="px-4 py-4 border-t border-sand-dark/10 space-y-2 shrink-0">
-          {!isIndoorCovered && (
-            <p className="text-[11px] text-secondary text-center pb-1">
-              Indoor floor plans not yet available for {airport.iata_code}.
-            </p>
-          )}
           {airport.terminal_map_url && (
             <a
               href={airport.terminal_map_url}
