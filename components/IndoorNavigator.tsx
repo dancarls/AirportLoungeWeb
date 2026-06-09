@@ -28,25 +28,102 @@ interface Props {
   lounges:  NavigatorLounge[]
 }
 
-// ── Position helpers ─────────────────────────────────────────
+// ── Terminal centre coordinates ───────────────────────────────
+// The airport ARP (used in the airports table) is typically at the runway
+// intersection — far from the passenger terminal. These are the actual
+// terminal building centres so the map opens on the right place.
+const TERMINAL_CENTER: Record<string, [number, number]> = {
+  YVR: [-123.1752, 49.1944],
+  YYZ: [-79.6248, 43.6780],
+  YUL: [-73.7410, 45.4706],
+  YEG: [-113.5776, 53.3097],
+  YOW: [-75.6660, 45.3224],
+  YWG: [-97.2390, 49.9096],
+  YHZ: [-63.5083, 44.8797],
+  YYT: [-52.7519, 47.6186],
+  YTZ: [-79.3962, 43.6275],
+}
 
-// When a lounge has no coordinates, spread markers in a small circle
-// around the airport centre (~80 m radius) so every marker is clickable.
+function terminalCenter(airport: AirportInfo): [number, number] {
+  return TERMINAL_CENTER[airport.iata_code] ?? [airport.longitude, airport.latitude]
+}
+
+// When a lounge has no DB coordinates, place it at the terminal centre.
+// We stack all unknown lounges there — autoDetectLoungePositions() will
+// move them to their real Mapbox POI positions once tiles load.
 function getLoungeCoords(
   lounge:  NavigatorLounge,
-  index:   number,
-  total:   number,
+  _index:  number,
+  _total:  number,
   airport: AirportInfo,
 ): [number, number] {
   if (lounge.latitude != null && lounge.longitude != null) {
     return [lounge.longitude, lounge.latitude]
   }
-  const angle = (index / Math.max(total, 1)) * 2 * Math.PI
-  const R = 0.0007                             // ~70 m at Canadian latitudes
-  return [
-    airport.longitude + R * Math.cos(angle),
-    airport.latitude  + R * 0.55 * Math.sin(angle),
-  ]
+  return terminalCenter(airport)
+}
+
+// ── POI auto-detection ────────────────────────────────────────
+// After the map tiles settle, scan all rendered point features and snap
+// each lounge marker to the best-matching Mapbox POI coordinate.
+// This uses Mapbox's own curated data (same source as the on-map labels).
+function matchScore(loungeName: string, poiName: string): number {
+  const ln = loungeName.toLowerCase().replace(/[^a-z0-9 ]/g, ' ')
+  const pn = poiName.toLowerCase().replace(/[^a-z0-9 ]/g, ' ')
+  if (ln === pn) return 100
+  if (pn.length > 3 && ln.includes(pn)) return 85
+  if (ln.length > 3 && pn.includes(ln)) return 85
+  const stopWords = new Set(['the','and','at','in','of','for','lounge','international','domestic','departures','arrivals'])
+  const lw = ln.split(' ').filter(w => w.length > 3 && !stopWords.has(w))
+  const pw = pn.split(' ').filter(w => w.length > 3 && !stopWords.has(w))
+  if (lw.length === 0 || pw.length === 0) return 0
+  const hits = lw.filter(w => pw.some(p => p.includes(w) || w.includes(p))).length
+  return Math.round((hits / Math.max(lw.length, pw.length)) * 70)
+}
+
+function autoDetectLoungePositions(
+  map:     mapboxgl.Map,
+  lounges: NavigatorLounge[],
+  markers: Record<string, mapboxgl.Marker>,
+) {
+  try {
+    const rendered = map.queryRenderedFeatures()
+    const pointPOIs = rendered.filter(
+      f => f.geometry?.type === 'Point' && f.properties?.name
+    )
+
+    // Assign each lounge to the best-scoring POI (no double assignment)
+    const used = new Set<string>()
+    const assignments: Array<{ id: string; coord: [number, number]; score: number }> = []
+
+    for (const lounge of lounges) {
+      if (lounge.latitude != null && lounge.longitude != null) continue // already precise
+
+      let best: { feat: (typeof pointPOIs)[number]; score: number } | null = null
+      for (const feat of pointPOIs) {
+        const key = `${feat.geometry.type}:${JSON.stringify((feat.geometry as GeoJSON.Point).coordinates)}`
+        if (used.has(key)) continue
+        const score = matchScore(lounge.name, feat.properties!.name as string)
+        if (score >= 45 && (!best || score > best.score)) best = { feat, score }
+      }
+      if (best) {
+        const [lng, lat] = (best.feat.geometry as GeoJSON.Point).coordinates
+        const key = `${best.feat.geometry.type}:${JSON.stringify([lng, lat])}`
+        used.add(key)
+        assignments.push({ id: lounge.id, coord: [lng, lat], score: best.score })
+      }
+    }
+
+    // Move matched markers to their real POI positions
+    for (const { id, coord } of assignments) {
+      const marker = markers[id]
+      if (marker) {
+        marker.setLngLat(coord)
+        const popup = marker.getPopup()
+        if (popup) popup.setLngLat(coord)
+      }
+    }
+  } catch { /* tiles may not be ready */ }
 }
 
 // ── Popup HTML builders ──────────────────────────────────────
@@ -164,11 +241,12 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
       mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!
 
+      const [tcLng, tcLat] = terminalCenter(airport)
       const map = new mapboxgl.Map({
         container,
         style:   'mapbox://styles/mapbox/standard',
-        center:  [airport.longitude, airport.latitude],
-        zoom:    15,
+        center:  [tcLng, tcLat],
+        zoom:    15.5,
         pitch:   0,
         bearing: 0,
         attributionControl: false,
@@ -231,6 +309,15 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
           markersRef.current.push(marker)
           markerMapRef.current[lounge.id] = marker
         })
+
+        // Once tiles have settled, snap unpositioned markers to their Mapbox POI locations.
+        // Mapbox already stores accurate lounge coordinates in its POI dataset.
+        let detected = false
+        map.on('idle', () => {
+          if (detected) return
+          detected = true
+          autoDetectLoungePositions(map, lounges, markerMapRef.current)
+        })
       })
     }
 
@@ -266,10 +353,16 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
     setActiveLounge(lounge.id)
     setActiveDetail(lounge)
 
-    const idx     = lounges.indexOf(lounge)
-    const [lng, lat] = getLoungeCoords(lounge, idx, lounges.length, airport)
-    // Zoom to 18 if we have a real coordinate, else 16 to show the whole terminal
-    const zoom    = (lounge.latitude != null && lounge.longitude != null) ? 18 : 16
+    // Prefer the marker's current position (may have been auto-detected from POI data)
+    const marker = markerMapRef.current[lounge.id]
+    const lngLat = marker?.getLngLat()
+    const [fbLng, fbLat] = terminalCenter(airport)
+    const lng = lngLat?.lng ?? fbLng
+    const lat = lngLat?.lat ?? fbLat
+
+    // Use zoom 17 if the marker has been snapped to a specific POI, else 16 for full terminal
+    const hasRealCoord = lounge.latitude != null || (lngLat && Math.abs(lngLat.lng - fbLng) > 0.0002)
+    const zoom = hasRealCoord ? 17 : 16
 
     map.flyTo({ center: [lng, lat], zoom, pitch: 0, duration: 1400 })
 
