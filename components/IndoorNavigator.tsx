@@ -46,80 +46,91 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
   useEffect(() => {
     if (!containerRef.current) return
 
-    mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!
-
     const container = containerRef.current
+    let started = false
 
-    const map = new mapboxgl.Map({
-      container,
-      style: 'mapbox://styles/mapbox/standard',
-      center:  [airport.longitude, airport.latitude],
-      zoom:    15,
-      pitch:   0,
-      bearing: 0,
-      attributionControl: false,
-    })
-    mapRef.current = map
+    const startMap = () => {
+      if (started) return
+      started = true
 
-    // ResizeObserver fires as soon as the container gets real CSS dimensions,
-    // ensuring the canvas is correctly sized even when flex layout settles after init
-    const ro = new ResizeObserver(() => { map.resize() })
-    ro.observe(container)
+      mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!
 
-    map.addControl(new mapboxgl.NavigationControl(), 'top-left')
-    map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
+      const map = new mapboxgl.Map({
+        container,
+        style: 'mapbox://styles/mapbox/standard',
+        center:  [airport.longitude, airport.latitude],
+        zoom:    15,
+        pitch:   0,
+        bearing: 0,
+        attributionControl: false,
+      })
+      mapRef.current = map
 
-    map.on('load', () => {
-      map.resize()
-      if (isIndoorCovered) enableIndoor(map)
-      setMapReady(true)
-    })
+      map.addControl(new mapboxgl.NavigationControl(), 'top-left')
+      map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
-    // Floor updates (Mapbox GL JS ≥ 3.6)
-    map.on('indoor.updated', () => {
-      const indoor = getIndoorManager(map)
-      if (indoor) {
-        const fl = indoor.floors ?? []
-        setFloors(fl)
-        setSelectedFloor(indoor.selectedFloor ?? null)
-        setIndoorActive(fl.length > 0)
-      }
-    })
+      map.on('load', () => {
+        map.resize()
+        if (isIndoorCovered) enableIndoor(map)
+        setMapReady(true)
+      })
 
-    // Harvest lounge features from indoor_label source
-    const tryHarvestLounges = () => {
-      try {
-        const features = map.querySourceFeatures('indoor', {
-          sourceLayer: 'indoor_label',
-          filter: ['==', ['get', 'icon'], 'lounge'],
-        })
-        if (features.length > 0) {
-          const found: LoungeFeature[] = features
-            .filter(f => f.geometry.type === 'Point')
-            .map(f => {
-              const [lng, lat] = (f.geometry as GeoJSON.Point).coordinates
-              return {
-                name:    f.properties?.name ?? '',
-                lng,
-                lat,
-                floorId: f.properties?.floor_id ?? '',
-              }
-            })
-          setLoungeFeatures(found)
+      map.on('indoor.updated', () => {
+        const indoor = getIndoorManager(map)
+        if (indoor) {
+          const fl = indoor.floors ?? []
+          setFloors(fl)
+          setSelectedFloor(indoor.selectedFloor ?? null)
+          setIndoorActive(fl.length > 0)
         }
-      } catch { /* source not yet tiled into view */ }
+      })
+
+      const tryHarvestLounges = () => {
+        try {
+          const features = map.querySourceFeatures('indoor', {
+            sourceLayer: 'indoor_label',
+            filter: ['==', ['get', 'icon'], 'lounge'],
+          })
+          if (features.length > 0) {
+            const found: LoungeFeature[] = features
+              .filter(f => f.geometry.type === 'Point')
+              .map(f => {
+                const [lng, lat] = (f.geometry as GeoJSON.Point).coordinates
+                return { name: f.properties?.name ?? '', lng, lat, floorId: f.properties?.floor_id ?? '' }
+              })
+            setLoungeFeatures(found)
+          }
+        } catch { /* source not yet tiled into view */ }
+      }
+
+      map.on('sourcedata', (e: mapboxgl.MapSourceDataEvent) => {
+        if (e.sourceId === 'indoor' && e.isSourceLoaded) tryHarvestLounges()
+      })
+      map.on('moveend', tryHarvestLounges)
     }
 
-    map.on('sourcedata', (e: mapboxgl.MapSourceDataEvent) => {
-      if (e.sourceId === 'indoor' && e.isSourceLoaded) tryHarvestLounges()
+    // Defer map creation until container has real dimensions (WebGL needs > 0×0 canvas)
+    const ro = new ResizeObserver((entries) => {
+      const { width, height } = entries[0].contentRect
+      if (width > 0 && height > 0) {
+        startMap()
+        if (mapRef.current) mapRef.current.resize()
+      }
     })
-    map.on('moveend', tryHarvestLounges)
+    ro.observe(container)
+
+    // Also try immediately — if layout is already settled this fires right away
+    const rect = container.getBoundingClientRect()
+    if (rect.width > 0 && rect.height > 0) startMap()
 
     return () => {
       ro.disconnect()
       markersRef.current.forEach(m => m.remove())
       markersRef.current = []
-      try { map.remove() } catch { /* ignore */ }
+      if (mapRef.current) {
+        try { mapRef.current.remove() } catch { /* ignore */ }
+        mapRef.current = null
+      }
     }
   }, [airport, isIndoorCovered])
 
