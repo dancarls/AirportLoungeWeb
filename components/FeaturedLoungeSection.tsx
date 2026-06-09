@@ -152,9 +152,9 @@ function MapModal({ lounge, airport, iata, onClose }: { lounge: Lounge, airport:
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!
     const map = new mapboxgl.Map({
       container: containerRef.current,
-      style: 'mapbox://styles/mapbox/satellite-streets-v12',
+      style: 'mapbox://styles/mapbox/standard',
       center: [airport.longitude, airport.latitude],
-      zoom: 14,
+      zoom: 15,
     })
     new mapboxgl.Marker({ color: '#003434' })
       .setLngLat([airport.longitude, airport.latitude])
@@ -259,7 +259,9 @@ export default function FeaturedLoungeSection({ lounge, primaryImageUrl }: Props
               )}
 
               {lounge.description && (
-                <p className="text-secondary leading-relaxed mb-8 font-body-lg line-clamp-3">{lounge.description}</p>
+                <p className="text-secondary leading-relaxed mb-8 font-body-lg line-clamp-3">
+                  {lounge.description.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()}
+                </p>
               )}
 
               {/* Primary CTA */}

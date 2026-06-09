@@ -51,9 +51,9 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
 
     const map = new mapboxgl.Map({
       container: containerRef.current,
-      style:  hasIndoor ? 'mapbox://styles/mapbox/standard' : 'mapbox://styles/mapbox/satellite-streets-v12',
+      style: 'mapbox://styles/mapbox/standard',
       center: [airport.longitude, airport.latitude],
-      zoom:   hasIndoor ? INDOOR_ZOOM : 14,
+      zoom:   hasIndoor ? INDOOR_ZOOM : 15,
       pitch:  hasIndoor ? 40 : 0,
       attributionControl: false,
     })
@@ -165,7 +165,7 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
           <p className="text-xs text-secondary flex-1">
             {hasIndoor
               ? `Indoor floor plans for ${airport.name}. Use the floor selector to explore each level.`
-              : `Satellite view of ${airport.name}. Lounge markers are pinned at the airport centre — follow terminal signage on arrival.`
+              : `${airport.name} terminal map. Lounge markers are pinned at the airport centre — follow signage on arrival.`
             }
           </p>
           <div className="flex gap-3 shrink-0 flex-wrap">
@@ -206,20 +206,24 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
 // ── Main component ────────────────────────────────────────
 export default function TerminalMapVisual({ airports }: { airports: AirportData[] }) {
   const valid = airports.filter(a => a.latitude && a.longitude)
-  const [selected,  setSelected]  = useState(valid[0]?.iata_code ?? '')
+  // Only show indoor-covered airports in the quick nav tabs
+  const displayAirports = valid.filter(a => INDOOR_COVERED.has(a.iata_code))
+  const tabAirports = displayAirports.length > 0 ? displayAirports : valid
+
+  const [selected,  setSelected]  = useState(tabAirports[0]?.iata_code ?? '')
   const [mapOpen,   setMapOpen]   = useState(false)
   const [mounted,   setMounted]   = useState(false)
 
   useEffect(() => { setMounted(true) }, [])
 
-  const airport = valid.find(a => a.iata_code === selected) ?? valid[0]
+  const airport = valid.find(a => a.iata_code === selected) ?? tabAirports[0]
   if (!airport) return null
 
-  const apiKey     = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY
-  const staticMapUrl = apiKey && airport.latitude && airport.longitude
-    ? `https://maps.googleapis.com/maps/api/staticmap?center=${airport.latitude},${airport.longitude}&zoom=15&size=1280x549&scale=2&maptype=hybrid&key=${apiKey}`
-    : null
-  const fallbackImg = 'https://lh3.googleusercontent.com/aida-public/AB6AXuAsUQPE62JEQ3D3Ex8UH4OlUeO8t89NrJixOZWymGb11WbLKrjITTElKtDrjJGXvjyEE1pj8XAPDphNzoDJDOjCD-Jf8g1dczO257Fmsgas6ZdEP9nnMvrdXB8bySGbPRduPvh4PY7ykVLZ0MkLhQOROra6vHGv4nnfp68UnfhK8qOuza-Mgj8dEyzMBRlZunD_-6hklCG2DiZz20gLUUsJFAQCoQUhVmMD0I6vK8dNb6f1EkuFGLWIVbeEeSsaYPa0lRTBcjFaGrf_'
+  // Mapbox Static Images API — standard map, no satellite
+  const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
+  const staticMapUrl = (airport.latitude && airport.longitude && mapboxToken)
+    ? `https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/${airport.longitude},${airport.latitude},15,0/1280x549@2x?access_token=${mapboxToken}`
+    : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAsUQPE62JEQ3D3Ex8UH4OlUeO8t89NrJixOZWymGb11WbLKrjITTElKtDrjJGXvjyEE1pj8XAPDphNzoDJDOjCD-Jf8g1dczO257Fmsgas6ZdEP9nnMvrdXB8bySGbPRduPvh4PY7ykVLZ0MkLhQOROra6vHGv4nnfp68UnfhK8qOuza-Mgj8dEyzMBRlZunD_-6hklCG2DiZz20gLUUsJFAQCoQUhVmMD0I6vK8dNb6f1EkuFGLWIVbeEeSsaYPa0lRTBcjFaGrf_'
 
   const dots = getPulseDots(airport.lounges.length)
 
@@ -231,20 +235,25 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
         <div className="flex justify-between items-end mb-12 flex-wrap gap-4">
           <div>
             <h2 className="font-headline-lg text-headline-lg text-primary mb-2">Terminal Navigation</h2>
-            <p className="text-secondary">Click the map to open an interactive aerial view of the airport.</p>
+            <p className="text-secondary">
+              Interactive indoor floor plans — click any airport to explore, then open the Full Navigator.
+            </p>
           </div>
-          {/* Airport switcher */}
+          {/* Airport switcher — indoor-covered airports only */}
           <div className="flex gap-2 flex-wrap">
-            {valid.map(a => (
+            {tabAirports.map(a => (
               <button
                 key={a.iata_code}
                 onClick={() => setSelected(a.iata_code)}
-                className={`px-6 py-3 text-sm font-medium transition-all ${
+                className={`px-6 py-3 text-sm font-medium transition-all flex items-center gap-1.5 ${
                   selected === a.iata_code
                     ? 'bg-primary text-white'
                     : 'bg-white/50 text-primary hover:bg-white'
                 }`}
               >
+                {INDOOR_COVERED.has(a.iata_code) && (
+                  <span className="material-symbols-outlined" style={{ fontSize: '12px' }}>layers</span>
+                )}
                 {a.iata_code}
               </button>
             ))}
@@ -262,7 +271,7 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             key={selected}
-            src={staticMapUrl ?? fallbackImg}
+            src={staticMapUrl}
             alt={`${airport.name} aerial view`}
             className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-1000"
           />
@@ -282,8 +291,12 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
           {/* Centre overlay — resting state */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="p-8 bg-bone-white/90 backdrop-blur-lg border border-primary/20 max-w-sm text-center transition-opacity duration-500 group-hover:opacity-0">
-              <span className="material-symbols-outlined text-primary mb-4 block" style={{ fontSize: '40px' }}>satellite_alt</span>
-              <h3 className="font-headline-md text-primary mb-2">Interactive Map</h3>
+              <span className="material-symbols-outlined text-primary mb-4 block" style={{ fontSize: '40px' }}>
+                {INDOOR_COVERED.has(airport.iata_code) ? 'layers' : 'map'}
+              </span>
+              <h3 className="font-headline-md text-primary mb-2">
+                {INDOOR_COVERED.has(airport.iata_code) ? 'Indoor Floor Plans' : 'Interactive Map'}
+              </h3>
               <p className="text-sm text-secondary">
                 Click to explore the terminal layout and lounge locations at {airport.name}.
               </p>
@@ -340,13 +353,36 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
               </Link>
             ))}
           </div>
+          <div className="flex gap-3 flex-wrap">
+            <Link
+              href={`/airports/${airport.iata_code}/navigate`}
+              className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-all"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>explore</span>
+              Navigate {airport.iata_code}
+            </Link>
+            <Link
+              href={`/airports/${airport.iata_code}`}
+              className="flex items-center gap-2 fine-border bg-white text-primary px-5 py-2.5 font-label-caps text-[10px] uppercase tracking-widest hover:bg-champagne-glint transition-all"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>door_open</span>
+              All Lounges
+            </Link>
+          </div>
+        </div>
+
+        {/* All airports map CTA */}
+        <div className="mt-8 text-center border-t border-sand-dark/15 pt-8">
           <Link
-            href={`/airports/${airport.iata_code}`}
-            className="flex items-center gap-2 fine-border bg-white text-primary px-5 py-2.5 font-label-caps text-[10px] uppercase tracking-widest hover:bg-champagne-glint transition-all"
+            href="/airports/map"
+            className="inline-flex items-center gap-2 bg-primary text-white px-10 py-4 font-label-caps text-label-caps uppercase tracking-widest hover:opacity-90 transition-all"
           >
-            <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>arrow_forward</span>
-            All {airport.iata_code} Lounges
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>public</span>
+            Explore All Airport Maps
           </Link>
+          <p className="text-xs text-secondary mt-3">
+            View all Canadian airports on one map · Indoor floor plans for {tabAirports.length} airports
+          </p>
         </div>
       </div>
 

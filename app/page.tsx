@@ -16,6 +16,14 @@ function getImg(path: string) {
   return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${path}`
 }
 
+// Flagship airport IDs — featured content always comes from these
+const FLAGSHIP_AIRPORT_IDS = [
+  '3f2645da-2c60-4e3e-ad78-3bd268bee576', // YVR
+  '840161ae-1301-45f8-ad92-10d7834bef72', // YYZ
+  '43c106e5-997d-4a95-9957-2d00dd02f89e', // YYC
+  'ccd3abf2-f1c1-41a7-8fc4-eb0a22e7b50c', // YUL
+]
+
 export default async function HomePage() {
   const supabase = await createClient()
 
@@ -31,12 +39,15 @@ export default async function HomePage() {
     supabase.from('lounges')
       .select('*, airport:airports(name, iata_code, city), images:lounge_images(*)')
       .eq('is_active', true)
+      .in('airport_id', FLAGSHIP_AIRPORT_IDS)
       .not('rating', 'is', null)
       .order('rating', { ascending: false })
       .limit(4),
     supabase.from('lounges')
       .select('*, airport:airports(*), images:lounge_images(*), amenities(*)')
       .eq('is_active', true)
+      .in('airport_id', FLAGSHIP_AIRPORT_IDS)
+      .not('rating', 'is', null)
       .order('rating', { ascending: false, nullsFirst: false })
       .limit(1)
       .maybeSingle(),
@@ -44,8 +55,7 @@ export default async function HomePage() {
       .select('iata_code, name, city, latitude, longitude, terminal_map_url, lounges(id)')
       .eq('is_active', true)
       .not('latitude', 'is', null)
-      .order('name')
-      .limit(8),
+      .order('name'),
     supabase.from('lounges').select('*', { count: 'exact', head: true }).eq('is_active', true),
     supabase.from('airports').select('*', { count: 'exact', head: true }).eq('is_active', true),
   ])
