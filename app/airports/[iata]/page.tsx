@@ -251,6 +251,34 @@ export default async function AirportPage({ params }: Props) {
         </div>
       </div>
 
+      {/* ── Navigate CTA — full-width banner for airports with interactive maps ── */}
+      {INDOOR_COVERED.has(code) && (
+        <div className="bg-primary border-b border-primary/20">
+          <div className="max-w-container-max mx-auto px-gutter py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <span className="material-symbols-outlined text-champagne-glint shrink-0" style={{ fontSize: '28px' }}>
+                map
+              </span>
+              <div>
+                <p className="font-label-caps text-[10px] tracking-widest text-champagne-glint/70 mb-0.5">
+                  INTERACTIVE TERMINAL MAP
+                </p>
+                <p className="text-bone-white font-medium text-sm leading-snug">
+                  Find every lounge at {code} — see exact locations by gate and pier
+                </p>
+              </div>
+            </div>
+            <Link
+              href={`/airports/${code}/navigate`}
+              className="shrink-0 inline-flex items-center gap-2 bg-champagne-glint text-primary px-6 py-3 font-label-caps text-[11px] uppercase tracking-widest hover:bg-bone-white transition-all"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>explore</span>
+              Navigate {code}
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* ── Main Grid ─────────────────────────────────────── */}
       <main className="max-w-container-max mx-auto px-gutter py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
 

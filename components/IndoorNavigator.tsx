@@ -63,78 +63,29 @@ function getLoungeCoords(
   return terminalCenter(airport)
 }
 
-// ── POI auto-detection ────────────────────────────────────────
-// After the map tiles settle, scan all rendered point features and snap
-// each lounge marker to the best-matching Mapbox POI coordinate.
-// This uses Mapbox's own curated data (same source as the on-map labels).
-function matchScore(loungeName: string, poiName: string): number {
-  const ln = loungeName.toLowerCase().replace(/[^a-z0-9 ]/g, ' ')
-  const pn = poiName.toLowerCase().replace(/[^a-z0-9 ]/g, ' ')
-  if (ln === pn) return 100
-  if (pn.length > 3 && ln.includes(pn)) return 85
-  if (ln.length > 3 && pn.includes(ln)) return 85
-  const stopWords = new Set(['the','and','at','in','of','for','lounge','international','domestic','departures','arrivals'])
-  const lw = ln.split(' ').filter(w => w.length > 3 && !stopWords.has(w))
-  const pw = pn.split(' ').filter(w => w.length > 3 && !stopWords.has(w))
-  if (lw.length === 0 || pw.length === 0) return 0
-  const hits = lw.filter(w => pw.some(p => p.includes(w) || w.includes(p))).length
-  return Math.round((hits / Math.max(lw.length, pw.length)) * 70)
-}
-
-function autoDetectLoungePositions(
-  map:      mapboxgl.Map,
-  lounges:  NavigatorLounge[],
-  markers:  Record<string, mapboxgl.Marker>,
-  airport:  AirportInfo,
-) {
-  try {
-    const [tcLng, tcLat] = terminalCenter(airport)
-    // ~900 m radius — keeps matching inside the main terminal piers but
-    // excludes cargo terminals, crew lounges, pilot lounges in the
-    // operations/airside area that also contain "lounge" in their name.
-    const MAX_DIST = 0.009
-
-    const rendered = map.queryRenderedFeatures()
-    // Only consider point features whose Mapbox name explicitly contains "lounge".
-    // This prevents snapping to transit stops, hotels, parks, etc.
-    const loungePOIs = rendered.filter(f => {
-      if (f.geometry?.type !== 'Point') return false
-      const name = ((f.properties?.name ?? '') as string).toLowerCase()
-      if (!name.includes('lounge')) return false
-      const [lng, lat] = (f.geometry as GeoJSON.Point).coordinates
-      const dist = Math.sqrt((lng - tcLng) ** 2 + (lat - tcLat) ** 2)
-      return dist < MAX_DIST
-    })
-
-    // Assign each unpositioned lounge to its best-scoring POI (no double assignment)
-    const used = new Set<string>()
-    const assignments: Array<{ id: string; coord: [number, number] }> = []
-
-    for (const lounge of lounges) {
-      if (lounge.latitude != null && lounge.longitude != null) continue
-
-      let best: { feat: (typeof loungePOIs)[number]; score: number } | null = null
-      for (const feat of loungePOIs) {
-        const key = JSON.stringify((feat.geometry as GeoJSON.Point).coordinates)
-        if (used.has(key)) continue
-        const score = matchScore(lounge.name, feat.properties!.name as string)
-        if (score >= 45 && (!best || score > best.score)) best = { feat, score }
-      }
-      if (best) {
-        const [lng, lat] = (best.feat.geometry as GeoJSON.Point).coordinates
-        used.add(JSON.stringify([lng, lat]))
-        assignments.push({ id: lounge.id, coord: [lng, lat] })
-      }
-    }
-
-    for (const { id, coord } of assignments) {
-      const marker = markers[id]
-      if (marker) {
-        marker.setLngLat(coord)
-        marker.getPopup()?.setLngLat(coord)
-      }
-    }
-  } catch { /* tiles may not be ready */ }
+// ── Lounge map-pin SVG ────────────────────────────────────────
+// Renders a gold map-pin containing a white person-in-lounge-seat silhouette.
+// Premium lounges use a darker gold with an amber border.
+// anchor:'bottom' on the Mapbox Marker means the pin tip is at the coordinate.
+function buildLoungePinSVG(isPremium: boolean): string {
+  const fill   = isPremium ? '#9A7020' : '#C9A96E'
+  const border = isPremium ? '#F5E0A0' : 'white'
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 64" fill="none">
+    <!-- Map-pin body: circle top, pointed bottom -->
+    <path d="M26 2C13.9 2 4 11.9 4 24c0 12.4 22 40 22 40s22-27.6 22-40C48 11.9 38.1 2 26 2z"
+      fill="${fill}" stroke="${border}" stroke-width="2"/>
+    <!-- Person in reclining lounge seat (white silhouette) -->
+    <!-- Head -->
+    <circle cx="35" cy="13" r="5" fill="white"/>
+    <!-- Seat backrest — left side, vertical -->
+    <rect x="10" y="17" width="5.5" height="19" rx="2.75" fill="white"/>
+    <!-- Reclined body / thighs — diagonal from backrest to right -->
+    <path d="M14.5 21.5 L30 17 L31.5 21 L16 25.5Z" fill="white"/>
+    <!-- Seat pan — horizontal bottom -->
+    <rect x="10" y="33" width="22" height="5" rx="2.5" fill="white"/>
+    <!-- Armrest — horizontal right side -->
+    <rect x="25" y="22" width="13" height="4" rx="2" fill="white"/>
+  </svg>`
 }
 
 // ── Popup HTML builders ──────────────────────────────────────
@@ -278,82 +229,42 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
         setMapReady(true)
 
-        // Add a marker for every lounge
-        // Material "weekend" (sofa) icon path — visually distinct from restaurant/shop icons
-        const SOFA_PATH = 'M21 9V7c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v2c-1.1 0-2 .9-2 2v5h1.33L4 18h1l1-2h12l1 2h1l1.67-2H22v-5c0-1.1-.9-2-1-2zm-8 0H5V7h8v2zm6 0h-4V7h2c1.1 0 2 .9 2 2z'
-        const STAR_PATH = 'M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'
-
+        // Add a pin marker for every lounge.
+        // anchor:'bottom' means the pin tip is placed exactly at the coordinate.
         lounges.forEach((lounge, i) => {
           const [lng, lat] = getLoungeCoords(lounge, i, lounges.length, airport)
-
-          // Premium / first-class lounges get a distinct darker gold + star badge
-          const isPremium = /first|platinum|signature|premier/i.test(lounge.name)
-          const size    = isPremium ? '44px' : '38px'
-          const bgColor = isPremium ? '#9A7020' : '#C9A96E'
-          const border  = isPremium ? '3px solid #F5E0A0' : '3px solid white'
-          const shadow  = '0 3px 14px rgba(0,0,0,0.45), 0 0 0 2px rgba(201,169,110,0.25)'
+          const isPremium  = /first|platinum|signature|premier/i.test(lounge.name)
+          const pinW = isPremium ? 46 : 40
+          const pinH = Math.round(pinW * (64 / 52))
 
           const el = document.createElement('div')
-          el.style.cssText = `width:${size};height:${size};cursor:pointer;position:relative;`
+          el.style.cssText = [
+            `width:${pinW}px`,
+            `height:${pinH}px`,
+            'cursor:pointer',
+            'transition:transform 0.15s',
+            'transform-origin:center bottom',
+            'filter:drop-shadow(0 3px 5px rgba(0,0,0,0.38))',
+          ].join(';')
+          el.innerHTML = buildLoungePinSVG(isPremium)
+          el.title = lounge.name
 
-          const inner = document.createElement('div')
-          inner.style.cssText = `
-            width:100%;height:100%;
-            background:${bgColor};
-            border:${border};
-            border-radius:50%;
-            display:flex;align-items:center;justify-content:center;
-            box-shadow:${shadow};
-            transition:transform 0.15s;transform-origin:center;
-          `
-          // Sofa icon (lounge chair) — stands out from restaurant/shop/bathroom icons
-          inner.innerHTML = `<svg width="${isPremium ? 22 : 19}" height="${isPremium ? 22 : 19}" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-            <path d="${SOFA_PATH}"/>
-          </svg>`
-          inner.title = lounge.name
+          el.addEventListener('mouseenter', () => { el.style.transform = 'scale(1.15)' })
+          el.addEventListener('mouseleave', () => { el.style.transform = '' })
 
-          // Premium lounges get a small gold star badge in the top-right
-          if (isPremium) {
-            const star = document.createElement('div')
-            star.style.cssText = `
-              position:absolute;top:-4px;right:-4px;
-              width:16px;height:16px;
-              background:#C9A96E;
-              border:2px solid white;
-              border-radius:50%;
-              display:flex;align-items:center;justify-content:center;
-              pointer-events:none;
-            `
-            star.innerHTML = `<svg width="9" height="9" viewBox="0 0 24 24" fill="white"><path d="${STAR_PATH}"/></svg>`
-            el.appendChild(star)
-          }
-
-          el.appendChild(inner)
-          inner.addEventListener('mouseenter', () => { inner.style.transform = 'scale(1.18)' })
-          inner.addEventListener('mouseleave', () => { inner.style.transform = 'scale(1)' })
-
-          const popup = new mapboxgl.Popup({ offset: 18, closeButton: true, maxWidth: '270px' })
+          const popup = new mapboxgl.Popup({ offset: [0, -pinH + 4], closeButton: true, maxWidth: '270px' })
             .setHTML(buildPopupHTML(lounge, airport.iata_code))
 
           popup.on('open',  () => { setActiveLounge(lounge.id); setActiveDetail(lounge) })
           popup.on('close', () => { setActiveLounge(prev => prev === lounge.id ? null : prev) })
 
-          const marker = new mapboxgl.Marker({ element: el })
+          const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' })
             .setLngLat([lng, lat])
             .setPopup(popup)
             .addTo(map)
 
           markersRef.current.push(marker)
           markerMapRef.current[lounge.id] = marker
-        })
-
-        // Once tiles have settled, snap unpositioned markers to their Mapbox POI locations.
-        // Mapbox already stores accurate lounge coordinates in its POI dataset.
-        let detected = false
-        map.on('idle', () => {
-          if (detected) return
-          detected = true
-          autoDetectLoungePositions(map, lounges, markerMapRef.current, airport)
         })
       })
     }
@@ -390,16 +301,14 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
     setActiveLounge(lounge.id)
     setActiveDetail(lounge)
 
-    // Prefer the marker's current position (may have been auto-detected from POI data)
     const marker = markerMapRef.current[lounge.id]
     const lngLat = marker?.getLngLat()
     const [fbLng, fbLat] = terminalCenter(airport)
     const lng = lngLat?.lng ?? fbLng
     const lat = lngLat?.lat ?? fbLat
 
-    // Use zoom 17 if the marker has been snapped to a specific POI, else 16 for full terminal
-    const hasRealCoord = lounge.latitude != null || (lngLat && Math.abs(lngLat.lng - fbLng) > 0.0002)
-    const zoom = hasRealCoord ? 17 : 16
+    const hasRealCoord = lounge.latitude != null && lounge.longitude != null
+    const zoom = hasRealCoord ? 17.5 : 16
 
     map.flyTo({ center: [lng, lat], zoom, pitch: 0, duration: 1400 })
 
