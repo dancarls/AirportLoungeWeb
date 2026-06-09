@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import mapboxgl from 'mapbox-gl'
-import { INDOOR_COVERED, INDOOR_ZOOM, enableIndoor, getIndoorManager, type IndoorFloor } from '@/lib/mapbox/indoor'
+import { INDOOR_COVERED, INDOOR_ZOOM, getIndoorManager, type IndoorFloor } from '@/lib/mapbox/indoor'
 import type { LoungeSummary } from '@/components/AirportLoungeGridFiltered'
 
 interface AirportInfo {
@@ -73,20 +73,6 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
         map.resize()
         setMapReady(true)
       })
-
-      // Enable indoor only once when zoom crosses the indoor threshold.
-      // Calling enableIndoor at zoom 15 crashes the map — the Standard style
-      // expression ["string", ["get","floor_id"]] throws on features without floor_id.
-      let indoorEnabled = false
-      if (isIndoorCovered) {
-        map.on('zoomend', () => {
-          if (indoorEnabled) return
-          if (map.getZoom() >= INDOOR_ZOOM) {
-            enableIndoor(map)
-            indoorEnabled = true
-          }
-        })
-      }
 
       map.on('indoor.updated', () => {
         const indoor = getIndoorManager(map)

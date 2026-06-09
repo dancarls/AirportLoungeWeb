@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import mapboxgl from 'mapbox-gl'
-import { INDOOR_COVERED, INDOOR_ZOOM, enableIndoor, getIndoorManager, type IndoorFloor } from '@/lib/mapbox/indoor'
+import { INDOOR_COVERED, INDOOR_ZOOM, getIndoorManager, type IndoorFloor } from '@/lib/mapbox/indoor'
 
 interface LoungeItem {
   id: string
@@ -62,37 +62,19 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
     map.addControl(new mapboxgl.NavigationControl(), 'top-right')
     map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
-    let indoorEnabled = false
-
     map.on('load', () => {
       requestAnimationFrame(() => map.resize())
-      if (hasIndoor) {
-        // Modal opens at INDOOR_ZOOM — safe to enable at this zoom level
-        if (map.getZoom() >= INDOOR_ZOOM) {
-          enableIndoor(map)
-          indoorEnabled = true
-        }
-      } else {
-        // One marker per lounge at airport centre
-        airport.lounges.forEach(l => {
-          new mapboxgl.Marker({ color: '#C9A96E' })
-            .setLngLat([airport.longitude!, airport.latitude!])
-            .setPopup(
-              new mapboxgl.Popup({ offset: 28, closeButton: false })
-                .setHTML(`<div style="font-family:Inter,sans-serif;font-size:12px;font-weight:600;color:#003434;padding:6px 8px;">${l.name}</div>`)
-            )
-            .addTo(map)
-        })
-      }
-    })
-
-    if (hasIndoor) {
-      map.on('zoomend', () => {
-        if (indoorEnabled || map.getZoom() < INDOOR_ZOOM) return
-        enableIndoor(map)
-        indoorEnabled = true
+      // Add a marker per lounge at the airport centre (indoor floor plan source not available)
+      airport.lounges.forEach(l => {
+        new mapboxgl.Marker({ color: '#C9A96E' })
+          .setLngLat([airport.longitude!, airport.latitude!])
+          .setPopup(
+            new mapboxgl.Popup({ offset: 28, closeButton: false })
+              .setHTML(`<div style="font-family:Inter,sans-serif;font-size:12px;font-weight:600;color:#003434;padding:6px 8px;">${l.name}</div>`)
+          )
+          .addTo(map)
       })
-    }
+    })
 
     map.on('indoor.updated', () => {
       const indoor = getIndoorManager(map)

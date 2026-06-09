@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import mapboxgl from 'mapbox-gl'
-import { INDOOR_COVERED, enableIndoor } from '@/lib/mapbox/indoor'
+import { INDOOR_COVERED } from '@/lib/mapbox/indoor'
 
 interface AirportPin {
   iata_code: string
@@ -114,14 +114,6 @@ export default function AirportMapExplorer({ airports }: Props) {
           .setPopup(popup)
           .addTo(map)
       })
-    })
-
-    // Enable indoor only when zoomed in — calling at low zoom crashes on null floor_id
-    let indoorEnabled = false
-    map.on('zoomend', () => {
-      if (indoorEnabled || map.getZoom() < 17.5) return
-      enableIndoor(map)
-      indoorEnabled = true
     })
 
     return () => { try { map.remove() } catch { /* ignore */ } }
