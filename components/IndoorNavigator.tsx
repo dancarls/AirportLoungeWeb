@@ -29,9 +29,6 @@ interface Props {
 }
 
 // ── Terminal centre coordinates ───────────────────────────────
-// The airport ARP (used in the airports table) is typically at the runway
-// intersection — far from the passenger terminal. These are the actual
-// terminal building centres so the map opens on the right place.
 const TERMINAL_CENTER: Record<string, [number, number]> = {
   YVR: [-123.1752, 49.1944],
   YYZ: [-79.6248, 43.6780],
@@ -48,9 +45,6 @@ function terminalCenter(airport: AirportInfo): [number, number] {
   return TERMINAL_CENTER[airport.iata_code] ?? [airport.longitude, airport.latitude]
 }
 
-// When a lounge has no DB coordinates, place it at the terminal centre.
-// We stack all unknown lounges there — autoDetectLoungePositions() will
-// move them to their real Mapbox POI positions once tiles load.
 function getLoungeCoords(
   lounge:  NavigatorLounge,
   _index:  number,
@@ -63,33 +57,33 @@ function getLoungeCoords(
   return terminalCenter(airport)
 }
 
+// ── Terminal label formatter ──────────────────────────────────
+function fmtTerminal(t: string): string {
+  const map: Record<string, string> = {
+    'international': 'International Terminal',
+    'domestic':      'Domestic Terminal',
+    'transborder':   'Transborder',
+    'us':            'US Departures',
+  }
+  return map[t.toLowerCase()] ?? `${t} Terminal`
+}
+
 // ── Lounge map-pin SVG ────────────────────────────────────────
-// Renders a gold map-pin containing a white person-in-lounge-seat silhouette.
-// Premium lounges use a darker gold with an amber border.
-// anchor:'bottom' on the Mapbox Marker means the pin tip is at the coordinate.
 function buildLoungePinSVG(isPremium: boolean): string {
   const fill   = isPremium ? '#9A7020' : '#C9A96E'
   const border = isPremium ? '#F5E0A0' : 'white'
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 64" fill="none">
-    <!-- Map-pin body: circle top, pointed bottom -->
     <path d="M26 2C13.9 2 4 11.9 4 24c0 12.4 22 40 22 40s22-27.6 22-40C48 11.9 38.1 2 26 2z"
       fill="${fill}" stroke="${border}" stroke-width="2"/>
-    <!-- Person in reclining lounge seat (white silhouette) -->
-    <!-- Head -->
     <circle cx="35" cy="13" r="5" fill="white"/>
-    <!-- Seat backrest — left side, vertical -->
     <rect x="10" y="17" width="5.5" height="19" rx="2.75" fill="white"/>
-    <!-- Reclined body / thighs — diagonal from backrest to right -->
     <path d="M14.5 21.5 L30 17 L31.5 21 L16 25.5Z" fill="white"/>
-    <!-- Seat pan — horizontal bottom -->
     <rect x="10" y="33" width="22" height="5" rx="2.5" fill="white"/>
-    <!-- Armrest — horizontal right side -->
     <rect x="25" y="22" width="13" height="4" rx="2" fill="white"/>
   </svg>`
 }
 
-// ── Popup HTML builders ──────────────────────────────────────
-
+// ── Hours helpers ─────────────────────────────────────────────
 function fmtHour(t: string): string {
   const [h, m] = t.split(':').map(Number)
   const period = h < 12 ? 'AM' : 'PM'
@@ -113,72 +107,6 @@ const ACCESS_LABELS: Record<string, string> = {
   day_pass:         'Day Pass',
 }
 
-function buildPopupHTML(lounge: NavigatorLounge, iata: string): string {
-  const hours = getTodayHours(lounge.opening_hours)
-
-  const chips = (lounge.access_types ?? [])
-    .slice(0, 3)
-    .map(a => {
-      const label = ACCESS_LABELS[a.type] ?? a.type.replace(/_/g, ' ')
-      return `<span style="font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;background:#f5f0e8;color:#675d4f;padding:2px 7px;">${label}</span>`
-    })
-    .join('')
-
-  const img = lounge.primaryImage
-    ? `<img src="${lounge.primaryImage}" style="width:100%;height:110px;object-fit:cover;display:block;" loading="lazy" />`
-    : `<div style="width:100%;height:52px;background:linear-gradient(135deg,#003434 0%,#1a5454 100%);display:flex;align-items:center;justify-content:center;"><span style="color:#C9A96E;font-size:20px;">✈</span></div>`
-
-  const badge = lounge.terminal
-    ? `<span style="font-size:9px;font-weight:700;background:#f5f0e8;color:#675d4f;padding:2px 7px;flex-shrink:0;white-space:nowrap;">T${lounge.terminal}</span>`
-    : ''
-
-  const rating = lounge.rating
-    ? `<div style="display:flex;align-items:center;gap:3px;margin-bottom:6px;">
-         <span style="color:#C9A96E;">★</span>
-         <span style="font-size:11px;font-weight:600;color:#003434;">${lounge.rating.toFixed(1)}</span>
-         ${lounge.review_count ? `<span style="font-size:10px;color:#675d4f;">(${lounge.review_count})</span>` : ''}
-       </div>`
-    : ''
-
-  const phone = lounge.phone
-    ? `<p style="font-size:10.5px;color:#675d4f;margin:0 0 4px;">📞 ${lounge.phone}</p>`
-    : ''
-
-  const todayHours = hours
-    ? `<p style="font-size:10.5px;color:#675d4f;margin:0 0 8px;">🕐 Today: ${hours}</p>`
-    : ''
-
-  const websiteBtn = lounge.website
-    ? `<a href="${lounge.website}" target="_blank" rel="noreferrer"
-         style="flex:1;border:1.5px solid #003434;color:#003434;text-align:center;padding:6px 4px;
-                font-size:9px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:0.05em;">
-         Website
-       </a>`
-    : ''
-
-  return `
-<div style="font-family:Inter,-apple-system,sans-serif;width:256px;overflow:hidden;">
-  ${img}
-  <div style="padding:11px 13px;">
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px;margin-bottom:4px;">
-      <p style="font-size:13px;font-weight:700;color:#003434;margin:0;line-height:1.3;">${lounge.name}</p>
-      ${badge}
-    </div>
-    ${lounge.location_detail ? `<p style="font-size:10.5px;color:#675d4f;margin:0 0 6px;line-height:1.4;">${lounge.location_detail}</p>` : ''}
-    ${rating}${phone}${todayHours}
-    ${chips ? `<div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:9px;">${chips}</div>` : ''}
-    <div style="display:flex;gap:5px;">
-      ${websiteBtn}
-      <a href="/airports/${iata}/lounges/${lounge.slug}"
-         style="flex:2;background:#003434;color:white;text-align:center;padding:7px 4px;
-                font-size:9px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:0.05em;">
-        View Details
-      </a>
-    </div>
-  </div>
-</div>`
-}
-
 // ── Component ────────────────────────────────────────────────
 
 export default function IndoorNavigator({ airport, lounges }: Props) {
@@ -190,6 +118,9 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
   const [mapReady,     setMapReady]     = useState(false)
   const [activeLounge, setActiveLounge] = useState<string | null>(null)
   const [activeDetail, setActiveDetail] = useState<NavigatorLounge | null>(null)
+
+  // Keep a stable ref to flyToLounge so marker click handlers stay current
+  const flyToLoungeRef = useRef<((l: NavigatorLounge) => void) | null>(null)
 
   // ── Map init ─────────────────────────────────────────────
   useEffect(() => {
@@ -220,7 +151,6 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
       map.on('load', () => {
         map.resize()
-        // Show gates, terminal labels, and POI names on the Standard style
         try {
           map.setConfigProperty('basemap', 'showPointOfInterestLabels', true)
           map.setConfigProperty('basemap', 'showPlaceLabels', true)
@@ -229,8 +159,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
         setMapReady(true)
 
-        // Add a pin marker for every lounge.
-        // anchor:'bottom' means the pin tip is placed exactly at the coordinate.
+        // Build pin markers — no floating popup; detail shows in sidebar on click
         lounges.forEach((lounge, i) => {
           const [lng, lat] = getLoungeCoords(lounge, i, lounges.length, airport)
           const isPremium  = /first|platinum|signature|premier/i.test(lounge.name)
@@ -251,16 +180,11 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
           el.addEventListener('mouseenter', () => { el.style.transform = 'scale(1.15)' })
           el.addEventListener('mouseleave', () => { el.style.transform = '' })
-
-          const popup = new mapboxgl.Popup({ offset: [0, -pinH + 4], closeButton: true, maxWidth: '270px' })
-            .setHTML(buildPopupHTML(lounge, airport.iata_code))
-
-          popup.on('open',  () => { setActiveLounge(lounge.id); setActiveDetail(lounge) })
-          popup.on('close', () => { setActiveLounge(prev => prev === lounge.id ? null : prev) })
+          // Use ref so the click always calls the latest flyToLounge
+          el.addEventListener('click', () => flyToLoungeRef.current?.(lounge))
 
           const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' })
             .setLngLat([lng, lat])
-            .setPopup(popup)
             .addTo(map)
 
           markersRef.current.push(marker)
@@ -269,7 +193,6 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
       })
     }
 
-    // Defer init until the container has real pixel dimensions
     const ro = new ResizeObserver((entries) => {
       const { width, height } = entries[0].contentRect
       if (width > 0 && height > 0) {
@@ -293,7 +216,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
     }
   }, [airport, lounges])
 
-  // ── Fly to lounge + open popup ────────────────────────────
+  // ── Fly to lounge and open sidebar detail ─────────────────
   const flyToLounge = useCallback((lounge: NavigatorLounge) => {
     const map = mapRef.current
     if (!map) return
@@ -308,26 +231,24 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
     const lat = lngLat?.lat ?? fbLat
 
     const hasRealCoord = lounge.latitude != null && lounge.longitude != null
-    const zoom = hasRealCoord ? 17.5 : 16
+    map.flyTo({ center: [lng, lat], zoom: hasRealCoord ? 17.5 : 16, pitch: 0, duration: 1200 })
+  }, [airport])
 
-    map.flyTo({ center: [lng, lat], zoom, pitch: 0, duration: 1400 })
+  // Keep the ref in sync with the latest callback
+  flyToLoungeRef.current = flyToLounge
 
-    // Open the popup after the fly animation has started
-    setTimeout(() => {
-      const marker = markerMapRef.current[lounge.id]
-      if (marker && !marker.getPopup()?.isOpen()) marker.togglePopup()
-    }, 900)
-  }, [airport, lounges])
+  const clearDetail = useCallback(() => {
+    setActiveLounge(null)
+    setActiveDetail(null)
+  }, [])
 
   return (
     <div className="flex-1 min-h-0 flex flex-col md:flex-row overflow-hidden">
 
       {/* ── Map ─────────────────────────────────────────────── */}
-      {/* Outer wrapper holds overlays; inner containerRef is kept empty for Mapbox */}
       <div className="relative flex-1 overflow-hidden" style={{ minHeight: '50vh' }}>
         <div ref={containerRef} className="absolute inset-0" />
 
-        {/* Overlays are siblings of the map container, never children */}
         {!mapReady && (
           <div className="absolute inset-0 bg-primary/10 flex items-center justify-center z-10 pointer-events-none">
             <div className="bg-white px-6 py-4 shadow-lg flex items-center gap-3">
@@ -348,123 +269,248 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
       {/* ── Sidebar ──────────────────────────────────────────── */}
       <div className="w-full md:w-80 lg:w-96 bg-bone-white border-l border-sand-dark/10 flex flex-col md:overflow-hidden">
 
-        {/* Header */}
-        <div className="bg-primary text-white px-5 py-4 shrink-0">
-          <p className="font-label-caps text-[10px] text-primary-fixed uppercase tracking-widest mb-0.5">
-            {airport.iata_code} · {airport.city}
-          </p>
-          <h2 className="font-headline-md text-[15px] leading-snug">{airport.name}</h2>
-          <p className="text-[11px] text-primary-fixed/70 mt-1">
-            Click a lounge below or tap a map marker
-          </p>
-        </div>
+        {activeDetail ? (
+          /* ── Lounge detail card ── */
+          <div className="flex flex-col flex-1 min-h-0">
 
-        {/* Active lounge detail strip */}
-        {activeDetail && (
-          <div className="bg-champagne-glint border-b border-sand-dark/15 px-5 py-4 shrink-0">
-            <div className="flex items-start justify-between gap-2 mb-2">
-              <div>
-                <p className="font-label-caps text-[9px] text-sand-dark tracking-widest mb-0.5">NAVIGATING TO</p>
-                <p className="font-medium text-sm text-primary leading-tight">{activeDetail.name}</p>
+            {/* Header */}
+            <div className="bg-primary px-4 py-4 flex items-start gap-3 shrink-0">
+              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                <svg width="22" height="22" viewBox="0 0 52 64" fill="none">
+                  <circle cx="35" cy="13" r="5" fill="white"/>
+                  <rect x="10" y="17" width="5.5" height="19" rx="2.75" fill="white"/>
+                  <path d="M14.5 21.5 L30 17 L31.5 21 L16 25.5Z" fill="white"/>
+                  <rect x="10" y="33" width="22" height="5" rx="2.5" fill="white"/>
+                  <rect x="25" y="22" width="13" height="4" rx="2" fill="white"/>
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-label-caps text-[9px] text-champagne-glint/60 tracking-widest mb-0.5">LOUNGE</p>
+                <p className="font-semibold text-[14px] text-bone-white leading-tight">{activeDetail.name}</p>
               </div>
               <button
-                onClick={() => { setActiveLounge(null); setActiveDetail(null) }}
-                className="text-sand-dark hover:text-primary shrink-0 mt-0.5"
-                aria-label="Clear navigation"
+                onClick={clearDetail}
+                className="text-bone-white/60 hover:text-bone-white shrink-0 mt-0.5 transition-colors"
+                aria-label="Close"
               >
-                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>close</span>
+                <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>close</span>
               </button>
             </div>
-            {activeDetail.location_detail && (
-              <p className="text-xs text-secondary leading-relaxed flex items-start gap-1.5">
-                <span className="material-symbols-outlined text-primary shrink-0" style={{ fontSize: '14px', marginTop: '1px' }}>
-                  directions_walk
-                </span>
-                {activeDetail.location_detail}
-              </p>
+
+            {/* Location rows */}
+            {(activeDetail.location_detail || activeDetail.terminal || activeDetail.rating) && (
+              <div className="px-4 py-3 border-b border-sand-dark/10 space-y-2 shrink-0">
+                {activeDetail.location_detail && (
+                  <div className="flex items-start gap-2.5">
+                    <span className="material-symbols-outlined text-sand-dark shrink-0" style={{ fontSize: '14px', marginTop: '1px' }}>pin_drop</span>
+                    <p className="text-xs text-secondary leading-snug">{activeDetail.location_detail}</p>
+                  </div>
+                )}
+                {activeDetail.terminal && (
+                  <div className="flex items-center gap-2.5">
+                    <span className="material-symbols-outlined text-sand-dark shrink-0" style={{ fontSize: '14px' }}>apartment</span>
+                    <p className="text-xs text-secondary">{fmtTerminal(activeDetail.terminal)}</p>
+                  </div>
+                )}
+                {activeDetail.rating && (
+                  <div className="flex items-center gap-2.5">
+                    <span className="material-symbols-outlined text-sand-dark shrink-0" style={{ fontSize: '14px', fontVariationSettings: "'FILL' 1" }}>star</span>
+                    <p className="text-xs text-secondary">
+                      {activeDetail.rating.toFixed(1)}
+                      {activeDetail.review_count ? ` (${activeDetail.review_count} reviews)` : ''}
+                    </p>
+                  </div>
+                )}
+              </div>
             )}
-            {activeDetail.terminal && (
-              <p className="text-[11px] text-sand-dark mt-1.5 font-label-caps">
-                Terminal {activeDetail.terminal}
-              </p>
-            )}
-          </div>
-        )}
 
-        {/* Lounge list */}
-        <div className="flex-1 overflow-y-auto">
-          <div className="px-4 pt-4 pb-2">
-            <p className="font-label-caps text-[10px] text-sand-dark tracking-widest">
-              LOUNGES — CLICK TO LOCATE
-            </p>
-          </div>
-
-          {lounges.length === 0 && (
-            <p className="px-5 py-4 text-sm text-secondary">No lounges listed for {airport.iata_code}.</p>
-          )}
-
-          <div className="px-4 pb-4 space-y-2">
-            {lounges.map(lounge => (
-              <button
-                key={lounge.id}
-                onClick={() => flyToLounge(lounge)}
-                className={`w-full text-left p-4 border transition-all ${
-                  activeLounge === lounge.id
-                    ? 'border-primary bg-primary/5 shadow-sm'
-                    : 'border-sand-dark/20 bg-white hover:border-primary/40 hover:bg-champagne-glint/20'
-                }`}
+            {/* View full profile CTA */}
+            <div className="px-4 py-3 shrink-0 border-b border-sand-dark/10">
+              <Link
+                href={`/airports/${airport.iata_code}/lounges/${activeDetail.slug}`}
+                className="flex items-center justify-center gap-2 w-full bg-primary text-bone-white py-3 font-label-caps text-[11px] uppercase tracking-widest hover:opacity-90 transition-all"
               >
-                <div className="flex items-start justify-between gap-2 mb-1">
-                  <p className="font-medium text-sm text-primary leading-tight">{lounge.name}</p>
-                  {lounge.terminal && (
-                    <span className="font-label-caps text-[9px] text-sand-dark shrink-0 bg-champagne-glint px-1.5 py-0.5">
-                      T{lounge.terminal}
-                    </span>
-                  )}
-                </div>
-                {lounge.location_detail && (
-                  <p className="text-xs text-secondary leading-relaxed mt-1 line-clamp-2">
-                    {lounge.location_detail}
-                  </p>
-                )}
-                {lounge.rating && (
-                  <div className="flex items-center gap-1 mt-1.5">
-                    <span className="material-symbols-outlined text-sand-dark" style={{ fontSize: '11px', fontVariationSettings: "'FILL' 1" }}>star</span>
-                    <span className="font-label-caps text-[10px] text-sand-dark">{lounge.rating.toFixed(1)}</span>
-                  </div>
-                )}
-                {activeLounge === lounge.id && (
-                  <div className="mt-2 flex items-center gap-1 text-primary">
-                    <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>my_location</span>
-                    <span className="text-[10px] font-label-caps">Located on map</span>
-                  </div>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
+                <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>open_in_new</span>
+                View Full Profile
+              </Link>
+            </div>
 
-        {/* Footer */}
-        <div className="px-4 py-4 border-t border-sand-dark/10 space-y-2 shrink-0">
-          {airport.terminal_map_url && (
-            <a
-              href={airport.terminal_map_url}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-center gap-1.5 w-full border border-primary/25 text-primary py-2.5 font-label-caps text-[10px] uppercase tracking-widest hover:bg-champagne-glint transition-all"
-            >
-              <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>open_in_new</span>
-              Official Terminal Map
-            </a>
-          )}
-          <Link
-            href={`/airports/${airport.iata_code}`}
-            className="flex items-center justify-center gap-1.5 w-full bg-primary text-white py-2.5 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-all"
-          >
-            <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>door_open</span>
-            All Lounges at {airport.iata_code}
-          </Link>
-        </div>
+            {/* Scrollable body */}
+            <div className="flex-1 overflow-y-auto">
+
+              {/* Photo */}
+              {activeDetail.primaryImage && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={activeDetail.primaryImage}
+                  alt={activeDetail.name}
+                  className="w-full object-cover"
+                  style={{ height: '160px' }}
+                />
+              )}
+
+              {/* Description */}
+              {activeDetail.description && (
+                <div className="px-4 py-4 border-b border-sand-dark/10">
+                  <p className="text-xs text-secondary leading-relaxed line-clamp-5">
+                    {activeDetail.description}
+                  </p>
+                </div>
+              )}
+
+              {/* Information section */}
+              {(activeDetail.phone || activeDetail.website || getTodayHours(activeDetail.opening_hours)) && (
+                <>
+                  <div className="px-4 py-2 bg-champagne-glint/50">
+                    <p className="font-label-caps text-[9px] text-sand-dark tracking-widest">INFORMATION</p>
+                  </div>
+                  <div className="px-4 py-3 space-y-3 border-b border-sand-dark/10">
+                    {activeDetail.website && (
+                      <div className="flex items-start gap-2.5">
+                        <span className="material-symbols-outlined text-sand-dark shrink-0" style={{ fontSize: '14px', marginTop: '1px' }}>language</span>
+                        <a
+                          href={activeDetail.website}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs text-primary hover:underline break-all line-clamp-2 leading-relaxed"
+                        >
+                          {activeDetail.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                        </a>
+                      </div>
+                    )}
+                    {activeDetail.phone && (
+                      <div className="flex items-center gap-2.5">
+                        <span className="material-symbols-outlined text-sand-dark shrink-0" style={{ fontSize: '14px' }}>call</span>
+                        <span className="text-xs text-secondary">{activeDetail.phone}</span>
+                      </div>
+                    )}
+                    {getTodayHours(activeDetail.opening_hours) && (
+                      <div className="flex items-center gap-2.5">
+                        <span className="material-symbols-outlined text-sand-dark shrink-0" style={{ fontSize: '14px' }}>schedule</span>
+                        <span className="text-xs text-secondary">Today: {getTodayHours(activeDetail.opening_hours)}</span>
+                      </div>
+                    )}
+                  </div>
+                </>
+              )}
+
+              {/* Access type chips */}
+              {activeDetail.access_types && activeDetail.access_types.length > 0 && (
+                <div className="px-4 py-3">
+                  <p className="font-label-caps text-[9px] text-sand-dark tracking-widest mb-2">ACCESS</p>
+                  <div className="flex flex-wrap gap-2">
+                    {activeDetail.access_types.map((a, idx) => (
+                      <span key={idx} className="text-[10px] px-2.5 py-1 bg-champagne-glint text-secondary font-label-caps">
+                        {ACCESS_LABELS[a.type] ?? a.type.replace(/_/g, ' ')}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+            </div>
+
+            {/* Footer: back to list */}
+            <div className="px-4 py-3 border-t border-sand-dark/10 shrink-0">
+              <button
+                onClick={clearDetail}
+                className="flex items-center gap-1.5 text-xs text-secondary hover:text-primary transition-colors group"
+              >
+                <span
+                  className="material-symbols-outlined group-hover:-translate-x-0.5 transition-transform"
+                  style={{ fontSize: '14px' }}
+                >
+                  arrow_back
+                </span>
+                Back to lounge list
+              </button>
+            </div>
+
+          </div>
+        ) : (
+          /* ── Lounge list ── */
+          <>
+            {/* Header */}
+            <div className="bg-primary text-white px-5 py-4 shrink-0">
+              <p className="font-label-caps text-[10px] text-primary-fixed uppercase tracking-widest mb-0.5">
+                {airport.iata_code} · {airport.city}
+              </p>
+              <h2 className="font-headline-md text-[15px] leading-snug">{airport.name}</h2>
+              <p className="text-[11px] text-primary-fixed/70 mt-1">
+                Click a lounge or tap a marker to explore
+              </p>
+            </div>
+
+            {/* List */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="px-4 pt-4 pb-2">
+                <p className="font-label-caps text-[10px] text-sand-dark tracking-widest">
+                  LOUNGES — CLICK TO LOCATE
+                </p>
+              </div>
+
+              {lounges.length === 0 && (
+                <p className="px-5 py-4 text-sm text-secondary">No lounges listed for {airport.iata_code}.</p>
+              )}
+
+              <div className="px-4 pb-4 space-y-2">
+                {lounges.map(lounge => (
+                  <button
+                    key={lounge.id}
+                    onClick={() => flyToLounge(lounge)}
+                    className={`w-full text-left p-4 border transition-all ${
+                      activeLounge === lounge.id
+                        ? 'border-primary bg-primary/5 shadow-sm'
+                        : 'border-sand-dark/20 bg-white hover:border-primary/40 hover:bg-champagne-glint/20'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <p className="font-medium text-sm text-primary leading-tight">{lounge.name}</p>
+                      {lounge.terminal && (
+                        <span className="font-label-caps text-[9px] text-sand-dark shrink-0 bg-champagne-glint px-1.5 py-0.5 whitespace-nowrap">
+                          {fmtTerminal(lounge.terminal)}
+                        </span>
+                      )}
+                    </div>
+                    {lounge.location_detail && (
+                      <p className="text-xs text-secondary leading-relaxed mt-1 line-clamp-2">
+                        {lounge.location_detail}
+                      </p>
+                    )}
+                    {lounge.rating && (
+                      <div className="flex items-center gap-1 mt-1.5">
+                        <span className="material-symbols-outlined text-sand-dark" style={{ fontSize: '11px', fontVariationSettings: "'FILL' 1" }}>star</span>
+                        <span className="font-label-caps text-[10px] text-sand-dark">{lounge.rating.toFixed(1)}</span>
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-4 py-4 border-t border-sand-dark/10 space-y-2 shrink-0">
+              {airport.terminal_map_url && (
+                <a
+                  href={airport.terminal_map_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-center gap-1.5 w-full border border-primary/25 text-primary py-2.5 font-label-caps text-[10px] uppercase tracking-widest hover:bg-champagne-glint transition-all"
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>open_in_new</span>
+                  Official Terminal Map
+                </a>
+              )}
+              <Link
+                href={`/airports/${airport.iata_code}`}
+                className="flex items-center justify-center gap-1.5 w-full bg-primary text-white py-2.5 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-all"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '13px' }}>door_open</span>
+                All Lounges at {airport.iata_code}
+              </Link>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )
