@@ -353,7 +353,7 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
             {airport.lounges.map(l => (
               <Link
                 key={l.id}
-                href={`/airports/${airport.iata_code}`}
+                href={`/airports/${airport.iata_code}/lounges/${l.slug}`}
                 className="bg-white fine-border px-4 py-2 text-xs font-medium text-primary hover:bg-champagne-glint transition-all"
               >
                 {l.name}

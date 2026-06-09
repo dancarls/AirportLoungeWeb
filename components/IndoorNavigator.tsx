@@ -183,7 +183,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
   const sortedFloors = [...floors].sort((a, b) => b.level - a.level)
 
   return (
-    <div className="h-full flex flex-col md:flex-row">
+    <div className="flex-1 min-h-0 flex flex-col md:flex-row">
 
       {/* ── Map ─────────────────────────────────────────────── */}
       <div className="relative h-[50vh] md:flex-1 md:min-h-0">

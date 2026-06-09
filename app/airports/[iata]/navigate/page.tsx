@@ -124,19 +124,17 @@ export default async function NavigatePage({ params }: Props) {
         )}
       </div>
 
-      <div className="flex-1 min-h-0">
-        <IndoorNavigator
-          airport={{
-            iata_code:        airport.iata_code,
-            name:             airport.name,
-            city:             airport.city,
-            latitude:         airport.latitude,
-            longitude:        airport.longitude,
-            terminal_map_url: airport.terminal_map_url,
-          }}
-          lounges={lounges}
-        />
-      </div>
+      <IndoorNavigator
+        airport={{
+          iata_code:        airport.iata_code,
+          name:             airport.name,
+          city:             airport.city,
+          latitude:         airport.latitude,
+          longitude:        airport.longitude,
+          terminal_map_url: airport.terminal_map_url,
+        }}
+        lounges={lounges}
+      />
     </div>
   )
 }
