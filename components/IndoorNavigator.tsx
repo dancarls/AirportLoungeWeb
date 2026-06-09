@@ -186,7 +186,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
     <div className="h-full flex flex-col md:flex-row">
 
       {/* ── Map ─────────────────────────────────────────────── */}
-      <div className="relative h-[50vh] md:h-auto md:flex-1 md:min-h-0">
+      <div className="relative h-[50vh] md:flex-1 md:min-h-0">
         <div ref={containerRef} className="absolute inset-0" />
 
         {/* Loading overlay */}

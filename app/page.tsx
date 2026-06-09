@@ -52,7 +52,7 @@ export default async function HomePage() {
       .limit(1)
       .maybeSingle(),
     supabase.from('airports')
-      .select('iata_code, name, city, latitude, longitude, terminal_map_url, lounges(id)')
+      .select('iata_code, name, city, latitude, longitude, terminal_map_url, lounges(id, name, slug, terminal)')
       .eq('is_active', true)
       .not('latitude', 'is', null)
       .order('name'),
