@@ -118,6 +118,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
   const markerMapRef = useRef<Record<string, mapboxgl.Marker>>({})
 
   const [mapReady,     setMapReady]     = useState(false)
+  const [mapError,     setMapError]     = useState<string | null>(null)
   const [activeLounge, setActiveLounge] = useState<string | null>(null)
   const [activeDetail, setActiveDetail] = useState<NavigatorLounge | null>(null)
 
@@ -129,12 +130,18 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
     if (!containerRef.current) return
     const container = containerRef.current
     let started = false
+    let loadTimeoutId: ReturnType<typeof setTimeout> | null = null
 
     const startMap = () => {
       if (started) return
       started = true
 
-      mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!
+      const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
+      if (!token) {
+        setMapError('Mapbox access token is missing. Set NEXT_PUBLIC_MAPBOX_TOKEN in the deployment environment.')
+        return
+      }
+      mapboxgl.accessToken = token
 
       const [tcLng, tcLat] = terminalCenter(airport)
       const map = new mapboxgl.Map({
@@ -151,7 +158,18 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
       map.addControl(new mapboxgl.NavigationControl(), 'top-left')
       map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
+      map.on('error', (e) => {
+        console.error('Mapbox error:', e?.error ?? e)
+        setMapError(e?.error?.message ?? 'Failed to load the map.')
+      })
+
+      loadTimeoutId = setTimeout(() => {
+        setMapError(prev => prev ?? 'Map is taking longer than expected to load. Check your connection or try refreshing.')
+      }, 15000)
+
       map.on('load', () => {
+        if (loadTimeoutId) { clearTimeout(loadTimeoutId); loadTimeoutId = null }
+        setMapError(null)
         map.resize()
         try {
           map.setConfigProperty('basemap', 'showPointOfInterestLabels', true)
@@ -208,6 +226,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
     return () => {
       ro.disconnect()
+      if (loadTimeoutId) clearTimeout(loadTimeoutId)
       markersRef.current.forEach(m => m.remove())
       markersRef.current  = []
       markerMapRef.current = {}
@@ -251,11 +270,19 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
       <div className="relative flex-1 overflow-hidden" style={{ minHeight: '50vh' }}>
         <div ref={containerRef} className="absolute inset-0" />
 
-        {!mapReady && (
+        {!mapReady && !mapError && (
           <div className="absolute inset-0 bg-primary/10 flex items-center justify-center z-10 pointer-events-none">
             <div className="bg-white px-6 py-4 shadow-lg flex items-center gap-3">
               <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               <span className="font-label-caps text-[11px] text-primary">LOADING MAP</span>
+            </div>
+          </div>
+        )}
+        {mapError && (
+          <div className="absolute inset-0 bg-bone-white flex items-center justify-center z-20 p-6">
+            <div className="bg-white border border-red-200 px-6 py-4 shadow-lg max-w-sm text-center">
+              <p className="font-label-caps text-[11px] text-red-600 mb-2 tracking-widest">MAP UNAVAILABLE</p>
+              <p className="text-sm text-secondary">{mapError}</p>
             </div>
           </div>
         )}
