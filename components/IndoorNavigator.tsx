@@ -69,10 +69,12 @@ function fmtTerminal(t: string): string {
 }
 
 // ── Lounge map-pin SVG ────────────────────────────────────────
-function buildLoungePinSVG(isPremium: boolean): string {
+// width/height MUST be explicit — without them browsers default to 300×150px,
+// causing the SVG to overflow the marker div and the anchor point to be wrong.
+function buildLoungePinSVG(isPremium: boolean, pinW: number, pinH: number): string {
   const fill   = isPremium ? '#9A7020' : '#C9A96E'
   const border = isPremium ? '#F5E0A0' : 'white'
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 64" fill="none">
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${pinW}" height="${pinH}" viewBox="0 0 52 64" fill="none" style="display:block">
     <path d="M26 2C13.9 2 4 11.9 4 24c0 12.4 22 40 22 40s22-27.6 22-40C48 11.9 38.1 2 26 2z"
       fill="${fill}" stroke="${border}" stroke-width="2"/>
     <circle cx="35" cy="13" r="5" fill="white"/>
@@ -175,7 +177,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
             'transform-origin:center bottom',
             'filter:drop-shadow(0 3px 5px rgba(0,0,0,0.38))',
           ].join(';')
-          el.innerHTML = buildLoungePinSVG(isPremium)
+          el.innerHTML = buildLoungePinSVG(isPremium, pinW, pinH)
           el.title = lounge.name
 
           el.addEventListener('mouseenter', () => { el.style.transform = 'scale(1.15)' })
