@@ -52,7 +52,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
       container: containerRef.current,
       style: 'mapbox://styles/mapbox/standard',
       center:  [airport.longitude, airport.latitude],
-      zoom:    isIndoorCovered ? INDOOR_ZOOM : 15,
+      zoom:    15,
       pitch:   0,
       bearing: 0,
       attributionControl: false,
@@ -63,7 +63,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
     map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
     map.on('load', () => {
-      map.resize()
+      requestAnimationFrame(() => map.resize())
       if (isIndoorCovered) enableIndoor(map)
       setMapReady(true)
     })
@@ -257,7 +257,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
               Interactive indoor floor plans
             </p>
           ) : (
-            <p className="text-[11px] text-primary-fixed/70 mt-1">Satellite view · Indoor coming soon</p>
+            <p className="text-[11px] text-primary-fixed/70 mt-1">Standard map · Indoor coming soon</p>
           )}
         </div>
 

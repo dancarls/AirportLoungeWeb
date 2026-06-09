@@ -63,7 +63,7 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
     map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
     map.on('load', () => {
-      map.resize()
+      requestAnimationFrame(() => map.resize())
       if (hasIndoor) {
         enableIndoor(map)
       } else {
@@ -353,7 +353,7 @@ export default function TerminalMapVisual({ airports }: { airports: AirportData[
             {airport.lounges.map(l => (
               <Link
                 key={l.id}
-                href={`/airports/${airport.iata_code}/lounges/${l.slug}`}
+                href={`/airports/${airport.iata_code}`}
                 className="bg-white fine-border px-4 py-2 text-xs font-medium text-primary hover:bg-champagne-glint transition-all"
               >
                 {l.name}

@@ -33,4 +33,7 @@ export function getIndoorManager(map: mapboxgl.Map): IndoorManager | null {
 export function enableIndoor(map: mapboxgl.Map) {
   map.setConfigProperty('basemap', 'showIndoor', true)
   map.setConfigProperty('basemap', 'showIndoorLabels', true)
+  map.setConfigProperty('basemap', 'showPointOfInterestLabels', true)
+  map.setConfigProperty('basemap', 'showPlaceLabels', true)
+  map.setConfigProperty('basemap', 'showTransitLabels', true)
 }

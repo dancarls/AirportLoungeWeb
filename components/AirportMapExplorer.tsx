@@ -36,6 +36,8 @@ export default function AirportMapExplorer({ airports }: Props) {
       style: 'mapbox://styles/mapbox/standard',
       center: [-96, 60],
       zoom: 3.5,
+      pitch: 0,
+      projection: 'mercator',
       attributionControl: false,
     })
 
@@ -43,21 +45,25 @@ export default function AirportMapExplorer({ airports }: Props) {
     map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
     map.on('load', () => {
-      map.resize()
+      requestAnimationFrame(() => map.resize())
       enableIndoor(map)
       airports.forEach(airport => {
         const isIndoor = INDOOR_COVERED.has(airport.iata_code)
         const loungeCount = airport.lounges.length
 
-        // Custom marker element
+        // Custom marker — outer el is Mapbox's positioning target (do NOT touch its transform)
         const el = document.createElement('div')
-        Object.assign(el.style, {
-          width:       isIndoor ? '40px' : '30px',
-          height:      isIndoor ? '40px' : '30px',
+        const size = isIndoor ? '40px' : '30px'
+        Object.assign(el.style, { width: size, height: size, cursor: 'pointer' })
+
+        // Inner element holds the visual styling and hover animation
+        const inner = document.createElement('div')
+        Object.assign(inner.style, {
+          width:       '100%',
+          height:      '100%',
           background:  isIndoor ? '#C9A96E' : '#003434',
           border:      '2.5px solid white',
           borderRadius: '50%',
-          cursor:      'pointer',
           display:     'flex',
           alignItems:  'center',
           justifyContent: 'center',
@@ -68,12 +74,14 @@ export default function AirportMapExplorer({ airports }: Props) {
           color:       isIndoor ? '#003434' : 'white',
           letterSpacing: '-0.3px',
           transition:  'transform 0.15s',
+          transformOrigin: 'center',
         })
-        el.textContent = airport.iata_code
-        el.title = airport.name
+        inner.textContent = airport.iata_code
+        inner.title = airport.name
+        el.appendChild(inner)
 
-        el.addEventListener('mouseenter', () => { el.style.transform = 'scale(1.15)' })
-        el.addEventListener('mouseleave', () => { el.style.transform = 'scale(1)' })
+        inner.addEventListener('mouseenter', () => { inner.style.transform = 'scale(1.15)' })
+        inner.addEventListener('mouseleave', () => { inner.style.transform = 'scale(1)' })
 
         const popup = new mapboxgl.Popup({ offset: 22, closeButton: false, maxWidth: '220px' })
           .setHTML(`
