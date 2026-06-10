@@ -205,11 +205,41 @@ export default async function LoungeDetailPage({ params }: Props) {
     value: true,
   }))
 
-  const jsonLd = {
+  const reviewsTyped = (reviews ?? []) as Review[]
+  const reviewLd = reviewsTyped.slice(0, 10).map(r => ({
+    '@type': 'Review',
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: r.overall_rating,
+      bestRating: '5',
+      worstRating: '1',
+    },
+    author: {
+      '@type': 'Person',
+      name: r.profile?.display_name ?? 'Traveller',
+    },
+    datePublished: r.created_at,
+    ...(r.title && { name: r.title }),
+    reviewBody: r.body,
+  }))
+
+  const speakableLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: l.name,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '[data-speakable="intro"]', '[data-speakable="access"]'],
+    },
+    url: `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}`,
+  }
+
+  const jsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     '@id': `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}#lounge`,
     name: l.name,
+    ...(l.updated_at && { dateModified: l.updated_at }),
     description: l.description
       ? l.description.replace(/<[^>]*>/g, '').trim()
       : `${l.name} — airport lounge at ${l.airport?.name ?? code}`,
@@ -253,12 +283,14 @@ export default async function LoungeDetailPage({ params }: Props) {
       priceRange: `$${l.guest_fee} ${(l as { guest_fee_currency?: string }).guest_fee_currency ?? 'CAD'}`,
     }),
     ...(l.website && { sameAs: l.website }),
+    ...(reviewLd.length > 0 && { review: reviewLd }),
   }
 
   return (
     <div className="bg-bone-white min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableLd) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────── */}
       <div className="max-w-container-max mx-auto px-margin-desktop pt-8">
@@ -326,15 +358,28 @@ export default async function LoungeDetailPage({ params }: Props) {
             </div>
             {l.description ? (
               <div
+                data-speakable="intro"
                 className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-3xl [&_h4]:font-semibold [&_h4]:text-primary [&_h4]:text-[17px] [&_h4]:mt-8 [&_h4]:mb-2 [&_h3]:font-semibold [&_h3]:text-primary [&_h3]:text-xl [&_h3]:mt-8 [&_h3]:mb-3 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_strong]:text-on-surface"
                 dangerouslySetInnerHTML={{ __html: l.description }}
               />
             ) : (
-              <p className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-3xl">
+              <p data-speakable="intro" className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-3xl">
                 {l.name} offers premium travellers a refined sanctuary from the terminal concourse.
                 {l.airport?.name ? ` Located at ${l.airport.name}` : ''}
                 {l.terminal ? `, Terminal ${l.terminal}` : ''}, this lounge delivers premium amenities
                 and attentive service in a calm environment before departure.
+              </p>
+            )}
+            {l.updated_at && (
+              <p className="text-xs text-secondary mt-6">
+                Last verified{' '}
+                <time dateTime={l.updated_at}>
+                  {new Date(l.updated_at).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </time>
+                {' · '}
+                <Link href="/about#sourcing" className="underline underline-offset-2 hover:text-primary">
+                  Sourcing methodology
+                </Link>
               </p>
             )}
           </div>
@@ -384,7 +429,7 @@ export default async function LoungeDetailPage({ params }: Props) {
 
           {/* Access eligibility */}
           {accessTypes.length > 0 && (
-            <div className="bg-white border border-outline-variant/30 p-10 rounded-xl">
+            <div data-speakable="access" className="bg-white border border-outline-variant/30 p-10 rounded-xl">
               <h3 className="font-headline-md text-headline-md mb-8">Access Eligibility</h3>
               <div className="space-y-6">
                 {accessTypes.map((at, i) => (

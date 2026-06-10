@@ -54,6 +54,7 @@ export interface Lounge {
   latitude: number | null
   longitude: number | null
   created_at: string
+  updated_at?: string | null
   airport?: Airport
   amenities?: Amenity[]
   images?: LoungeImage[]

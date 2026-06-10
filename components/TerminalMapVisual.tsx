@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import mapboxgl from 'mapbox-gl'
-import { INDOOR_COVERED, INDOOR_ZOOM, getIndoorManager, type IndoorFloor } from '@/lib/mapbox/indoor'
+import { INDOOR_COVERED, INDOOR_ZOOM, getIndoorManager, enableIndoor, type IndoorFloor } from '@/lib/mapbox/indoor'
 
 interface LoungeItem {
   id: string
@@ -64,6 +64,9 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
 
     map.on('load', () => {
       requestAnimationFrame(() => map.resize())
+      if (hasIndoor) {
+        try { enableIndoor(map) } catch { /* basemap doesn't support indoor — skip */ }
+      }
       // Add a marker per lounge at the airport centre (indoor floor plan source not available)
       airport.lounges.forEach(l => {
         new mapboxgl.Marker({ color: '#C9A96E' })
@@ -77,13 +80,14 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
     })
 
     map.on('indoor.updated', () => {
-      const indoor = getIndoorManager(map)
-      if (indoor) {
-        const fl = indoor.floors ?? []
+      try {
+        const indoor = getIndoorManager(map)
+        if (!indoor) return
+        const fl = (indoor.floors ?? []).filter(f => f && f.id)
         setFloors([...fl].sort((a, b) => b.level - a.level))
         setSelectedFloor(indoor.selectedFloor ?? null)
         setIndoorActive(fl.length > 0)
-      }
+      } catch { /* null floor_id from indoor tile — ignore */ }
     })
 
     return () => { try { map.remove() } catch { /* ignore */ } }
@@ -97,9 +101,11 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
 
   const switchFloor = (floor: IndoorFloor) => {
     const map = mapInstanceRef.current
-    if (!map) return
-    getIndoorManager(map)?.setFloor(floor.id)
-    setSelectedFloor(floor)
+    if (!map || !floor?.id) return
+    try {
+      getIndoorManager(map)?.setFloor(floor.id)
+      setSelectedFloor(floor)
+    } catch { /* setFloor failed — ignore */ }
   }
 
   return (
