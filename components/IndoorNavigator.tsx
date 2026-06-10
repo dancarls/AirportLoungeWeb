@@ -268,7 +268,10 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
       {/* ── Map ─────────────────────────────────────────────── */}
       <div className="relative flex-1 overflow-hidden" style={{ minHeight: '50vh' }}>
-        <div ref={containerRef} className="absolute inset-0" />
+        {/* mapbox-gl.css forces `.mapboxgl-map { position: relative }`, which neutralises `absolute inset-0`
+            on the container and collapses its height to 0. Use `h-full w-full` so size comes from the
+            parent's definite flex height instead of from inset positioning. */}
+        <div ref={containerRef} className="h-full w-full" />
 
         {!mapReady && !mapError && (
           <div className="absolute inset-0 bg-primary/10 flex items-center justify-center z-10 pointer-events-none">
