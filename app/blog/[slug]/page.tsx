@@ -21,12 +21,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${post.metaTitle} | AirportLounges.ca`,
     description: post.metaDescription,
     alternates: {
-      canonical: `https://airportlounges.ca/blog/${post.slug}`,
+      canonical: `https://www.airportlounges.ca/blog/${post.slug}`,
     },
     openGraph: {
       title: post.metaTitle,
       description: post.metaDescription,
-      url: `https://airportlounges.ca/blog/${post.slug}`,
+      url: `https://www.airportlounges.ca/blog/${post.slug}`,
       images: [{ url: post.coverImage, width: 1200, height: 630 }],
     },
   }
@@ -48,24 +48,24 @@ export default async function BlogPostPage({ params }: Props) {
     description: post.metaDescription,
     datePublished: post.publishedAt,
     dateModified: post.publishedAt,
-    url: `https://airportlounges.ca/blog/${post.slug}`,
+    url: `https://www.airportlounges.ca/blog/${post.slug}`,
     image: post.coverImage
       ? { '@type': 'ImageObject', url: post.coverImage, width: 1200, height: 630 }
       : undefined,
     author: {
       '@type': 'Organization',
       name: 'AirportLounges.ca',
-      url: 'https://airportlounges.ca',
+      url: 'https://www.airportlounges.ca',
     },
     publisher: {
       '@type': 'Organization',
       name: 'AirportLounges.ca',
-      url: 'https://airportlounges.ca',
-      logo: { '@type': 'ImageObject', url: 'https://airportlounges.ca/favicon.ico' },
+      url: 'https://www.airportlounges.ca',
+      logo: { '@type': 'ImageObject', url: 'https://www.airportlounges.ca/favicon.ico' },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://airportlounges.ca/blog/${post.slug}`,
+      '@id': `https://www.airportlounges.ca/blog/${post.slug}`,
     },
   }
 
@@ -73,9 +73,9 @@ export default async function BlogPostPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home',          item: 'https://airportlounges.ca' },
-      { '@type': 'ListItem', position: 2, name: 'Lounge Library', item: 'https://airportlounges.ca/blog' },
-      { '@type': 'ListItem', position: 3, name: post.title,      item: `https://airportlounges.ca/blog/${post.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home',          item: 'https://www.airportlounges.ca' },
+      { '@type': 'ListItem', position: 2, name: 'Lounge Library', item: 'https://www.airportlounges.ca/blog' },
+      { '@type': 'ListItem', position: 3, name: post.title,      item: `https://www.airportlounges.ca/blog/${post.slug}` },
     ],
   }
 

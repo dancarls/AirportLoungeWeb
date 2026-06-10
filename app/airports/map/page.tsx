@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Canadian Airport Maps — Indoor Navigation | AirportLounges.ca',
   description: 'Interactive maps for all major Canadian airports. Select any airport to explore indoor floor plans, locate lounges, and navigate the terminal.',
   alternates: {
-    canonical: 'https://airportlounges.ca/airports/map',
+    canonical: 'https://www.airportlounges.ca/airports/map',
   },
 }
 

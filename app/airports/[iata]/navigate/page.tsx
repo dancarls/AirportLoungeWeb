@@ -35,11 +35,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Navigate ${code} — Lounge Finder & Terminal Map | AirportLounges.ca`,
     description: `Find every lounge at ${name}. Locate lounges on the terminal map and get walking directions.`,
-    alternates: { canonical: `https://airportlounges.ca/airports/${code}/navigate` },
+    alternates: { canonical: `https://www.airportlounges.ca/airports/${code}/navigate` },
     openGraph: {
       title: `${code} Terminal Navigator | AirportLounges.ca`,
       description: `Find every lounge at ${name} (${code}) on an interactive terminal map.`,
-      url: `https://airportlounges.ca/airports/${code}/navigate`,
+      url: `https://www.airportlounges.ca/airports/${code}/navigate`,
     },
   }
 }
@@ -91,10 +91,10 @@ export default async function NavigatePage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://airportlounges.ca' },
-      { '@type': 'ListItem', position: 2, name: 'Airports', item: 'https://airportlounges.ca/airports' },
-      { '@type': 'ListItem', position: 3, name: code,       item: `https://airportlounges.ca/airports/${code}` },
-      { '@type': 'ListItem', position: 4, name: 'Navigate', item: `https://airportlounges.ca/airports/${code}/navigate` },
+      { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://www.airportlounges.ca' },
+      { '@type': 'ListItem', position: 2, name: 'Airports', item: 'https://www.airportlounges.ca/airports' },
+      { '@type': 'ListItem', position: 3, name: code,       item: `https://www.airportlounges.ca/airports/${code}` },
+      { '@type': 'ListItem', position: 4, name: 'Navigate', item: `https://www.airportlounges.ca/airports/${code}/navigate` },
     ],
   }
 

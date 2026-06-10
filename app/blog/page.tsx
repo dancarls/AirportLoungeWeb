@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Lounge Guides & Travel Tips | AirportLounges.ca',
     description: 'Expert guides to Canadian airport lounges — Priority Pass, access cards, best lounges by city, and tips for every type of traveller.',
-    url: 'https://airportlounges.ca/blog',
+    url: 'https://www.airportlounges.ca/blog',
   },
 }
 

@@ -92,12 +92,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description: desc,
     alternates: {
-      canonical: `https://airportlounges.ca/airports/${code}`,
+      canonical: `https://www.airportlounges.ca/airports/${code}`,
     },
     openGraph: {
       title: `${code} Lounges — ${city} | AirportLounges.ca`,
       description: desc,
-      url: `https://airportlounges.ca/airports/${code}`,
+      url: `https://www.airportlounges.ca/airports/${code}`,
     },
   }
 }
@@ -152,14 +152,14 @@ export default async function AirportPage({ params }: Props) {
   const heroDesc    = HERO_DESCRIPTION[code]   ?? `Explore premium lounges at ${airport.name}.`
   const accessGuide = ACCESS_GUIDE[code]       ?? `Many lounges at ${code} accept Priority Pass, DragonPass, and major Canadian credit cards. Check each lounge for specific access rules.`
 
-  const pageUrl = `https://airportlounges.ca/airports/${code}`
+  const pageUrl = `https://www.airportlounges.ca/airports/${code}`
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://airportlounges.ca' },
-      { '@type': 'ListItem', position: 2, name: 'Airports', item: 'https://airportlounges.ca/airports' },
+      { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://www.airportlounges.ca' },
+      { '@type': 'ListItem', position: 2, name: 'Airports', item: 'https://www.airportlounges.ca/airports' },
       { '@type': 'ListItem', position: 3, name: code,       item: pageUrl },
     ],
   }
@@ -174,7 +174,7 @@ export default async function AirportPage({ params }: Props) {
       '@type': 'ListItem',
       position: i + 1,
       name: l.name,
-      url: `https://airportlounges.ca/airports/${code}/lounges/${l.slug}`,
+      url: `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}`,
     })),
   } : null
 

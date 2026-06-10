@@ -51,6 +51,8 @@ export interface Lounge {
   website: string | null
   phone: string | null
   email: string | null
+  latitude: number | null
+  longitude: number | null
   created_at: string
   airport?: Airport
   amenities?: Amenity[]

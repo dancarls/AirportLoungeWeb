@@ -45,7 +45,7 @@ const DESCRIPTION: Record<string, string> = {
 const SB = 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports'
 
 const AIRPORT_IMAGE: Record<string, string> = {
-  YVR: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAXFnLE17iBdV_-CU8Kyip1Y0ksnv_oxgsQxpb9UksaH_B8zHRCwlBT6k8sLx5rokAMyoZP-4d7tebs0e1MZ0ZImTfvfrj-Yx6nRXcKs4_8cOFc2VHodbsdQMEh1s0aEnrLSDw1vJD6eUFQo4YlIICE1SwEnJkXi3BDHPckPQ4IpHcwUIzNw5S04hpCaO_mghJ6a71hLIziVPQCPFa68csyUthMwf1ItKoyJkqjysIF6SnXlYrhSRqTOjTbQLfRzNSKjrFhFr41vSju',
+  YVR: `${SB}/yvr/hero.jpg`,
   YYZ: `${SB}/yyz/hero.jpg`,
   YTZ: `${SB}/ytz/hero.jpg`,
   YUL: `${SB}/yul/hero.jpg`,
@@ -60,7 +60,7 @@ const AIRPORT_IMAGE: Record<string, string> = {
   YQB: `${SB}/yqb/hero.jpg`,
 }
 
-const FALLBACK_IMAGE = AIRPORT_IMAGE.YVR
+const FALLBACK_IMAGE = AIRPORT_IMAGE.YYZ
 
 // ── Data fetch ────────────────────────────────────────────
 interface RawLounge {
@@ -137,8 +137,51 @@ export default async function AirportsPage({ searchParams }: Props) {
 
   const totalLounges = allAirports.reduce((s, a) => s + a.loungeCount, 0)
 
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How do I get into a Canadian airport lounge with a credit card?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Premium travel cards like American Express Platinum, Scotiabank Passport Visa Infinite, and CIBC Aventura Visa Infinite Privilege typically include complimentary Priority Pass or DragonPass memberships. These give you access to most independent lounges across Canada, including Plaza Premium, Aspire, and Desjardins Odyssey lounges.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Which airline status gets me into Air Canada Maple Leaf Lounges?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Air Canada Altitude members at 35K, 50K, 75K, Super Elite 100K, and Million Mile levels receive complimentary Maple Leaf Lounge access. Star Alliance Gold members from partner airlines also qualify on international itineraries with a Star Alliance carrier.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What is Priority Pass and how does it work at Canadian airports?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Priority Pass is a global lounge membership program with 1,500+ partner lounges worldwide, including Plaza Premium and most independent operators at Canadian airports. Standard, Standard Plus, and Prestige tiers offer different visit allowances. Many premium credit cards include a complimentary Priority Pass membership.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Can I buy a day pass to a Canadian airport lounge?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. Most independent lounges in Canada — including Plaza Premium, Aspire, and Desjardins Odyssey — sell walk-in day passes. Prices typically range from $45 to $85 CAD per visit. Some lounges offer reduced rates if you book online in advance.',
+        },
+      },
+    ],
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       {/* ── Hero ──────────────────────────────────────────── */}
       <section className="relative overflow-hidden" style={{ minHeight: '560px' }}>
         {/* Background image */}

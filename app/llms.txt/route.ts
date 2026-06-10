@@ -3,7 +3,7 @@
 // crawling every page. See https://llmstxt.org/ for the emerging convention.
 import { createClient } from '@supabase/supabase-js'
 
-const BASE = 'https://airportlounges.ca'
+const BASE = 'https://www.airportlounges.ca'
 
 export async function GET() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL

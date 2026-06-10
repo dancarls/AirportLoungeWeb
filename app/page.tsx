@@ -106,8 +106,9 @@ export default async function HomePage() {
           <img
             alt="Luxury Airport Lounge Interior"
             className="w-full h-full object-cover"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVrwLDxqI3q-M7t6rF9dhA8qA-BlNVv9eMJjUBC3tlf0ok9sd3LaXAPrzsc2SvwihbulaNYyqIA1AwinBDNpTRk64Du7WHZdbwqfUOpdky7AIlMYoYAQPhS9SFNGLl-byQUkxyJ7iATGMNzntgL8pg7lJCUTUkCrKVZsqS6Vt-52dUOdKtbdwPnxrgqGfGZGah_FEr3rolgRuOYA3xee0s0Snu_V__KNbvW8b2Cpdjej40BG53igtu4ntxi65MkfKYbpc9E8aNM_nD"
+            src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/airports/yyz/hero.jpg`}
           />
+          <div className="absolute inset-0 bg-aviation-navy/60" />
           <div className="absolute inset-0 bg-gradient-to-r from-aviation-navy/40 to-transparent" />
         </div>
 

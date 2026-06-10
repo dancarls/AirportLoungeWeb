@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/account', '/auth/', '/api/'],
       },
     ],
-    sitemap: 'https://airportlounges.ca/sitemap.xml',
-    host: 'https://airportlounges.ca',
+    sitemap: 'https://www.airportlounges.ca/sitemap.xml',
+    host: 'https://www.airportlounges.ca',
   }
 }

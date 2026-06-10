@@ -4,7 +4,16 @@ import Link from 'next/link'
 import { Plane } from 'lucide-react'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = { title: 'Flight Status' }
+export const metadata: Metadata = {
+  title: 'Flight Status — Live Departures & Arrivals',
+  description: 'Check real-time flight status, gate assignments, and delay info for every major Canadian airport while you relax in the lounge.',
+  alternates: { canonical: 'https://www.airportlounges.ca/flights' },
+  openGraph: {
+    title: 'Flight Status | AirportLounges.ca',
+    description: 'Live departures, arrivals, gate, and delay info for Canadian airports.',
+    url: 'https://www.airportlounges.ca/flights',
+  },
+}
 
 export default async function FlightsPage() {
   const supabase = await createClient()

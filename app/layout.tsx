@@ -4,7 +4,7 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
-const BASE = 'https://airportlounges.ca'
+const BASE = 'https://www.airportlounges.ca'
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE),
@@ -22,10 +22,18 @@ export const metadata: Metadata = {
     locale: 'en_CA',
     siteName: 'AirportLounges.ca',
     url: BASE,
+    images: [
+      {
+        url: `${BASE}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: 'AirportLounges.ca — Find the right airport lounge before you reach the gate.',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@airportlounges',
+    images: [`${BASE}/opengraph-image`],
   },
   verification: {
     google: 'MqIm81wvmdy1xQCa-LvcLU2-G55iu3uAAxBrpBGwv4k',

@@ -41,12 +41,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: data.name,
     description,
     alternates: {
-      canonical: `https://airportlounges.ca/airports/${code}/lounges/${slug}`,
+      canonical: `https://www.airportlounges.ca/airports/${code}/lounges/${slug}`,
     },
     openGraph: {
       title: `${data.name} | ${code} Airport Lounge`,
       description,
-      url: `https://airportlounges.ca/airports/${code}/lounges/${slug}`,
+      url: `https://www.airportlounges.ca/airports/${code}/lounges/${slug}`,
       ...(ogImg && { images: [{ url: ogImg, width: 1200, height: 630, alt: data.name }] }),
     },
   }
@@ -156,21 +156,64 @@ export default async function LoungeDetailPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://airportlounges.ca' },
-      { '@type': 'ListItem', position: 2, name: 'Airports', item: 'https://airportlounges.ca/airports' },
-      { '@type': 'ListItem', position: 3, name: code,       item: `https://airportlounges.ca/airports/${code}` },
-      { '@type': 'ListItem', position: 4, name: l.name,     item: `https://airportlounges.ca/airports/${code}/lounges/${l.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://www.airportlounges.ca' },
+      { '@type': 'ListItem', position: 2, name: 'Airports', item: 'https://www.airportlounges.ca/airports' },
+      { '@type': 'ListItem', position: 3, name: code,       item: `https://www.airportlounges.ca/airports/${code}` },
+      { '@type': 'ListItem', position: 4, name: l.name,     item: `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}` },
     ],
   }
+
+  const DAY_TO_SCHEMA: Record<string, string> = {
+    monday: 'Monday', tuesday: 'Tuesday', wednesday: 'Wednesday',
+    thursday: 'Thursday', friday: 'Friday', saturday: 'Saturday', sunday: 'Sunday',
+  }
+
+  function hoursToSchema(): unknown[] | null {
+    if (!l.opening_hours) return null
+    if (l.opening_hours.is_24_7) {
+      return [{
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: Object.values(DAY_TO_SCHEMA),
+        opens: '00:00',
+        closes: '23:59',
+      }]
+    }
+    const spec: unknown[] = []
+    for (const day of DAY_ORDER) {
+      const h = l.opening_hours[day]
+      if (!h || h.toLowerCase() === 'closed') continue
+      const m = h.match(/(\d{1,2}:?\d{0,2})\s*[-–—]\s*(\d{1,2}:?\d{0,2})/)
+      if (!m) continue
+      const fmt = (t: string) => {
+        const clean = t.includes(':') ? t : `${t}:00`
+        return clean.length === 4 ? `0${clean}` : clean
+      }
+      spec.push({
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: DAY_TO_SCHEMA[day],
+        opens: fmt(m[1]),
+        closes: fmt(m[2]),
+      })
+    }
+    return spec.length > 0 ? spec : null
+  }
+
+  const openingHoursSpec = hoursToSchema()
+  const amenityFeatures = (l.amenities ?? []).map(a => ({
+    '@type': 'LocationFeatureSpecification',
+    name: a.name,
+    value: true,
+  }))
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
+    '@id': `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}#lounge`,
     name: l.name,
     description: l.description
       ? l.description.replace(/<[^>]*>/g, '').trim()
       : `${l.name} — airport lounge at ${l.airport?.name ?? code}`,
-    url: `https://airportlounges.ca/airports/${code}/lounges/${l.slug}`,
+    url: `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}`,
     ...(heroImg && {
       image: getImageUrl(heroImg.storage_path),
     }),
@@ -186,6 +229,17 @@ export default async function LoungeDetailPage({ params }: Props) {
         iataCode: code,
       },
     }),
+    ...(l.latitude && l.longitude && {
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: l.latitude,
+        longitude: l.longitude,
+      },
+    }),
+    ...(openingHoursSpec && openingHoursSpec.length > 0 && {
+      openingHoursSpecification: openingHoursSpec,
+    }),
+    ...(amenityFeatures.length > 0 && { amenityFeature: amenityFeatures }),
     ...(l.rating && l.review_count > 0 && {
       aggregateRating: {
         '@type': 'AggregateRating',

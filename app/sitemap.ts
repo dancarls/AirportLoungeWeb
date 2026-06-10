@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import { getAllPosts } from '@/lib/blog'
 
-const BASE = 'https://airportlounges.ca'
+const BASE = 'https://www.airportlounges.ca'
 const NOW  = new Date().toISOString()
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
