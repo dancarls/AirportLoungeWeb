@@ -186,20 +186,27 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
           const pinW = isPremium ? 46 : 40
           const pinH = Math.round(pinW * (64 / 52))
 
+          // Mapbox writes a `transform: translate(...)` to the marker root every frame to
+          // keep it pinned to its lng/lat. Touching `el.style.transform` here (e.g. for hover
+          // scaling) wipes that positioning — markers fly to the map's top-left and drift on
+          // zoom. So scale a child wrapper instead and leave the root entirely to Mapbox.
           const el = document.createElement('div')
-          el.style.cssText = [
-            `width:${pinW}px`,
-            `height:${pinH}px`,
-            'cursor:pointer',
+          el.style.cssText = [`width:${pinW}px`, `height:${pinH}px`, 'cursor:pointer'].join(';')
+          el.title = lounge.name
+
+          const inner = document.createElement('div')
+          inner.style.cssText = [
+            'width:100%',
+            'height:100%',
             'transition:transform 0.15s',
             'transform-origin:center bottom',
             'filter:drop-shadow(0 3px 5px rgba(0,0,0,0.38))',
           ].join(';')
-          el.innerHTML = buildLoungePinSVG(isPremium, pinW, pinH)
-          el.title = lounge.name
+          inner.innerHTML = buildLoungePinSVG(isPremium, pinW, pinH)
+          el.appendChild(inner)
 
-          el.addEventListener('mouseenter', () => { el.style.transform = 'scale(1.15)' })
-          el.addEventListener('mouseleave', () => { el.style.transform = '' })
+          el.addEventListener('mouseenter', () => { inner.style.transform = 'scale(1.15)' })
+          el.addEventListener('mouseleave', () => { inner.style.transform = '' })
           // Use ref so the click always calls the latest flyToLounge
           el.addEventListener('click', () => flyToLoungeRef.current?.(lounge))
 
