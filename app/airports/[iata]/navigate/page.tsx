@@ -105,6 +105,10 @@ export default async function NavigatePage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
+      {/* Visually-hidden H1 for SEO/a11y — the IndoorNavigator's sidebar header
+          is the visible primary heading but isn't a semantic h1. */}
+      <h1 className="sr-only">{`Navigate ${code} — ${airport.name} airport lounge map`}</h1>
+
       {/* Compact breadcrumb nav */}
       <div className="border-b border-sand-dark/10 bg-bone-white px-4 py-2.5 flex items-center gap-2 text-xs text-secondary shrink-0">
         <Link href="/" className="hover:text-primary transition-colors">Home</Link>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import type { Lounge, Airport, Amenity } from '@/lib/types'
@@ -47,19 +47,23 @@ function getImg(path: string) {
   return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${path}`
 }
 
+// Reads the current Date — must NEVER run during SSR/hydration or it triggers a
+// hydration mismatch (server clock vs client clock yields different open/closed
+// state). Callers gate on the `mounted` flag below.
 function isOpenNow(hours: Lounge['opening_hours']): boolean | null {
   if (!hours || Object.keys(hours).length === 0) return null
   if (hours.is_24_7) return true
   const days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday']
-  const today = days[new Date().getDay()]
+  const now = new Date()
+  const today = days[now.getDay()]
   const todayHours = hours[today as keyof typeof hours]
   if (!todayHours || typeof todayHours !== 'string') return null
   const [open, close] = (todayHours as string).split('-').map(t => {
     const [h, m] = t.trim().split(':').map(Number)
     return h * 60 + (m || 0)
   })
-  const now = new Date().getHours() * 60 + new Date().getMinutes()
-  return now >= open && now <= close
+  const mins = now.getHours() * 60 + now.getMinutes()
+  return mins >= open && mins <= close
 }
 
 interface Props {
@@ -82,6 +86,11 @@ export default function LoungeGrid({ lounges, airports }: Props) {
   // Auto-expand if any filter came from URL
   const hasUrlFilters = !!(searchParams.get('airport') || searchParams.get('access') || searchParams.get('amenity') || searchParams.get('open'))
   const [showFilters, setShowFilters] = useState(hasUrlFilters)
+
+  // Gate any time-of-day rendering until after hydration to prevent React #418
+  // (server renders with server clock, client hydrates with client clock).
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
 
   // Update URL without scroll
   function pushParams(overrides: Record<string, string>) {
@@ -128,14 +137,14 @@ export default function LoungeGrid({ lounges, airports }: Props) {
       )
     }
 
-    if (openNow) result = result.filter(l => isOpenNow(l.opening_hours) === true)
+    if (openNow && mounted) result = result.filter(l => isOpenNow(l.opening_hours) === true)
 
     if (sort === 'rating')  result.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
     else if (sort === 'reviews') result.sort((a, b) => b.review_count - a.review_count)
     else result.sort((a, b) => a.name.localeCompare(b.name))
 
     return result
-  }, [lounges, airport, access, amenity, openNow, sort])
+  }, [lounges, airport, access, amenity, openNow, sort, mounted])
 
   const activeFilterCount = [airport, access, amenity, openNow].filter(Boolean).length
 
@@ -319,7 +328,7 @@ export default function LoungeGrid({ lounges, airports }: Props) {
           {filtered.map(lounge => {
             const iata = lounge.airport?.iata_code
             const img  = lounge.images?.find(i => i.is_primary) ?? lounge.images?.[0]
-            const openStatus = isOpenNow(lounge.opening_hours)
+            const openStatus = mounted ? isOpenNow(lounge.opening_hours) : null
             const href = iata ? `/airports/${iata}/lounges/${lounge.slug}` : `/lounges/${lounge.slug}`
             return (
               <Link
