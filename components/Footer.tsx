@@ -1,11 +1,6 @@
-'use client'
-
 import Link from 'next/link'
-import { useState } from 'react'
 
 export default function Footer() {
-  const [email, setEmail] = useState('')
-
   return (
     <footer className="bg-aviation-navy text-secondary-fixed pt-20 pb-10">
       <div className="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-gutter mb-20">
@@ -17,11 +12,21 @@ export default function Footer() {
             The Canadian directory for premium airport lounges, terminal maps, and traveller intelligence. Curated for the discerning transit experience.
           </p>
           <div className="flex gap-4">
-            <a href="#" className="w-10 h-10 rounded-full border border-bone-white/10 flex items-center justify-center hover:bg-primary-fixed hover:text-primary transition-all">
+            <a
+              href="https://x.com/Airportloungeca"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="AirportLounges.ca on X"
+              className="w-10 h-10 rounded-full border border-bone-white/10 flex items-center justify-center hover:bg-primary-fixed hover:text-primary transition-all"
+            >
               <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>alternate_email</span>
             </a>
-            <a href="#" className="w-10 h-10 rounded-full border border-bone-white/10 flex items-center justify-center hover:bg-primary-fixed hover:text-primary transition-all">
-              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>public</span>
+            <a
+              href="mailto:hello@airportlounges.ca"
+              aria-label="Email AirportLounges.ca"
+              className="w-10 h-10 rounded-full border border-bone-white/10 flex items-center justify-center hover:bg-primary-fixed hover:text-primary transition-all"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>mail</span>
             </a>
           </div>
         </div>
@@ -49,26 +54,15 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Newsletter */}
+        {/* About / Resources */}
         <div className="col-span-1">
-          <h4 className="font-label-caps text-label-caps text-bone-white uppercase mb-8">Newsletter</h4>
-          <p className="text-sm text-secondary-fixed/60 mb-6">Receive curated lounge guides and travel hacks directly to your inbox.</p>
-          <div className="relative">
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="Email Address"
-              className="w-full bg-white/5 border border-white/10 px-4 py-3 text-sm focus:ring-1 focus:ring-primary-fixed outline-none text-bone-white placeholder:text-secondary-fixed/40"
-            />
-            <button
-              onClick={() => setEmail('')}
-              className="absolute right-2 top-2 text-primary-fixed hover:opacity-70 transition-opacity"
-              aria-label="Subscribe"
-            >
-              <span className="material-symbols-outlined">send</span>
-            </button>
-          </div>
+          <h4 className="font-label-caps text-label-caps text-bone-white uppercase mb-8">About</h4>
+          <ul className="space-y-4">
+            <li><Link href="/about" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">About us</Link></li>
+            <li><Link href="/about#sourcing" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">How we verify data</Link></li>
+            <li><Link href="/about#corrections" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Submit a correction</Link></li>
+            <li><Link href="/flights" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Flight status</Link></li>
+          </ul>
         </div>
       </div>
 
@@ -78,9 +72,9 @@ export default function Footer() {
           © {new Date().getFullYear()} AirportLounges.ca. All rights reserved.
         </span>
         <div className="flex gap-8 text-[10px] font-label-caps uppercase tracking-widest text-secondary-fixed/40">
-          <a href="#" className="hover:text-primary-fixed transition-colors">Sitemap</a>
-          <a href="#" className="hover:text-primary-fixed transition-colors">Cookies</a>
-          <a href="#" className="hover:text-primary-fixed transition-colors">Ad Choices</a>
+          <Link href="/sitemap.xml" className="hover:text-primary-fixed transition-colors">Sitemap</Link>
+          <Link href="/privacy" className="hover:text-primary-fixed transition-colors">Privacy</Link>
+          <Link href="/terms" className="hover:text-primary-fixed transition-colors">Terms</Link>
         </div>
       </div>
     </footer>

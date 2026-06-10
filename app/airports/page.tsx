@@ -425,42 +425,33 @@ export default async function AirportsPage({ searchParams }: Props) {
         </div>
       </section>
 
-      {/* ── Newsletter CTA ────────────────────────────────── */}
+      {/* ── Verified-data CTA (replaces newsletter for launch) ──── */}
       <section className="py-section-gap bg-aviation-navy">
         <div className="max-w-container-max mx-auto px-gutter">
           <div className="max-w-2xl mx-auto text-center">
             <span className="font-label-caps text-label-caps text-champagne-glint block mb-4">
-              STAY INFORMED
+              EDITORIALLY VERIFIED
             </span>
             <h2 className="font-headline-lg text-headline-lg text-bone-white mb-4">
-              New Lounges. Updated Hours. Access Changes.
+              Every Lounge. Cross-Referenced. Dated.
             </h2>
             <p className="text-bone-white/65 font-body-md mb-10 leading-relaxed">
-              Canadian airport lounges change frequently — new openings, renovations, and updated access policies. Get notified when something affects your route.
+              Canadian airport lounges change frequently — new openings, renovations, and access policy updates. We re-verify every listing against operator websites and traveller reports.
             </p>
-            <form
-              action="https://app.loops.so/api/newsletter-form/clv7z9zaa000sp10lp1azk8r"
-              method="POST"
-              target="_blank"
-              className="flex flex-col sm:flex-row gap-3 justify-center"
-            >
-              <input
-                name="email"
-                type="email"
-                placeholder="Your email address"
-                required
-                className="flex-1 max-w-xs bg-white/10 border border-white/20 text-bone-white placeholder:text-bone-white/40 px-5 py-3 text-sm focus:outline-none focus:border-champagne-glint transition-colors"
-              />
-              <button
-                type="submit"
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/about#sourcing"
                 className="bg-champagne-glint text-aviation-navy px-8 py-3 font-label-caps text-label-caps hover:opacity-90 transition-all whitespace-nowrap"
               >
-                SUBSCRIBE
-              </button>
-            </form>
-            <p className="text-bone-white/35 text-xs mt-4">
-              No spam. Unsubscribe anytime. Canadian airports only.
-            </p>
+                HOW WE VERIFY
+              </Link>
+              <Link
+                href="/about#corrections"
+                className="border border-bone-white/30 text-bone-white px-8 py-3 font-label-caps text-label-caps hover:bg-white/10 transition-all whitespace-nowrap"
+              >
+                SUBMIT A CORRECTION
+              </Link>
+            </div>
           </div>
         </div>
       </section>

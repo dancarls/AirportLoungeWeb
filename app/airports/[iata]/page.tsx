@@ -34,7 +34,7 @@ const HERO_DESCRIPTION: Record<string, string> = {
 }
 
 const HERO_IMAGE: Record<string, string> = {
-  YVR: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAXFnLE17iBdV_-CU8Kyip1Y0ksnv_oxgsQxpb9UksaH_B8zHRCwlBT6k8sLx5rokAMyoZP-4d7tebs0e1MZ0ZImTfvfrj-Yx6nRXcKs4_8cOFc2VHodbsdQMEh1s0aEnrLSDw1vJD6eUFQo4YlIICE1SwEnJkXi3BDHPckPQ4IpHcwUIzNw5S04hpCaO_mghJ6a71hLIziVPQCPFa68csyUthMwf1ItKoyJkqjysIF6SnXlYrhSRqTOjTbQLfRzNSKjrFhFr41vSju',
+  YVR: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yvr/hero.jpg',
   YYZ: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yyz/hero.jpg',
   YTZ: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/ytz/hero.jpg',
   YUL: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yul/hero.jpg',
