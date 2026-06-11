@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Lounge } from '@/lib/types'
+import LoungePlaceholder from './LoungePlaceholder'
 
 interface Props {
   lounge: Lounge
@@ -70,9 +71,7 @@ export default function LoungeCard({ lounge, airportIata }: Props) {
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="h-full flex items-center justify-center">
-            <span className="material-symbols-outlined text-secondary" style={{ fontSize: '40px' }}>local_bar</span>
-          </div>
+          <LoungePlaceholder name={lounge.name} variant="card" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
 

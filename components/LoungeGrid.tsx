@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import type { Lounge, Airport, Amenity } from '@/lib/types'
+import LoungePlaceholder from './LoungePlaceholder'
 
 type FullLounge = Lounge & { airport?: Airport; amenities?: Amenity[]; images?: { storage_path: string; is_primary: boolean }[] }
 
@@ -342,9 +343,7 @@ export default function LoungeGrid({ lounges, airports }: Props) {
                     <img src={getImg(img.storage_path)} alt={lounge.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="material-symbols-outlined text-secondary" style={{ fontSize: '48px' }}>local_bar</span>
-                    </div>
+                    <LoungePlaceholder name={lounge.name} variant="card" />
                   )}
                   {iata && (
                     <div className="absolute top-4 left-4 bg-primary text-white text-[10px] px-2 py-1 uppercase tracking-tighter">

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import LoungePlaceholder from './LoungePlaceholder'
 
 export interface LoungeSummary {
   id: string
@@ -250,9 +251,7 @@ export default function AirportLoungeGridFiltered({ lounges, iata }: Props) {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 ) : (
-                  <div className="w-full h-full bg-secondary-container flex items-center justify-center">
-                    <span className="material-symbols-outlined text-secondary" style={{ fontSize: '48px' }}>local_bar</span>
-                  </div>
+                  <LoungePlaceholder name={lounge.name} variant="card" />
                 )}
                 {tier && (
                   <div className="absolute bottom-4 left-4">

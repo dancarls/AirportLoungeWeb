@@ -6,6 +6,7 @@ import ReviewForm from '@/components/ReviewForm'
 import LoungeMapClient from '@/components/LoungeMapClient'
 import GalleryLightbox from '@/components/GalleryLightbox'
 import WeatherWidget from '@/components/WeatherWidget'
+import LoungePlaceholder from '@/components/LoungePlaceholder'
 import { getWeather } from '@/lib/weather'
 import type { Metadata } from 'next'
 import type { Lounge, Review, AccessType } from '@/lib/types'
@@ -303,7 +304,7 @@ export default async function LoungeDetailPage({ params }: Props) {
               alt={heroImg.alt_text ?? l.name}
             />
           ) : (
-            <div className="w-full h-full bg-aviation-navy" />
+            <LoungePlaceholder name={l.name} variant="hero" />
           )}
           <div
             className="absolute inset-0"
