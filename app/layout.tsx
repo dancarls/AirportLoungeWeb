@@ -40,6 +40,14 @@ export const metadata: Metadata = {
   verification: {
     google: 'MqIm81wvmdy1xQCa-LvcLU2-G55iu3uAAxBrpBGwv4k',
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico',          sizes: 'any' },
+      { url: '/favicon.svg',          type: 'image/svg+xml' },
+      { url: '/favicon-96x96.png',    type: 'image/png', sizes: '96x96' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
 }
 
 const organizationSchema = {

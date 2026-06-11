@@ -68,6 +68,34 @@ function fmtTerminal(t: string): string {
   return map[t.toLowerCase()] ?? `${t} Terminal`
 }
 
+// ── Brand pin icons ───────────────────────────────────────────
+// Lounges in this map render a brand-specific circular badge instead of the
+// generic champagne drop pin. Keys are lounge slugs OR partial slug regexes;
+// add new entries as more operators provide approved iconography.
+const BRAND_PIN: { match: (slug: string, name: string) => boolean; src: string; size: number }[] = [
+  // Air Canada Signature Suite — any IATA
+  {
+    match: (slug, name) => /signature[- ]?(suite|lounge)/i.test(name) || /signature/i.test(slug),
+    src: '/icons/lounges/ac-signature.png',
+    size: 56,
+  },
+  // Air Canada Café / Petit Café — any IATA
+  {
+    match: (slug, name) =>
+      /^(air[- ]canada|ac)[- ](petit[- ])?caf[eé]/i.test(name) ||
+      /^(ac|air-canada)-(petit-)?cafe(-|$)/i.test(slug),
+    src: '/icons/lounges/ac-cafe.png',
+    size: 48,
+  },
+]
+
+function getBrandPin(slug: string, name: string): { src: string; size: number } | null {
+  for (const entry of BRAND_PIN) {
+    if (entry.match(slug, name)) return { src: entry.src, size: entry.size }
+  }
+  return null
+}
+
 // ── Lounge map-pin SVG ────────────────────────────────────────
 // width/height MUST be explicit — without them browsers default to 300×150px,
 // causing the SVG to overflow the marker div and the anchor point to be wrong.
@@ -182,9 +210,13 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
         // Build pin markers — no floating popup; detail shows in sidebar on click
         lounges.forEach((lounge, i) => {
           const [lng, lat] = getLoungeCoords(lounge, i, lounges.length, airport)
+          const brand = getBrandPin(lounge.slug, lounge.name)
+
+          // Brand badges are circular and anchor at centre; the default drop pin
+          // anchors at bottom so its tip touches the lat/lng.
           const isPremium  = /first|platinum|signature|premier/i.test(lounge.name)
-          const pinW = isPremium ? 46 : 40
-          const pinH = Math.round(pinW * (64 / 52))
+          const pinW = brand ? brand.size : (isPremium ? 46 : 40)
+          const pinH = brand ? brand.size : Math.round(pinW * (64 / 52))
 
           // Mapbox writes a `transform: translate(...)` to the marker root every frame to
           // keep it pinned to its lng/lat. Touching `el.style.transform` here (e.g. for hover
@@ -195,14 +227,33 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
           el.title = lounge.name
 
           const inner = document.createElement('div')
-          inner.style.cssText = [
-            'width:100%',
-            'height:100%',
-            'transition:transform 0.15s',
-            'transform-origin:center bottom',
-            'filter:drop-shadow(0 3px 5px rgba(0,0,0,0.38))',
-          ].join(';')
-          inner.innerHTML = buildLoungePinSVG(isPremium, pinW, pinH)
+          if (brand) {
+            inner.style.cssText = [
+              'width:100%',
+              'height:100%',
+              'transition:transform 0.15s',
+              'transform-origin:center center',
+              'filter:drop-shadow(0 3px 5px rgba(0,0,0,0.38))',
+              'background:white',
+              'border-radius:50%',
+              'overflow:hidden',
+            ].join(';')
+            const img = document.createElement('img')
+            img.src = brand.src
+            img.alt = lounge.name
+            img.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;'
+            img.draggable = false
+            inner.appendChild(img)
+          } else {
+            inner.style.cssText = [
+              'width:100%',
+              'height:100%',
+              'transition:transform 0.15s',
+              'transform-origin:center bottom',
+              'filter:drop-shadow(0 3px 5px rgba(0,0,0,0.38))',
+            ].join(';')
+            inner.innerHTML = buildLoungePinSVG(isPremium, pinW, pinH)
+          }
           el.appendChild(inner)
 
           el.addEventListener('mouseenter', () => { inner.style.transform = 'scale(1.15)' })
@@ -210,7 +261,10 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
           // Use ref so the click always calls the latest flyToLounge
           el.addEventListener('click', () => flyToLoungeRef.current?.(lounge))
 
-          const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' })
+          const marker = new mapboxgl.Marker({
+            element: el,
+            anchor: brand ? 'center' : 'bottom',
+          })
             .setLngLat([lng, lat])
             .addTo(map)
 
