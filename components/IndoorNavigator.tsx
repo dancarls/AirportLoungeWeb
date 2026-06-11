@@ -77,7 +77,7 @@ const BRAND_PIN: { match: (slug: string, name: string) => boolean; src: string; 
   {
     match: (slug, name) => /signature[- ]?(suite|lounge)/i.test(name) || /signature/i.test(slug),
     src: '/icons/lounges/ac-signature.png',
-    size: 56,
+    size: 64,
   },
   // Air Canada Café / Petit Café — any IATA
   {
@@ -85,7 +85,7 @@ const BRAND_PIN: { match: (slug: string, name: string) => boolean; src: string; 
       /^(air[- ]canada|ac)[- ](petit[- ])?caf[eé]/i.test(name) ||
       /^(ac|air-canada)-(petit-)?cafe(-|$)/i.test(slug),
     src: '/icons/lounges/ac-cafe.png',
-    size: 48,
+    size: 56,
   },
 ]
 
@@ -228,15 +228,15 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
           const inner = document.createElement('div')
           if (brand) {
+            // Brand badges already have their own coloured rims (gold oval for
+            // Signature, black ring for Café). No white background — let the
+            // badge sit transparent on the map so its real shape shows through.
             inner.style.cssText = [
               'width:100%',
               'height:100%',
               'transition:transform 0.15s',
               'transform-origin:center center',
-              'filter:drop-shadow(0 3px 5px rgba(0,0,0,0.38))',
-              'background:white',
-              'border-radius:50%',
-              'overflow:hidden',
+              'filter:drop-shadow(0 3px 5px rgba(0,0,0,0.45))',
             ].join(';')
             const img = document.createElement('img')
             img.src = brand.src
