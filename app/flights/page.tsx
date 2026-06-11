@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     title: 'Flight Status | AirportLounges.ca',
     description: 'Live departures, arrivals, gate, and delay info for Canadian airports.',
     url: 'https://www.airportlounges.ca/flights',
+    images: ['https://www.airportlounges.ca/opengraph-image'],
   },
 }
 

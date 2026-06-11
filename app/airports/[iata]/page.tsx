@@ -85,7 +85,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const name  = airport?.name ?? `${code} Airport`
   const city  = airport?.city ?? code
-  const title = `${city} Airport Lounges (${code}) | AirportLounges.ca`
+  const title = `${city} Airport Lounges (${code})`
   const desc  = `Find every premium lounge at ${name} (${code}). Access requirements, amenities, opening hours, and traveller reviews for all ${city} airport lounges.`
 
   return {
@@ -98,6 +98,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${code} Lounges — ${city} | AirportLounges.ca`,
       description: desc,
       url: `https://www.airportlounges.ca/airports/${code}`,
+      images: ['https://www.airportlounges.ca/opengraph-image'],
     },
   }
 }

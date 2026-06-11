@@ -4,8 +4,15 @@ import { createClient } from '@/lib/supabase/server'
 import CanadaMap, { type AirportMapItem } from '@/components/CanadaMap'
 
 export const metadata: Metadata = {
-  title: 'Canadian Airport Lounges by Airport | AirportLounges.ca',
+  title: 'Canadian Airport Lounges by Airport',
   description: 'Find premium airport lounges at every major Canadian airport. Discover Priority Pass, Air Canada Maple Leaf, and independent lounges across Canada.',
+  alternates: { canonical: 'https://www.airportlounges.ca/airports' },
+  openGraph: {
+    title: 'Canadian Airport Lounges by Airport',
+    description: 'Find premium airport lounges at every major Canadian airport.',
+    url: 'https://www.airportlounges.ca/airports',
+    images: ['https://www.airportlounges.ca/opengraph-image'],
+  },
 }
 export const revalidate = 600
 

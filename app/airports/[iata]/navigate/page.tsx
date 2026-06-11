@@ -33,13 +33,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const name = airport?.name ?? `${code} Airport`
 
   return {
-    title: `Navigate ${code} — Lounge Finder & Terminal Map | AirportLounges.ca`,
+    title: `Navigate ${code} — Lounge Finder & Terminal Map`,
     description: `Find every lounge at ${name}. Locate lounges on the terminal map and get walking directions.`,
     alternates: { canonical: `https://www.airportlounges.ca/airports/${code}/navigate` },
     openGraph: {
       title: `${code} Terminal Navigator | AirportLounges.ca`,
       description: `Find every lounge at ${name} (${code}) on an interactive terminal map.`,
       url: `https://www.airportlounges.ca/airports/${code}/navigate`,
+      images: ['https://www.airportlounges.ca/opengraph-image'],
     },
   }
 }

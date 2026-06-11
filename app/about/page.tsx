@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     title: 'About AirportLounges.ca',
     description: 'Independent Canadian airport lounge directory — sourcing methodology and editorial standards.',
     url: 'https://www.airportlounges.ca/about',
+    images: ['https://www.airportlounges.ca/opengraph-image'],
   },
 }
 

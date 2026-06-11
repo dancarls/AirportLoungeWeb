@@ -4,7 +4,7 @@ import Link from 'next/link'
 import AirportMapExplorer from '@/components/AirportMapExplorer'
 
 export const metadata: Metadata = {
-  title: 'Canadian Airport Maps — Indoor Navigation | AirportLounges.ca',
+  title: 'Canadian Airport Maps — Indoor Navigation',
   description: 'Interactive maps for all major Canadian airports. Select any airport to explore indoor floor plans, locate lounges, and navigate the terminal.',
   alternates: {
     canonical: 'https://www.airportlounges.ca/airports/map',

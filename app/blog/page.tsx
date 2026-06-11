@@ -7,12 +7,14 @@ import WeatherWidget from '@/components/WeatherWidget'
 import { getWeather } from '@/lib/weather'
 
 export const metadata: Metadata = {
-  title: 'Lounge Guides & Travel Tips | AirportLounges.ca',
+  title: 'Lounge Guides & Travel Tips',
   description: 'Expert guides to Canadian airport lounges — Priority Pass, access cards, best lounges by city, and tips for every type of traveller.',
+  alternates: { canonical: 'https://www.airportlounges.ca/blog' },
   openGraph: {
     title: 'Lounge Guides & Travel Tips | AirportLounges.ca',
     description: 'Expert guides to Canadian airport lounges — Priority Pass, access cards, best lounges by city, and tips for every type of traveller.',
     url: 'https://www.airportlounges.ca/blog',
+    images: ['https://www.airportlounges.ca/opengraph-image'],
   },
 }
 

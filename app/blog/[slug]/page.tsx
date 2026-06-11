@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPost(slug)
   if (!post) return {}
   return {
-    title: `${post.metaTitle} | AirportLounges.ca`,
+    title: post.metaTitle,
     description: post.metaDescription,
     alternates: {
       canonical: `https://www.airportlounges.ca/blog/${post.slug}`,
