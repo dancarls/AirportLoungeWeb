@@ -10,12 +10,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   const staticPages: MetadataRoute.Sitemap = [
-    { url: BASE,               priority: 1.0, changeFrequency: 'daily',   lastModified: NOW },
-    { url: `${BASE}/lounges`,  priority: 0.9, changeFrequency: 'daily',   lastModified: NOW },
-    { url: `${BASE}/airports`, priority: 0.8, changeFrequency: 'weekly',  lastModified: NOW },
-    { url: `${BASE}/blog`,     priority: 0.8, changeFrequency: 'weekly',  lastModified: NOW },
-    { url: `${BASE}/privacy`,  priority: 0.2, changeFrequency: 'yearly',  lastModified: NOW },
-    { url: `${BASE}/terms`,    priority: 0.2, changeFrequency: 'yearly',  lastModified: NOW },
+    { url: BASE,                    priority: 1.0, changeFrequency: 'daily',   lastModified: NOW },
+    { url: `${BASE}/lounges`,       priority: 0.9, changeFrequency: 'daily',   lastModified: NOW },
+    { url: `${BASE}/airports`,      priority: 0.8, changeFrequency: 'weekly',  lastModified: NOW },
+    { url: `${BASE}/airports/map`,  priority: 0.7, changeFrequency: 'weekly',  lastModified: NOW },
+    { url: `${BASE}/flights`,       priority: 0.7, changeFrequency: 'weekly',  lastModified: NOW },
+    { url: `${BASE}/about`,         priority: 0.7, changeFrequency: 'monthly', lastModified: NOW },
+    { url: `${BASE}/blog`,          priority: 0.8, changeFrequency: 'weekly',  lastModified: NOW },
+    { url: `${BASE}/privacy`,       priority: 0.2, changeFrequency: 'yearly',  lastModified: NOW },
+    { url: `${BASE}/terms`,         priority: 0.2, changeFrequency: 'yearly',  lastModified: NOW },
   ]
 
   // Blog posts — pulled dynamically so new posts appear automatically
@@ -35,12 +38,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     supabase.from('lounges').select('slug, updated_at, airport:airports!inner(iata_code)').eq('is_active', true),
   ])
 
-  const airportPages: MetadataRoute.Sitemap = (airports ?? []).map(a => ({
-    url: `${BASE}/airports/${a.iata_code}`,
-    priority: 0.8,
-    changeFrequency: 'weekly' as const,
-    lastModified: a.updated_at ? new Date(a.updated_at).toISOString() : NOW,
-  }))
+  const airportPages: MetadataRoute.Sitemap = (airports ?? []).flatMap(a => [
+    {
+      url: `${BASE}/airports/${a.iata_code}`,
+      priority: 0.8,
+      changeFrequency: 'weekly' as const,
+      lastModified: a.updated_at ? new Date(a.updated_at).toISOString() : NOW,
+    },
+    {
+      url: `${BASE}/airports/${a.iata_code}/navigate`,
+      priority: 0.7,
+      changeFrequency: 'weekly' as const,
+      lastModified: a.updated_at ? new Date(a.updated_at).toISOString() : NOW,
+    },
+  ])
 
   const loungePages: MetadataRoute.Sitemap = (lounges ?? [])
     .map(l => {
