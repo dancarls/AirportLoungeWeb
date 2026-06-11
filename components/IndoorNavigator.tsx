@@ -70,50 +70,13 @@ function fmtTerminal(t: string): string {
   return map[t.toLowerCase()] ?? `${t} Terminal`
 }
 
-// ── Brand pin icons ───────────────────────────────────────────
-// Lounges in this map render a brand-specific circular badge instead of the
-// generic champagne drop pin. Keys are lounge slugs OR partial slug regexes;
-// add new entries as more operators provide approved iconography.
-const BRAND_PIN: { match: (slug: string, name: string) => boolean; src: string; size: number }[] = [
-  // Air Canada Signature Suite — any IATA
-  {
-    match: (slug, name) => /signature[- ]?(suite|lounge)/i.test(name) || /signature/i.test(slug),
-    src: '/icons/lounges/ac-signature.png',
-    size: 64,
-  },
-  // Air Canada Café / Petit Café — any IATA
-  {
-    match: (slug, name) =>
-      /^(air[- ]canada|ac)[- ](petit[- ])?caf[eé]/i.test(name) ||
-      /^(ac|air-canada)-(petit-)?cafe(-|$)/i.test(slug),
-    src: '/icons/lounges/ac-cafe.png',
-    size: 56,
-  },
-]
-
-function getBrandPin(slug: string, name: string): { src: string; size: number } | null {
-  for (const entry of BRAND_PIN) {
-    if (entry.match(slug, name)) return { src: entry.src, size: entry.size }
-  }
-  return null
-}
-
-// ── Lounge map-pin SVG ────────────────────────────────────────
-// width/height MUST be explicit — without them browsers default to 300×150px,
-// causing the SVG to overflow the marker div and the anchor point to be wrong.
-function buildLoungePinSVG(isPremium: boolean, pinW: number, pinH: number): string {
-  const fill   = isPremium ? '#9A7020' : '#C9A96E'
-  const border = isPremium ? '#F5E0A0' : 'white'
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${pinW}" height="${pinH}" viewBox="0 0 52 64" fill="none" style="display:block">
-    <path d="M26 2C13.9 2 4 11.9 4 24c0 12.4 22 40 22 40s22-27.6 22-40C48 11.9 38.1 2 26 2z"
-      fill="${fill}" stroke="${border}" stroke-width="2"/>
-    <circle cx="35" cy="13" r="5" fill="white"/>
-    <rect x="10" y="17" width="5.5" height="19" rx="2.75" fill="white"/>
-    <path d="M14.5 21.5 L30 17 L31.5 21 L16 25.5Z" fill="white"/>
-    <rect x="10" y="33" width="22" height="5" rx="2.5" fill="white"/>
-    <rect x="25" y="22" width="13" height="4" rx="2" fill="white"/>
-  </svg>`
-}
+// ── Universal lounge pin ──────────────────────────────────────
+// Every lounge marker uses the same icon. The PNG is a blue drop-pin badge
+// with a person-in-seat glyph (cropped tight, no whitespace). The pin is
+// taller than it is wide — object-fit:contain in a square marker div keeps
+// the proportions; the tip lines up with the bottom-centre of the container.
+const LOUNGE_PIN_SRC  = '/icons/lounges/lounge-pin.png'
+const LOUNGE_PIN_SIZE = 44
 
 // ── Hours helpers ─────────────────────────────────────────────
 function fmtHour(t: string): string {
@@ -160,15 +123,16 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
   // Keep a stable ref to flyToLounge so marker click handlers stay current
   const flyToLoungeRef = useRef<((l: NavigatorLounge) => void) | null>(null)
 
-  // Apply / remove the highlight ring on a pin's inner wrapper.
+  // Apply / remove the highlight ring on a pin's inner wrapper. Champagne
+  // glow plays nicely against both the blue lounge pin and the basemap.
   const setMarkerHighlighted = (id: string, on: boolean) => {
     const marker = markerMapRef.current[id]
     const el = marker?.getElement()
     const inner = el?.firstElementChild as HTMLElement | null
     if (!inner) return
-    inner.style.transform = on ? 'scale(1.2)' : ''
+    inner.style.transform = on ? 'scale(1.25)' : ''
     inner.style.filter = on
-      ? 'drop-shadow(0 0 0 3px #C9A96E) drop-shadow(0 4px 8px rgba(0,0,0,0.55))'
+      ? 'drop-shadow(0 0 6px #C9A96E) drop-shadow(0 4px 8px rgba(0,0,0,0.55))'
       : 'drop-shadow(0 3px 5px rgba(0,0,0,0.38))'
   }
 
@@ -237,58 +201,41 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
         setMapReady(true)
 
-        // Build pin markers — no floating popup; detail shows in sidebar on click
+        // Build pin markers — every lounge uses the same universal pin.
+        // Mapbox writes a `transform: translate(...)` to the marker root every
+        // frame to keep it pinned to its lng/lat. Touching `el.style.transform`
+        // on the root would wipe that positioning — so scale a child wrapper
+        // instead and leave the root entirely to Mapbox.
         lounges.forEach((lounge, i) => {
           const [lng, lat] = getLoungeCoords(lounge, i, lounges.length, airport)
-          const brand = getBrandPin(lounge.slug, lounge.name)
 
-          // Brand badges are circular and anchor at centre; the default drop pin
-          // anchors at bottom so its tip touches the lat/lng.
-          const isPremium  = /first|platinum|signature|premier/i.test(lounge.name)
-          const pinW = brand ? brand.size : (isPremium ? 46 : 40)
-          const pinH = brand ? brand.size : Math.round(pinW * (64 / 52))
-
-          // Mapbox writes a `transform: translate(...)` to the marker root every frame to
-          // keep it pinned to its lng/lat. Touching `el.style.transform` here (e.g. for hover
-          // scaling) wipes that positioning — markers fly to the map's top-left and drift on
-          // zoom. So scale a child wrapper instead and leave the root entirely to Mapbox.
           const el = document.createElement('div')
-          el.style.cssText = [`width:${pinW}px`, `height:${pinH}px`, 'cursor:pointer'].join(';')
+          el.style.cssText = [
+            `width:${LOUNGE_PIN_SIZE}px`,
+            `height:${LOUNGE_PIN_SIZE}px`,
+            'cursor:pointer',
+          ].join(';')
           el.title = lounge.name
 
           const inner = document.createElement('div')
-          if (brand) {
-            // Brand badges already have their own coloured rims (gold oval for
-            // Signature, black ring for Café). No white background — let the
-            // badge sit transparent on the map so its real shape shows through.
-            inner.style.cssText = [
-              'width:100%',
-              'height:100%',
-              'transition:transform 0.15s',
-              'transform-origin:center center',
-              'filter:drop-shadow(0 3px 5px rgba(0,0,0,0.45))',
-            ].join(';')
-            const img = document.createElement('img')
-            img.src = brand.src
-            img.alt = lounge.name
-            img.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;'
-            img.draggable = false
-            inner.appendChild(img)
-          } else {
-            inner.style.cssText = [
-              'width:100%',
-              'height:100%',
-              'transition:transform 0.15s',
-              'transform-origin:center bottom',
-              'filter:drop-shadow(0 3px 5px rgba(0,0,0,0.38))',
-            ].join(';')
-            inner.innerHTML = buildLoungePinSVG(isPremium, pinW, pinH)
-          }
+          inner.style.cssText = [
+            'width:100%',
+            'height:100%',
+            'transition:transform 0.15s',
+            'transform-origin:center bottom',
+            'filter:drop-shadow(0 3px 5px rgba(0,0,0,0.38))',
+          ].join(';')
+
+          const img = document.createElement('img')
+          img.src = LOUNGE_PIN_SRC
+          img.alt = lounge.name
+          img.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;'
+          img.draggable = false
+          inner.appendChild(img)
           el.appendChild(inner)
 
           el.addEventListener('mouseenter', () => {
             inner.style.transform = 'scale(1.2)'
-            // Mark this lounge as hovered → sidebar row highlights + scrolls.
             setHoveredLounge(lounge.id)
             const row = sidebarRowsRef.current[lounge.id]
             if (row) row.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
@@ -297,13 +244,10 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
             inner.style.transform = ''
             setHoveredLounge(prev => (prev === lounge.id ? null : prev))
           })
-          // Use ref so the click always calls the latest flyToLounge
           el.addEventListener('click', () => flyToLoungeRef.current?.(lounge))
 
-          const marker = new mapboxgl.Marker({
-            element: el,
-            anchor: brand ? 'center' : 'bottom',
-          })
+          // Drop-pin shape → anchor at bottom so the tip touches the lat/lng.
+          const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' })
             .setLngLat([lng, lat])
             .addTo(map)
 
