@@ -13,7 +13,7 @@ export default function Footer() {
           </p>
           <div className="flex gap-4">
             <a
-              href="https://x.com/Airportloungeca"
+              href="https://x.com/AirportLoungeca"
               target="_blank"
               rel="noreferrer"
               aria-label="AirportLounges.ca on X"
