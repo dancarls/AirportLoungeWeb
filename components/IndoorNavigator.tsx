@@ -29,9 +29,11 @@ interface Props {
 }
 
 // ── Terminal centre coordinates ───────────────────────────────
+// Each pair is [lng, lat] of the terminal building footprint, NOT the
+// airport reference point (which usually sits over the field/runways).
 const TERMINAL_CENTER: Record<string, [number, number]> = {
   YVR: [-123.1752, 49.1944],
-  YYZ: [-79.6248, 43.6780],
+  YYZ: [-79.61237178345921, 43.68083316304655],
   YUL: [-73.7410, 45.4706],
   YEG: [-113.5776, 53.3097],
   YOW: [-75.6660, 45.3224],
@@ -144,14 +146,42 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
   const mapRef       = useRef<mapboxgl.Map | null>(null)
   const markersRef   = useRef<mapboxgl.Marker[]>([])
   const markerMapRef = useRef<Record<string, mapboxgl.Marker>>({})
+  // Sidebar entry refs so we can scroll into view when a pin is hovered.
+  const sidebarRowsRef = useRef<Record<string, HTMLButtonElement | null>>({})
 
-  const [mapReady,     setMapReady]     = useState(false)
-  const [mapError,     setMapError]     = useState<string | null>(null)
-  const [activeLounge, setActiveLounge] = useState<string | null>(null)
-  const [activeDetail, setActiveDetail] = useState<NavigatorLounge | null>(null)
+  const [mapReady,      setMapReady]      = useState(false)
+  const [mapError,      setMapError]      = useState<string | null>(null)
+  const [activeLounge,  setActiveLounge]  = useState<string | null>(null)
+  const [activeDetail,  setActiveDetail]  = useState<NavigatorLounge | null>(null)
+  // hovered = the lounge currently under the cursor on EITHER the map or sidebar.
+  // It drives the highlight ring on the pin and the highlight class on the row.
+  const [hoveredLounge, setHoveredLounge] = useState<string | null>(null)
 
   // Keep a stable ref to flyToLounge so marker click handlers stay current
   const flyToLoungeRef = useRef<((l: NavigatorLounge) => void) | null>(null)
+
+  // Apply / remove the highlight ring on a pin's inner wrapper.
+  const setMarkerHighlighted = (id: string, on: boolean) => {
+    const marker = markerMapRef.current[id]
+    const el = marker?.getElement()
+    const inner = el?.firstElementChild as HTMLElement | null
+    if (!inner) return
+    inner.style.transform = on ? 'scale(1.2)' : ''
+    inner.style.filter = on
+      ? 'drop-shadow(0 0 0 3px #C9A96E) drop-shadow(0 4px 8px rgba(0,0,0,0.55))'
+      : 'drop-shadow(0 3px 5px rgba(0,0,0,0.38))'
+  }
+
+  // Pan the map gently to a lounge without changing the user's zoom level —
+  // used when hovering the sidebar (vs. flyTo on click which also zooms in).
+  const easePanToLounge = (lounge: NavigatorLounge) => {
+    const map = mapRef.current
+    if (!map) return
+    const marker = markerMapRef.current[lounge.id]
+    const lngLat = marker?.getLngLat()
+    if (!lngLat) return
+    map.easeTo({ center: [lngLat.lng, lngLat.lat], duration: 600 })
+  }
 
   // ── Map init ─────────────────────────────────────────────
   useEffect(() => {
@@ -256,8 +286,17 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
           }
           el.appendChild(inner)
 
-          el.addEventListener('mouseenter', () => { inner.style.transform = 'scale(1.15)' })
-          el.addEventListener('mouseleave', () => { inner.style.transform = '' })
+          el.addEventListener('mouseenter', () => {
+            inner.style.transform = 'scale(1.2)'
+            // Mark this lounge as hovered → sidebar row highlights + scrolls.
+            setHoveredLounge(lounge.id)
+            const row = sidebarRowsRef.current[lounge.id]
+            if (row) row.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+          })
+          el.addEventListener('mouseleave', () => {
+            inner.style.transform = ''
+            setHoveredLounge(prev => (prev === lounge.id ? null : prev))
+          })
           // Use ref so the click always calls the latest flyToLounge
           el.addEventListener('click', () => flyToLoungeRef.current?.(lounge))
 
@@ -550,11 +589,23 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
                 {lounges.map(lounge => (
                   <button
                     key={lounge.id}
+                    ref={el => { sidebarRowsRef.current[lounge.id] = el }}
                     onClick={() => flyToLounge(lounge)}
+                    onMouseEnter={() => {
+                      setHoveredLounge(lounge.id)
+                      setMarkerHighlighted(lounge.id, true)
+                      easePanToLounge(lounge)
+                    }}
+                    onMouseLeave={() => {
+                      setHoveredLounge(prev => (prev === lounge.id ? null : prev))
+                      setMarkerHighlighted(lounge.id, false)
+                    }}
                     className={`w-full text-left p-4 border transition-all ${
                       activeLounge === lounge.id
                         ? 'border-primary bg-primary/5 shadow-sm'
-                        : 'border-sand-dark/20 bg-white hover:border-primary/40 hover:bg-champagne-glint/20'
+                        : hoveredLounge === lounge.id
+                          ? 'border-primary/70 bg-champagne-glint/30 shadow-sm'
+                          : 'border-sand-dark/20 bg-white hover:border-primary/40 hover:bg-champagne-glint/20'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-2 mb-1">
