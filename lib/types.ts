@@ -53,11 +53,18 @@ export interface Lounge {
   email: string | null
   latitude: number | null
   longitude: number | null
+  busy_times: BusyTimes | null
   created_at: string
   updated_at?: string | null
   airport?: Airport
   amenities?: Amenity[]
   images?: LoungeImage[]
+}
+
+export interface BusyTimes {
+  busiest?: string
+  quietest?: string
+  note: string
 }
 
 export interface AccessType {

@@ -5,7 +5,10 @@ import type { Metadata } from 'next'
 import { getPost, getAllPosts } from '@/lib/blog'
 import FlightStatusWidget from '@/components/FlightStatusWidget'
 import WeatherWidget from '@/components/WeatherWidget'
+import NewsletterCTA from '@/components/NewsletterCTA'
+import AdSlot from '@/components/AdSlot'
 import { getWeather } from '@/lib/weather'
+import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -41,31 +44,59 @@ export default async function BlogPostPage({ params }: Props) {
 
   const weather = await getWeather(49.1947, -123.1792)
 
+  const authorName = post.authorName ?? 'AirportLounges.ca Editorial Team'
+  const authorBio = post.authorBio
+    ?? 'The AirportLounges.ca Editorial Team verifies Canadian airport lounge access rules, hours, and amenities against operator sources, on-the-ground reader reports, and in-person visits — updated continuously.'
+  const dateModified = post.lastReviewed ?? post.publishedAt
+  // Word count is used for schema.org Article.wordCount — a signal Google reads.
+  // We auto-calculate from HTML content if the post did not set an explicit override.
+  const wordCount = post.wordCount
+    ?? post.content.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length
+
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.metaTitle,
     description: post.metaDescription,
     datePublished: post.publishedAt,
-    dateModified: post.publishedAt,
+    dateModified,
+    articleSection: post.category,
+    wordCount,
+    inLanguage: 'en-CA',
     url: `https://www.airportlounges.ca/blog/${post.slug}`,
     image: post.coverImage
-      ? { '@type': 'ImageObject', url: post.coverImage, width: 1200, height: 630 }
+      ? {
+          '@type': 'ImageObject',
+          url: post.coverImage.startsWith('http')
+            ? post.coverImage
+            : `https://www.airportlounges.ca${post.coverImage}`,
+          width: 1200,
+          height: 630,
+        }
       : undefined,
     author: {
       '@type': 'Organization',
-      name: 'AirportLounges.ca',
-      url: 'https://www.airportlounges.ca',
+      name: authorName,
+      url: 'https://www.airportlounges.ca/about',
+      description: authorBio,
     },
     publisher: {
       '@type': 'Organization',
       name: 'AirportLounges.ca',
       url: 'https://www.airportlounges.ca',
-      logo: { '@type': 'ImageObject', url: 'https://www.airportlounges.ca/favicon.ico' },
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.airportlounges.ca/favicon.ico',
+      },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': `https://www.airportlounges.ca/blog/${post.slug}`,
+    },
+    isPartOf: {
+      '@type': 'Blog',
+      name: 'The AirportLounges.ca Lounge Library',
+      url: 'https://www.airportlounges.ca/blog',
     },
   }
 
@@ -79,10 +110,44 @@ export default async function BlogPostPage({ params }: Props) {
     ],
   }
 
+  // Speakable schema — signals which sections voice assistants and AI Overviews
+  // should read aloud. We mark the intro paragraph and every FAQ answer.
+  const speakableSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: post.metaTitle,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '[data-speakable="intro"]', '[data-speakable="faq-answer"]'],
+    },
+    url: `https://www.airportlounges.ca/blog/${post.slug}`,
+  }
+
+  // FAQPage schema — direct route into Google PAA and AI Overview citations.
+  // Only emitted when the post opted into structured FAQs.
+  const faqSchema = post.faqs && post.faqs.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: post.faqs.map(f => ({
+          '@type': 'Question',
+          name: f.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: f.answer,
+          },
+        })),
+      }
+    : null
+
   return (
     <div className="bg-bone-white min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableSchema) }} />
+      {faqSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      )}
       {/* ── Hero ──────────────────────────────────────────── */}
       <div className="relative h-[380px] bg-aviation-navy overflow-hidden">
         <Image
@@ -126,10 +191,62 @@ export default async function BlogPostPage({ params }: Props) {
 
           {/* ── Article body ──────────────────────────────── */}
           <article className="lg:col-span-2">
+            {/* Byline block — visible E-E-A-T signal (author, publish date, last-verified) */}
+            <div className="mb-8 pb-6 border-b border-outline-variant/30">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-primary" style={{ fontSize: '22px' }}>edit_note</span>
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-primary text-sm">By {authorName}</p>
+                  <p className="text-xs text-secondary mt-0.5 leading-relaxed">{authorBio}</p>
+                  <p className="text-xs text-secondary mt-2">
+                    Published{' '}
+                    <time dateTime={post.publishedAt}>
+                      {new Date(post.publishedAt).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    </time>
+                    {post.lastReviewed && post.lastReviewed !== post.publishedAt && (
+                      <>
+                        {' · Last verified '}
+                        <time dateTime={post.lastReviewed}>
+                          {new Date(post.lastReviewed).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </time>
+                      </>
+                    )}
+                    {' · '}
+                    <a href="/about#sourcing" className="underline underline-offset-2 hover:text-primary">
+                      Sourcing methodology
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <div
+              data-speakable="intro"
               className="prose-article"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
+
+            {/* Structured FAQ block — feeds FAQPage schema + gives readers scannable Q&A */}
+            {post.faqs && post.faqs.length > 0 && (
+              <section className="mt-12 pt-10 border-t border-outline-variant/30" aria-label="Frequently Asked Questions">
+                <h2 className="font-headline-md text-headline-md text-primary mb-8">Frequently Asked Questions</h2>
+                <div className="space-y-6">
+                  {post.faqs.map((faq, i) => (
+                    <details key={i} className="group bg-white border border-outline-variant/30 rounded-lg overflow-hidden">
+                      <summary className="cursor-pointer p-5 font-semibold text-primary flex items-start justify-between gap-4 hover:bg-champagne-glint/30 transition-colors">
+                        <span className="text-base leading-snug">{faq.question}</span>
+                        <span className="material-symbols-outlined text-sand-dark shrink-0 group-open:rotate-180 transition-transform" style={{ fontSize: '20px' }}>expand_more</span>
+                      </summary>
+                      <div data-speakable="faq-answer" className="px-5 pb-5 text-on-surface-variant text-sm leading-relaxed border-t border-outline-variant/20 pt-4">
+                        {faq.answer}
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* AI image disclaimer */}
             <p className="mt-10 text-xs text-secondary/60 italic">
@@ -196,13 +313,12 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             </div>
 
-            {/* Ad placement */}
-            <div className="bg-champagne-glint fine-border p-5 text-center min-h-[280px] flex flex-col items-center justify-center">
-              <span className="font-label-caps text-[9px] text-sand-dark uppercase tracking-widest block mb-2">Advertisement</span>
-              <div className="w-full h-[250px] bg-sand-dark/10 flex items-center justify-center">
-                <span className="text-xs text-secondary">300 × 250</span>
-              </div>
-            </div>
+            {/* Newsletter capture — replaces the pre-launch ad placeholder. */}
+            <NewsletterCTA source={`blog:${post.slug}`} variant="light" />
+
+            {/* Reserved sidebar ad slot — invisible until a display-ad network
+                (Mediavine Journey / Raptive / AdSense) is enabled site-wide. */}
+            <AdSlot slot="blog-sidebar" size="sidebar" />
 
             {/* CTA */}
             <div className="bg-primary p-6 text-white">
@@ -216,12 +332,24 @@ export default async function BlogPostPage({ params }: Props) {
               </Link>
             </div>
 
-            {/* Ad placement 2 */}
-            <div className="bg-white fine-border p-5 text-center min-h-[300px] flex flex-col items-center justify-center">
-              <span className="font-label-caps text-[9px] text-sand-dark uppercase tracking-widest block mb-2">Advertisement</span>
-              <div className="w-full h-[250px] bg-sand-dark/10 flex items-center justify-center">
-                <span className="text-xs text-secondary">300 × 250</span>
-              </div>
+            {/* Monetized outbound — routed through the affiliate registry so the
+                same link swaps in a tracking parameter automatically once the
+                Priority Pass partner ID is approved and set as an env var. */}
+            <div className="bg-white fine-border p-6 text-center">
+              <span className="font-label-caps text-[9px] text-sand-dark uppercase tracking-widest block mb-3">Partner</span>
+              <h5 className="font-bold text-primary mb-2">Priority Pass Membership</h5>
+              <p className="text-sm text-secondary mb-4 leading-relaxed">
+                1,600+ lounges worldwide, including 20+ across Canada. Membership from $99 USD / yr.
+              </p>
+              <a
+                href={affiliate('priority-pass-membership')}
+                target="_blank"
+                rel={AFFILIATE_REL}
+                className="inline-block bg-primary text-white px-6 py-3 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-opacity"
+              >
+                Compare Plans
+              </a>
+              <p className="text-[9px] text-secondary/50 mt-3">Sponsored — we may earn a commission.</p>
             </div>
 
           </aside>

@@ -370,6 +370,23 @@ export default async function AirportPage({ params }: Props) {
             )}
           </div>
 
+          {/* Security wait times */}
+          <div className="bg-surface border border-sand-dark/10 p-6 shadow-sm">
+            <h4 className="font-label-caps text-label-caps text-sand-dark mb-4">SECURITY WAIT TIMES</h4>
+            <p className="text-sm text-secondary mb-5 leading-relaxed">
+              CATSA publishes live security screening wait times for {code}, updated every 2 minutes — check before you head to the lounge.
+            </p>
+            <a
+              href="https://www.catsa-acsta.gc.ca/en/current-wait-times"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center justify-center gap-2 w-full bg-primary text-bone-white py-3 font-label-caps text-label-caps hover:opacity-90 transition-all"
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>timer</span>
+              CHECK WAIT TIMES
+            </a>
+          </div>
+
           {/* Access guide */}
           <div className="bg-champagne-glint/30 border-l-4 border-sand-dark p-6">
             <h4 className="font-label-caps text-label-caps text-primary mb-3">ACCESS GUIDE</h4>

@@ -97,8 +97,56 @@ export default async function HomePage() {
       slug: l.slug,
     })) ?? []
 
+  const homeFaqLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How do I get into an airport lounge in Canada?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'There are five common paths: (1) fly business or first class on an eligible airline; (2) hold elite status with Aeroplan / Star Alliance / oneworld / SkyTeam; (3) hold a lounge membership like Priority Pass, DragonPass, or Air Canada Maple Leaf Club; (4) use a credit card that includes lounge access (Amex Platinum, Aeroplan Reserve, TD Aeroplan Visa Infinite Privilege, RBC Avion Visa Infinite Privilege, HSBC World Elite Mastercard); or (5) buy a walk-up day pass at Plaza Premium, Aspire, or independent lounges — typically CAD $45–$75.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How much does it cost to enter the Air Canada Maple Leaf Lounge?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Air Canada does not sell walk-up day passes to the Maple Leaf Lounge. Access is granted via same-day international business class or Premium Rouge ticket, Aeroplan Elite 50K / 75K / Super Elite 100K status, Star Alliance Gold, Maple Leaf Club membership, or single-use passes bundled with certain Aeroplan credit cards (TD Visa Infinite Privilege, Amex Aeroplan Reserve, CIBC Aeroplan Visa Infinite Privilege). One-time guest passes are available for purchase by eligible cardholders.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Does Priority Pass work at Canadian airports?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. Priority Pass grants access to Plaza Premium, Aspire, and select independent lounges at YYZ, YVR, YUL, YYC, YEG, YOW, and YHZ. It does not work at Air Canada Maple Leaf Lounges. Check the per-airport lounge listings for the exact Priority Pass–accepting lounges and their current entry conditions.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Which Canadian airports have Plaza Premium Lounges?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Plaza Premium operates lounges at Toronto Pearson (YYZ) — Terminal 1 International and Domestic, plus Terminal 3 — as well as Vancouver (YVR) International and Domestic, Edmonton (YEG), Halifax (YHZ), Winnipeg (YWG), and Ottawa (YOW). Most accept Priority Pass, DragonPass, and walk-up day passes.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Can I book an airport lounge in advance?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Plaza Premium, Aspire, and most independent Canadian lounges accept pre-booking via their website or the Priority Pass / DragonPass app. Air Canada Maple Leaf Lounges do not take reservations — access is confirmed at the door based on eligibility.',
+        },
+      },
+    ],
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqLd) }} />
       {/* ── HERO ────────────────────────────────────────────────── */}
       <section className="relative min-h-[85vh] flex flex-col justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -364,8 +412,8 @@ export default async function HomePage() {
                 Partner with AirportLounges.ca to reach premium travellers monthly. Ensure your amenities and access rules are up-to-date.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Link href="/auth/signup" className="bg-primary-fixed text-on-primary-fixed px-10 py-4 font-bold text-[12px] uppercase tracking-widest hover:bg-white transition-all">Claim Listing Now</Link>
-                <Link href="/auth/signup" className="border border-white/30 text-white px-10 py-4 font-bold text-[12px] uppercase tracking-widest hover:bg-white/10 transition-all">Partner With Us</Link>
+                <Link href="/operators/apply" className="bg-primary-fixed text-on-primary-fixed px-10 py-4 font-bold text-[12px] uppercase tracking-widest hover:bg-white transition-all">Claim Listing Now</Link>
+                <Link href="/operators" className="border border-white/30 text-white px-10 py-4 font-bold text-[12px] uppercase tracking-widest hover:bg-white/10 transition-all">Partner With Us</Link>
               </div>
             </div>
           </div>

@@ -1,8 +1,21 @@
 import Link from 'next/link'
+import NewsletterCTA from './NewsletterCTA'
 
 export default function Footer() {
   return (
     <footer className="bg-aviation-navy text-secondary-fixed pt-20 pb-10">
+      {/* Newsletter capture — highest-value slot for retaining a growing audience. */}
+      <div className="max-w-container-max mx-auto px-gutter mb-16">
+        <div className="max-w-2xl mx-auto">
+          <NewsletterCTA
+            source="footer"
+            variant="dark"
+            heading="Lounge intelligence, delivered monthly."
+            subheading="Access-rule changes, new lounge openings, and Canadian credit-card benefit shifts — no spam, unsubscribe any time."
+          />
+        </div>
+      </div>
+
       <div className="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-gutter mb-20">
 
         {/* Brand */}
@@ -61,6 +74,7 @@ export default function Footer() {
             <li><Link href="/about" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">About us</Link></li>
             <li><Link href="/about#sourcing" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">How we verify data</Link></li>
             <li><Link href="/about#corrections" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Submit a correction</Link></li>
+            <li><Link href="/operators" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Operator portal</Link></li>
             <li><Link href="/flights" className="text-secondary-fixed/70 hover:text-primary-fixed transition-colors">Flight status</Link></li>
           </ul>
         </div>

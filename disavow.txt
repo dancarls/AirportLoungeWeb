@@ -1,0 +1,21 @@
+# Disavow file for airportlounges.ca
+# Generated: 2026-08-25
+# Upload manually at: https://search.google.com/search-console/disavow-links
+# Property: airportlounges.ca
+#
+# All entries below are PBN / link-farm domains identified via DataForSEO backlink API.
+# Common pattern: same anchor text on all 6 links ("High Quality Dofollow Backlinks
+# DA 50 PA 40 Premium PBN Network Service airportlounges.ca Rank First Page Google
+# Fast SEO Link Building Buy Backlinks Online Cheap"), same URL structure
+# (/all/184/26.html or /all/184/19.html), spam scores 60-70, all Cloudflare-fronted.
+# These are unsolicited spam links from a link-selling PBN — not real endorsements.
+#
+# Disavowing at the domain level (`domain:`) also covers subdomains and future URLs
+# from the same source, which is the correct posture for PBN link farms.
+
+domain:homesforsaleoldgreenwichct.com
+domain:ggmap.us.com
+domain:betwinnermirror.com
+domain:betulcrime.com
+domain:theforbestimes.com
+domain:bazerdaily.com

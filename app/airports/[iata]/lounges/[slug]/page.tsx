@@ -7,9 +7,22 @@ import LoungeMapClient from '@/components/LoungeMapClient'
 import GalleryLightbox from '@/components/GalleryLightbox'
 import WeatherWidget from '@/components/WeatherWidget'
 import LoungePlaceholder from '@/components/LoungePlaceholder'
+import NewsletterCTA from '@/components/NewsletterCTA'
 import { getWeather } from '@/lib/weather'
+import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
+import AdSlot from '@/components/AdSlot'
 import type { Metadata } from 'next'
 import type { Lounge, Review, AccessType } from '@/lib/types'
+
+// Route a walk-in day-pass CTA to the most likely affiliate operator based on
+// the lounge name. Falls back to Priority Pass if no operator brand matches.
+function dayPassAffiliate(loungeName: string) {
+  const n = loungeName.toLowerCase()
+  if (n.includes('plaza premium')) return affiliate('plaza-premium-booking')
+  if (n.includes('aspire'))         return affiliate('aspire-lounge-booking')
+  if (n.includes('westjet'))        return affiliate('westjet-elevation-booking')
+  return affiliate('priority-pass-membership')
+}
 
 interface Props { params: Promise<{ iata: string; slug: string }> }
 
@@ -408,19 +421,19 @@ export default async function LoungeDetailPage({ params }: Props) {
           {/* Photo gallery */}
           <GalleryLightbox images={orderedImages} loungeName={l.name} />
 
-          {/* Sponsored slot */}
+          {/* Sponsored slot — routed via affiliate registry (Priority Pass) */}
           <div className="bg-primary text-white p-8 rounded-xl flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
             <div className="relative z-10">
               <span className="font-label-caps text-[10px] opacity-70 mb-2 block uppercase tracking-widest">Sponsored</span>
               <h4 className="font-headline-md text-headline-md mb-2">Discover Priority Pass</h4>
               <p className="font-body-md text-body-md opacity-80 max-w-md">
-                Access 1,300+ lounges worldwide — regardless of your airline or class. Apply today.
+                Access 1,600+ lounges worldwide — regardless of your airline or class. Apply today.
               </p>
             </div>
             <a
-              href="https://www.prioritypass.com"
+              href={affiliate('priority-pass-membership')}
               target="_blank"
-              rel="noreferrer"
+              rel={AFFILIATE_REL}
               className="relative z-10 bg-white text-primary px-8 py-3 rounded font-label-caps text-label-caps uppercase tracking-wider hover:bg-champagne-glint transition-colors shrink-0"
             >
               Learn More
@@ -570,7 +583,20 @@ export default async function LoungeDetailPage({ params }: Props) {
               )}
             </div>
 
-            {l.website && (
+            {/* Book Day Pass CTA — appears when the lounge sells a walk-in day pass
+                (guest_fee set) OR its access_types includes a day_pass entry.
+                Routes to the affiliate booking URL for the operator brand. */}
+            {(l.guest_fee != null || accessTypes.some(at => at.type === 'day_pass' || /day pass|walk[- ]in/i.test(at.name))) && (
+              <a
+                href={dayPassAffiliate(l.name)}
+                target="_blank"
+                rel={AFFILIATE_REL}
+                className="block w-full text-center bg-primary text-white py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:opacity-90 transition-opacity mb-4"
+              >
+                {l.guest_fee ? `Book Day Pass · $${l.guest_fee} ${l.guest_fee_currency ?? 'CAD'}` : 'Book Day Pass'}
+              </a>
+            )}
+            {l.website && !(l.guest_fee != null) && (
               <a
                 href={l.website}
                 target="_blank"
@@ -580,6 +606,15 @@ export default async function LoungeDetailPage({ params }: Props) {
                 Visit Website
               </a>
             )}
+            {l.phone && (
+              <a
+                href={`tel:${l.phone.replace(/[^\d+]/g, '')}`}
+                className="flex items-center justify-center gap-2 w-full text-center border border-primary text-primary py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:bg-primary/5 transition-colors mb-4"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>call</span>
+                Call Lounge
+              </a>
+            )}
             <Link
               href={`/airports/${code}`}
               className="block w-full text-center border border-primary text-primary py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:bg-primary/5 transition-colors"
@@ -587,6 +622,39 @@ export default async function LoungeDetailPage({ params }: Props) {
               All {code} Lounges
             </Link>
           </div>
+
+          {/* Typical busy times */}
+          {l.busy_times && (
+            <div className="bg-white border border-outline-variant/30 p-8 rounded-xl shadow-sm">
+              <h4 className="font-bold text-lg mb-4 flex items-center gap-3">
+                <span className="material-symbols-outlined text-primary">groups</span>
+                Typical Busy Times
+              </h4>
+              {(l.busy_times.busiest || l.busy_times.quietest) && (
+                <div className="space-y-3 mb-4">
+                  {l.busy_times.busiest && (
+                    <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                      <span className="text-on-surface-variant flex items-center gap-2">
+                        <span className="material-symbols-outlined text-red-500" style={{ fontSize: '16px' }}>trending_up</span>
+                        Busiest
+                      </span>
+                      <span className="font-medium text-right">{l.busy_times.busiest}</span>
+                    </div>
+                  )}
+                  {l.busy_times.quietest && (
+                    <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                      <span className="text-on-surface-variant flex items-center gap-2">
+                        <span className="material-symbols-outlined text-green-600" style={{ fontSize: '16px' }}>trending_down</span>
+                        Quietest
+                      </span>
+                      <span className="font-medium text-right">{l.busy_times.quietest}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+              <p className="text-sm text-on-surface-variant leading-relaxed">{l.busy_times.note}</p>
+            </div>
+          )}
 
           {/* Terminal location map — interactive Mapbox */}
           {l.airport?.latitude && l.airport?.longitude && (
@@ -627,20 +695,13 @@ export default async function LoungeDetailPage({ params }: Props) {
             <WeatherWidget weather={weather} city={l.airport.city} iata={code} />
           )}
 
-          {/* Sidebar ad */}
-          <div className="bg-bone-white border border-dashed border-outline text-on-surface-variant p-6 rounded-xl flex flex-col items-center text-center">
-            <span className="font-label-caps text-[10px] opacity-40 mb-4 tracking-widest">ADVERTISEMENT</span>
-            <h5 className="font-bold mb-2">Priority Pass</h5>
-            <p className="text-sm opacity-70 mb-6">Access 1,300+ lounges worldwide regardless of your airline.</p>
-            <a
-              href="https://www.prioritypass.com"
-              target="_blank"
-              rel="noreferrer"
-              className="text-primary font-bold text-sm underline decoration-primary/30 underline-offset-4 hover:decoration-primary"
-            >
-              Join Today
-            </a>
-          </div>
+          {/* Newsletter capture in the sidebar — high-intent slot */}
+          <NewsletterCTA
+            source={`lounge:${l.slug}`}
+            variant="light"
+            heading="Get updates for this lounge."
+            subheading={`Monthly briefing on access-rule changes at ${l.name} and other Canadian lounges.`}
+          />
         </aside>
       </section>
     </div>

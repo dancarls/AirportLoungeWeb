@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import { getAllPosts } from '@/lib/blog'
+import { allCollectionSlugs } from '@/lib/collections'
 
 const BASE = 'https://www.airportlounges.ca'
 const NOW  = new Date().toISOString()
@@ -17,6 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/flights`,       priority: 0.7, changeFrequency: 'weekly',  lastModified: NOW },
     { url: `${BASE}/about`,         priority: 0.7, changeFrequency: 'monthly', lastModified: NOW },
     { url: `${BASE}/blog`,          priority: 0.8, changeFrequency: 'weekly',  lastModified: NOW },
+    { url: `${BASE}/operators`,     priority: 0.6, changeFrequency: 'monthly', lastModified: NOW },
     { url: `${BASE}/privacy`,       priority: 0.2, changeFrequency: 'yearly',  lastModified: NOW },
     { url: `${BASE}/terms`,         priority: 0.2, changeFrequency: 'yearly',  lastModified: NOW },
   ]
@@ -29,7 +31,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: post.publishedAt ? new Date(post.publishedAt).toISOString() : NOW,
   }))
 
-  if (!url || !key) return [...staticPages, ...blogPages]
+  // Collection landing pages — one per curated lounge collection
+  const collectionPages: MetadataRoute.Sitemap = allCollectionSlugs().map(slug => ({
+    url: `${BASE}/lounges/${slug}`,
+    priority: 0.85,
+    changeFrequency: 'weekly' as const,
+    lastModified: NOW,
+  }))
+
+  if (!url || !key) return [...staticPages, ...blogPages, ...collectionPages]
 
   const supabase = createClient(url, key)
 
@@ -66,5 +76,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
     .filter(Boolean) as MetadataRoute.Sitemap
 
-  return [...staticPages, ...blogPages, ...airportPages, ...loungePages]
+  return [...staticPages, ...blogPages, ...collectionPages, ...airportPages, ...loungePages]
 }

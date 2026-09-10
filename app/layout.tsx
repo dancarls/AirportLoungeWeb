@@ -57,7 +57,10 @@ const organizationSchema = {
   url: BASE,
   logo: `${BASE}/favicon.ico`,
   description: 'Canada\'s airport lounge directory — verified lounge data, access requirements, amenities, and traveller reviews for all major Canadian airports.',
-  sameAs: [],
+  sameAs: [
+    'https://twitter.com/AirportLoungeca',
+    'https://x.com/AirportLoungeca',
+  ],
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'customer support',
@@ -84,7 +87,16 @@ const websiteSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-CA" className="scroll-smooth">
+    <html
+      lang="en-CA"
+      className="scroll-smooth"
+      // Prevent Google Translate / Chrome auto-translate from wrapping text
+      // nodes in <font> elements — the number-one cause of React 19 hydration
+      // NotFoundError events in production. Combined with the Sentry ignore
+      // filter, this cuts extension-related noise to near zero.
+      translate="no"
+      suppressHydrationWarning
+    >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
