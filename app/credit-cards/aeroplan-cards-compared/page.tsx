@@ -25,70 +25,74 @@ export const revalidate = 3600
 
 const PAGE_URL = 'https://www.airportlounges.ca/credit-cards/aeroplan-cards-compared'
 const PUBLISHED = '2026-09-10'
-const REVIEWED = '2026-09-10'
+const REVIEWED = '2026-09-11'
 
 const CARDS = [
   {
-    name: 'American Express Aeroplan Reserve',
+    name: 'CIBC Aeroplan Visa Infinite Privilege',
     fee: '$599',
-    aeroplanEarn: '3x on Air Canada, 1.25x elsewhere',
-    priorityPass: '✅ Yes — unlimited visits, unlimited free guests',
-    guests: '1 free MLL guest + 4 One-Time Guest Passes/yr',
-    bestFor: 'Best all-around Aeroplan card. Only Aeroplan card with Priority Pass built in — and unlimited free PP guests beats even the Amex Platinum.',
-    affiliateKey: 'finlywealth-amex-aeroplan-reserve' as const,
+    aeroplanEarn: '2x on Air Canada, 1.5x on gas / EV / groceries / travel / dining, 1.25x elsewhere',
+    otherLoungeNetwork: '6 Visa Airport Companion visits / year (DragonPass, 1,200+ lounges worldwide)',
+    guests: '1 guest at Maple Leaf Lounge through Dec. 31, 2026; supplementary card $149',
+    bestFor: 'Best overall for lounge-focused eligible Canadians. Cheapest supplementary card ($149). Strongest trip-cancellation insurance ($10,000/trip). Same lounge package as TD.',
+    affiliateKey: 'finlywealth-cibc-aeroplan-vip' as const,
   },
   {
     name: 'TD Aeroplan Visa Infinite Privilege',
     fee: '$599',
-    aeroplanEarn: '1.5x on Air Canada, 1.5x on groceries/gas/dining',
-    priorityPass: '❌ Not included',
-    guests: '1 free MLL guest + 4 One-Time Guest Passes/yr',
-    bestFor: 'Best Aeroplan card for households — the strongest everyday earn rates on groceries and gas, plus an annual companion voucher for AC flights.',
+    aeroplanEarn: '2x on Air Canada, 1.5x on gas / EV / groceries / travel / transit / dining, 1.25x elsewhere',
+    otherLoungeNetwork: '6 Visa Airport Companion visits / year (DragonPass, 1,200+ lounges worldwide)',
+    guests: '1 guest at Maple Leaf Lounge through Dec. 31, 2026; supplementary card $199',
+    bestFor: 'Close second. Same lounge package as CIBC. Better if you bank with TD (fee rebates are common) or the TD welcome offer is stronger on the day.',
     affiliateKey: 'finlywealth-td-aeroplan-vip' as const,
   },
   {
-    name: 'CIBC Aeroplan Visa Infinite Privilege',
+    name: 'American Express Aeroplan Reserve',
     fee: '$599',
-    aeroplanEarn: '2x on Air Canada, 1x elsewhere',
-    priorityPass: '❌ Not included',
-    guests: '1 free MLL guest + 4 One-Time Guest Passes/yr',
-    bestFor: 'Best for high Air Canada spend — 2x earn on AC tickets is the strongest revenue multiplier of the three cards.',
-    affiliateKey: 'finlywealth-cibc-aeroplan-vip' as const,
+    aeroplanEarn: '3x on Air Canada, 2x on dining and food delivery in Canada, 1.25x elsewhere',
+    otherLoungeNetwork: 'Priority Pass membership: US$99 annual fee waived; each visit charged at the prevailing rate',
+    guests: '1 guest at Maple Leaf Lounge (no end date stated); premium supplementary card $199',
+    bestFor: 'Conditional pick. Best for heavy Air Canada spenders (3x), applicants without $150k personal / $200k household income (no published floor), and Toronto Pearson regulars (priority security lane, valet, 15% parking).',
+    affiliateKey: 'finlywealth-amex-aeroplan-reserve' as const,
   },
 ] as const
 
 const FAQS = [
   {
     q: 'Which Aeroplan credit card is best for airport lounge access?',
-    a: 'The American Express Aeroplan Reserve is the clear winner for lounge access. It is the only Canadian Aeroplan card that stacks Priority Pass Select on top of Maple Leaf Lounge access — giving cardholders access to 1,600+ Priority Pass lounges globally plus every Air Canada MLL, with unlimited free guests at Priority Pass locations. The TD and CIBC Aeroplan VIP cards include MLL access but do not include Priority Pass.',
+    a: 'For most eligible Canadians, the CIBC Aeroplan Visa Infinite Privilege is the strongest Aeroplan lounge card. All three $599 Aeroplan cards (CIBC, TD Aeroplan VIP, Amex Aeroplan Reserve) open the Air Canada Maple Leaf Lounge and Air Canada Café network in Canada and the U.S. CIBC and TD each add six complimentary Visa Airport Companion visits a year (DragonPass network) that work on any airline; Amex includes fee-waived Priority Pass membership but every Priority Pass visit is charged at the prevailing rate. CIBC edges TD on supplementary card price ($149 vs $199) and insurance limits.',
   },
   {
     q: 'Do all three Aeroplan credit cards include the Air Canada Maple Leaf Lounge?',
-    a: 'Yes. The TD Aeroplan Visa Infinite Privilege, CIBC Aeroplan Visa Infinite Privilege, and American Express Aeroplan Reserve all grant unlimited Maple Leaf Lounge access on same-day Air Canada flights, with one free companion guest per visit and four Air Canada One-Time Guest Passes per calendar year for domestic and US Transborder MLLs.',
+    a: 'Yes. The TD Aeroplan Visa Infinite Privilege, CIBC Aeroplan Visa Infinite Privilege, and American Express Aeroplan Reserve each grant unlimited eligible Maple Leaf Lounge and Air Canada Café access in Canada and the U.S. on a same-day departing Air Canada, Air Canada Rouge, Air Canada Express or Star Alliance ticket. Access excludes the Air Canada Signature Suite and international Maple Leaf Lounges outside North America (London, Paris, Frankfurt).',
   },
   {
     q: 'Which Aeroplan card has the best earn rate on Air Canada?',
-    a: 'The CIBC Aeroplan Visa Infinite Privilege earns 2x Aeroplan on Air Canada purchases — the highest revenue multiplier among the two Visa options. The Amex Aeroplan Reserve earns 3x on Air Canada, the strongest of all three, but Amex acceptance is narrower than Visa in Canada.',
+    a: 'The American Express Aeroplan Reserve earns 3 points per $1 on Air Canada and Air Canada Vacations purchases — the strongest of the three cards. TD and CIBC each earn 2 points per $1 on Air Canada. For a household putting $10,000 a year on Air Canada fares, Amex earns 30,000 points versus 20,000 on the Visa cards.',
   },
   {
-    q: 'Which Aeroplan card is best for families?',
-    a: 'The TD Aeroplan Visa Infinite Privilege is the strongest family-oriented pick — 1.5x Aeroplan on groceries, gas, and dining outperforms both alternatives on everyday household spending, and the annual worldwide companion voucher pairs well with family travel. Add in the four One-Time MLL Guest Passes for family lounge visits.',
+    q: 'Does the Amex Aeroplan Reserve include Priority Pass visits?',
+    a: 'The Amex Aeroplan Reserve waives the US$99 annual Priority Pass membership fee, but every Priority Pass lounge visit is charged at the prevailing rate. That is access at a member price, not included visits. If free complimentary lounge visits on non-Air-Canada flights matter, the TD or CIBC Aeroplan VIP each include six Visa Airport Companion visits per year at no extra cost.',
+  },
+  {
+    q: 'Which Aeroplan card is best for families or couples?',
+    a: 'The CIBC Aeroplan Visa Infinite Privilege — its premium supplementary card is $149 (versus $199 at TD and Amex), so a couple with independent lounge access pays $748 a year at CIBC versus $798 at the other two. CIBC also publishes the strongest trip-cancellation coverage: up to $10,000 per trip versus $5,000 at TD and $3,000 at Amex.',
   },
   {
     q: 'Is the Amex Aeroplan Reserve worth $599 per year?',
-    a: 'For travellers who use both Priority Pass and Maple Leaf Lounges more than roughly 6 times per year with a companion, yes — the Priority Pass Select benefit alone (with unlimited free guests) is worth $200+ in raw membership fees, and the Maple Leaf Lounge access adds another $600+ in avoided walk-in fees at a moderate visit rate. Plus the 3x Aeroplan earn on Air Canada tickets.',
+    a: 'It depends on your travel pattern. The Reserve wins for three profiles: heavy Air Canada spenders (3x earn), applicants who cannot show $150,000 personal or $200,000 household income (Amex publishes no fixed floor, though approval still depends on their underwriting), and Toronto Pearson regulars who will use the priority security lane, valet, and 15% parking discount. If none of those apply, CIBC or TD deliver better lounge value at the same $599 fee.',
   },
   {
     q: 'Should I get an Aeroplan credit card if I hold the Amex Platinum already?',
-    a: 'The Amex Platinum does not include Maple Leaf Lounge access — so adding an Aeroplan card is the only way to unlock MLL entry. Adding the Amex Aeroplan Reserve alongside the Platinum gives you two Priority Pass memberships, which is redundant; the TD or CIBC Aeroplan VIP pairs more efficiently with a Platinum since you get MLL from the Aeroplan card and PP from the Platinum without overlap.',
+    a: 'Yes if you want Maple Leaf Lounge access — the Amex Platinum does not open the MLL network at any tier. The TD or CIBC Aeroplan VIP pairs efficiently with a Platinum: your Aeroplan card unlocks MLLs, your Platinum covers Priority Pass and the Global Lounge Collection. Note the Amex Platinum caps Priority Pass at 6 visits per year from January 1, 2027 unless you spend $20,000 annually on the Platinum.',
   },
   {
     q: 'Can I use an Aeroplan credit card for lounge access on a WestJet or Delta flight?',
-    a: 'No. Maple Leaf Lounge access via an Aeroplan credit card requires the cardholder to be travelling on a same-day Air Canada operating flight (which includes AC codeshares with Star Alliance partners). WestJet, Delta, and non-AC operating flights do not qualify, regardless of connection.',
+    a: 'Not for the Air Canada Maple Leaf Lounge — MLL access requires the cardholder to be travelling on a same-day Air Canada, Air Canada Rouge, Air Canada Express or Star Alliance operating flight. However, on TD or CIBC you can still use one of your six Visa Airport Companion visits at a DragonPass-partner lounge regardless of airline. Amex Priority Pass visits are per-charge and work regardless of airline as well.',
   },
   {
-    q: 'How does the annual companion voucher work on the TD Aeroplan VIP?',
-    a: 'The TD Aeroplan Visa Infinite Privilege includes an annual worldwide companion voucher usable on paid Air Canada bookings — the second passenger pays only taxes and fees (plus a fixed nominal fare component on some routes). Restrictions apply on high-season dates and certain fare classes. It is not valid on award tickets or Rouge-only routes.',
+    q: 'What happens after December 31, 2026 for guest access?',
+    a: 'TD and CIBC currently confirm the one complimentary Maple Leaf Lounge guest only through December 31, 2026. Nothing beyond that date is published. Amex publishes one guest with no expiry date, so on paper Amex looks better for couples after 2026 — but Air Canada\'s own lounge page calls complimentary guest admission a limited-time benefit, and any issuer could change its terms. Recheck the issuer pages in December 2026 before making a decision based on guest access.',
   },
   {
     q: 'Which Aeroplan card has the best welcome bonus right now?',
@@ -154,7 +158,7 @@ export default function AeroplanComparedPage() {
             Best Aeroplan Credit Card in Canada (2026): TD vs CIBC vs Amex Compared
           </h1>
           <p data-speakable="intro" className="font-body-lg text-body-lg text-bone-white/85 max-w-3xl leading-relaxed">
-            <strong>Three cards, all $599 annual fee, all opening the Air Canada Maple Leaf Lounge — but only one includes Priority Pass and unlimited free lounge guests.</strong> The American Express Aeroplan Reserve wins for most travellers. The TD version is stronger for families with big grocery/gas spend. The CIBC version wins for heavy Air Canada revenue spend. Full head-to-head below.
+            <strong>Three cards, all $599 annual fee, all opening the eligible Air Canada Maple Leaf Lounge network in Canada and the U.S.</strong> CIBC wins for most households: same lounge package as TD, cheaper supplementary card ($149), strongest trip-cancellation insurance ($10,000/trip). TD is a close second — a better welcome offer or a TD banking rebate can flip the result. Amex Aeroplan Reserve is the pick for heavy Air Canada spending, applicants below the Visa Infinite Privilege income floor, or Toronto Pearson regulars — its Priority Pass visits are paid, not included. TD and CIBC confirm the one-guest benefit only through December 31, 2026.
           </p>
         </div>
       </header>
@@ -205,23 +209,26 @@ export default function AeroplanComparedPage() {
                 <thead className="bg-primary/5 text-primary text-left">
                   <tr>
                     <th className="p-3 font-semibold border border-outline-variant/40">Feature</th>
-                    <th className="p-3 font-semibold border border-outline-variant/40">Amex Aeroplan Reserve</th>
-                    <th className="p-3 font-semibold border border-outline-variant/40">TD Aeroplan VIP</th>
                     <th className="p-3 font-semibold border border-outline-variant/40">CIBC Aeroplan VIP</th>
+                    <th className="p-3 font-semibold border border-outline-variant/40">TD Aeroplan VIP</th>
+                    <th className="p-3 font-semibold border border-outline-variant/40">Amex Aeroplan Reserve</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr><td className="p-3 border border-outline-variant/40 font-semibold">Annual fee</td><td className="p-3 border border-outline-variant/40">$599</td><td className="p-3 border border-outline-variant/40">$599</td><td className="p-3 border border-outline-variant/40">$599</td></tr>
-                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Air Canada earn rate</td><td className="p-3 border border-outline-variant/40">3x Aeroplan</td><td className="p-3 border border-outline-variant/40">1.5x</td><td className="p-3 border border-outline-variant/40">2x</td></tr>
-                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Groceries earn</td><td className="p-3 border border-outline-variant/40">1.25x</td><td className="p-3 border border-outline-variant/40">1.5x</td><td className="p-3 border border-outline-variant/40">1x</td></tr>
-                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Maple Leaf Lounge</td><td className="p-3 border border-outline-variant/40">✅ Unlimited on AC flights, +1 free guest</td><td className="p-3 border border-outline-variant/40">✅ Same</td><td className="p-3 border border-outline-variant/40">✅ Same</td></tr>
-                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Priority Pass Select</td><td className="p-3 border border-outline-variant/40 font-semibold text-primary">✅ Yes, unlimited free guests</td><td className="p-3 border border-outline-variant/40">❌ No</td><td className="p-3 border border-outline-variant/40">❌ No</td></tr>
-                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">One-Time Guest Passes/yr</td><td className="p-3 border border-outline-variant/40">4</td><td className="p-3 border border-outline-variant/40">4</td><td className="p-3 border border-outline-variant/40">4</td></tr>
-                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Annual companion voucher</td><td className="p-3 border border-outline-variant/40">❌ Reserve tier only</td><td className="p-3 border border-outline-variant/40">✅ Buy-one-get-one within N. America / Sun / Central Am.</td><td className="p-3 border border-outline-variant/40">✅ (limited routes)</td></tr>
-                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">NEXUS credit</td><td className="p-3 border border-outline-variant/40">Every 48 months</td><td className="p-3 border border-outline-variant/40">Every 48 months</td><td className="p-3 border border-outline-variant/40">Every 48 months</td></tr>
+                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Supplementary card (with lounge access)</td><td className="p-3 border border-outline-variant/40 font-semibold text-primary">$149</td><td className="p-3 border border-outline-variant/40">$199</td><td className="p-3 border border-outline-variant/40">$199</td></tr>
+                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Published income floor</td><td className="p-3 border border-outline-variant/40">$150k / $200k</td><td className="p-3 border border-outline-variant/40">$150k / $200k</td><td className="p-3 border border-outline-variant/40">None published</td></tr>
+                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Air Canada earn rate</td><td className="p-3 border border-outline-variant/40">2x</td><td className="p-3 border border-outline-variant/40">2x</td><td className="p-3 border border-outline-variant/40 font-semibold text-primary">3x</td></tr>
+                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Gas / groceries / travel / dining</td><td className="p-3 border border-outline-variant/40">1.5x</td><td className="p-3 border border-outline-variant/40">1.5x (incl. transit)</td><td className="p-3 border border-outline-variant/40">2x dining, 1.25x other</td></tr>
+                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Maple Leaf Lounge (Canada + U.S.)</td><td className="p-3 border border-outline-variant/40">✅ Unlimited</td><td className="p-3 border border-outline-variant/40">✅ Unlimited</td><td className="p-3 border border-outline-variant/40">✅ Unlimited</td></tr>
+                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Guest in 2026</td><td className="p-3 border border-outline-variant/40">1, through Dec. 31, 2026</td><td className="p-3 border border-outline-variant/40">1, through Dec. 31, 2026</td><td className="p-3 border border-outline-variant/40">1, no expiry stated</td></tr>
+                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Other lounge network</td><td className="p-3 border border-outline-variant/40">6 Visa Airport Companion visits / year</td><td className="p-3 border border-outline-variant/40">6 Visa Airport Companion visits / year</td><td className="p-3 border border-outline-variant/40">Priority Pass (fee waived; each visit charged)</td></tr>
+                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Trip cancellation, per trip</td><td className="p-3 border border-outline-variant/40 font-semibold text-primary">$10,000</td><td className="p-3 border border-outline-variant/40">$5,000</td><td className="p-3 border border-outline-variant/40">$3,000</td></tr>
+                  <tr><td className="p-3 border border-outline-variant/40 font-semibold">Emergency medical, age 65+</td><td className="p-3 border border-outline-variant/40">10 days</td><td className="p-3 border border-outline-variant/40">4 days</td><td className="p-3 border border-outline-variant/40">Not included</td></tr>
                   <tr><td className="p-3 border border-outline-variant/40 font-semibold">Foreign transaction fee</td><td className="p-3 border border-outline-variant/40">2.5%</td><td className="p-3 border border-outline-variant/40">2.5%</td><td className="p-3 border border-outline-variant/40">2.5%</td></tr>
                 </tbody>
               </table>
+              <p className="text-[10px] text-secondary/60 mt-3 italic">Verified September 11, 2026 against issuer T&C pages, Air Canada Aeroplan benefits and each issuer\'s insurance summary. Extra Visa Airport Companion visits cost US$32. Amex\'s "1,200+ lounges" wording refers to Priority Pass membership; every visit is billed at the prevailing rate.</p>
             </div>
           </section>
 
@@ -238,8 +245,8 @@ export default function AeroplanComparedPage() {
                   <p className="text-on-surface-variant mb-4 leading-relaxed"><strong className="text-on-surface">{c.bestFor}</strong></p>
                   <ul className="text-sm text-on-surface-variant space-y-1 mb-5">
                     <li><strong>Aeroplan earn:</strong> {c.aeroplanEarn}</li>
-                    <li><strong>Priority Pass:</strong> {c.priorityPass}</li>
-                    <li><strong>Maple Leaf Lounge guests:</strong> {c.guests}</li>
+                    <li><strong>Other lounge network:</strong> {c.otherLoungeNetwork}</li>
+                    <li><strong>Guest at Maple Leaf Lounge:</strong> {c.guests}</li>
                   </ul>
                   <a
                     href={affiliate(c.affiliateKey)}
@@ -290,24 +297,41 @@ export default function AeroplanComparedPage() {
           <section>
             <h2 className="font-headline-md text-headline-md text-primary mb-6">Which is best for your travel pattern?</h2>
             <ul className="space-y-4 text-on-surface-variant leading-relaxed">
-              <li><strong>Multi-carrier international traveller:</strong> Amex Aeroplan Reserve — the Priority Pass Select network is the only way into non-Star Alliance lounges abroad.</li>
-              <li><strong>Air Canada exclusively, solo/couple:</strong> CIBC Aeroplan VIP — highest AC-ticket earn rate (2x) and it opens the MLL.</li>
-              <li><strong>Family with young children, heavy household spend:</strong> TD Aeroplan VIP — best everyday earn rates on groceries, gas, and dining, plus the annual companion voucher for family AC bookings.</li>
-              <li><strong>Frequent traveller who brings a partner to every lounge:</strong> Amex Aeroplan Reserve — unlimited free Priority Pass guests is unmatched by any Canadian card at any price point.</li>
-              <li><strong>You already have the Amex Platinum:</strong> TD or CIBC Aeroplan VIP — the Aeroplan card adds MLL access without duplicating your existing Priority Pass benefit.</li>
+              <li><strong>Flying Air Canada most of the time, other airlines a few times a year:</strong> TD or CIBC — both add six Visa Airport Companion visits per year to the Maple Leaf Lounge benefit, on top of any airline.</li>
+              <li><strong>A couple who each want independent lounge access:</strong> CIBC — supplementary card is $149, versus $199 at TD and Amex ($748 vs $798 per year).</li>
+              <li><strong>Spending $8,000+ per year direct with Air Canada:</strong> Amex Aeroplan Reserve — 3x on Air Canada purchases beats the 2x on the Visa cards by a wide margin at scale.</li>
+              <li><strong>Below the Visa Infinite Privilege income floor:</strong> Amex Aeroplan Reserve — no published minimum income (approval still subject to Amex underwriting).</li>
+              <li><strong>Booking expensive trips, want the highest cancellation cap:</strong> CIBC — $10,000 per trip vs $5,000 at TD and $3,000 at Amex.</li>
+              <li><strong>Age 65 or older:</strong> CIBC — 10 days of included emergency medical, vs 4 at TD and none on Amex Reserve.</li>
+              <li><strong>Based at Toronto Pearson:</strong> Amex Aeroplan Reserve — priority security lane, complimentary valet at T1, and 15% off eligible parking.</li>
+              <li><strong>Already hold the Amex Platinum:</strong> TD or CIBC Aeroplan VIP — adds the Maple Leaf Lounge benefit the Platinum does not cover, without duplicating your existing Priority Pass on the Platinum.</li>
             </ul>
           </section>
 
           {/* Break-even */}
           <section>
             <h2 className="font-headline-md text-headline-md text-primary mb-6">Break-even math</h2>
-            <p className="text-on-surface-variant leading-relaxed mb-3">All three cards cost $599 annually. Break-even value on lounge and travel benefits alone:</p>
-            <ul className="space-y-2 text-on-surface-variant leading-relaxed">
-              <li>Roughly <strong>10 Maple Leaf Lounge visits per year with a companion</strong> — at avoided $59 CAD walk-in equivalents — covers the fee on any of the three cards.</li>
-              <li>The <strong>TD and CIBC companion vouchers</strong> alone typically deliver $200–$400 in value per year if you use them on transborder or continental routes.</li>
-              <li>The <strong>Amex Aeroplan Reserve's Priority Pass benefit</strong> shortens the break-even to roughly <strong>6 combined MLL + Priority Pass visits per year</strong>, because two lounge networks for one fee.</li>
-              <li>Well-timed applications during a promotional window can net a welcome bonus worth <strong>$700–$1,500 in Aeroplan redemption value</strong> — enough to cover multi-year fees in year one alone.</li>
-            </ul>
+            <p className="text-on-surface-variant leading-relaxed mb-3">
+              Air Canada sells lounge access on some fares at $49–$79 and charges $59 per extra guest. Using $59 as the benchmark value per entry, break-even on the $599 annual fee looks like this:
+            </p>
+            <table className="min-w-full text-sm border-collapse mb-3">
+              <thead className="bg-primary/5 text-primary text-left">
+                <tr>
+                  <th className="p-3 font-semibold border border-outline-variant/40">Scenario</th>
+                  <th className="p-3 font-semibold border border-outline-variant/40">Fee to cover</th>
+                  <th className="p-3 font-semibold border border-outline-variant/40">Visits to break even (@ $59/entry)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td className="p-3 border border-outline-variant/40">Solo traveller</td><td className="p-3 border border-outline-variant/40">$599</td><td className="p-3 border border-outline-variant/40">11 per year</td></tr>
+                <tr><td className="p-3 border border-outline-variant/40">Cardholder + 1 guest (guest benefit active)</td><td className="p-3 border border-outline-variant/40">$599</td><td className="p-3 border border-outline-variant/40">6 shared per year</td></tr>
+                <tr><td className="p-3 border border-outline-variant/40">Two cardholders on CIBC ($599 + $149)</td><td className="p-3 border border-outline-variant/40">$748</td><td className="p-3 border border-outline-variant/40">7 shared per year</td></tr>
+                <tr><td className="p-3 border border-outline-variant/40">Two cardholders on TD or Amex ($599 + $199)</td><td className="p-3 border border-outline-variant/40">$798</td><td className="p-3 border border-outline-variant/40">7 shared per year</td></tr>
+              </tbody>
+            </table>
+            <p className="text-on-surface-variant text-sm leading-relaxed">
+              These numbers only "pay for the card" if you would otherwise have paid at the door. Aeroplan earning, free first checked bags, insurance and companion vouchers sit on top of this math and often decide the question. Well-timed welcome bonuses can offset the first year\'s fee entirely.
+            </p>
           </section>
 
           {/* FAQ */}

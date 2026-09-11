@@ -40,10 +40,10 @@ const CARDS = [
   {
     name: 'American Express Aeroplan Reserve',
     fee: '$599',
-    lounges: 'Priority Pass Select (unlimited, unlimited free guests); Air Canada Maple Leaf Lounge on AC flights',
-    guests: 'Unlimited free PP guests; 1 free MLL guest per visit; 4 One-Time MLL Guest Passes/yr',
+    lounges: 'Air Canada Maple Leaf Lounge and Air Canada Café (unlimited, Canada + U.S.); Priority Pass — annual fee waived, but every visit charged at the prevailing rate',
+    guests: '1 guest at Maple Leaf Lounge (no end date stated); Priority Pass guest visits also billed at the prevailing rate',
     mll: '✅ Yes',
-    highlight: 'Best all-around lounge card in Canada. Only Aeroplan card with Priority Pass, and unlimited PP guests beats even the Amex Platinum.',
+    highlight: 'Conditional pick — best for heavy Air Canada spenders (3x on AC), applicants below the $150k / $200k income floor (no published minimum on Amex), and Toronto Pearson regulars (priority security lane, valet, 15% parking). Priority Pass visits are paid, not included.',
     affiliateKey: 'finlywealth-amex-aeroplan-reserve' as const,
   },
   {
@@ -87,7 +87,7 @@ const CARDS = [
 const FAQS = [
   {
     q: 'Which Canadian credit card is best for airport lounge access?',
-    a: 'The American Express Aeroplan Reserve ($599 annual fee) is the best all-around lounge card for most Canadian travellers because it stacks Priority Pass Select (with unlimited free guests) on top of Air Canada Maple Leaf Lounge access. No other Canadian card combines both networks on a single account. The Amex Platinum ($799) is a stronger pick specifically for travellers who need Amex Centurion Lounge access in the US.',
+    a: 'For most eligible Canadians who want a single lounge-focused Aeroplan card, the CIBC Aeroplan Visa Infinite Privilege ($599 annual fee) is the strongest pick: unlimited Maple Leaf Lounge access, six complimentary Visa Airport Companion (DragonPass) visits per year that work on any airline, the cheapest supplementary card at $149, and the strongest trip-cancellation insurance. The TD Aeroplan Visa Infinite Privilege ($599) is a close second with the same lounge package. The Amex Aeroplan Reserve ($599) wins conditionally — for heavy Air Canada spenders (3x), applicants without $150k personal / $200k household income (no published Amex floor), and Toronto Pearson regulars. Amex Priority Pass visits are paid, not included. The Amex Platinum ($799) is a different card entirely — no Maple Leaf Lounge access, and the Global Lounge Collection is capped at 6 Plaza Premium + 6 Priority Pass visits per year from January 1, 2027 without $20k in annual card spend.',
   },
   {
     q: 'Which Canadian credit cards include Priority Pass?',
@@ -103,7 +103,7 @@ const FAQS = [
   },
   {
     q: 'Do Canadian credit cards give free guest access to airport lounges?',
-    a: 'The Amex Aeroplan Reserve is the standout — unlimited free guests at Priority Pass lounges, plus one free guest at Maple Leaf Lounges. The Amex Platinum limits you to one free Priority Pass guest per visit as of February 2025. The TD and CIBC Aeroplan Visa Infinite Privilege cards each include one free MLL guest. RBC Avion and Scotia Passport share a visit pool — a guest uses two of your annual DragonPass visits.',
+    a: 'It depends on the network and the card. At Air Canada Maple Leaf Lounges, TD Aeroplan VIP and CIBC Aeroplan VIP each include one complimentary guest through December 31, 2026; Amex Aeroplan Reserve includes one guest with no end date currently stated. The Amex Platinum permits one complimentary guest at Plaza Premium and Priority Pass through 2026 (a guest entry consumes one of the capped visits from 2027). RBC Avion and Scotia Passport share their DragonPass visit pool — bringing a guest uses two of your six annual visits. Extra guests at Air Canada lounges pay $59 in the lounge\'s local currency.',
   },
   {
     q: 'Which is cheaper — a lounge credit card or paying per visit?',

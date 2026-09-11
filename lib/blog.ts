@@ -57,235 +57,297 @@ export interface BlogPost {
 }
 
 const priorityPassContent = `
-<p><strong>Every airport. Every lounge. What to expect — and how to avoid being turned away at the door.</strong></p>
+<p data-speakable="intro"><strong>In Canada, Priority Pass comes only with American Express-branded cards. The Amex Platinum and Business Platinum ($799) include unlimited visits through December 31, 2026. The Scotiabank Platinum American Express ($399) includes 10 visits a year. Every Visa and Mastercard premium card uses DragonPass instead. The Amex Aeroplan Reserve includes the membership but charges every visit. From January 1, 2027, Amex Platinum access drops to 6 Priority Pass and 6 Plaza Premium visits a year. Guests use visits. Only $20,000 of annual spend restores unlimited access, and 2026 spend decides 2027. Priority Pass lists 23 lounges at 8 Canadian airports; Québec City is pending. Bought direct, membership costs US$99, US$329 or US$469 a year, with a US$35 guest fee.</strong></p>
 
-<p>If you carry a premium Canadian travel credit card or hold a Priority Pass membership, you have access to some of the best airport lounges in Canada. Free food and drinks, fast Wi-Fi, real seating — it beats standing at a crowded gate every time.</p>
+<h2>What changed in this update (September 11, 2026)</h2>
 
-<p>But Priority Pass in Canada does not work the same way at every airport. The lounge you can use depends on which airport you are at, which terminal, and whether you are flying domestic, to the US, or internationally. Walk into the wrong one and staff will turn you away at the door.</p>
-
-<p>This guide covers every Priority Pass lounge in Canada — airport by airport, what each one offers, peak hours to avoid, and how to bring a guest.</p>
-
-<h2>What Is Priority Pass?</h2>
-
-<p>Priority Pass is the world's largest independent airport lounge program, with over 1,600 lounges in more than 140 countries. In Canada, there are two ways to get access.</p>
-
-<p><em>Direct membership</em> is purchased straight from Priority Pass in three tiers: Standard, Standard Plus, and Prestige. Each tier includes a set number of complimentary visits per year, with additional visits and guests charged a flat fee.</p>
-
-<p><em>Credit card membership</em> is bundled as a benefit on many Canadian premium travel cards — the American Express Platinum, the CIBC Aventura Visa Infinite Privilege, the TD First Class Travel Visa Infinite, and the Scotiabank Passport Visa Infinite among them. Guest rules and included visits vary by card, not just by tier.</p>
-
-<p>To enter any lounge, show your Priority Pass card or app alongside a same-day boarding pass. That is it — as long as the lounge is not at capacity.</p>
+<ul>
+  <li><strong>Corrected:</strong> the card list. Three Visa cards previously named as Priority Pass cards are DragonPass cards. Priority Pass is Amex-only in Canada.</li>
+  <li><strong>Added:</strong> the January 1, 2027 Amex Platinum caps, the Amex Aeroplan Reserve pay-per-visit trap, the Scotiabank Platinum Amex, direct membership prices and break-even math.</li>
+  <li><strong>Corrected:</strong> the guest section. No Canadian Priority Pass card includes two guests; the Amex Platinum includes one.</li>
+  <li><strong>Rewritten:</strong> Montréal (National Bank Lounge in a temporary space until about June 2028; two Aspire lounges and the Desjardins transborder lounge added; Air France operator fixed), Québec City moved to pending, and details at Toronto, Vancouver, Calgary, Edmonton, Winnipeg and Ottawa.</li>
+  <li><strong>Changed:</strong> the airport count from nine to eight confirmed plus one pending; the network size from one number to the published range.</li>
+</ul>
 
 <blockquote>
-<p>Priority Pass does not guarantee entry. Lounges can and do restrict access when they hit capacity. At busy hub airports during peak departure windows, you can be turned away even with a valid membership. Arriving early is the only reliable fix.</p>
+<p><strong>Editorial disclosure:</strong> AirportLounges.ca may receive compensation if you apply for a card through links on this page. This does not affect the issuer's terms or the price you pay. The cards named as including Priority Pass visits are the Amex Platinum, the Business Platinum and the Scotiabank Platinum American Express. The Amex Aeroplan Reserve includes a Priority Pass membership but charges each visit. Facts verified September 11, 2026.</p>
 </blockquote>
 
-<figure>
-  <img src="/blog/guide-priority-pass-canada.png" alt="Priority Pass airport lounge interior in Canada" loading="lazy" />
-  <figcaption>Priority Pass gives cardholders access to lounges at nine Canadian airports</figcaption>
-</figure>
+<h2>Which Canadian credit cards actually include Priority Pass?</h2>
 
-<h2>Every Priority Pass Lounge in Canada — Quick Reference (2026)</h2>
+<h3>Priority Pass is Amex-only in Canada</h3>
 
-<p>Nine Canadian airports currently participate in Priority Pass. Here is the full list at a glance.</p>
+<p>Most Canadian lounge guides get this wrong, and it is the one fact this page exists to answer. Priority Pass in Canada comes only through American Express-branded cards. Every Visa and Mastercard premium card uses DragonPass instead. That includes the Scotiabank Passport, the TD Aeroplan Visa Infinite Privilege and the BMO Ascend. DragonPass is sold as Visa Airport Companion or Mastercard Travel Pass. Prince of Travel and Frugal Flyer both say it plainly. Three Canadian cards include Priority Pass, issued by American Express and Scotiabank. If a guide says a Visa card includes Priority Pass, it is describing DragonPass.</p>
+
+<h3>The Amex Aeroplan Reserve includes zero included visits</h3>
+
+<p>The Aeroplan Reserve ($599) is the trap. Its terms say the US$99 Priority Pass membership fee is waived. They also say "all lounge visits are subject to a usage fee at the prevailing rate," and that the fee "applies to the Cardmember and his/her guests." Prince of Travel prices that at US$35 a visit. The Reserve's real lounge benefit is unlimited Maple Leaf Lounge access with one guest. Treat "Priority Pass membership included" on any card page as a question, not an answer: how many visits come with it?</p>
+
+<h3>Scotiabank Platinum Amex: 10 visits without the $799 fee</h3>
+
+<p>The card almost nobody covers. The Scotiabank Platinum American Express costs $399. It includes Priority Pass with 10 visits a year for the primary cardholder and 4 for a supplementary cardholder, counted from the date of enrolment. A cardholder plus one guest counts as two visits. After that, the prevailing retail rate applies. It also charges no foreign transaction fee. If you want Priority Pass a few times a year without the Platinum's fee, it is the only middle option in Canada.</p>
+
+<h3>Full Canadian card comparison</h3>
 
 <table>
   <thead>
-    <tr>
-      <th>Airport</th>
-      <th>Code</th>
-      <th>Priority Pass Lounges and Key Notes</th>
-    </tr>
+    <tr><th>Card</th><th>Annual fee</th><th>Lounge network</th><th>Included visits</th><th>Guests</th></tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Toronto Pearson International</td>
-      <td>YYZ</td>
-      <td>6 Plaza Premium locations across T1 and T3 — Domestic, US Transborder, and International in each terminal. Be Relax Spa (T1) also accepts Priority Pass as a spa credit. US Transborder lounge is past customs — visit before clearing the border.</td>
-    </tr>
-    <tr>
-      <td>Toronto Billy Bishop City Airport</td>
-      <td>YTZ</td>
-      <td>Aspire Lounge / Air Canada Café. Domestic departures only. Great option for Porter and regional Air Canada flights from downtown Toronto.</td>
-    </tr>
-    <tr>
-      <td>Vancouver International</td>
-      <td>YVR</td>
-      <td>SkyTeam Lounge (International Terminal) — one of the top-rated Priority Pass lounges in the world. Plus Plaza Premium for Domestic (Pier C), International, and US Transborder. Each lounge is terminal-specific.</td>
-    </tr>
-    <tr>
-      <td>Calgary International</td>
-      <td>YYC</td>
-      <td>WestJet Elevation Lounge (Concourse B/C), Aspire Lounge International (Concourse D), Aspire Lounge US Transborder (Concourse E). Elevation fills up during peak WestJet morning banks.</td>
-    </tr>
-    <tr>
-      <td>Montréal-Trudeau International</td>
-      <td>YUL</td>
-      <td>National Bank Lounge and Air France Lounge by Plaza Premium — both International departures only. Domestic and US flyers may only qualify for a dining credit depending on their membership tier.</td>
-    </tr>
-    <tr>
-      <td>Ottawa Macdonald-Cartier</td>
-      <td>YOW</td>
-      <td>Aspire Salon Lounge — covers Domestic and International departures. Confirm hours in the app before arriving.</td>
-    </tr>
-    <tr>
-      <td>Edmonton International</td>
-      <td>YEG</td>
-      <td>Plaza Premium Lounge (Domestic and International) and Plaza Premium Lounge (US Transborder). US Transborder lounge is past customs — use it before clearing the border.</td>
-    </tr>
-    <tr>
-      <td>Winnipeg James Armstrong Richardson</td>
-      <td>YWG</td>
-      <td>Plaza Premium Lounge just past the main security checkpoint. Domestic and International departures only — not available for US Transborder flights.</td>
-    </tr>
-    <tr>
-      <td>Québec City Jean Lesage</td>
-      <td>YQB</td>
-      <td>V.I.P. Lounge by Club Med. Beautifully designed but lighter on food — cold snacks rather than a full buffet. Domestic and International departures.</td>
-    </tr>
+    <tr><td>Amex Platinum</td><td>$799</td><td>Priority Pass Select + Plaza Premium + Centurion, Aspire, Delta</td><td>Unlimited through Dec 31, 2026; 6 + 6 from 2027*</td><td>1 included in 2026; uses a visit from 2027</td></tr>
+    <tr><td>Business Platinum from Amex</td><td>$799</td><td>Same as Platinum</td><td>Same as Platinum</td><td>Same as Platinum</td></tr>
+    <tr><td>Scotiabank Platinum American Express</td><td>$399</td><td>Priority Pass</td><td>10 primary, 4 supplementary, per 12 months</td><td>A guest uses a visit</td></tr>
+    <tr><td>Amex Aeroplan Reserve</td><td>$599</td><td>Priority Pass (membership only) + Maple Leaf Lounge</td><td>0; every visit billed at the prevailing rate (about US$35)</td><td>Billed too</td></tr>
+    <tr><td>Scotiabank Passport Visa Infinite +</td><td>$150</td><td>DragonPass (Visa Airport Companion)</td><td>6, primary cardholder only</td><td>Uses a visit; US$32 after</td></tr>
+    <tr><td>CIBC Aeroplan Visa Infinite Privilege</td><td>$599</td><td>DragonPass (Visa Airport Companion)</td><td>6 per membership year</td><td>Uses a visit; US$32 after</td></tr>
+    <tr><td>CIBC Aventura Visa Infinite</td><td>$139</td><td>DragonPass (Visa Airport Companion)</td><td>4 per membership year</td><td>Uses a visit; US$32 after</td></tr>
+    <tr><td>TD First Class Travel Visa Infinite</td><td>$139</td><td>DragonPass (Visa Airport Companion)</td><td>4 per year</td><td>Uses a visit</td></tr>
+    <tr><td>RBC Avion Visa Infinite Privilege</td><td>$399</td><td>DragonPass (Visa Airport Companion)</td><td>6 per year</td><td>Uses a visit</td></tr>
+    <tr><td>Rogers Red World Elite Mastercard</td><td>$0</td><td>DragonPass (Mastercard Travel Pass)</td><td>0; US$32 per person per visit</td><td>US$32 each</td></tr>
   </tbody>
 </table>
 
-<h2>Airport-by-Airport Priority Pass Lounge Guide</h2>
+<p><em>*Unlimited again with one guest once $20,000 is spent on the account in a calendar year. The top three rows are the only Canadian cards with Priority Pass visits included. Fees verified September 11, 2026 on issuer pages; the CIBC Aventura Visa Infinite and TD First Class Travel fees are the issuers' standard fees and are often waived in year one.</em></p>
 
-<h3>Toronto Pearson International Airport (YYZ)</h3>
-
-<p>Pearson has the largest Priority Pass lounge network in Canada. Whether you are flying domestic, across the border, or overseas, there is a dedicated Plaza Premium lounge for your terminal and flight type.</p>
-
-<p>Terminal 1 has three lounges — Domestic, International, and US Transborder — plus the Be Relax Spa option for members who prefer a treatment credit over a traditional lounge. Terminal 3 mirrors that with its own Domestic, International, and US Transborder Plaza Premium lounges.</p>
+<h2>What changes for Amex Platinum holders on January 1, 2027</h2>
 
 <blockquote>
-<p>Once you clear US Customs for a transborder flight at Pearson, you cannot go back to a domestic or international lounge. Head to the US Transborder lounge before you pass through customs — every time, no exceptions.</p>
+<p><strong>2027 alert:</strong> the Amex Platinum's unlimited Priority Pass and Plaza Premium access ends December 31, 2026. From January 1, 2027 it is 6 + 6 visits a year, guests use visits, and only $20,000 of annual spend restores unlimited access. Amex is counting 2026 spend now.</p>
 </blockquote>
 
-<figure>
-  <img src="/blog/plaza-premium-yyz.png" alt="Plaza Premium Lounge at Toronto Pearson Airport (YYZ)" loading="lazy" />
-  <figcaption>Plaza Premium Lounge, Toronto Pearson — available across both Terminal 1 and Terminal 3</figcaption>
-</figure>
+<h3>The new 6 + 6 visit caps</h3>
 
-<h3>Toronto Billy Bishop City Airport (YTZ)</h3>
+<p>A basic cardholder gets 6 Priority Pass visits and 6 Plaza Premium visits per calendar year. That is 12 in total across the two networks. A supplementary cardholder gets 2 of each. Visits reset on January 1 and do not roll over. Centurion Lounges, Delta Sky Club, Aspire, Swissport and the other airline-run lounges stay unlimited. Once your visits are gone, you can still enter by paying the lounge's regular rate.</p>
 
-<p>Billy Bishop is the downtown Toronto option for short-haul flying and is often overlooked by Priority Pass holders. The Aspire Lounge here is a newer, well-designed space. If you are flying Porter or regional Air Canada and want to avoid the Pearson experience entirely, this is a solid choice.</p>
+<table>
+  <thead>
+    <tr><th>Year and scenario</th><th>Priority Pass visits</th><th>Plaza Premium visits</th><th>Combined</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>2026, any spend level</td><td>Unlimited</td><td>Unlimited</td><td>Unlimited</td></tr>
+    <tr><td>2027, spend under $20,000</td><td>6</td><td>6</td><td>12</td></tr>
+    <tr><td>2027, supplementary card</td><td>2</td><td>2</td><td>4</td></tr>
+    <tr><td>2027, after $20,000 spend in 2026</td><td>Unlimited</td><td>Unlimited</td><td>Unlimited</td></tr>
+  </tbody>
+</table>
 
-<h3>Vancouver International Airport (YVR)</h3>
+<h3>Guests now consume your visits</h3>
 
-<p>Vancouver is one of the best Priority Pass airports in the entire world, not just in Canada. If you are travelling internationally through YVR, the lounge experience here is genuinely worth arriving early for.</p>
+<p>Under the capped model there is no complimentary guest. Each person who enters uses one visit. A couple burns a network's six visits in three trips. This is the single biggest change for anyone who chose the Platinum to bring a partner in.</p>
 
-<p>The SkyTeam Lounge in the International Terminal is the standout. Made-to-order noodle stations, local BC craft beer on tap, and wide runway views. It is consistently rated among the top Priority Pass lounges globally — plan to arrive at least 90 minutes before your flight to use it properly. Plaza Premium covers Domestic (Pier C), International, and US Transborder, each in its own terminal area.</p>
+<h3>How the $20,000 spend threshold restores unlimited access</h3>
 
-<p>Confirm which lounge matches your departure concourse before heading through security. They are not interchangeable.</p>
+<p>Spend $20,000 on the account in a calendar year and unlimited access comes back, with one complimentary guest per network. It lasts for the rest of that year and all of the next. Supplementary cardholder spending counts toward the threshold. Hit $20,000 by March 1, 2027 and you are unlimited for the rest of 2027 and all of 2028.</p>
 
-<figure>
-  <img src="/blog/skyteam-lounge-yvr.png" alt="SkyTeam Lounge at Vancouver International Airport (YVR)" loading="lazy" />
-  <figcaption>The SkyTeam Lounge at YVR is consistently ranked among the best Priority Pass lounges in the world</figcaption>
-</figure>
+<h3>Why 2026 spending decides your 2027 access</h3>
 
-<h3>Calgary International Airport (YYC)</h3>
+<p>Amex is tracking spend from January 1, 2026. Apply in the autumn of 2026 and spend lightly, and you enter 2027 on the capped tier. Put $20,000 on the card in 2026, and you enter 2027 unlimited. Judge the $799 fee against its recurring credits, which published reviews put at roughly $400 to $640 a year depending on which you use. Treat the lounge benefit as the part being reduced. Our full guide: Amex Platinum airport lounge access in Canada.</p>
 
-<p>Calgary has Priority Pass coverage across all three departure types, but which lounge you use depends entirely on your concourse. Getting this wrong is the most common mistake at YYC.</p>
+<h2>Priority Pass vs DragonPass in Canada</h2>
 
-<p>The WestJet Elevation Lounge on Concourse B/C covers domestic and some international departures. It is popular and can hit capacity during peak WestJet morning banks. Flying later in the day is considerably quieter. The Aspire Lounge International on Concourse D is the better option for international flights and tends to be calmer. The Aspire Lounge US Transborder on Concourse E is past US Customs — visit it before you clear the border.</p>
+<h3>Visa Airport Companion and Mastercard Travel Pass explained</h3>
 
-<figure>
-  <img src="/blog/lounge-calgary-yyc.png" alt="Priority Pass lounge at Calgary International Airport (YYC)" loading="lazy" />
-  <figcaption>Calgary International has three separate Priority Pass lounges — one per concourse</figcaption>
-</figure>
+<p>Most Canadians with a premium travel card hold DragonPass, not Priority Pass. Most premium cards here are Visa or Mastercard. Visa's version is called Visa Airport Companion. Mastercard's is Mastercard Travel Pass. Both run on DragonPass. The mechanics differ from Priority Pass in three ways. Visits come as a pool, usually 4 to 6 a year. Every person who enters uses one, so a cardholder and guest are two visits. The overage is US$32 per person, against Priority Pass's usual US$35. Some pools belong to the primary cardholder only, as on the Scotiabank Passport Visa Infinite +. Others belong to each cardholder, as on the Scotiabank Passport Visa Infinite Privilege with 10 each.</p>
 
-<h3>Montréal-Trudeau International Airport (YUL)</h3>
+<table>
+  <thead>
+    <tr><th>Dimension</th><th>Priority Pass</th><th>DragonPass (Visa Airport Companion / Mastercard Travel Pass)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Canadian card issuers</td><td>American Express-branded cards only</td><td>Visa and Mastercard products</td></tr>
+    <tr><td>Typical Canadian allotment</td><td>Unlimited on the Platinum through 2026 (6 + 6 from 2027); 10 / 4 on the Scotiabank Platinum Amex</td><td>4 to 6 visits a year; 10 on the Scotiabank Passport Visa Infinite Privilege</td></tr>
+    <tr><td>Overage rate</td><td>Prevailing retail rate, commonly US$35</td><td>US$32 per person</td></tr>
+    <tr><td>Direct membership</td><td>Yes, three tiers</td><td>Yes, but the entry tier includes no guest access; a no-fee card (Rogers Red World Elite) gives pay-per-visit membership</td></tr>
+  </tbody>
+</table>
 
-<p>Montréal is the one Canadian airport where Priority Pass lounge access has a real limitation worth knowing before you fly. Both full lounges are in the international wing. If you are flying domestic or to the US, you may only qualify for a dining credit at a participating restaurant — that depends on your card or membership tier, and it is a different experience from a real lounge.</p>
+<h3>Which Canadian lounges accept both networks</h3>
 
-<p>The National Bank Lounge covers international and non-US departures. It is one of the better Priority Pass lounges in eastern Canada and allows up to seven guests per cardholder, with fees applying. The Air France Lounge operated by Plaza Premium is also international-only. Official peak hours run daily from 3:00 p.m. to 6:00 p.m. — access may be restricted during this window.</p>
+<p>In practice the lounge you sit in is often the same. Both networks are accepted at the Aspire lounges at Ottawa, Montréal and Billy Bishop, the WestJet Elevation Lounge at Calgary, the Plaza Premium lounges at Toronto, Vancouver, Edmonton and Winnipeg, the SkyTeam Lounge at Vancouver, and the Desjardins Plaza Premium transborder lounge at Montréal. The network name matters less than how many visits you get and what they cost.</p>
 
-<blockquote>
-<p>Flying domestic or connecting through YUL on a US-bound flight? Open the Priority Pass app and search your terminal before heading to the gate. Some membership tiers include a dining credit at participating restaurants — not a lounge, but worth using if it is available.</p>
-</blockquote>
+<h2>What Priority Pass costs on its own</h2>
 
-<h3>Ottawa Macdonald-Cartier International Airport (YOW)</h3>
+<h3>Standard, Standard Plus and Prestige pricing</h3>
 
-<p>Ottawa has one Priority Pass option: the Aspire Salon Lounge, which covers both domestic and international departures. It is a comfortable, well-regarded space. Hours can vary at smaller airports, so check the Priority Pass app the day of your flight.</p>
+<table>
+  <thead>
+    <tr><th>Tier</th><th>Annual fee</th><th>Member visits included</th><th>Member overage</th><th>Guest fee</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Standard</td><td>US$99</td><td>None</td><td>US$35</td><td>US$35</td></tr>
+    <tr><td>Standard Plus</td><td>US$329</td><td>10</td><td>US$35</td><td>US$35</td></tr>
+    <tr><td>Prestige</td><td>US$469</td><td>Unlimited</td><td>None</td><td>US$35</td></tr>
+  </tbody>
+</table>
 
-<h3>Edmonton International Airport (YEG)</h3>
+<p><em>Priority Pass prices in US dollars. Verified September 11, 2026. Promotions of up to 30% off appear from time to time.</em></p>
 
-<p>Edmonton has two Plaza Premium lounges covering every departure type. The main lounge serves domestic and international passengers. A separate lounge handles US Transborder departures and is located past US Customs — use it before you clear the border or you will not be able to access it.</p>
+<h3>Break-even: membership vs walk-in vs credit card</h3>
 
-<figure>
-  <img src="/blog/plaza-premium-general.png" alt="Plaza Premium Lounge at Edmonton International Airport (YEG)" loading="lazy" />
-  <figcaption>Plaza Premium Lounge, Edmonton International — domestic, international, and US transborder covered</figcaption>
-</figure>
+<p>Three comparisons decide it. First, Standard against Prestige: at US$99 plus US$35 a visit, Standard is cheaper below roughly eleven visits a year and dearer above it. Second, membership against walk-in — Plaza Premium lounges in Canada sell walk-in entry at roughly C$60 to C$65 for two hours. Toronto Pearson sells discounted pre-booked passes on its own site. A traveller who visits three times a year is under C$200 and needs no membership at all. Third, membership against a card. Prestige costs US$469 for unlimited solo visits. The Amex Platinum costs $799 but returns about $400 in credits most people use, so its net cost is near $399. It also adds Centurion, Plaza Premium and Aspire access, and one guest through 2026. The Scotiabank Platinum Amex sits between them at $399 for ten visits.</p>
 
-<h3>Winnipeg James Armstrong Richardson International Airport (YWG)</h3>
+<h2>Every Priority Pass lounge in Canada: quick reference</h2>
 
-<p>The Plaza Premium Lounge at Winnipeg sits right past the main security checkpoint — easy to find and a clean, quiet space. It is available for domestic and international departures. It does not serve US Transborder passengers.</p>
+<p>Twenty-three lounges at eight airports, from Priority Pass's own directory and operator pages, verified September 11, 2026. Room-level acceptance can change without notice — confirm in the app before you walk over. Québec City is listed separately because it has no confirmed Priority Pass lounge.</p>
 
-<h3>Québec City Jean Lesage International Airport (YQB)</h3>
+<table>
+  <thead>
+    <tr><th>Airport</th><th>Lounges listed by Priority Pass</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Toronto Pearson (YYZ)</td><td>5</td><td>+ Be Relax spa; T1 international closed</td></tr>
+    <tr><td>Vancouver (YVR)</td><td>5</td><td>Plaza Premium First excluded</td></tr>
+    <tr><td>Montréal-Trudeau (YUL)</td><td>5</td><td>National Bank in temporary space</td></tr>
+    <tr><td>Calgary (YYC)</td><td>3</td><td>Elevation: no US flights</td></tr>
+    <tr><td>Edmonton (YEG)</td><td>2</td><td>US lounge closes 4:30 p.m.</td></tr>
+    <tr><td>Ottawa (YOW)</td><td>1</td><td>No US transborder</td></tr>
+    <tr><td>Winnipeg (YWG)</td><td>1</td><td>—</td></tr>
+    <tr><td>Toronto Billy Bishop (YTZ)</td><td>1</td><td>—</td></tr>
+    <tr><td>Québec City (YQB)</td><td>0</td><td>Pending: Boréal Lounge by YQB, fall 2026</td></tr>
+  </tbody>
+</table>
 
-<p>The V.I.P. Lounge by Club Med is the Priority Pass option at Québec City. It is a beautifully designed space, but the food selection is lighter than a major hub — cold snacks and finger food rather than a hot buffet. Good for the quiet and the Wi-Fi before a shorter flight.</p>
+<h2>Airport-by-airport Priority Pass lounge guide</h2>
 
-<figure>
-  <img src="/blog/vip-lounge-clubmed-yqb.png" alt="V.I.P. Lounge by Club Med at Québec City Airport (YQB)" loading="lazy" />
-  <figcaption>The V.I.P. Lounge by Club Med at YQB — lighter on food but a comfortable space before departure</figcaption>
-</figure>
+<h3>Toronto Pearson (YYZ)</h3>
 
-<h2>Peak Hours to Avoid at Canadian Priority Pass Lounges</h2>
-
-<p>Timing your lounge visit matters more than most travellers realize. Here is what Priority Pass's own published guidelines say about Canadian locations, plus what regulars have learned the hard way.</p>
+<p>Priority Pass lists Plaza Premium lounges in both terminals: Terminal 1 Domestic and US Transborder, and Terminal 3 Domestic, International and US Transborder. The Terminal 1 International Plaza Premium closed on December 27, 2025 for a full rebuild, with no reopening date. A T1 international departure currently has no Priority Pass lounge.</p>
 
 <ul>
-  <li>Montréal Air France Lounge (YUL) — officially lists peak hours from 3:00 p.m. to 6:00 p.m. daily, when access may be restricted</li>
-  <li>Calgary Aspire Transborder Lounge (YYC) — Priority Pass notes capacity restrictions may apply during peak periods</li>
-  <li>Calgary Elevation Lounge (YYC) — busiest during WestJet's morning and midday departure banks, roughly 9:00 a.m. to 1:00 p.m.</li>
-  <li>Vancouver SkyTeam Lounge (YVR) — tends to fill before late-evening pushes to Asia and Europe, and during mid-afternoon international departure banks</li>
+  <li>Terminal 3 US Transborder sits past security and US customs, upstairs beside the Admirals Club near Gate A10, with a two-hour stay. Once you clear US customs you cannot go back.</li>
+  <li>Terminal 1 also has a Be Relax spa on the Priority Pass list, which gives a treatment credit rather than a seat.</li>
+  <li>Closing times differ by room. The domestic and international lounges run late; the transborder lounges close earlier in the evening.</li>
+  <li>The KLM Crown Lounge in Terminal 3 has been reported as a Priority Pass option for international departures. It did not appear in the directory on our check — confirm in the app.</li>
 </ul>
 
-<p>The best window at most Canadian airports is mid-morning between 10:00 a.m. and noon, or early afternoon on a weekday. Friday afternoon and Sunday evening are the most likely times to face a capacity issue across the network.</p>
+<h3>Toronto Billy Bishop (YTZ)</h3>
 
-<h2>How to Bring a Guest to a Priority Pass Lounge in Canada</h2>
+<ul>
+  <li>One lounge: the Aspire | Air Canada Café, 133 seats, between Door A and the washrooms after security, accessible up to three hours before departure.</li>
+  <li>Accepts Priority Pass, DragonPass and Amex Platinum, alongside Air Canada status and premium co-brand cardholders.</li>
+  <li>On the Priority Pass pre-book list, which matters on Porter's busy morning bank.</li>
+</ul>
 
-<p>Most Priority Pass lounges in Canada allow guests, but the exact rules depend on how your membership was issued — not just which lounge you are visiting.</p>
+<h3>Vancouver (YVR)</h3>
 
-<p>Direct Priority Pass members pay a flat per-person guest fee charged per visit. Credit card memberships vary widely — some cards include two free guests per visit, others charge a fee per guest, and a small number only cover the cardholder with no guests allowed at all. Check your card's specific terms before assuming a guest is included.</p>
+<ul>
+  <li><strong>Domestic:</strong> Plaza Premium at Gate B15 (full lounge) and a small Plaza Premium outpost at Gate C29 for short stays.</li>
+  <li><strong>International:</strong> Plaza Premium on Level 4 of Pier D between Gates D67 and D68, and the SkyTeam Lounge. The SkyTeam Lounge accepts Priority Pass, DragonPass, LoungeKey and Diners Club, and is international-only. Reviewers rate it among the best Priority Pass lounges anywhere.</li>
+  <li><strong>US:</strong> Plaza Premium on Level 3 near Gate E88.</li>
+  <li>Priority Pass entry is limited to two hours at the Pier D and Pier E lounges; Amex card entry allows three.</li>
+  <li><strong>Plaza Premium First</strong> in international departures <strong>does not accept Priority Pass at all</strong>. Entry is $110 for two hours, or a $30 upgrade from the standard lounge.</li>
+</ul>
 
-<p>Lounge capacity rules apply regardless of membership. Even when your card allows guests, a lounge at capacity can still turn them away. Montréal's National Bank Lounge officially permits up to seven guests per cardholder with fees, while others reserve the right to restrict entry when full.</p>
+<h3>Calgary (YYC)</h3>
 
-<p>The universal rule across all Canadian Priority Pass lounges: your guest must be travelling on the same day, and you — the cardholder — must be physically present. You cannot send a guest in on your card without being there yourself.</p>
+<ul>
+  <li>Aspire Lounge International on Concourse D, 06:30 to 20:30, access three hours before departure, children under 2 free.</li>
+  <li>Aspire Lounge Transborder on Concourse E, after US preclearance.</li>
+  <li>WestJet Elevation Lounge on Concourse B accepts Priority Pass, DragonPass via Mastercard Travel Pass, Lounge Club and Diners Club, with a three-hour stay. It is not available to passengers flying to the continental US or Hawaii, because of where it sits relative to US customs.</li>
+  <li>Capacity is the real risk. Both Aspire lounges can be pre-booked. Do it.</li>
+</ul>
 
-<h2>5 Things to Check Before Every Lounge Visit in Canada</h2>
+<h3>Montréal-Trudeau (YUL)</h3>
+
+<ul>
+  <li>The <strong>National Bank Lounge</strong> near Gate 53 closed on July 31, 2026 for a complete renovation. A temporary, reduced-capacity lounge opened in the same spot on August 1, 2026, with a two-hour stay limit. National Bank expects the full lounge back in June 2028.</li>
+  <li>Two Aspire lounges are new since 2025. The <strong>Aspire Domestic Lounge</strong> across from Gate 1 opened in July 2025 — a full lounge in the domestic zone on Priority Pass, so domestic flyers are no longer limited to a dining credit. The <strong>Aspire International Lounge</strong> between Gates 52 and 53 accepts Priority Pass, DragonPass, DreamFolks and Amex Platinum, with a three-hour stay. Published hours differ between Priority Pass and reviewers — check the app.</li>
+  <li>The <strong>Air France Lounge</strong> between Gates 55 and 57 is an Air France lounge, not a Plaza Premium one. It is closed to everyone but Air France and KLM customers from 3:30 to 6:30 p.m. every day.</li>
+  <li><strong>US-bound:</strong> the Desjardins Plaza Premium Lounge above Gate 81, 04:30 to 20:30, two-hour stay, also on DragonPass and Amex.</li>
+</ul>
+
+<h3>Ottawa (YOW)</h3>
+
+<ul>
+  <li>One lounge: the Aspire Salon Lounge on Level 2 just past Gate 18, 05:00 to 20:00. Accepts Priority Pass, DragonPass, Amex and walk-ins on any airline, three hours before departure. Not available for US transborder departures after preclearance. On the Priority Pass pre-book list.</li>
+</ul>
+
+<h3>Edmonton (YEG)</h3>
+
+<ul>
+  <li>Plaza Premium, Domestic/International, one level above departures opposite Gate 52, 04:30 to midnight, two-hour stay. The bar is open, but some drinks carry a charge.</li>
+  <li>Plaza Premium, US Transborder, near Gate 88 past preclearance, 05:00 to 16:30, two-hour stay, US flights only. An evening US departure leaves after it has closed.</li>
+</ul>
+
+<h3>Winnipeg (YWG)</h3>
+
+<ul>
+  <li>One lounge: Plaza Premium opposite Gate 6 in domestic and international departures, 04:00 to 21:00 per the airport and Priority Pass. Open bar, hot and cold food, Wi-Fi.</li>
+</ul>
+
+<h3>Québec City (YQB): status pending</h3>
+
+<ul>
+  <li>The V.I.P. Lounge previously named on this page is listed as temporarily closed.</li>
+  <li>Its replacement, the <strong>Boréal Lounge by YQB</strong> near Gates 29 and 30 behind the Lobbie bar, opens in fall 2026 (date has slipped from summer). Access is by purchased day pass — Priority Pass and DragonPass acceptance is unconfirmed.</li>
+  <li>Do not confuse it with the Air Canada Café that opened at YQB in June 2026 with Plaza Premium. That one is for Aeroplan 50K+, Star Alliance Gold, premium Aeroplan cardholders and business class, not Priority Pass.</li>
+  <li>Québec City stays off the confirmed list until Priority Pass or the airport lists the Boréal Lounge.</li>
+</ul>
+
+<h2>How to bring a guest to a Priority Pass lounge in Canada</h2>
+
+<h3>Visits are counted per person</h3>
+
+<p>No Canadian Priority Pass card includes two guests. The Amex Platinum includes one. Any more are charged to the card at the prevailing retail rate. The Scotiabank Platinum Amex counts a cardholder plus guest as two of your ten visits. A direct membership includes no guest at any tier and charges US$35 each. From 2027, a Platinum guest uses one of your six visits. On any capped card, travelling as a pair halves the benefit.</p>
+
+<h3>Children and age thresholds</h3>
+
+<p>Children under 2 are admitted free at Edmonton, the Calgary Aspire lounges, Vancouver's Pier C outpost and Pearson's Terminal 3 transborder lounge, among others. From age 2, a child usually counts as a guest or a full entry. Some lounges require an unaccompanied member to be 21. Rules are set lounge by lounge, so check the listing before you bring the family.</p>
+
+<h3>Where guests are not permitted at all</h3>
+
+<p>Amex's own Corporate Platinum terms note that some lounges admit no guests. Priority Pass's help centre says guest limits and charges vary by lounge and by issuer, and points you to the individual listing. The two universal rules still apply everywhere: a same-day boarding pass, and the cardholder must be present. Guest fees are charged to the payment card linked to your Priority Pass account. For fees by network, see our airport lounge guest fees in Canada guide.</p>
+
+<h2>How to pre-book a Canadian Priority Pass lounge</h2>
+
+<p>Priority Pass now lets members reserve a place in advance at selected lounges, for a small fee, through the app or its pre-book page. As of September 11, 2026 the Canadian list includes the Aspire Lounge International and Aspire Lounge Transborder at Calgary, the Aspire Salon at Ottawa, the Aspire Lounge at Billy Bishop and the National Bank Lounge at Montréal. The list changes, so check the pre-book page. This is the direct answer to the capacity problem: a pre-booked seat is the only one a full lounge cannot refuse.</p>
+
+<h2>Peak hours to avoid at Canadian Priority Pass lounges</h2>
+
+<ul>
+  <li><strong>Calgary Elevation Lounge:</strong> WestJet's morning and late-afternoon banks. Priority Pass members are the first refused when it is full.</li>
+  <li><strong>Montréal Air France Lounge:</strong> closed to Priority Pass from 3:30 to 6:30 p.m. every day.</li>
+  <li><strong>Montréal National Bank Lounge:</strong> reduced capacity in the temporary space until about June 2028; expect queues before the evening Europe departures.</li>
+  <li><strong>Toronto Pearson Terminal 3 International:</strong> Priority Pass's most-reviewed Canadian lounge, and its busiest, from mid-afternoon.</li>
+  <li><strong>Vancouver Pier D:</strong> the two-hour Priority Pass limit is enforced when the Asia departures bank fills the room.</li>
+</ul>
+
+<h2>Pre-flight checklist</h2>
 
 <ol>
-  <li><em>Open the Priority Pass app the day of your flight.</em> Search your specific airport and terminal to confirm the lounge is open and check for any access restrictions. Hours change without much notice.</li>
-  <li><em>Know your flight type before you leave for the airport.</em> Domestic, US Transborder, and International lounges are separate. You cannot move between them after clearing security or customs.</li>
-  <li><em>Do not pass through US Customs before visiting the transborder lounge.</em> Every Canadian airport clears US-bound passengers through American customs before departure. Once you are through, you cannot go back. The US Transborder lounge is always first.</li>
-  <li><em>Check your card's guest policy at home, not at the door.</em> Call your card issuer or read your benefits guide before you travel if you are planning to bring someone.</li>
-  <li><em>Build in extra time at peak airports.</em> At Vancouver, Calgary, and Toronto during busy periods, arriving 20 minutes earlier can be the difference between an easy lounge visit and being turned away.</li>
+  <li>Confirm you actually have Priority Pass. Amex Platinum, Business Platinum or Scotiabank Platinum Amex. A Visa or Mastercard means DragonPass; use its app instead.</li>
+  <li>Enrol before the first trip. Amex cards need a one-time enrolment by chat or phone. Download the Priority Pass app and add the digital card.</li>
+  <li>Check the lounge for your zone. Domestic, international and US transborder are separate rooms; once you clear US customs you cannot go back.</li>
+  <li>Check hours and the stay limit. Edmonton's US lounge closes at 4:30 p.m.; Vancouver's Pier D and E lounges cap Priority Pass at two hours.</li>
+  <li>Pre-book where you can. Calgary, Ottawa, Billy Bishop and Montréal's National Bank Lounge.</li>
+  <li>Count your visits from 2027. Amex Platinum: 6 Priority Pass plus 6 Plaza Premium a year unless you spend $20,000. A guest uses one.</li>
+  <li>Bring a same-day boarding pass and the physical card. Every lounge on this page requires both.</li>
 </ol>
 
-<h2>Frequently Asked Questions: Priority Pass Lounges in Canada</h2>
+<h2>Methodology</h2>
+<p>Card facts come from issuer pages and benefits guides (American Express Canada, Scotiabank, CIBC, TD, RBC, Rogers Bank) and Air Canada's co-brand terms, checked September 11, 2026. Lounge facts come from Priority Pass's Canadian airport directory and operator pages (Plaza Premium, Aspire, WestJet, National Bank, Desjardins, Aéroport de Québec, YVR, YWG), with reviews from Milesopedia, Prince of Travel, Frugal Flyer and Flytrippers used only to confirm. Where sources conflict (Aspire International hours at YUL, National Bank renovation dates, room-level acceptance at Pearson, the KLM Crown Lounge), the conflict is stated. Network size is given as a range because published figures range from about 1,600 to 1,900 depending on whether restaurants, spas and sleep pods are counted; never compare cards on advertised lounge counts. Break-even figures are calculations shown in full. No card ratings are displayed.</p>
 
-<h3>Does Priority Pass work at Toronto Pearson Airport?</h3>
-<p>Yes. Pearson has six Plaza Premium lounge locations across Terminal 1 and Terminal 3, covering domestic, US Transborder, and international departures from each terminal. Priority Pass holders in T1 can also redeem a Be Relax Spa credit as an alternative to standard lounge entry.</p>
+<h2>Change log</h2>
+<ul>
+  <li><strong>September 11, 2026:</strong> Full re-verification. Card list corrected to Amex-only; Aeroplan Reserve and Scotiabank Platinum Amex added; January 1, 2027 Amex caps added; direct membership pricing and break-even added; guest section rewritten to one guest maximum; Montréal rewritten (renovation, two Aspire lounges, Desjardins transborder, Air France operator); Québec City moved to pending; Toronto, Vancouver, Calgary, Edmonton, Winnipeg and Ottawa details corrected; airport count changed to eight confirmed plus one pending; network size given as a range; pre-booking section added.</li>
+</ul>
 
-<h3>What is the best Priority Pass lounge in Canada?</h3>
-<p>The SkyTeam Lounge at Vancouver International Airport is consistently rated as one of the best Priority Pass lounges in the world — not just in Canada. It has made-to-order food stations, local craft beer, and panoramic runway views from the International Terminal.</p>
+<h2>Sources</h2>
+<ul>
+  <li>Prince of Travel — Priority Pass vs Visa Airport Companion Program and DragonPass lounge access with Visa and Mastercard; Frugal Flyer — Definitive guide: Priority Pass.</li>
+  <li>American Express Canada — Platinum Card travel benefits, Business Platinum benefits, Aeroplan Reserve membership benefits, Aeroplan Reserve terms; Air Canada — American Express Aeroplan cards.</li>
+  <li>Rewards Canada — Platinum Card lounge access changes effective January 1, 2027.</li>
+  <li>Scotiabank — Platinum American Express Card and benefits, Passport Visa Infinite +, Passport Visa Infinite Privilege; CIBC — Aeroplan Visa Infinite Privilege benefits guide and Aventura Visa Infinite benefits guide; Milesopedia — Rogers Red World Elite Mastercard.</li>
+  <li>Priority Pass — Canada directory pages for Toronto Pearson, Vancouver, Montréal, Calgary, Edmonton, Ottawa Aspire Salon, Winnipeg, Billy Bishop; Pre-book; guest policy; Chase — Priority Pass membership levels and cost.</li>
+  <li>National Bank — National Bank Lounge at Montréal airport; Milesopedia — National Bank Lounge renovation and temporary lounge, Aspire Lounge international zone YUL, YUL and YVR lounge access guides; Aspire — Aspire International Lounge YUL.</li>
+  <li>WestJet — Elevation Lounge and access rules; LoungeReview — WestJet Elevation Lounge review.</li>
+  <li>Frugal Flyer — Plaza Premium First YVR review; YVR — SkyTeam Lounge; Plaza Premium — Edmonton lounges; Winnipeg Airports Authority — Plaza Premium Lounge; Ottawa International Airport — Lounges; Toronto Pearson — Book a lounge; Rewards Canada — Lounge access guide.</li>
+  <li>Aéroport de Québec — Boréal Lounge by YQB and Air Canada Café opens at YQB.</li>
+  <li>Priority Pass — network size; Upgraded Points — Priority Pass guide; Amex ICC — Priority Pass programme terms; Amex Canada — Corporate Platinum benefits.</li>
+  <li>AirportLounges.ca — Amex Platinum lounge access in Canada, Airport lounge guest fees in Canada, Montréal airport lounges.</li>
+</ul>
 
-<h3>Which Canadian airports have Priority Pass lounges in 2026?</h3>
-<p>As of 2026, Priority Pass lounges are available at Toronto Pearson (YYZ), Toronto Billy Bishop (YTZ), Vancouver (YVR), Calgary (YYC), Montréal (YUL), Ottawa (YOW), Edmonton (YEG), Winnipeg (YWG), and Québec City (YQB).</p>
-
-<h3>Can I use Priority Pass for domestic flights in Canada?</h3>
-<p>Yes, at most airports. Vancouver, Calgary, Edmonton, Ottawa, Winnipeg, and Toronto Pearson all have Priority Pass lounges that cover domestic departures. Montréal is the exception — the full lounges there are international-only, so domestic flyers may only qualify for a dining credit.</p>
-
-<h3>What happens if the Priority Pass lounge is full?</h3>
-<p>You will be turned away regardless of membership type. This is most common at Vancouver and Calgary during peak periods. Ask lounge staff whether a waitlist is available, or check the app for other options in the terminal.</p>
-
-<h3>Can I bring a guest to a Priority Pass lounge in Canada?</h3>
-<p>Yes, at most locations — but guest rules and fees depend on your card or membership tier. Direct members pay a per-visit guest fee. Some credit cards include free guest access; others charge or do not allow guests. Check your specific card's terms before you travel.</p>
-
-<h3>Do children get free entry to Priority Pass lounges in Canada?</h3>
-<p>Most Canadian Priority Pass lounges admit children under 2 at no charge. Children aged 2 and older typically count as guests and are subject to the same fees as adults, unless your card policy says otherwise.</p>
-
-<h3>Can I use a Priority Pass lounge during a connection in Canada?</h3>
-<p>Yes, as long as you have a same-day boarding pass for a departing flight and you are at the lounge that matches your departure terminal and flight type. A connecting layover qualifies — just make sure you visit the correct lounge before clearing any customs or security for your next flight.</p>
-
-<p><em>Last updated June 2026. Lounge availability, hours, and access policies can change at any time — always confirm in the Priority Pass app before your flight.</em></p>
+<p><em>All card and lounge facts on this page reflect information current as of September 11, 2026. Rules change without notice — always confirm with the issuer and operator before travelling. Next scheduled review: December 2026 (Amex Platinum cap on January 1, 2027; Boréal Lounge opening; National Bank renovation status). Quarterly checks on lounge status thereafter.</em></p>
 `
 
 const remoteWorkContent = `
@@ -371,7 +433,7 @@ const remoteWorkContent = `
 
 <h3>#2 — Air Canada Maple Leaf Lounge International, Toronto Pearson (YYZ) — 41/50</h3>
 
-<p><em>Access: Air Canada Business/First class; Star Alliance Gold; Aeroplan 50K+; TD, CIBC, or Amex Aeroplan premium cards; Chase Sapphire Reserve. Not Priority Pass eligible.</em></p>
+<p><em>Access: Air Canada Business/First class; Star Alliance Gold; Aeroplan 50K+; TD, CIBC, or Amex Aeroplan premium cards. Not Priority Pass eligible.</em></p>
 
 <p>The YYZ International Maple Leaf Lounge has the best Wi-Fi of any Canadian lounge. It runs on a dedicated high-capacity network completely separate from Pearson's public infrastructure — users have clocked around 100 Mbps, which is more than enough for video calls, large file transfers, and cloud-based work without interruption.</p>
 
@@ -457,7 +519,7 @@ const remoteWorkContent = `
 
 <h3>#6 — Air Canada Maple Leaf Lounge, Calgary (YYC) — 37/50</h3>
 
-<p><em>Access: Air Canada Business/First class; Star Alliance Gold; Aeroplan 50K+; Aeroplan premium cards; Chase Sapphire Reserve. Domestic only. Not Priority Pass eligible.</em></p>
+<p><em>Access: Air Canada Business/First class; Star Alliance Gold; Aeroplan 50K+; Aeroplan premium cards. Domestic only. Not Priority Pass eligible.</em></p>
 
 <p>The Calgary Maple Leaf Lounge — fully renovated after a 2024 hailstorm — is consistently described in independent reviews as the quietest and least crowded Maple Leaf Lounge in the entire network. It opens at 04:30, earlier than any other MLL location, which is a real advantage for early-morning domestic departures.</p>
 
@@ -992,487 +1054,218 @@ const showerAccessContent = `
 `
 
 const guestFeesContent = `
-<p><em>Priority Pass, DragonPass, Air Canada Maple Leaf, WestJet Elevation, Desjardins Odyssey — every guest fee spelled out. Updated June 2026.</em></p>
+<p data-speakable="intro"><strong>Canada has no single guest-fee system. The same companion costs $0 at one lounge and $65 plus GST at the next. The price depends on your card as much as the lounge. The benchmarks: US$35 per guest at any Priority Pass lounge, US$32 per person once a DragonPass or Visa Airport Companion pool is used up, $59 for an extra guest at an Air Canada Maple Leaf Lounge, $59 to $65 plus GST at WestJet's Elevation Lounge, and $37 plus tax at the National Bank Lounge in Montréal. No Canadian card includes unlimited Priority Pass guests. The closest one, the Amex Platinum, is capped from January 1, 2027. The cheapest card with a guest built in is the National Bank World Elite Mastercard at $150, for international departures from Montréal.</strong></p>
 
-<p>You have lounge access. Maybe through a premium credit card, a Priority Pass membership, or Aeroplan elite status. Then your travel companion shows up — and you realize you have no idea what bringing them inside is going to cost.</p>
+<h2>What changed in this update (September 11, 2026)</h2>
 
-<p>Canadian airport lounges do not use a single guest fee system. Priority Pass, DragonPass, Air Canada, WestJet, and independent lounges each have their own rules, and those rules change depending on which card you used to get in. A guest who costs you nothing at one lounge can cost $65 CAD at the next terminal over.</p>
+<p>Four corrections and six additions after a full re-check against operator and issuer terms:</p>
 
-<p>This guide covers every guest fee structure in use at Canadian airports today — with the specific dollar amounts, which cards give you a free guest visit, and the seven traps that catch even experienced travellers off guard.</p>
+<ul>
+  <li><strong>Corrected:</strong> the Amex Aeroplan Reserve does not include a Priority Pass guest. Its membership fee is waived, but every visit — for the cardholder and any guest — is charged at the prevailing rate. Its guest benefit is Maple Leaf Lounge only.</li>
+  <li><strong>Corrected:</strong> Priority Pass coverage at YUL's Desjardins Odyssey lounges varies by location; the transborder location appears in Priority Pass's own directory.</li>
+  <li><strong>Corrected:</strong> Plaza Premium First at YVR does not accept Priority Pass at all. Entry is $110 for two hours, or a $30 upgrade from the standard lounge.</li>
+  <li><strong>Corrected:</strong> Maple Leaf Lounge access can be pre-purchased on some fares, from $25 on Latitude, at booking or 24 hours ahead.</li>
+  <li><strong>Added:</strong> the January 1, 2027 Amex Platinum cap, the July 8, 2026 Centurion one-guest rule, the National Bank World Elite Mastercard, Desjardins Odyssey card rules, a children section, guest capacity limits, and current Priority Pass tier pricing.</li>
+  <li><strong>Removed:</strong> the Chase Sapphire Reserve rows. It is a US-issued card most Canadians cannot apply for.</li>
+</ul>
 
-<h2>Guest Fee Quick-Reference Table</h2>
-
-<p>All fees quoted in USD where networks set them (Priority Pass and DragonPass bill in USD). CAD fees are lounge-specific walk-in rates.</p>
-
-<table style="width:100%; border-collapse:collapse; font-size:0.9em;">
-  <thead>
-    <tr style="background:#1a2e44; color:#ffffff;">
-      <th style="padding:10px 12px; text-align:left; width:35%;">Lounge / Network</th>
-      <th style="padding:10px 12px; text-align:left; width:35%;">Your Access Method</th>
-      <th style="padding:10px 12px; text-align:left; width:30%;">Guest Fee</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style="background:#ffffff;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Priority Pass lounge (any Canadian airport)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">PP Standard, Standard+, or Prestige direct membership</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">$35 USD per guest per visit</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Priority Pass lounge</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Amex Platinum Canada ($799 card)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">1st guest FREE; additional guests ~$35 USD each</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Priority Pass lounge</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Amex Aeroplan Reserve ($599 card)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">1st guest FREE (PP lounges only)</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Priority Pass lounge</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">TD/CIBC Aeroplan VIP or most other Canadian cards</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">$35 USD per guest</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">DragonPass lounge (Visa Airport Companion)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Scotiabank Passport VI / CIBC Aventura VIP / BMO Ascend WE</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">$32 USD per extra visit — pool is shared with guests</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Air Canada Maple Leaf (domestic or US transborder)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">TD/CIBC Aeroplan VIP or Amex Aeroplan Reserve</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">1 guest FREE (TD/CIBC benefit through Dec 2026)</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Air Canada Maple Leaf (any location)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Walk-in / no card benefit</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">$59 CAD per guest</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Air Canada Maple Leaf</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">One-Time Guest Pass (earned via card spend)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">FREE — domestic and US transborder MLL only; not valid at international MLL</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">WestJet Elevation (YVR and YYC)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Any Priority Pass card</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">You enter free; guest pays $59–$65 CAD + GST walk-in rate</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">WestJet Elevation</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Walk-in (WestJet boarding pass)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">$59 CAD + GST adult / $30 CAD + GST child (2–17) / FREE under 2</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Desjardins Odyssey (YUL — DragonPass only)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Walk-in (any airline)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">$42 CAD adult / $26 CAD child (3–11) / FREE under 3</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Plaza Premium First (YVR Gate D67)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Standard Priority Pass</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Upcharge required even for cardholder — not covered by standard PP</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Plaza Premium (standard locations)</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">Priority Pass member</td>
-      <td style="padding:10px 12px; border-bottom:1px solid #e0e0e0; vertical-align:top;">$35 USD per guest</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:10px 12px; vertical-align:top;">AC Signature Suite (YVR, YYZ, YUL International)</td>
-      <td style="padding:10px 12px; vertical-align:top;">Any pass or status</td>
-      <td style="padding:10px 12px; vertical-align:top;">No guest access — Business class ticket required for all occupants</td>
-    </tr>
-  </tbody>
-</table>
-
-<figure>
-  <img src="/blog/couple-checking-in-lounge.png" alt="Two travellers checking into a Canadian airport lounge together" loading="lazy" />
-  <figcaption>Guest fees vary significantly depending on which lounge network and which card you use — knowing the rules before you travel saves money at the door</figcaption>
-</figure>
-
-<h2>Priority Pass Guest Fees in Canada</h2>
-
-<p>Priority Pass covers the majority of independent lounges in Canada — all standard Plaza Premium locations, the SkyTeam Lounge at YVR, and the WestJet Elevation Lounges at both YVR and YYC. What your guest costs depends entirely on how you got your membership.</p>
-
-<h3>If you bought Priority Pass directly</h3>
-
-<p>All three direct-purchase tiers — Standard, Standard Plus, and Prestige — charge the same flat guest fee: $35 USD per guest per visit. There is no first-guest-free benefit on any direct-purchase tier. Every guest, every time, costs $35 USD.</p>
-
-<h3>If your card includes Priority Pass as a benefit</h3>
-
-<p>Most Canadian premium travel cards bundle a Priority Pass membership, but the guest rules attached to that membership vary by card — and they are often different from what the same card offers in the United States.</p>
-
-<table style="width:100%; border-collapse:collapse; font-size:0.88em;">
-  <thead>
-    <tr style="background:#1a2e44; color:#ffffff;">
-      <th style="padding:9px 10px; text-align:left; width:38%;">Credit Card</th>
-      <th style="padding:9px 10px; text-align:center; width:12%;">Annual Fee</th>
-      <th style="padding:9px 10px; text-align:left; width:25%;">PP Visits Included</th>
-      <th style="padding:9px 10px; text-align:left; width:25%;">Guest Policy</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Amex Platinum (Canada)</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$799</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Unlimited</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">1 guest FREE per visit; additional at ~$35 USD each</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Amex Aeroplan Reserve</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$599</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Unlimited PP + unlimited MLL</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">1 PP guest FREE; 1 MLL guest FREE</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">TD Aeroplan Visa Infinite Privilege</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$599</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Unlimited MLL + 6 DragonPass</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">1 MLL guest FREE; DragonPass pool shared with guests</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">CIBC Aeroplan Visa Infinite Privilege</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$599</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Unlimited MLL + 6 DragonPass</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Same as TD Aeroplan VIP</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Scotiabank Passport Visa Infinite</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$150</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">6 DragonPass</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">6 visits shared with guests; $32 USD per extra</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Scotiabank Passport Visa Infinite Privilege</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$599</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">10 DragonPass</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">10 visits shared with guests; $32 USD per extra</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">CIBC Aventura Visa Infinite Privilege</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$599</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">6 DragonPass</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">6 visits shared with guests; $32 USD per extra</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">BMO Ascend World Elite MC</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$150</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">4 DragonPass</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">4 visits shared with guests; $32 USD per extra</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px;">Chase Sapphire Reserve (US card, usable in Canada)</td>
-      <td style="padding:9px 10px; text-align:center;">$795 USD</td>
-      <td style="padding:9px 10px;">Unlimited PP</td>
-      <td style="padding:9px 10px;">1 guest FREE; additional ~$60 CAD equivalent</td>
-    </tr>
-  </tbody>
-</table>
-
-<blockquote style="border-left: 4px solid #c8a96e; margin: 24px 0; padding: 14px 20px; background: #faf7f2;">
-<p>Canadian Amex Platinum is not the same as American Amex Platinum. The US version gives 2 free guests per visit. The Canadian version gives 1. If you have been reading US cardholder forums or comparison sites, double-check the Canadian benefit guide before you travel with two companions.</p>
+<blockquote>
+<p><strong>Editorial disclosure:</strong> AirportLounges.ca may receive compensation if you apply for a card through links on this page. This does not affect the issuer's terms or the price you pay. Fees on this page were checked against operator and issuer pages on September 11, 2026; they change, so confirm before you travel.</p>
 </blockquote>
 
-<figure>
-  <img src="/blog/premium-credit-cards-priority-pass.png" alt="Canadian travel credit card and Priority Pass membership card used for airport lounge access" loading="lazy" />
-  <figcaption>The guest fee you pay depends on your card, not just the lounge — and the rules vary significantly across Canadian issuers</figcaption>
-</figure>
+<h2>Guest fee quick-reference table</h2>
 
-<h2>DragonPass and the Visa Airport Companion — The Pool Problem</h2>
-
-<p>DragonPass is the network behind the Visa Airport Companion program used by Scotiabank, CIBC, and BMO cards in Canada. It looks like Priority Pass but works very differently when guests are involved.</p>
-
-<h3>How the shared visit pool works</h3>
-
-<p>When a card advertises six complimentary visits, that is not six visits for you plus six for each guest. It is a combined pool. If you bring one guest, you both enter — but that counts as two visits from your allocation, leaving you four remaining. Once the pool runs out, every subsequent visit for anyone costs $32 USD per person.</p>
-
-<p>Some cards issue separate allocations to supplementary cardholders rather than drawing from the primary holder's pool. This varies by issuer and product year — check your specific card's benefit guide before assuming your companion draws from a separate pool.</p>
-
-<blockquote style="border-left: 4px solid #c8a96e; margin: 24px 0; padding: 14px 20px; background: #faf7f2;">
-<p>To stretch a DragonPass allocation: use visits solo when travelling without a companion to preserve the pool. If your guest also holds an eligible card, have them enter on their own allocation rather than yours. Supplementary cardholders on some Scotiabank Passport VIP cards get their own separate allocation — worth checking against the extra card fee.</p>
-</blockquote>
-
-<p>DragonPass lounges in Canada largely overlap with Priority Pass lounges — most Plaza Premium locations, WestJet Elevation, and the SkyTeam Lounge at YVR are accessible through both networks. One major exception: Desjardins Odyssey lounges at YUL are DragonPass only. Priority Pass members cannot use them regardless of tier.</p>
-
-<h2>Air Canada Maple Leaf Lounge Guest Fees</h2>
-
-<p>The Maple Leaf Lounge is Air Canada's own network, entirely separate from Priority Pass. Access comes through Aeroplan elite status, a premium credit card, or walk-in payment. Guest fees vary substantially depending on how you got in.</p>
-
-<p>The walk-in guest fee is $59 CAD per person, at any Maple Leaf Lounge in Canada — YVR, YYZ, YUL, YYC, or any other location. There is no online pre-purchase for walk-in guests. You pay at the desk.</p>
-
-<h3>Who gets a free guest at the Maple Leaf Lounge</h3>
-
-<table style="width:100%; border-collapse:collapse; font-size:0.88em;">
+<table>
   <thead>
-    <tr style="background:#1a2e44; color:#ffffff;">
-      <th style="padding:9px 10px; text-align:left; width:50%;">Access Method</th>
-      <th style="padding:9px 10px; text-align:left; width:50%;">Free Guest Entitlement</th>
-    </tr>
+    <tr><th>Network or lounge</th><th>Guest included?</th><th>Extra guest fee</th><th>Children</th><th>Notes</th></tr>
   </thead>
   <tbody>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Aeroplan 50K+ status (Super Elite, Elite, 50K)</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Spouse/partner + up to 5 children under 24 + 1 additional guest FREE</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Star Alliance Gold (flying non-AC carrier)</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">1 guest FREE</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">TD or CIBC Aeroplan Visa Infinite Privilege ($599)</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">1 guest FREE — time-limited extension currently through Dec 2026</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Amex Aeroplan Reserve ($599)</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">1 guest FREE at MLL</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">AC One-Time Guest Pass (earned via card spend)</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">1 guest FREE — domestic and US transborder MLL only; not valid at international MLL</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Chase Sapphire Reserve (US card)</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">1 guest FREE at eligible lounges</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Business class same-day ticket (Air Canada)</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">All travelling companions in business class</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px;">Walk-in or no qualifying benefit</td>
-      <td style="padding:9px 10px;">$59 CAD per guest — no exceptions</td>
-    </tr>
+    <tr><td>Priority Pass (direct membership)</td><td>No, at any tier</td><td>US$35 / person</td><td>Set by each lounge; under 2 usually free</td><td>Charged to the membership on file</td></tr>
+    <tr><td>Priority Pass Select via Amex Platinum</td><td>1 through Dec 31, 2026</td><td>US$35 / person</td><td>Under 2 usually not counted</td><td>From 2027 a guest uses one of 6 visits</td></tr>
+    <tr><td>Priority Pass via Amex Aeroplan Reserve</td><td>No</td><td>Prevailing rate (about US$32–35), cardholder too</td><td>Set by lounge</td><td>Membership fee waived; every visit billed</td></tr>
+    <tr><td>DragonPass via Visa Airport Companion or Mastercard Travel Pass</td><td>Guest uses a pool visit</td><td>US$32 / person after the pool</td><td>Set by lounge</td><td>Pool is 4, 6 or 10 visits depending on card</td></tr>
+    <tr><td>Plaza Premium (walk-in)</td><td>n/a</td><td>About $60–81 CAD for 2 hours by airport</td><td>Under 2 free at most</td><td>Plaza Premium First YVR: $110 direct, Priority Pass not accepted</td></tr>
+    <tr><td>Air Canada Maple Leaf Lounge</td><td>1 with status, Maple Leaf Club or a premium Aeroplan card</td><td>$59 in the lounge's local currency</td><td>50K+ status: up to 5 dependents under 25</td><td>Same-day Air Canada or Star Alliance departure required</td></tr>
+    <tr><td>WestJet Elevation Lounge (YYC)</td><td>No standard allowance</td><td>$59 + GST on WestJet; $65 + GST other airlines</td><td>$30 / $33 + GST ages 2–17; under 2 free</td><td>Card guest allowances not confirmed by WestJet</td></tr>
+    <tr><td>Desjardins Odyssey Lounges (YUL)</td><td>8 passes / year on World Elite, usable for companions</td><td>$42–44 + tax adult walk-in; 50% off with a Desjardins card</td><td>Under 3 free; $26 child rate</td><td>Zone-restricted; flight delay uses another pass</td></tr>
+    <tr><td>National Bank Lounge (YUL international)</td><td>1 guest + 2 children ≤12 with World Elite</td><td>$37 + tax adult; $26 child</td><td>Under 2 free</td><td>International departures only; temporary reduced-capacity lounge until about June 2028</td></tr>
+    <tr><td>Centurion Lounge (US; none in Canada)</td><td>1 since July 8, 2026</td><td>Amex sets the fee</td><td>Set by Amex</td><td>Guest must be on the same flight</td></tr>
   </tbody>
 </table>
 
-<h3>The Air Canada One-Time Guest Pass — and where it does not work</h3>
+<p><em>Verified September 11, 2026. Currencies as shown: Priority Pass and DragonPass bill in US dollars; everything else is Canadian dollars in Canada.</em></p>
 
-<p>Air Canada's One-Time Guest Pass is an underused benefit earned through Aeroplan credit card spending: one pass per $10,000 CAD spent on an eligible card, up to four passes per year. The pass admits one guest when the cardholder is also present.</p>
+<h2>Before you count on a guest fee: where Priority Pass actually works in Canada</h2>
 
-<p>The critical limitation: One-Time Guest Passes are explicitly excluded from the Maple Leaf Lounge International locations — YVR Gate D, YYZ Gate F, and YUL International. They are valid at domestic and US transborder Maple Leaf Lounges only. If you are flying internationally and attempt to use one, it will be declined at the door.</p>
+<p>A guest fee only matters if there is a lounge to enter. Priority Pass lounges operate at nine Canadian airports: Toronto Pearson (YYZ), Toronto Billy Bishop (YTZ), Vancouver (YVR), Calgary (YYC), Montréal (YUL), Ottawa (YOW), Edmonton (YEG), Winnipeg (YWG) and Québec City (YQB — pending). Montréal is the catch — its full Priority Pass lounges sit in the international wing. A domestic or US-bound traveller may find nothing in their zone. See our Priority Pass lounges in Canada guide for the airport-by-airport list before you promise a companion a seat.</p>
 
-<h3>The TD and CIBC free guest benefit — a time-limited extension</h3>
+<h2>Priority Pass guest fees in Canada</h2>
 
-<p>The one-free-guest benefit on the TD and CIBC Aeroplan Visa Infinite Privilege cards has existed since approximately 2023 as a time-limited annual extension from Air Canada. The current extension runs through December 2026. It has been renewed every year it has existed, but it is worth confirming on your card's current benefits page before travelling with a guest — particularly if you are reading this after mid-2026.</p>
+<p>Priority Pass sells three tiers, and none includes a guest. Standard is US$99 a year and every visit costs US$35. Standard Plus is US$329 with ten included visits, then US$35. Prestige is US$469 with unlimited member visits. Guests cost US$35 per visit at every tier. One way to read Standard: it is a $99 fee that buys the right to pay $35 a visit.</p>
 
-<h3>The Signature Suite — no guests, no exceptions</h3>
-
-<p>The AC Signature Suite, located within the MLL International at YVR Gate D52, YYZ, and YUL, admits only passengers booked in Business Class on an intercontinental Air Canada flight departing the same day. No credit card, no status, no guest pass overrides this. The only way to bring a companion is if they are also ticketed in Business Class on the same flight.</p>
-
-<h2>WestJet Elevation Lounge Guest Fees (YVR and YYC)</h2>
-
-<p>WestJet operates Elevation Lounges at Vancouver (YVR Pier B) and Calgary (YYC Concourse B). Both accept Priority Pass for the cardholder — but Priority Pass covers entry for the cardholder only. Guests always pay WestJet's own walk-in pricing, regardless of your PP tier or card.</p>
-
-<table style="width:100%; border-collapse:collapse; font-size:0.88em;">
+<table>
   <thead>
-    <tr style="background:#1a2e44; color:#ffffff;">
-      <th style="padding:9px 10px; text-align:left; width:30%;">Guest Type</th>
-      <th style="padding:9px 10px; text-align:center; width:35%;">WestJet Boarding Pass</th>
-      <th style="padding:9px 10px; text-align:center; width:35%;">Other Airline Boarding Pass</th>
-    </tr>
+    <tr><th>Priority Pass tier</th><th>Annual fee</th><th>Member visits</th><th>Guest</th><th>10 trips alone</th><th>10 trips with a guest</th></tr>
   </thead>
   <tbody>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Adult</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$59 CAD + GST</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$65 CAD + GST</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Child (ages 2–17)</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$30 CAD + GST</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$33 CAD + GST</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px;">Infant (under 2)</td>
-      <td style="padding:9px 10px; text-align:center;">FREE</td>
-      <td style="padding:9px 10px; text-align:center;">FREE</td>
-    </tr>
+    <tr><td>Standard</td><td>US$99</td><td>US$35 each</td><td>US$35</td><td>US$449</td><td>US$799</td></tr>
+    <tr><td>Standard Plus</td><td>US$329</td><td>10 included, then US$35</td><td>US$35</td><td>US$329</td><td>US$679</td></tr>
+    <tr><td>Prestige</td><td>US$469</td><td>Unlimited</td><td>US$35</td><td>US$469</td><td>US$819</td></tr>
   </tbody>
 </table>
 
-<p>This applies even to Amex Platinum cardholders, who normally receive one free guest at Priority Pass lounges. WestJet's own pricing schedule is explicit — the PP guest benefit does not extend to the Elevation Lounge. If you are planning to bring a companion to WestJet Elevation, budget for the walk-in rate regardless of your card.</p>
+<p>That last column is the number that sends people looking for a credit card. A couple on Prestige pays past US$800 for ten trips. Card-issued Priority Pass Select memberships are different. The Amex Platinum's includes one complimentary guest through 2026. The Amex Aeroplan Reserve's includes none and bills the cardholder too. If you travel as a pair, start with the Canadian cards that include at least one complimentary lounge guest rather than a retail membership.</p>
 
-<figure>
-  <img src="/blog/couple-enjoying-lounge.png" alt="Two travellers in a WestJet Elevation Lounge at a Canadian airport" loading="lazy" />
-  <figcaption>WestJet Elevation Lounges at YVR and YYC charge guests the walk-in rate even when you enter on a Priority Pass card</figcaption>
-</figure>
+<h2>DragonPass and the Visa Airport Companion: the pool problem</h2>
 
-<h2>Desjardins Odyssey Lounges at YUL — DragonPass Only</h2>
+<p>Most Canadian bank cards use DragonPass, branded as Visa Airport Companion or Mastercard Travel Pass. You get a pool of visits, and every person who walks in uses one. Scotiabank's terms spell it out: a cardholder and one guest count as two visits. Once the pool is gone, every visit costs US$32 per person, cardholder included.</p>
 
-<p>Desjardins operates two Odyssey Lounges at Montreal-Trudeau (YUL) — one domestic, one international. These are among the most underrated lounges in Canada, but they are only accessible through DragonPass (Visa Airport Companion). Priority Pass members cannot use them regardless of membership tier.</p>
+<p>Two details decide how far a pool stretches. First, size — four visits on the BMO Ascend World Elite, six on the Scotiabank Passport Visa Infinite + and the CIBC and TD Visa Infinite Privilege cards, and ten on the Scotiabank Passport Visa Infinite Privilege. Second, who owns it — the Passport Visa Infinite Privilege grants ten visits per cardholder, so a supplementary cardholder has their own ten. The Passport Visa Infinite + grants six to the primary cardholder only. A spouse travelling alone cannot use them.</p>
 
-<h3>Walk-in guest fees</h3>
-
-<table style="width:100%; border-collapse:collapse; font-size:0.88em;">
+<table>
   <thead>
-    <tr style="background:#1a2e44; color:#ffffff;">
-      <th style="padding:9px 10px; text-align:left; width:50%;">Guest Age</th>
-      <th style="padding:9px 10px; text-align:left; width:50%;">Walk-In Fee (before tax)</th>
-    </tr>
+    <tr><th>Card</th><th>Annual fee</th><th>Included visits</th><th>Whose pool</th><th>After the pool</th></tr>
   </thead>
   <tbody>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Age 12 and over</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">$42 CAD</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Ages 3 to 11</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">$26 CAD</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px;">Under 3 years old</td>
-      <td style="padding:9px 10px;">FREE</td>
-    </tr>
+    <tr><td>Scotiabank Passport Visa Infinite +</td><td>$150</td><td>6</td><td>Primary cardholder only</td><td>US$32 / person</td></tr>
+    <tr><td>Scotiabank Passport Visa Infinite Privilege</td><td>$599</td><td>10</td><td>Each cardholder</td><td>US$32 / person</td></tr>
+    <tr><td>CIBC Aeroplan Visa Infinite Privilege</td><td>$599</td><td>6</td><td>Each enrolled cardholder</td><td>US$32 / person</td></tr>
+    <tr><td>CIBC Aventura Visa Infinite Privilege</td><td>$599</td><td>6</td><td>Cardholder</td><td>US$32 / person</td></tr>
+    <tr><td>TD Aeroplan Visa Infinite Privilege</td><td>$599</td><td>6</td><td>Cardholder</td><td>US$32 / person (program rate)</td></tr>
+    <tr><td>BMO Ascend World Elite Mastercard</td><td>$150</td><td>4</td><td>Primary, usable for companions</td><td>US$32 / person</td></tr>
   </tbody>
 </table>
 
-<h3>Desjardins cardholder discounts</h3>
+<p>Six visits is three trips as a couple. Four is two. Retail DragonPass memberships are no help for guests either — the entry tier lists guest access as not available, and only higher tiers allow a paid guest. DragonPass also re-priced its tiers in 2026, so the old US$99, US$219 and US$399 figures are out of date. If the pool math does not work for you, the cards with a guest built in are the alternative.</p>
 
-<p>Desjardins cardholders receive meaningful discounts beyond the walk-in rate. The Odyssey Gold Visa gives 50% off the walk-in rate for the cardholder and one companion, plus up to three children under 18. The Odyssey World Elite Mastercard includes eight free passes per year with 50% off after the allocation is used. The Odyssey Visa Infinite Privilege includes twelve free passes per year, again with 50% off after that. The cardholder's pass covers the cardholder and one companion — family pricing is built into the discount structure.</p>
+<h2>Air Canada Maple Leaf Lounge guest fees</h2>
 
-<h2>Plaza Premium First — The YVR Gate D67 Upcharge</h2>
+<p>One guest is included with Aeroplan 50K status and above, Star Alliance Gold, Maple Leaf Club membership and the three premium Aeroplan credit cards. Extra guests pay $59 in the lounge's local currency (CAD in Canada, USD in the US, EUR and GBP abroad) plus local taxes. You and your guests need a same-day departing flight on Air Canada or a Star Alliance airline. Paid guests can only be brought into Air Canada's own lounges. Business-class passengers get no guest unless they pay the $59.</p>
 
-<p>Plaza Premium operates more lounges at Canadian airports than any other independent operator — with standard locations at YVR, YYZ, YUL, YYC, YEG, and more. All standard Plaza Premium lounges are covered by Priority Pass and DragonPass at no additional charge, with guests paying the standard $35 or $32 USD fee.</p>
+<p>You can also buy your own access ahead of time on some fares. Air Canada's booking flow shows the Maple Leaf Lounge travel option at $25 on Latitude and $50 on Flex. Other published schedules run $49 (Latitude and Premium Economy), $59 (Comfort) and $79 (Flex). Prices vary by channel and have moved. Take the range as <strong>$25 to $79</strong>, bought at booking or at least 24 hours before departure. It is not sold at the door.</p>
 
-<p>The exception is Plaza Premium First at YVR Gate D67. This is a premium-tier lounge with enhanced food, private seating, and superior finishes. Standard Priority Pass access does not cover it — even Prestige-tier cardholders must pay an upcharge to enter, and guests pay an additional fee on top of that. Walk-in rates run approximately $80–120 CAD depending on time of day and booking method.</p>
+<p>Two lesser-known routes: Maple Leaf Club members have a legacy guest schedule of $20 before 11 a.m. and $30 after, with dependent children under 12 included. Status holders get one-time guest passes each year: two at 25K (via a Select Benefit) and 35K, three at 50K and 75K, four at Super Elite. TD and CIBC Aeroplan cards also issue a One-Time Guest Pass for every $10,000 spent — it works at Canadian and US Maple Leaf Lounges, but not in international departure zones or Signature Suites.</p>
 
-<blockquote style="border-left: 4px solid #c8a96e; margin: 24px 0; padding: 14px 20px; background: #faf7f2;">
-<p>If you want standard Plaza Premium access at YVR, the 24-hour International lounge, the US Transborder lounge at Gate E88, and the Domestic lounges at Pier B and Pier C are all fully covered by Priority Pass and DragonPass at no extra charge. Plaza Premium First at Gate D67 is a deliberate upsell — you may be directed toward it from the standard entrance if you are not paying attention.</p>
-</blockquote>
+<h2>WestJet Elevation Lounge guest fees</h2>
 
-<h2>Canadian Cards That Give You at Least One Free Guest Visit</h2>
+<p>WestJet's Calgary lounge publishes the clearest guest prices in the country. A guest on a WestJet flight pays $59 plus GST. A child aged 2 to 17 pays $30 plus GST, and under-2s are free. Guests flying another airline pay $65 plus GST, or $33 plus GST for a child. The lounge accepts Priority Pass, DragonPass via Mastercard Travel Pass, Lounge Club and Diners Club. The maximum stay is three hours. WestJet's page does not say whether a card-issued Priority Pass guest allowance is honoured here — treat that as unconfirmed and budget the fee. Two things to know: Priority Pass members are the first turned away when the lounge is full, and WestJet RBC World Elite Mastercard holders can exchange a companion voucher for two lounge vouchers, a real route to a covered guest.</p>
 
-<p>Only a handful of Canadian-issued cards provide a free guest benefit at any lounge network. If travelling with a companion regularly, these are the options worth knowing.</p>
+<h2>Desjardins Odyssey Lounges at YUL</h2>
 
-<table style="width:100%; border-collapse:collapse; font-size:0.88em;">
+<p>Montréal has two Desjardins Odyssey lounges. The international lounge near Gate 63 is open only to passengers flying outside Canada and the US. The transborder lounge near Gate 76 opened March 1, 2024, for US-bound passengers from Gates 72 to 89. Neither serves domestic flyers. The Odyssey World Elite Mastercard includes eight passes per account per year, then 50% off entry. On each visit the discount also covers one companion, or another cardholder on the account, plus up to three children under 18. The Odyssey Visa Infinite Privilege has its own pass rules. The Gold Visa and Platinum cards get the 50% discount with no passes.</p>
+
+<p>The rules that bite: every person who enters uses a pass, except children under three. A pass covers only the three hours before your flight. If the flight is delayed, another pass is consumed for you and for each person staying with you. Walk-in entry is about $42 to $44 plus tax for an adult and $26 for a child, with a three-hour limit. On Priority Pass, coverage varies by location and has changed over time — the transborder Desjardins Plaza Premium Lounge appears in Priority Pass's YUL directory as of this update; the international lounge's status has flipped before. Check the Priority Pass app for your concourse on the day; do not rely on a blanket yes or no, including from us.</p>
+
+<h2>The National Bank Lounge at YUL: Canada's cheapest card with a guest included</h2>
+
+<p>If you fly internationally from Montréal, this is the answer to the whole page. The National Bank World Elite Mastercard costs $150 a year, or $50 per additional cardholder. It includes unlimited access to the National Bank Lounge near Gate 53 for the cardholder, one guest and two children aged 12 or under. Additional cardholders get the same access with their own guest.</p>
+
+<p>The constraints: it applies only to departures outside Canada and the US, since the lounge sits past Gate 52. You must show the physical card and a boarding pass. Income requirements are $80,000 personal or $150,000 household. The card also has a 2.5% foreign transaction fee, a $150 annual travel credit, and paid DragonPass access elsewhere. Anyone else pays $37 plus tax per adult and $26 per child, with under-2s free. Priority Pass members can bring guests at those rates; the lounge sets the limit.</p>
+
+<p>One timing note: the lounge closed for a full renovation on July 31, 2026. A temporary, reduced-capacity lounge opened in the same spot on August 1, 2026, with a two-hour maximum stay, and National Bank expects the full lounge back in June 2028. For a reader who just learned a Priority Pass guest is US$35, a $150 card with a guest and two kids included is the strongest value on this page. <a href="https://www.finlywealth.com/credit-cards/reviews/national-bank-world-elite-mastercard?utm_source=airportlounges_ca&utm_content=guest-fees-nbc" target="_blank" rel="sponsored nofollow noopener"><strong>See the current National Bank World Elite offer on FinlyWealth →</strong></a></p>
+
+<h2>Bringing children to a Canadian airport lounge</h2>
+
+<p>Under 2 is free almost everywhere: the National Bank Lounge, the Aspire lounges at YUL, WestJet Elevation and most Priority Pass lounges. With the Amex Platinum, an infant does not count as a guest. Desjardins Odyssey draws the line at under 3. Above that, every operator sets its own rule. WestJet charges a child rate of $30 or $33 plus GST for ages 2 to 17. National Bank charges $26 plus tax per child beyond the two included with a World Elite card. Desjardins counts every child over 3 as one pass or one discounted entry. Some Priority Pass lounges admit ages 2 to 12 free; others charge the full adult guest fee. Check the lounge listing. Aeroplan 50K status and above covers up to five dependent children under 25 in Maple Leaf Lounges. Anyone under the age of majority must be with an adult who has access.</p>
+
+<h2>How many guests can you actually bring?</h2>
+
+<p>Lounges cap the number of guests per cardholder, and the cap is separate from the fee. Guest limits are set lounge by lounge — Priority Pass's own help centre says so and points members to each listing. The Aspire Domestic and International Lounges at YUL and the Air France Lounge run by Plaza Premium list no guest limit for Priority Pass holders, subject to per-person charges and space. Desjardins limits the discount to one companion plus three children per visit. Card benefits are stricter: one guest is the standard allowance on Canadian premium cards, and on the Amex Platinum a second guest pays the retail rate. For a group of four, expect to pay for at least two people at most lounges.</p>
+
+<p>Timing can also block a guest you have paid for. The Air France Lounge at YUL is reserved for Air France and KLM customers every day from 3:30 to 6:30 p.m. Those customers have priority at all other times. Arrive in that window with a paying companion and neither of you gets in.</p>
+
+<h2>Plaza Premium First at YVR: the $110 exception</h2>
+
+<p>Vancouver's Plaza Premium First section is not an upcharge lounge for Priority Pass members — Priority Pass is not accepted there at all. The change is indefinite and was made to control crowding. There are two ways in: pay $110 for a two-hour visit directly, or enter the standard Plaza Premium Lounge next door on a card benefit and pay a $30 upgrade. No card, membership or premium-cabin ticket gets you in without one of those payments. The standard lounge still takes Amex Platinum and Business Platinum, Amex Gold Rewards (four visits a year), DragonPass through Visa Airport Companion and Mastercard Travel Pass, premium cabin tickets, or a walk-in fee from $69. Plaza Premium's US-departures and domestic lounges at YVR still accept Priority Pass. WestJet passengers get 20% off the standard walk-in price with a boarding pass.</p>
+
+<h2>What changes on January 1, 2027 for Amex Platinum holders</h2>
+
+<p>The Amex Platinum is the only Canadian card with unlimited Priority Pass and Plaza Premium visits and a complimentary guest. That ends on January 1, 2027. From that date a basic cardholder gets 6 Plaza Premium and 6 Priority Pass visits per calendar year. A supplementary cardholder gets 2 of each. A guest uses one of those visits, so there is no complimentary guest under the capped model. Spend $20,000 on the account in 2026, or in any later calendar year, and unlimited access with one complimentary guest comes back for the rest of that year and all of the next. Visits reset every January 1 and do not roll over. Once they are gone you can still enter by paying the lounge's regular rate. Centurion Lounges, Delta Sky Club, Aspire, Swissport and other airline-run lounges in the Global Lounge Collection stay unlimited.</p>
+
+<p>The guest-fee consequence is blunt: a couple burns a network's six visits in three trips. Two more things changed in 2026 — on July 8, 2026 the Centurion Lounge guest allowance for Canadian Platinum cardholders dropped from two to one, with the guest required to be on the same flight; and the one-guest rule is not uniform. Our full guide covers the card: Amex Platinum airport lounge access in Canada. If unlimited guests were the reason you wanted the Platinum, compare the cards with at least one complimentary lounge guest before the cap starts.</p>
+
+<h2>Canadian cards that give you at least one complimentary guest visit</h2>
+
+<p>No Canadian card includes unlimited Priority Pass guests. This table lists what the terms actually support, with the constraint that matters beside each card.</p>
+
+<table>
   <thead>
-    <tr style="background:#1a2e44; color:#ffffff;">
-      <th style="padding:9px 10px; text-align:left; width:35%;">Card</th>
-      <th style="padding:9px 10px; text-align:center; width:13%;">Annual Fee</th>
-      <th style="padding:9px 10px; text-align:left; width:22%;">Free Guest At</th>
-      <th style="padding:9px 10px; text-align:left; width:30%;">Notes</th>
-    </tr>
+    <tr><th>Card</th><th>Annual fee</th><th>Guest included at</th><th>Key constraint</th></tr>
   </thead>
   <tbody>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Amex Platinum (Canada)</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$799</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">PP lounges</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">1 free guest per visit; no limit on how often</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Amex Aeroplan Reserve</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$599</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">PP lounges + AC MLL</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">1 free PP guest; 1 free MLL guest</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">TD Aeroplan Visa Infinite Privilege</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$599</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">AC MLL only</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">1 free MLL guest; time-limited through Dec 2026</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">CIBC Aeroplan Visa Infinite Privilege</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$599</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">AC MLL only</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Same as TD Aeroplan VIP</td>
-    </tr>
-    <tr style="background:#ffffff;">
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">Chase Sapphire Reserve (US card, usable in Canada)</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0; text-align:center;">$795 USD</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">PP lounges</td>
-      <td style="padding:9px 10px; border-bottom:1px solid #e0e0e0;">1 free guest; additional ~$60 CAD equivalent</td>
-    </tr>
-    <tr style="background:#f7f9fb;">
-      <td style="padding:9px 10px;">Aeroplan 50K+ status (no card required)</td>
-      <td style="padding:9px 10px; text-align:center;">n/a</td>
-      <td style="padding:9px 10px;">AC MLL only</td>
-      <td style="padding:9px 10px;">Spouse + up to 5 children + 1 extra guest FREE</td>
-    </tr>
+    <tr><td>National Bank World Elite Mastercard</td><td>$150</td><td>National Bank Lounge YUL: 1 guest + 2 children ≤12</td><td>International departures only; income $80,000 / $150,000</td></tr>
+    <tr><td>Desjardins Odyssey World Elite Mastercard</td><td>About $130</td><td>Odyssey Lounges YUL: 8 passes a year usable for companions</td><td>YUL only; each person over 3 uses a pass; delays cost a pass</td></tr>
+    <tr><td>TD Aeroplan Visa Infinite Privilege</td><td>$599</td><td>Maple Leaf Lounge: 1 guest per cardholder</td><td>Confirmed through Dec 31, 2026; income $150,000 / $200,000; 6 DragonPass visits shared with guests</td></tr>
+    <tr><td>CIBC Aeroplan Visa Infinite Privilege</td><td>$599</td><td>Maple Leaf Lounge and Air Canada Café: 1 guest per cardholder</td><td>Confirmed through Dec 31, 2026; 6 Visa Airport Companion visits shared with guests</td></tr>
+    <tr><td>Amex Aeroplan Reserve</td><td>$599</td><td>Maple Leaf Lounge only: 1 guest</td><td>Priority Pass is pay-per-visit for cardholder and guests</td></tr>
+    <tr><td>Amex Platinum (Canada)</td><td>$799</td><td>Priority Pass and Plaza Premium: 1 guest; Centurion: 1 guest on the same flight</td><td>Capped at 6 + 6 visits from Jan 1, 2027 unless $20,000 annual spend; guests use visits</td></tr>
+    <tr><td>Aeroplan 50K+ status (not a card)</td><td>n/a</td><td>Maple Leaf Lounge: partner, up to 5 children under 25, plus 1 guest</td><td>Extra guests $59</td></tr>
+    <tr><td>WestJet RBC World Elite Mastercard</td><td>$119</td><td>Elevation Lounge via companion voucher exchanged for 2 lounge vouchers</td><td>Voucher exchange required; not a standing allowance</td></tr>
   </tbody>
 </table>
 
-<p>BMO Ascend, Scotiabank Passport, and CIBC Aventura cards are not on this list. They do not include a free guest benefit — your guest's entry draws from the same shared visit pool as yours.</p>
+<p><em>Fees verified September 11, 2026.</em></p>
 
-<figure>
-  <img src="/blog/air-canada-maple-leaf-lounge.png" alt="Two travellers in an Air Canada Maple Leaf Lounge at a Canadian airport" loading="lazy" />
-  <figcaption>Only a handful of Canadian credit cards provide a genuinely free guest benefit at the Air Canada Maple Leaf Lounge</figcaption>
-</figure>
-
-<h2>7 Guest Fee Traps Nobody Warns You About</h2>
-
-<p>Each of these has cost real travellers money — usually at the lounge entrance with no time to fix it.</p>
+<h2>10 guest fee traps nobody warns you about</h2>
 
 <ol>
-  <li>
-    <p><em>Canadian Amex Platinum gives 1 free guest, not 2.</em> US comparison sites and cardholder forums consistently state the Amex Platinum provides 2 free guests per visit. That is the US benefit. The Canadian card gives 1. If you are reading US sources to research Canadian cards, verify against the Canadian benefit guide specifically.</p>
-  </li>
-  <li>
-    <p><em>DragonPass pool visits are shared, not per person.</em> A card advertising 6 complimentary visits means 6 combined entries for you and any guests combined. Bring a friend and you have used 2 of your 6, leaving 4 for the rest of the year. Many cardholders do not realize this until they are turned away mid-trip with an exhausted allocation.</p>
-  </li>
-  <li>
-    <p><em>AC One-Time Guest Passes do not work at international Maple Leaf Lounges.</em> These passes — earned at $10,000 CAD spent per pass — are explicitly excluded from the MLL International at YVR Gate D, YYZ Gate F, and YUL International. Attempting to use one on an international departure will be declined. Domestic and US transborder only.</p>
-  </li>
-  <li>
-    <p><em>Desjardins Odyssey at YUL does not accept Priority Pass.</em> Both Odyssey Lounges in Montreal are DragonPass only. If you transit through YUL regularly and carry only a Priority Pass, you have no access regardless of your membership tier.</p>
-  </li>
-  <li>
-    <p><em>WestJet Elevation charges your guest walk-in rates even with Amex Platinum.</em> Priority Pass covers the cardholder only at WestJet Elevation. The PP free-guest benefit that normally applies at most other lounges does not extend here. Your companion pays $59–$65 CAD + GST regardless of which card you are holding.</p>
-  </li>
-  <li>
-    <p><em>The TD and CIBC Aeroplan VIP free-guest benefit is not permanent.</em> The one-free-guest benefit at MLL is a time-limited annual extension from Air Canada, not a permanent card feature. It has been renewed every year since approximately 2023 and runs through December 2026. Confirm it is still active on your card's current benefits page before you count on it.</p>
-  </li>
-  <li>
-    <p><em>The AC Signature Suite has no guest mechanism whatsoever.</em> No credit card, elite status, or pass overrides the Business Class ticket requirement. Both you and your companion must hold a same-day Business Class ticket on an intercontinental Air Canada flight. There is no workaround.</p>
-  </li>
+  <li><strong>"One guest" depends on the network.</strong> One guest is standard at Priority Pass and Plaza Premium on the Amex Platinum. Centurion dropped to one guest on the same flight on July 8, 2026. Some dual-network Canadian lounges let allowances stack. Children under 2 usually do not count.</li>
+  <li><strong>The Amex Aeroplan Reserve's Priority Pass is not free for anyone.</strong> The membership fee is waived; every visit, yours included, is billed at the prevailing rate.</li>
+  <li><strong>A DragonPass pool counts people, not trips.</strong> You and one guest use two visits. Six visits is three trips as a couple.</li>
+  <li><strong>Odyssey lounges are zone-restricted and coverage varies.</strong> The international lounge needs an international boarding pass; the transborder lounge is US-bound only. Priority Pass listing differs by location. Check the app.</li>
+  <li><strong>The Amex Platinum 2027 cliff.</strong> Guests consume visits from a six-visit allowance per network. A couple is done in three trips unless the card sees $20,000 of spend.</li>
+  <li><strong>The Desjardins delay penalty.</strong> A pass covers three hours before departure. A delay costs another pass for you and everyone with you.</li>
+  <li><strong>Retail DragonPass entry tiers allow no guests.</strong> Only higher tiers list a paid guest. A membership does not automatically mean you can bring someone.</li>
+  <li><strong>Some pools belong to the primary cardholder only.</strong> Scotiabank Passport Visa Infinite + visits cannot be used by a supplementary cardholder travelling alone. The Privilege version gives ten per cardholder.</li>
+  <li><strong>Capacity beats your receipt.</strong> Priority Pass members are the first turned away at WestJet Elevation when it is full, and every lounge on this page admits "subject to space."</li>
+  <li><strong>Peak-hour lockouts.</strong> The Air France Lounge at YUL is closed to non-Air France and KLM customers from 3:30 to 6:30 p.m. A paid guest cannot enter a lounge you cannot enter.</li>
 </ol>
 
-<h2>Which Card Gets You and Your Guest In for the Least</h2>
+<h2>Which card gets you and your guest in for the least?</h2>
 
-<p>If you travel regularly with a companion, here is how the major options stack up.</p>
+<p>Run your own numbers. The following table compares what you would pay in guest fees against the annual fee of each card that includes a guest. It ignores your own access and the card's other benefits on purpose. It answers one question: do guest fees alone justify the card?</p>
 
-<p><em>Best for unlimited free-guest access at Priority Pass lounges:</em> The Amex Platinum Canada at $799 per year gives unlimited PP visits for the cardholder plus one free guest on every visit. Additional guests pay around $35 USD each. If you travel as a pair and visit lounges more than a few times a year, this is the only Canadian card that makes every PP visit effectively free for two people.</p>
+<table>
+  <thead>
+    <tr><th>Scenario</th><th>Card</th><th>Annual fee</th><th>Verdict at 6 trips/yr × 1 guest × $59 = $354 in guest fees</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>International from Montréal</td><td>National Bank World Elite Mastercard</td><td>$150</td><td>Cheaper than paying — save ~$204</td></tr>
+    <tr><td>Any zone at Montréal, a few trips a year</td><td>Desjardins Odyssey World Elite Mastercard</td><td>~$130</td><td>Cheaper than paying — save ~$224</td></tr>
+    <tr><td>Air Canada flyers as a couple</td><td>CIBC or TD Aeroplan VIP</td><td>$599</td><td>Costs $245 more than paying guest fees alone (Aeroplan earning + other benefits stack on top)</td></tr>
+    <tr><td>Mixed airlines, frequent trips</td><td>Amex Platinum</td><td>$799</td><td>Costs $445 more than paying alone; break-even improves when $200 travel + $200 dining credits are used</td></tr>
+    <tr><td>Occasional trips, guest fees under $150 a year</td><td>None — pay the fee</td><td>—</td><td>Every card above costs more than the guest fees you would otherwise pay</td></tr>
+  </tbody>
+</table>
 
-<p><em>Best for Air Canada Maple Leaf plus PP guest coverage:</em> The Amex Aeroplan Reserve at $599 per year covers both networks — unlimited MLL access with one free MLL guest, plus unlimited PP with one free PP guest. If you fly Air Canada frequently and want full coverage across both networks on a single card, this is the most comprehensive option.</p>
+<p><em>Table compares your guest fees to each card's annual fee only and ignores the cardholder's own access, points, credits and insurance. Card fees verified September 11, 2026.</em></p>
 
-<p><em>Best entry-level option with any lounge access:</em> The Scotiabank Passport Visa Infinite at $150 per year includes six DragonPass visits shared between you and a guest, with a $32 USD overage fee per additional visit. No free-guest benefit, but at $150 the math often still works if you only visit lounges a few times a year as a pair.</p>
+<p><strong>Filter by what you fly and where:</strong> Canadian cards that include at least one complimentary lounge guest.</p>
 
-<p><em>Best for families flying Air Canada with status:</em> Aeroplan 50K+ status combined with a TD or CIBC Aeroplan VIP card gives unlimited MLL access, immediate family free, and one extra guest free — on top of the DragonPass allocation on the card. This is the highest-value scenario for families travelling regularly on Air Canada routes.</p>
+<h2>Methodology</h2>
+<p>Every fee on this page comes from an operator page (Priority Pass, DragonPass, Air Canada, WestJet, Desjardins, National Bank, Plaza Premium via Frugal Flyer's review) or an issuer's benefits guide or product page, checked on September 11, 2026. Where operator sources conflict (Maple Leaf Lounge pre-purchase prices, the Desjardins walk-in rate, the Aeroplan Reserve per-visit fee, Amex Platinum's Plaza Premium guest allowance), the conflict is stated rather than resolved. Break-even figures are calculations shown in full. No card ratings are displayed.</p>
 
-<blockquote style="border-left: 4px solid #c8a96e; margin: 24px 0; padding: 14px 20px; background: #faf7f2;">
-<p>Quick decision guide: At a PP lounge with Amex Platinum Canada — your first guest is free, second and beyond pay ~$35 USD each. At a PP lounge with any other Canadian card — every guest pays ~$35 USD. At an Air Canada MLL with Amex Reserve or TD/CIBC VIP — first guest is free. At an MLL with no qualifying benefit — $59 CAD per guest. At WestJet Elevation with any PP card — your guest always pays $59–$65 CAD + GST. At Desjardins Odyssey with Priority Pass — not accepted at all.</p>
-</blockquote>
+<h2>Change log</h2>
+<ul>
+  <li><strong>September 11, 2026:</strong> Full re-verification. Corrected Amex Aeroplan Reserve (Priority Pass pay-per-visit, Maple Leaf guest only), Desjardins Odyssey Priority Pass coverage, Plaza Premium First YVR pricing and access, and Maple Leaf Lounge pre-purchase. Added the January 1, 2027 Amex Platinum cap, the July 8, 2026 Centurion guest change, National Bank World Elite Mastercard, Desjardins card rules, children and capacity sections, current Priority Pass tiers, and per-cardholder vs. per-account DragonPass pools. Removed Chase Sapphire Reserve. Expanded traps from 7 to 10.</li>
+  <li><strong>June 6, 2026:</strong> First published.</li>
+</ul>
 
-<h2>Frequently Asked Questions: Airport Lounge Guest Fees in Canada</h2>
+<h2>Sources</h2>
+<ul>
+  <li>American Express Canada — Aeroplan Reserve Card membership benefits (Priority Pass fee waived, visits at prevailing rate for cardmember and guests); Prince of Travel — How to access Priority Pass lounges.</li>
+  <li>Rewards Canada — Platinum Card lounge access changes effective January 1, 2027; Prince of Travel — Centurion Lounge guest and layover rules for Canada; Flytrippers — Amex Platinum lounge access; Milesopedia — Platinum Card benefits.</li>
+  <li>Priority Pass — Canada lounges, Montréal-Trudeau lounges, National Bank Lounge, Air France Lounge, Aspire Domestic, Aspire International; Chase — Priority Pass membership levels and cost.</li>
+  <li>DragonPass — Memberships; Scotiabank — Passport Visa Infinite + welcome kit and Passport Visa Infinite Privilege; CIBC — Aeroplan Visa Infinite Privilege benefits guide and Aventura Visa Infinite Privilege benefits guide; BMO — Ascend World Elite Mastercard; Air Canada — TD Aeroplan cards.</li>
+  <li>Air Canada — Maple Leaf Lounges, Maple Leaf Lounge travel option, Maple Leaf Lounge terms, One-Time Guest Pass; Maple Leaf Club — Worldwide membership; Prince of Travel — How to access Maple Leaf Lounges.</li>
+  <li>WestJet — Elevation Lounge and Airport lounges.</li>
+  <li>Desjardins — Odyssey Lounges access rules and Desjardins Odyssey Lounge at YUL; Milesopedia — Desjardins Odyssey Lounge, transborder; Rewards Canada — Salon Odyssée Desjardins Plaza Premium Lounge opens.</li>
+  <li>National Bank — World Elite Mastercard and National Bank Lounge; Ratehub — National Bank World Elite review; Milesopedia — National Bank World Elite Mastercard.</li>
+  <li>Frugal Flyer — Plaza Premium First YVR review (Priority Pass not accepted, $110 / $30); Plaza Premium — Montréal lounges; Rewards Canada — Lounge access guide (Plaza Premium walk-in ranges).</li>
+  <li>AirportLounges.ca — Priority Pass lounges in Canada, Montréal airport lounges, Canadian lounges with showers, Best lounges for remote work.</li>
+</ul>
 
-<h3>How much does it cost to bring a guest to a Priority Pass lounge in Canada?</h3>
-<p>The standard guest fee at any Priority Pass lounge in Canada is $35 USD per person per visit. This applies whether you hold a direct Priority Pass membership or access through most Canadian credit cards. The exception is the Amex Platinum Canada and the Amex Aeroplan Reserve, both of which include one free guest per visit at PP lounges.</p>
-
-<h3>Does Amex Platinum Canada give free guest access to airport lounges?</h3>
-<p>Yes — the Canadian Amex Platinum ($799 annual fee) includes one free guest per visit at Priority Pass lounges, with no limit on how many times you can use it. A second or third guest pays the standard ~$35 USD each. Note that this is different from the US Amex Platinum, which provides two free guests per visit.</p>
-
-<h3>Can I bring a guest to the Air Canada Maple Leaf Lounge for free?</h3>
-<p>Yes, if you hold the right card or status. The Amex Aeroplan Reserve, TD Aeroplan Visa Infinite Privilege, and CIBC Aeroplan Visa Infinite Privilege all include one free MLL guest. Aeroplan 50K+ status holders can bring their immediate family and one additional guest free. Anyone else pays $59 CAD per guest at the door.</p>
-
-<h3>Does my Priority Pass cover a guest at WestJet Elevation lounges?</h3>
-<p>No. WestJet Elevation accepts Priority Pass for the cardholder's entry only. Guests pay WestJet's own walk-in rate — $59 CAD + GST for adults with a WestJet boarding pass, $65 CAD + GST with any other airline's boarding pass. This applies even to Amex Platinum cardholders, who would normally receive one free PP guest at other lounges.</p>
-
-<h3>What is the DragonPass visit pool and how does it affect guest fees?</h3>
-<p>DragonPass cards that include a set number of complimentary visits — such as 6 visits on the Scotiabank Passport Visa Infinite — share that allocation between the cardholder and any guests. Bringing one guest on a single trip uses two visits from your pool. Once the pool is exhausted, every subsequent entry costs $32 USD per person. This catches many cardholders off guard mid-year.</p>
-
-<h3>Can I use an Air Canada One-Time Guest Pass at an international Maple Leaf Lounge?</h3>
-<p>No. AC One-Time Guest Passes — earned at a rate of one pass per $10,000 CAD spent on an eligible Aeroplan card, up to four per year — are only valid at domestic and US transborder Maple Leaf Lounges. They are explicitly excluded from the international MLL locations at YVR Gate D, YYZ Gate F, and YUL International. Attempting to use one before an international flight will be declined.</p>
-
-<h3>Does Priority Pass work at the Desjardins Odyssey Lounges in Montreal?</h3>
-<p>No. The Desjardins Odyssey Lounges at Montreal-Trudeau (YUL) accept DragonPass (Visa Airport Companion) only. Priority Pass members have no access to these lounges regardless of membership tier. If you travel through YUL regularly and want Odyssey Lounge access, a Desjardins card or a card with DragonPass access is required.</p>
-
-<h3>Are guest fees at Canadian airport lounges charged in CAD or USD?</h3>
-<p>It depends on the network. Priority Pass and DragonPass charge guest fees in USD — currently around $35 USD and $32 USD respectively — which will appear on your statement converted to CAD at the rate used on the day of the visit. Walk-in guest fees at Air Canada Maple Leaf, WestJet Elevation, and Desjardins Odyssey are set in CAD.</p>
-
-<p><em>All fees and benefit details in this guide are accurate as of June 2026. Lounge access policies, guest fee structures, and credit card benefits are subject to change — always confirm with your card issuer and the lounge operator before travelling with a guest.</em></p>
-
+<p><em>All fees and rules on this page reflect information current as of September 11, 2026. Rules and offers change without notice — always confirm with the operator and issuer before travelling. Next scheduled review: December 2026 (TD and CIBC guest terms; Amex Platinum cap on January 1, 2027).</em></p>
 `
 
 const amexPlatinumContent = `
@@ -1490,7 +1283,7 @@ const amexPlatinumContent = `
     <tr><td>Plaza Premium</td><td>Toronto Pearson, Vancouver, Edmonton, Winnipeg — plus Asia, UK and Middle East hubs</td><td>Unlimited</td><td>6 / year (2 on a supplementary card)*</td><td>1 included through 2026; uses a visit from 2027</td></tr>
     <tr><td>Priority Pass Select</td><td>Most independent lounges worldwide; enrolment required</td><td>Unlimited</td><td>6 / year (2 supplementary)*</td><td>1 included through 2026; uses a visit from 2027</td></tr>
     <tr><td>Aspire / Swissport</td><td>Calgary, Montreal, Ottawa, Halifax, Winnipeg; many European airports</td><td>Unlimited</td><td>Unlimited</td><td>Usually 1 companion — confirm on the lounge page</td></tr>
-    <tr><td>Centurion Lounges</td><td>None in Canada. Nearest: Seattle, New York JFK / LaGuardia, plus 20+ US and international sites</td><td>Unlimited</td><td>Unlimited</td><td>Up to 2 for Canadian cardholders</td></tr>
+    <tr><td>Centurion Lounges</td><td>None in Canada. Nearest: Seattle, New York JFK / LaGuardia, plus 20+ US and international sites</td><td>Unlimited</td><td>Unlimited</td><td>1, on the same flight (since July 8, 2026)</td></tr>
     <tr><td>Delta Sky Club</td><td>US hubs, only when flying Delta same day, within 3 hours of departure</td><td>Unlimited</td><td>Unlimited</td><td>None included; pay per guest</td></tr>
     <tr><td>Lufthansa lounges</td><td>Frankfurt, Munich, other Lufthansa Group airports</td><td>Ends Oct 1, 2026</td><td>Not included</td><td>n/a</td></tr>
   </tbody>
@@ -1530,10 +1323,10 @@ const amexPlatinumContent = `
 
 <h3>Centurion Lounges</h3>
 
-<p>Centurion Lounges are Amex's own. The food and design are a clear step above the rest of the collection. There are none in Canada. The closest for most Canadians are Seattle, New York JFK and LaGuardia, and the rest of the US network. You need a same-day boarding pass and can enter within 3 hours of departure. Canadian cardholders can bring up to two guests, which is more generous than the US card's current rule at many locations.</p>
+<p>Centurion Lounges are Amex's own. The food and design are a clear step above the rest of the collection. There are none in Canada. The closest for most Canadians are Seattle, New York JFK and LaGuardia, and the rest of the US network. You need a same-day boarding pass and can enter within 3 hours of departure. Since July 8, 2026, Canadian cardholders can bring one guest, and that guest must be on the same flight. Before that date it was two.</p>
 
 <blockquote>
-<p>Centurion guest rules have become a source of contradictory third-party reporting. American Express's Canadian benefits language allows up to two companions at US and selected international locations, but individual lounge rules can differ. Check the specific Centurion Lounge in the Amex lounge finder before you fly.</p>
+<p>Individual Centurion Lounge rules can still differ by location. Check the specific lounge in the Amex lounge finder before you fly.</p>
 </blockquote>
 
 <h3>Delta Sky Clubs</h3>
@@ -1553,7 +1346,7 @@ const amexPlatinumContent = `
   <tbody>
     <tr><td>Plaza Premium</td><td>1</td><td>Uses one of your visits</td><td>Children under 2 usually admitted with an adult</td></tr>
     <tr><td>Priority Pass Select</td><td>1</td><td>Uses one of your visits</td><td>Extra guests pay the lounge's fee</td></tr>
-    <tr><td>Centurion Lounge</td><td>Up to 2</td><td>Up to 2</td><td>Canada-issued cards; same-day boarding pass</td></tr>
+    <tr><td>Centurion Lounge</td><td>1, on the same flight (since July 8, 2026)</td><td>1, on the same flight</td><td>Canada-issued cards; same-day boarding pass</td></tr>
     <tr><td>Aspire (YYC, YUL, YOW, YHZ)</td><td>1 companion (varies)</td><td>1 companion (varies)</td><td>Confirm on the lounge page</td></tr>
     <tr><td>Delta Sky Club</td><td>0</td><td>0</td><td>Pay per guest; same-day Delta flight</td></tr>
   </tbody>
@@ -1604,7 +1397,7 @@ const amexPlatinumContent = `
 
 <ul>
   <li><strong>YUL Domestic:</strong> the Aspire American Express Lounge near Gates 1 and 2, 5 am to 9 pm, entry within 3 hours of departure.</li>
-  <li><strong>YUL International:</strong> the National Bank Lounge near Gate 53 (an Aspire lounge), same 3-hour window. The Air France–KLM Lounge by Plaza Premium is also in the international zone, reserved for Air France and KLM passengers in the late afternoon.</li>
+  <li><strong>YUL International:</strong> the Aspire International Lounge between Gates 52 and 53 (3-hour window), and the National Bank Lounge near Gate 53, which is in a temporary reduced-capacity space from August 1, 2026 until about June 2028 with a 2-hour stay. The Air France–KLM Lounge by Plaza Premium is also in the international zone, reserved for Air France and KLM passengers in the late afternoon (closed to others 3:30–6:30 p.m.).</li>
   <li><strong>YOW:</strong> Aspire Salon on Level 2 by Gate 18. Primary cardholder plus one travelling companion. Not available for US-bound departures after pre-clearance.</li>
 </ul>
 
@@ -1657,7 +1450,7 @@ const amexPlatinumContent = `
     <tr><td>CIBC Aventura Visa Infinite Privilege</td><td>$499</td><td>6 DragonPass visits</td><td>Higher-income CIBC clients ($150k personal / $200k household)</td></tr>
     <tr><td>RBC Avion Visa Infinite Privilege</td><td>$399</td><td>6 DragonPass visits</td><td>RBC clients who fly a few times a year</td></tr>
     <tr><td>Scotiabank Passport Visa Infinite</td><td>$150 (first year sometimes waived)</td><td>6 DragonPass visits; no foreign transaction fee</td><td>Occasional travellers who want no FX fee</td></tr>
-    <tr><td>National Bank World Elite Mastercard</td><td>$150</td><td>Unlimited National Bank Lounge at Montreal + DragonPass</td><td>Montreal-based flyers</td></tr>
+    <tr><td>National Bank World Elite Mastercard</td><td>$150</td><td>Unlimited National Bank Lounge at Montreal (international departures only) + DragonPass</td><td>Montreal-based international flyers</td></tr>
   </tbody>
 </table>
 
@@ -1669,7 +1462,7 @@ const amexPlatinumContent = `
 <ul>
   <li>Widest lounge network on any Canadian card: five networks, 1,550+ lounges.</li>
   <li>Unlimited Plaza Premium and Priority Pass visits through December 31, 2026 with one guest included.</li>
-  <li>Centurion access with two guests when travelling through the US.</li>
+  <li>Centurion access with one guest on the same flight (since July 8, 2026) when travelling through the US.</li>
   <li>$400 of credits most people can use naturally, cutting the real cost to about $399.</li>
   <li>Aspire and Swissport lounges are not affected by the 2027 cap.</li>
 </ul>
@@ -1713,314 +1506,300 @@ const amexPlatinumContent = `
 `
 
 const aeroplanCardsContent = `
-<p data-speakable="intro"><strong>The three Canadian Aeroplan credit cards that unlock the Air Canada Maple Leaf Lounge — TD Aeroplan Visa Infinite Privilege, CIBC Aeroplan Visa Infinite Privilege, and American Express Aeroplan Reserve — compared side by side. Which is worth the fee, and which lounge benefits actually matter. Updated August 2026.</strong></p>
-
-<p>The Air Canada Maple Leaf Lounge is the only major Canadian lounge network that Priority Pass, DragonPass, and Amex Platinum cannot open. To enter without an Air Canada Business Class ticket or Aeroplan Elite status, you need a qualifying Aeroplan credit card — and only three Canadian cards qualify: the TD Aeroplan Visa Infinite Privilege ($599 annual fee), the CIBC Aeroplan Visa Infinite Privilege ($599), and the American Express Aeroplan Reserve ($599).</p>
-
-<p>All three carry the same $599 sticker price. All three grant access to Maple Leaf Lounges on same-day Air Canada flights. And all three throw in one guest per visit. But the details — earn rates, guest allowances at non-MLL lounges, sign-up bonuses, and how they interact with Priority Pass — differ enough that the wrong choice can cost hundreds of dollars over a year of travel.</p>
-
-<p>This guide breaks down exactly which Aeroplan card is best for your travel pattern, what each unlocks at Canadian airports, and where the real value tradeoffs land in 2026.</p>
-
-<h2>The Short Answer: Which Aeroplan Card for Lounge Access?</h2>
+<p data-speakable="intro"><strong>For most eligible Canadians, the CIBC Aeroplan Visa Infinite Privilege is the strongest lounge card of the three. It pairs unlimited eligible Maple Leaf Lounge access with six Visa Airport Companion visits a year, and has the cheapest premium supplementary card at $149. TD Aeroplan Visa Infinite Privilege has nearly the same package and wins when its welcome offer or a TD banking rebate is better. Amex Aeroplan Reserve is the pick for heavy Air Canada spending (3 points per $1), for applicants below the Visa Infinite Privilege income floor, and for Toronto Pearson regulars — but its Priority Pass visits are paid, not included. All three cost $599 a year. One caution: TD and CIBC confirm the one-guest benefit only through December 31, 2026.</strong></p>
 
 <blockquote>
-<p><strong>Amex Aeroplan Reserve</strong> is the strongest lounge card of the three for most travellers because it stacks unlimited-guest Priority Pass Select on top of Maple Leaf Lounge access, which the two Visa Infinite Privilege cards do not. The <strong>TD Aeroplan Visa Infinite Privilege</strong> wins if you fly with a family — its four annual One-Time Guest Passes and higher Aeroplan earn rates on groceries and gas serve larger household spend. <strong>CIBC Aeroplan Visa Infinite Privilege</strong> is the tie-breaker for CIBC banking customers who want everything in one place.</p>
+<p><strong>Editorial disclosure:</strong> AirportLounges.ca may receive compensation if you apply through links on this page. This does not affect the card issuer's terms or the price you pay. Card details and offers can change; verify the current terms on the application page before applying. Facts on this page were checked against issuer and Air Canada pages on September 11, 2026.</p>
 </blockquote>
 
-<h2>Head-to-Head: All Three Cards at a Glance</h2>
+<blockquote>
+<p><strong>2027 guest-access alert:</strong> TD and CIBC currently confirm one complimentary Maple Leaf Lounge guest only through December 31, 2026. Amex publishes one guest with no end date, but Air Canada's own lounge page calls complimentary guest admission a limited-time benefit. Check the current terms before applying if guest access is central to your decision.</p>
+</blockquote>
+
+<h2>TD vs CIBC vs Amex: Aeroplan lounge-access comparison</h2>
+
+<p>All three cards are $599 a year and open Air Canada's own Maple Leaf Lounges and Air Canada Cafés in Canada and the United States on a same-day Air Canada or Star Alliance departure. The differences are in supplementary card pricing, the other lounge network each card includes, earn rates, and travel insurance.</p>
 
 <table>
   <thead>
     <tr>
       <th>Feature</th>
-      <th>TD Aeroplan Visa Infinite Privilege</th>
-      <th>CIBC Aeroplan Visa Infinite Privilege</th>
+      <th>TD Aeroplan VIP</th>
+      <th>CIBC Aeroplan VIP</th>
       <th>Amex Aeroplan Reserve</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Annual fee</td>
-      <td>$599</td>
-      <td>$599</td>
-      <td>$599</td>
-    </tr>
-    <tr>
-      <td>Maple Leaf Lounge access</td>
-      <td>✅ Unlimited, same-day AC flights, +1 free guest</td>
-      <td>✅ Unlimited, same-day AC flights, +1 free guest</td>
-      <td>✅ Unlimited, same-day AC flights, +1 free guest</td>
-    </tr>
-    <tr>
-      <td>One-Time MLL Guest Passes</td>
-      <td>4 per year</td>
-      <td>4 per year</td>
-      <td>4 per year</td>
-    </tr>
-    <tr>
-      <td>Priority Pass Select</td>
-      <td>❌ Not included</td>
-      <td>❌ Not included</td>
-      <td>✅ Unlimited visits + unlimited free guests</td>
-    </tr>
-    <tr>
-      <td>Air Canada Concierge phone line</td>
-      <td>✅</td>
-      <td>✅</td>
-      <td>✅</td>
-    </tr>
-    <tr>
-      <td>Annual worldwide companion pass</td>
-      <td>Buy-one-get-one voucher within North America / Sun / Central America</td>
-      <td>Buy-one-get-one voucher (limited routes)</td>
-      <td>Not included at Reserve tier (upgrade to Amex Aeroplan Reserve Elite tier for this)</td>
-    </tr>
-    <tr>
-      <td>Base earn rate on Air Canada / Aeroplan partners</td>
-      <td>1.5x Aeroplan points</td>
-      <td>2x Aeroplan points</td>
-      <td>3x Aeroplan points</td>
-    </tr>
-    <tr>
-      <td>Everyday earn (groceries, gas)</td>
-      <td>1.5x</td>
-      <td>1.5x on groceries; 1x elsewhere</td>
-      <td>1.25x</td>
-    </tr>
-    <tr>
-      <td>Foreign transaction fee</td>
-      <td>2.5%</td>
-      <td>2.5%</td>
-      <td>2.5%</td>
-    </tr>
-    <tr>
-      <td>NEXUS credit</td>
-      <td>Every 48 months</td>
-      <td>Every 48 months</td>
-      <td>Every 48 months</td>
-    </tr>
+    <tr><td>Annual fee</td><td>$599</td><td>$599</td><td>$599</td></tr>
+    <tr><td>Additional card with lounge access</td><td>$199</td><td>$149 (up to 9)</td><td>$199 (premium supplementary)</td></tr>
+    <tr><td>Published income requirement</td><td>$150,000 personal / $200,000 household</td><td>$150,000 personal / $200,000 household</td><td>None published</td></tr>
+    <tr><td>Maple Leaf Lounge and Air Canada Café</td><td>Unlimited, Canada and U.S.</td><td>Unlimited, Canada and U.S.</td><td>Unlimited, Canada and U.S.</td></tr>
+    <tr><td>Guest in 2026</td><td>1, through Dec. 31, 2026</td><td>1, through Dec. 31, 2026</td><td>1, no expiry stated</td></tr>
+    <tr><td>Other lounge network</td><td>6 Visa Airport Companion visits a year</td><td>6 Visa Airport Companion visits a year</td><td>Priority Pass: US$99 fee waived, each visit charged</td></tr>
+    <tr><td>Air Canada purchases</td><td>2x</td><td>2x</td><td>3x</td></tr>
+    <tr><td>Dining</td><td>1.5x</td><td>1.5x</td><td>2x (Canada; food delivery included)</td></tr>
+    <tr><td>Everything else</td><td>1.25x</td><td>1.25x</td><td>1.25x</td></tr>
+    <tr><td>Trip cancellation, per-trip maximum</td><td>$5,000</td><td>$10,000</td><td>$3,000</td></tr>
+    <tr><td>Emergency medical, age 65+</td><td>4 days</td><td>10 days</td><td>Not included (confirm with certificate)</td></tr>
+    <tr><td>Best lounge use case</td><td>Broad coverage, TD banking rebates</td><td>Broad coverage, cheaper partner card, stronger insurance</td><td>Air Canada spender, Toronto Pearson user</td></tr>
   </tbody>
 </table>
 
-<h2>Full Card Profiles</h2>
+<p><em>Verified September 11, 2026 on issuer card pages, Air Canada's issuer benefit pages and the issuers' insurance summaries. Six Visa Airport Companion visits are a pool — a guest's entry uses one. Extra visits cost US$32. Amex's "1,200+ lounges" wording refers to Priority Pass membership; every visit is billed at the prevailing rate.</em></p>
 
-<h3>TD Aeroplan Visa Infinite Privilege — $599 / year</h3>
+<h2>How Aeroplan credit-card lounge access works</h2>
 
-<p>The TD Aeroplan Visa Infinite Privilege is a strong all-around Aeroplan card, particularly for families and everyday spenders. It matches every other Aeroplan premium card on Maple Leaf Lounge access and One-Time Guest Passes, but its differentiators are outside the lounge: the annual companion voucher for a paid Air Canada flight, plus 1.5x Aeroplan points on eligible grocery, gas, and dining spend.</p>
+<h3>Which Maple Leaf Lounges are included?</h3>
+<p>All three cards cover eligible Air Canada Maple Leaf Lounges and Air Canada Cafés in Canada and the United States. That includes the international Maple Leaf Lounges at Toronto, Vancouver and Montreal when you fly abroad. It does <strong>not</strong> include Air Canada Signature Suites. It does <strong>not</strong> include Maple Leaf Lounges outside Canada and the U.S., such as London, Paris and Frankfurt. It does <strong>not</strong> include lounges run by other Star Alliance airlines. "Star Alliance lounge access" is the wrong way to describe this benefit — the card opens Air Canada's own lounges only.</p>
 
-<p><strong>Lounge benefits</strong></p>
-<ul>
-  <li>Unlimited Maple Leaf Lounge access on same-day Air Canada flights (Canada, US, and international)</li>
-  <li>One free guest per visit</li>
-  <li>Four Air Canada One-Time Guest Passes per year for domestic and US Transborder MLL entry</li>
-  <li>No Priority Pass — Amex Platinum or Amex Aeroplan Reserve is required for that</li>
-</ul>
+<h3>Which flights qualify?</h3>
+<p>You need a same-day departing ticket. The flight must be marketed or operated by Air Canada, Air Canada Rouge, Air Canada Express or a Star Alliance airline. Link the card to your Aeroplan account and add that Aeroplan number to the booking. Entry is subject to space. Arriving on Air Canada does not qualify — the benefit is for departures. A connection counts only when the next leg is on a qualifying airline.</p>
 
-<p><strong>Best for</strong></p>
-<ul>
-  <li>Travellers whose household spends heavily on groceries, gas, and dining (higher everyday earn)</li>
-  <li>Frequent domestic Air Canada flyers who don't need Priority Pass abroad</li>
-  <li>TD banking customers who want to consolidate</li>
-</ul>
+<h3>Can you bring a guest?</h3>
+<p>Yes, one, and the guest must enter with you. At TD and CIBC, the primary cardholder and each premium additional cardholder can bring one guest through December 31, 2026. Amex's terms say the basic cardmember and each $199 supplementary cardmember may bring one guest, and no end date is stated. A no-fee Amex supplementary card does not carry the lounge benefit. Extra guests pay Air Canada's fee of $59 in the lounge's local currency, subject to change.</p>
 
-<h3>CIBC Aeroplan Visa Infinite Privilege — $599 / year</h3>
+<h3>What changes after December 31, 2026?</h3>
+<p>TD's and CIBC's Air Canada terms put a date on the guest benefit, not on your own access. After that date, guest access on those two cards is unconfirmed until the issuers publish an extension or a new rule. Amex publishes one guest with no date, but Air Canada's own lounge page calls complimentary guest admission a limited-time benefit. The honest reading: Amex looks better for couples after 2026 today, and any of the three could change. Do not build a decision on guest access you cannot see in writing.</p>
 
-<p>The CIBC Aeroplan VIP mirrors the TD version on Maple Leaf Lounge access and One-Time Guest Passes but pushes harder on Aeroplan earn rates for Air Canada spend — 2x points on eligible Air Canada purchases vs 1.5x on the TD card. That difference matters if you buy a lot of Air Canada tickets on the card each year.</p>
+<h2>TD Aeroplan Visa Infinite Privilege review</h2>
 
-<p><strong>Lounge benefits</strong></p>
-<ul>
-  <li>Unlimited Maple Leaf Lounge access on same-day Air Canada flights</li>
-  <li>One free guest per visit</li>
-  <li>Four Air Canada One-Time Guest Passes per year (domestic and US Transborder only)</li>
-  <li>No Priority Pass — same limitation as the TD card</li>
-</ul>
+<h3>Lounge access and guest rules</h3>
+<p>TD gives the primary and each $199 additional cardholder unlimited eligible Maple Leaf Lounge and Air Canada Café access in Canada and the U.S. One guest is included through December 31, 2026. On top of that, you get six Visa Airport Companion visits per membership year. That program, run by DragonPass, covers more than 1,200 lounges worldwide, including over 20 in Canada. It works on any airline. A guest's entry uses one of the six, and extra visits cost US$32 each.</p>
 
-<p><strong>Best for</strong></p>
-<ul>
-  <li>Travellers who put significant Air Canada revenue spend on the card each year</li>
-  <li>Existing CIBC banking customers</li>
-</ul>
+<h3>Fees, income and rewards</h3>
+<p>The fee is $599, and TD publishes an income floor of $150,000 personal or $200,000 household. You earn 2 points per $1 direct with Air Canada. You earn 1.5 per $1 on gas, EV charging, groceries, travel, transit and dining, and 1.25 per $1 elsewhere. Caps in TD's terms apply. Travel insurance includes emergency medical up to $5 million: 31 days if you are 64 or under, four days at 65 or older. Trip cancellation is up to $2,500 per person and $5,000 per trip. Trip interruption is up to $5,000 per person and $25,000 per trip. At least 75% of the trip must be charged to the card or paid with Aeroplan points.</p>
 
-<h3>American Express Aeroplan Reserve — $599 / year</h3>
+<h3>Who should choose TD?</h3>
+<p>A high-income Air Canada flyer who wants the full lounge package and banks with TD, where card fee rebates are common. Or one who finds the TD welcome offer stronger on the day. Its one clear drawback against CIBC is the $199 supplementary card versus $149.</p>
 
-<p>The Amex Aeroplan Reserve is the only Canadian Aeroplan card that includes complimentary Priority Pass Select membership. That single feature is worth roughly $99 USD per year in raw membership fees alone — before you count the unlimited free guests it grants at Priority Pass lounges (a benefit the Amex Platinum's own Priority Pass tier does not include after February 2025).</p>
+<p><a href="https://www.finlywealth.com/credit-cards/reviews/td-aeroplan-visa-infinite-privilege?utm_source=airportlounges_ca&utm_content=aeroplan-inline-td" target="_blank" rel="sponsored nofollow noopener"><strong>View TD Aeroplan VIP offer →</strong></a></p>
 
-<p><strong>Lounge benefits</strong></p>
-<ul>
-  <li>Unlimited Maple Leaf Lounge access on same-day Air Canada flights, one free guest per visit</li>
-  <li>Four Air Canada One-Time Guest Passes per year (domestic and US Transborder)</li>
-  <li><strong>Priority Pass Select</strong>: unlimited visits, <strong>unlimited free guests</strong> at Priority Pass lounges worldwide — including Plaza Premium, Aspire, SkyTeam Lounge YVR, WestJet Elevation, and National Bank Lounge YUL</li>
-  <li>Highest Aeroplan earn rate on Air Canada spend of the three cards (3x)</li>
-</ul>
+<h2>CIBC Aeroplan Visa Infinite Privilege review</h2>
 
-<p><strong>Best for</strong></p>
-<ul>
-  <li>Travellers who fly both Air Canada and other airlines regularly</li>
-  <li>Frequent international travellers using Priority Pass abroad</li>
-  <li>Travellers who bring a companion — the unlimited PP guest allowance is uniquely valuable</li>
-</ul>
+<h3>Lounge access and six global visits</h3>
+<p>CIBC's lounge package matches TD's. The primary cardholder and each authorized user with a premium card get unlimited eligible Maple Leaf Lounge and Air Canada Café access. One guest is included through December 31, 2026. Each enrolled cardholder gets six Visa Airport Companion visits per membership year. The six visits can be used by you or an accompanying guest. Extra visits are US$32.</p>
 
-<blockquote>
-<p><strong>Why the Amex Reserve wins on lounges alone:</strong> the Priority Pass Select benefit gets you into every Plaza Premium, Aspire, and SkyTeam Lounge in Canada plus 1,600 more worldwide, with unlimited free guests — while still unlocking Maple Leaf Lounges. The two Visa Infinite Privilege cards only cover MLLs. For the same $599 fee, the Amex covers roughly 3× more Canadian lounges and offers vastly better guest terms.</p>
-</blockquote>
-
-<h2>Which Aeroplan Card Is Best for Your Travel Pattern?</h2>
+<h3>Supplementary cards and insurance</h3>
+<p>Two things separate CIBC from TD. First, price: $149 for each of up to nine additional cards, against TD's and Amex's $199. A couple who both want independent access pay $748 a year at CIBC versus $798 at the other two. Second, insurance. CIBC's premium guide lists emergency medical up to $5 million: 31 days at 64 or under, ten days at 65 or over. Trip cancellation is up to $2,500 per person and $10,000 per trip. Trip interruption or delay is up to $5,000 per person and $25,000 per trip. The per-trip cancellation cap is double TD's and more than three times Amex's.</p>
 
 <table>
   <thead>
-    <tr><th>Your typical travel</th><th>Best Aeroplan card</th><th>Why</th></tr>
+    <tr><th>Card</th><th>Trip cancellation maximum per trip</th></tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Air Canada domestic + occasional international</td>
-      <td>Amex Aeroplan Reserve</td>
-      <td>Priority Pass unlocks Plaza Premium at every major Canadian airport in addition to MLLs</td>
-    </tr>
-    <tr>
-      <td>Air Canada exclusively + you rarely travel with a guest</td>
-      <td>TD Aeroplan Visa Infinite Privilege</td>
-      <td>Better everyday earn on groceries and gas; companion voucher works when you do bring one</td>
-    </tr>
-    <tr>
-      <td>Heavy Air Canada spender ($20k+ / year on AC tickets)</td>
-      <td>CIBC Aeroplan Visa Infinite Privilege</td>
-      <td>Highest revenue-spend multiplier on Air Canada tickets among the two Visa options</td>
-    </tr>
-    <tr>
-      <td>Multi-carrier international traveller</td>
-      <td>Amex Aeroplan Reserve</td>
-      <td>Priority Pass Select is the only way to access non-Star Alliance lounges abroad</td>
-    </tr>
-    <tr>
-      <td>Family of four, want maximum lounge visits per year</td>
-      <td>Amex Aeroplan Reserve</td>
-      <td>Unlimited free PP guests + MLL guest + 4 One-Time MLL passes stacks the best</td>
-    </tr>
+    <tr><td>CIBC Aeroplan VIP</td><td>$10,000</td></tr>
+    <tr><td>TD Aeroplan VIP</td><td>$5,000</td></tr>
+    <tr><td>Amex Aeroplan Reserve</td><td>$3,000</td></tr>
+  </tbody>
+</table>
+<p><em>Per-person limits and other conditions apply; read the certificate.</em></p>
+
+<h3>Who should choose CIBC?</h3>
+<p>Anyone who meets the income requirement and wants the most lounge coverage per dollar for a household. You get Maple Leaf Lounges, six visits on other airlines, the cheapest partner card and the strongest cancellation cover. Earn rates are the same as TD: 2x Air Canada, 1.5x on gas, EV charging, groceries, travel and dining, 1.25x elsewhere. So the choice between the two comes down to supplementary cards, insurance, the welcome offer and where you bank.</p>
+
+<p><a href="https://www.finlywealth.com/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege?utm_source=airportlounges_ca&utm_content=aeroplan-inline-cibc" target="_blank" rel="sponsored nofollow noopener"><strong>View CIBC Aeroplan VIP offer →</strong></a></p>
+
+<h2>American Express Aeroplan Reserve review</h2>
+
+<h3>Maple Leaf Lounge and Priority Pass access</h3>
+<p>The Reserve gives the basic cardmember and each $199 premium supplementary cardmember the same Maple Leaf Lounge and Air Canada Café access. One guest is included, on a qualifying same-day flight. The other network is where it differs. Amex includes a Priority Pass membership and waives the US$99 annual fee — but every lounge visit is charged at the prevailing rate. That is access at a member price, not included visits. If you fly WestJet, Porter or Flair often and want a lounge on those trips, TD or CIBC cover six of them; Amex covers none.</p>
+
+<h3>Air Canada earning and Pearson benefits</h3>
+<p>Amex earns 3 points per $1 direct with Air Canada and Air Canada Vacations. It earns 2 per $1 on eligible dining and food delivery in Canada, and 1.25 per $1 elsewhere. For a household that puts $10,000 a year on Air Canada fares, that is 30,000 points versus 20,000 on the Visa cards. Toronto Pearson adds a local edge. Eligible Amex cardmembers get single-use QR codes for the priority security lane at Terminals 1 and 3, complimentary valet at Terminal 1, and 15% off eligible parking. Those perks are Pearson-only.</p>
+
+<table>
+  <thead>
+    <tr><th>Category</th><th>TD VIP</th><th>CIBC VIP</th><th>Amex Reserve</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Air Canada purchases</td><td>2</td><td>2</td><td>3</td></tr>
+    <tr><td>Dining in Canada</td><td>1.5</td><td>1.5</td><td>2</td></tr>
+    <tr><td>Gas, grocery, travel, transit</td><td>1.5</td><td>1.5</td><td>1.25</td></tr>
+    <tr><td>Everything else</td><td>1.25</td><td>1.25</td><td>1.25</td></tr>
+  </tbody>
+</table>
+<p><em>Aeroplan points per $1 by spending category on the three cards, from issuer terms verified September 11, 2026. Amex leads on Air Canada and dining in Canada; TD and CIBC lead on gas, groceries, travel and transit.</em></p>
+
+<p>Insurance is the weak spot. Amex lists emergency medical up to $5 million for travellers under 65, for the first 15 days of a trip. Trip cancellation is up to $1,500 per person and $3,000 per trip. Travellers 65 and older receive no included emergency medical cover on the Reserve — confirm this against the current certificate of insurance before travelling if this matters to you.</p>
+
+<h3>Who should choose Amex?</h3>
+<p>Three people. The heavy Air Canada spender who values 3x more than six lounge visits. The applicant who cannot show $150,000 personal or $200,000 household income — Amex publishes no fixed floor, though approval still depends on Amex underwriting. And the Toronto Pearson regular who will use the security lane and valet. A couple who care most about guest access after 2026 may also lean Amex, but Amex can change its terms too.</p>
+
+<p><a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve?utm_source=airportlounges_ca&utm_content=aeroplan-inline-amex" target="_blank" rel="sponsored nofollow noopener"><strong>View Amex Aeroplan Reserve offer →</strong></a></p>
+
+<h2>Best Aeroplan lounge card by traveller type</h2>
+
+<table>
+  <thead>
+    <tr><th>You are…</th><th>Pick</th><th>Why</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Flying Air Canada most of the time, other airlines a few times a year</td><td>TD or CIBC</td><td>Both add six Visa Airport Companion visits to the Maple Leaf Lounge benefit</td></tr>
+    <tr><td>A couple who each want to enter alone</td><td>CIBC</td><td>Premium additional card is $149, not $199</td></tr>
+    <tr><td>Spending $8,000+ a year direct with Air Canada</td><td>Amex Reserve</td><td>3x versus 2x on Air Canada purchases</td></tr>
+    <tr><td>Below the Visa Infinite Privilege income floor</td><td>Amex Reserve</td><td>No published minimum income</td></tr>
+    <tr><td>Booking expensive trips and want the highest cancellation cap</td><td>CIBC</td><td>$10,000 per trip versus $5,000 at TD and $3,000 at Amex</td></tr>
+    <tr><td>Age 65 or older</td><td>CIBC</td><td>10 days of included emergency medical, versus 4 at TD and none at Amex</td></tr>
+    <tr><td>Based at Toronto Pearson</td><td>Amex Reserve</td><td>Priority security lane, valet and parking discount</td></tr>
+    <tr><td>Deciding on guest access after 2026</td><td>No safe winner</td><td>TD and CIBC end Dec. 31, 2026; Amex undated; all can change</td></tr>
   </tbody>
 </table>
 
-<h2>The Guest-Rule Details That Actually Matter</h2>
+<h2>Is a $599 Aeroplan card worth it for lounge access?</h2>
 
-<p>Card marketing usually collapses "one guest per visit" into a single line. In practice, the guest rules differ meaningfully between the Maple Leaf Lounge network and Priority Pass lounges.</p>
+<p>Put a price on one visit first. Air Canada sells lounge access on some fares: $49 on Premium Economy or Latitude, $59 on Comfort and $79 on Flex. It charges $59 per extra guest. Use $59 as the benchmark. The test is simple:</p>
 
-<ul>
-  <li><strong>Maple Leaf Lounge, all three cards:</strong> One free guest per cardholder visit, on the same-day Air Canada flight. Additional guests are charged the standard $59 CAD walk-in rate at the door.</li>
-  <li><strong>One-Time Guest Passes (all three cards):</strong> Four passes per calendar year, valid at Maple Leaf Lounges in Canada and the US only. Not valid at international MLLs (YVR Gate D, YYZ Gate F, YUL International).</li>
-  <li><strong>Priority Pass — Amex Reserve only:</strong> Unlimited visits, unlimited free guests. This is the strongest PP guest allowance of any Canadian card, including the Amex Platinum ($799 annual fee) which limits you to one free guest through 2026 and caps Priority Pass at 6 visits per year from January 1, 2027 unless you spend $20,000 annually on the card.</li>
-</ul>
+<table>
+  <thead>
+    <tr><th>Scenario</th><th>Fee to cover</th><th>Break-even math</th><th>Visits (rounded up)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Solo</td><td>$599</td><td>$599 ÷ $59 = 10.2</td><td>11 visits per year</td></tr>
+    <tr><td>Cardholder + one guest (guest benefit active)</td><td>$599</td><td>$599 ÷ $118 = 5.1</td><td>6 shared visits per year</td></tr>
+    <tr><td>Two cardholders on CIBC ($599 + $149)</td><td>$748</td><td>$748 ÷ $118 = 6.3</td><td>7 shared visits per year</td></tr>
+    <tr><td>Two cardholders on TD or Amex ($599 + $199)</td><td>$798</td><td>$798 ÷ $118 = 6.8</td><td>7 shared visits per year</td></tr>
+  </tbody>
+</table>
 
-<h2>Break-Even Math: Is $599 Worth It for Lounge Access?</h2>
+<p><em>Break-even visits per year at $59 per person per entry. Calculated from issuer fees; the decimal is the exact result before rounding up.</em></p>
 
-<p>Reasonable break-even math for each card, assuming the average Canadian airport lounge visit is worth about $50 (walk-in day pass equivalent):</p>
+<blockquote>
+<p><strong>Two cautions.</strong> Five or six visits do not "pay for the card" unless you would really have paid at the door each time. Lounges can also turn you away when full. Air Canada's own Amex comparison page values five cardholder-plus-guest visits at $590 — that is the issuer's marketing number, not an independent estimate. Free first checked bags, insurance and points sit on top of the lounge math and often decide the question.</p>
+</blockquote>
 
-<ul>
-  <li><strong>TD or CIBC Aeroplan Visa Infinite Privilege ($599):</strong> Roughly 12 MLL visits per year with a companion breaks even on the lounge benefit alone. Add the annual companion voucher ($200+ value) and the earn-rate uplift, and 8 lounge visits per year covers the fee comfortably.</li>
-  <li><strong>Amex Aeroplan Reserve ($599):</strong> Roughly 6 lounge visits per year — split between MLL and Priority Pass — covers the fee, because you effectively get two lounge networks for one price. The unlimited free-guest allowance halves that math for anyone travelling with a partner.</li>
-</ul>
+<h3>Illustrative lounge-value scenario</h3>
+<p>Take a household with 6 solo Air Canada or Star Alliance departures a year, 2 more with a partner, and 2 departures a year on other airlines where a lounge would be used — 10 lounge-eligible departures. Valuing each entry at $59:</p>
 
-<h2>What None of These Cards Do</h2>
+<table>
+  <thead>
+    <tr><th>Card</th><th>Annual cost</th><th>Lounge value*</th><th>Other-airline visits</th><th>Net</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>CIBC Aeroplan VIP</td><td>$599</td><td>$708</td><td>2 of 2 covered (Visa Airport Companion)</td><td>+$109</td></tr>
+    <tr><td>TD Aeroplan VIP</td><td>$599</td><td>$708</td><td>2 of 2 covered (Visa Airport Companion)</td><td>+$109</td></tr>
+    <tr><td>Amex Aeroplan Reserve</td><td>$599</td><td>$590</td><td>0 of 2 covered (each Priority Pass visit charged)</td><td>−$9</td></tr>
+  </tbody>
+</table>
+<p><em>*Lounge value = entries × $59. Other-airline visits are covered up to six a year on TD and CIBC through Visa Airport Companion; Amex charges each Priority Pass visit at the prevailing rate. Points, free bags and insurance are not included in this figure. Fees verified September 11, 2026.</em></p>
 
-<p>Setting expectations at the door:</p>
-
-<ul>
-  <li>None grant access to the <strong>Air Canada Signature Suite</strong> at YYZ (invitation-only for AC Signature Class international passengers).</li>
-  <li>None grant access to the <strong>Cathay Pacific Lounge at YVR</strong> (oneworld / CX-ticket only).</li>
-  <li>None open the <strong>Desjardins Odyssey Lounges at YUL</strong> (DragonPass network — the RBC Avion Visa Infinite Privilege or Scotiabank Passport Visa Infinite are the Canadian cards that grant DragonPass access).</li>
-  <li>None provide access to <strong>Amex Centurion Lounges</strong> — that requires the Amex Platinum, and there are no Centurion Lounges in Canada regardless.</li>
-</ul>
-
-<h2>Practical Checklist Before You Apply</h2>
+<h2>How to use the lounge benefit</h2>
 
 <ol>
-  <li><em>Confirm your Air Canada flight volume for the coming 12 months.</em> If you take fewer than 4 Air Canada flights per year, an Aeroplan card is not the highest-value lounge card — the Amex Platinum with Priority Pass often wins for occasional travellers.</li>
-  <li><em>Count who you fly with.</em> Solo travellers get less incremental value from the Amex Reserve's unlimited PP guest benefit. Couples and families get significantly more.</li>
-  <li><em>Check your existing card portfolio for Priority Pass duplication.</em> If you already carry the Amex Platinum, adding the Amex Aeroplan Reserve gives you two Priority Pass memberships — one of which is redundant. Consider dropping the Platinum and keeping the Reserve alone.</li>
-  <li><em>Check the current sign-up bonus timing.</em> All three cards run promotional welcome bonuses periodically; a well-timed bonus can offset the first-year fee entirely.</li>
+  <li><em>Link the card to the right Aeroplan account.</em> The cardholder's Aeroplan number must be on the card and on the booking.</li>
+  <li><em>Check the flight qualifies.</em> Same-day departure on Air Canada, Rouge, Express or a Star Alliance airline. Arrivals do not count.</li>
+  <li><em>Enrol in Visa Airport Companion (TD and CIBC).</em> Use the app or visaairportcompanion.ca with your Visa Infinite Privilege card. Do it before the first trip — the six visits reset each membership year.</li>
+  <li><em>Amex: enrol in Priority Pass if you want it.</em> Membership is fee-free, but expect a per-visit charge at the door.</li>
+  <li><em>Bring your guest in with you.</em> Guests cannot enter alone. Extra guests pay $59 in the lounge's local currency.</li>
+  <li><em>Recheck the terms in December 2026.</em> The TD and CIBC guest benefit is dated. The issuer's Air Canada benefit page is the source of truth.</li>
 </ol>
 
-<p><em>Card benefit details in this guide reflect published cardholder terms as of August 2026. Annual fees, earn rates, and lounge access rules are subject to change without notice — always confirm directly with the issuer before applying.</em></p>
+<h2>Final recommendation</h2>
+
+<p><strong>CIBC Aeroplan Visa Infinite Privilege ranks first for lounge-focused, eligible Canadians.</strong> It matches TD's six global visits and Maple Leaf Lounge access. It charges $50 less for each premium supplementary card. It publishes the strongest trip-cancellation limits. <strong>TD Aeroplan Visa Infinite Privilege is a close second</strong>, and a better welcome offer or a TD banking rebate can flip the result for you. <strong>Amex Aeroplan Reserve is the conditional winner</strong> for heavy Air Canada spending, applicants below the Visa Infinite Privilege income floor, and Toronto Pearson users — just know its Priority Pass visits are paid.</p>
+
+<blockquote>
+<p>Any verdict that calls TD or CIBC "best for couples" without the December 31, 2026 guest deadline is incomplete. Check the terms again before year-end.</p>
+</blockquote>
+
+<h2>Methodology</h2>
+<p>Fees, lounge rules, guest terms and insurance limits were taken from issuer card pages, the issuer-specific Aeroplan benefit pages on aircanada.com, the issuers' benefits guides and insurance summaries, and the Visa Airport Companion and Priority Pass terms, in that order of authority. Third-party reviews were used only to confirm current welcome offers. Break-even figures are calculations shown in full above. No card rating is displayed because AirportLounges.ca does not collect user ratings.</p>
+
+<h2>Change log</h2>
+<ul>
+  <li><strong>September 11, 2026:</strong> Full rewrite. TD and CIBC one-guest benefit dated to December 31, 2026 per issuer terms. Amex Priority Pass clarified as fee-waived membership with paid visits (not "free"). Ranking updated: CIBC first, TD second, Amex conditional.</li>
+</ul>
+
+<h2>Sources</h2>
+<ul>
+  <li>TD, TD Aeroplan Visa Infinite Privilege Card (fee, income, offer) and Maple Leaf Lounge access terms (one guest through December 31, 2026); welcome guide (earn rates); travel insurance summary.</li>
+  <li>Air Canada — TD Aeroplan personal cards, CIBC Aeroplan personal cards, American Express Aeroplan cards (lounge and guest terms), and Maple Leaf Lounges (guest fee, purchase prices).</li>
+  <li>CIBC — CIBC Aeroplan Visa Infinite Privilege Card (fee, $149 additional cards, income, earn rates); benefits guide (lounge access, US$32 extra visits); insurance summary.</li>
+  <li>American Express Canada — Aeroplan Reserve Card (fee, offer, earn rates); membership benefits (lounge terms, Priority Pass fee waived with visits at the prevailing rate, Pearson benefits); insurance coverage and insurance summary booklet.</li>
+  <li>Visa Canada — Visa Airport Companion by DragonPass; Milesopedia — Complete guide to the Visa Airport Companion Program.</li>
+  <li>Toronto Pearson — American Express priority security lane access; Prince of Travel — Amex priority benefits at Toronto Pearson.</li>
+  <li>Welcome offers checked September 11, 2026: Milesopedia — TD Aeroplan Visa Infinite Privilege offer, CIBC Aeroplan Visa Infinite Privilege, Amex Aeroplan Reserve.</li>
+  <li>FinlyWealth — TD Aeroplan Visa Infinite Privilege review, CIBC Aeroplan Visa Infinite Privilege review, Amex Aeroplan Reserve review, comparison tool, card finder quiz.</li>
+</ul>
+
+<p><em>All fees, offers, benefits and insurance limits in this guide reflect information current as of September 11, 2026. Rules and offers change without notice — always confirm the current terms with the issuer before applying. Next scheduled review: December 2026, when the TD and CIBC guest terms expire.</em></p>
 `
 
 export const blogPosts: BlogPost[] = [
   {
     slug: 'best-aeroplan-credit-card-airport-lounge-access',
     title: 'Best Aeroplan Credit Card for Airport Lounge Access in Canada (2026)',
-    excerpt: 'TD Aeroplan Visa Infinite Privilege, CIBC Aeroplan Visa Infinite Privilege, and Amex Aeroplan Reserve — the three Canadian cards that open the Maple Leaf Lounge, compared side by side. Updated August 2026.',
+    excerpt: 'CIBC vs TD vs Amex Aeroplan Reserve — all three cost $599, all three open the Maple Leaf Lounge. CIBC wins for most households; Amex wins for heavy Air Canada spend. Verified September 11, 2026.',
     coverImage: '/blog/couple-checking-in-lounge.png',
     publishedAt: '2026-08-25',
-    lastReviewed: '2026-08-25',
+    lastReviewed: '2026-09-11',
     category: 'Credit Cards',
     readingTime: '12 min read',
     metaTitle: 'Best Aeroplan Credit Card for Airport Lounge Access in Canada (2026)',
-    metaDescription: 'TD Aeroplan Visa Infinite Privilege vs CIBC Aeroplan VIP vs Amex Aeroplan Reserve — which Canadian Aeroplan card is best for airport lounge access, guest fees, and Priority Pass. August 2026.',
+    metaDescription: 'CIBC Aeroplan VIP vs TD Aeroplan VIP vs Amex Aeroplan Reserve — the three Canadian $599 cards that open the Maple Leaf Lounge, compared with 2027 guest deadlines, insurance, and break-even math. September 2026.',
     content: aeroplanCardsContent,
     authorName: 'AirportLounges.ca Editorial Team',
-    authorBio: 'Canadian airport lounge access rules are verified against operator sources, cardholder benefit terms, and in-person visits — reviewed continuously and dated on every guide.',
+    authorBio: 'Canadian airport lounge access rules are verified against issuer T&C pages, Air Canada Aeroplan benefits and the issuers\' insurance summaries. Facts dated on every guide; next review December 2026.',
     primaryCta: {
-      heading: 'Compare Aeroplan cards side by side',
-      subheading: 'See current welcome bonuses, annual fees, and lounge benefits — with any active FinlyWealth rebates factored in.',
-      ctaLabel: 'Compare Aeroplan Cards',
-      affiliateKey: 'finlywealth-aeroplan-cards',
+      heading: 'Not sure which $599 card fits your travel?',
+      subheading: 'Get a personalized recommendation on FinlyWealth using your spending, income, credit profile and preferred perks.',
+      ctaLabel: 'See My Personalized Recommendation',
+      affiliateKey: 'finlywealth-quiz',
     },
     comparisonCards: [
       {
-        name: 'Amex Aeroplan Reserve',
+        name: 'CIBC Aeroplan Visa Infinite Privilege',
         annualFee: '$599',
-        highlight: 'Only Aeroplan card with Priority Pass + Maple Leaf Lounge access',
-        affiliateKey: 'finlywealth-amex-aeroplan-reserve',
-        ctaLabel: 'See Amex Aeroplan Reserve',
+        highlight: 'Best overall. Unlimited Maple Leaf Lounge + 6 Visa Airport Companion visits + $149 supplementary card + $10k trip cancellation.',
+        affiliateKey: 'finlywealth-cibc-aeroplan-vip',
+        ctaLabel: 'View CIBC Aeroplan VIP',
       },
       {
         name: 'TD Aeroplan Visa Infinite Privilege',
         annualFee: '$599',
-        highlight: 'Companion voucher + 4 Maple Leaf Lounge One-Time Guest Passes',
+        highlight: 'Close second. Same lounge package as CIBC. Better if TD banking rebates apply or the welcome offer is stronger.',
         affiliateKey: 'finlywealth-td-aeroplan-vip',
-        ctaLabel: 'See TD Aeroplan VIP',
+        ctaLabel: 'View TD Aeroplan VIP',
       },
       {
-        name: 'CIBC Aeroplan Visa Infinite Privilege',
+        name: 'American Express Aeroplan Reserve',
         annualFee: '$599',
-        highlight: 'Highest Aeroplan earn on Air Canada tickets (2x)',
-        affiliateKey: 'finlywealth-cibc-aeroplan-vip',
-        ctaLabel: 'See CIBC Aeroplan VIP',
+        highlight: '3x on Air Canada, no published income floor, Toronto Pearson perks — but Priority Pass visits are paid, not included.',
+        affiliateKey: 'finlywealth-amex-aeroplan-reserve',
+        ctaLabel: 'View Amex Aeroplan Reserve',
       },
     ],
     faqs: [
       {
-        question: 'Which Aeroplan credit card is best for airport lounge access?',
-        answer: 'The Amex Aeroplan Reserve ($599 annual fee) is the strongest lounge card of the three Canadian Aeroplan premium cards because it is the only one that stacks Priority Pass Select on top of Maple Leaf Lounge access. That gives cardholders unlimited access to both the Air Canada MLL network and 1,600+ Priority Pass lounges worldwide — including Plaza Premium at every Canadian airport, with unlimited free guests at PP lounges.',
+        question: 'Which credit card offers the best lounge access for Air Canada?',
+        answer: 'For most eligible Canadians, the CIBC Aeroplan Visa Infinite Privilege is the strongest Aeroplan lounge card. All three $599 Aeroplan cards (CIBC, TD Aeroplan VIP, Amex Aeroplan Reserve) open the Maple Leaf Lounge and Air Canada Café network in Canada and the U.S. CIBC and TD add six complimentary Visa Airport Companion visits a year that work on any airline; Amex includes fee-waived Priority Pass membership where every lounge visit is charged at the prevailing rate. CIBC edges TD on supplementary card price ($149 vs $199) and insurance limits.',
       },
       {
-        question: 'Does the TD Aeroplan Visa Infinite Privilege include Priority Pass?',
-        answer: 'No. The TD Aeroplan Visa Infinite Privilege includes Maple Leaf Lounge access but does not include Priority Pass. To pair Maple Leaf Lounge access with Priority Pass, choose the Amex Aeroplan Reserve, or hold the TD card alongside an Amex Platinum for the Priority Pass side.',
+        question: 'Do all three Aeroplan credit cards give Maple Leaf Lounge access?',
+        answer: 'Yes. The TD Aeroplan Visa Infinite Privilege, CIBC Aeroplan Visa Infinite Privilege, and American Express Aeroplan Reserve each grant unlimited access to eligible Air Canada Maple Leaf Lounges and Air Canada Cafés in Canada and the United States on a same-day departing Air Canada, Air Canada Rouge, Air Canada Express or Star Alliance ticket. The Air Canada Signature Suite is not included, and international Maple Leaf Lounges outside North America (London, Paris, Frankfurt) are not included either.',
       },
       {
-        question: 'Which Canadian credit cards get you into the Air Canada Maple Leaf Lounge?',
-        answer: 'Only three Canadian cards unlock the Maple Leaf Lounge: the TD Aeroplan Visa Infinite Privilege, the CIBC Aeroplan Visa Infinite Privilege, and the American Express Aeroplan Reserve. Amex Platinum, Amex Cobalt, Priority Pass, DragonPass, and non-Aeroplan Amex cards do not grant MLL access at any tier.',
+        question: 'Can I use the lounge when flying United or another Star Alliance airline?',
+        answer: 'Yes — the same-day departing ticket must be marketed or operated by Air Canada, Rouge, Express or a Star Alliance member airline. The card opens Air Canada\'s own Maple Leaf Lounges and Cafés only, though. It does not open Star Alliance partner lounges. A United flight from a Canadian or U.S. Maple Leaf Lounge location gets you in; a United flight departing from a non-AC lounge airport does not.',
       },
       {
-        question: 'How many free lounge visits does the Amex Aeroplan Reserve give per year?',
-        answer: 'Unlimited. The Amex Aeroplan Reserve grants unlimited visits to Air Canada Maple Leaf Lounges on same-day Air Canada flights (with one free guest per visit) plus unlimited visits to Priority Pass lounges worldwide (with unlimited free guests). Cardholders also receive four Air Canada One-Time Guest Passes per calendar year for domestic and US Transborder MLL entry.',
+        question: 'How do you get Air Canada lounge access without paying at the door?',
+        answer: 'The Aeroplan credit card fee funds the access — it is not literally free. Four routes exist: (1) a same-day Air Canada Signature Class or eligible business-class ticket includes lounge access; (2) Aeroplan 50K, 75K or Super Elite 100K status includes it; (3) an active Maple Leaf Club membership; or (4) a same-day Air Canada or Star Alliance ticket paired with one of the three $599 Aeroplan premium credit cards. Walk-in day passes are not sold at Maple Leaf Lounges — Air Canada sells advance lounge access with some fare classes at $49 to $79 per visit.',
       },
       {
-        question: 'Is the Amex Aeroplan Reserve better than the Amex Platinum for airport lounge access?',
-        answer: 'For Canadian lounge access, yes — often. The Amex Aeroplan Reserve ($599/yr) unlocks both the Maple Leaf Lounge network and Priority Pass with unlimited free guests, while the Amex Platinum ($799/yr) only unlocks Priority Pass (with a 1-free-guest limit and a 6-visits-per-year cap starting January 1, 2027 unless you spend $20,000/yr on the card). The Platinum is the better card if you also need Amex Centurion Lounge access when travelling to the US or want the additional non-lounge benefits.',
+        question: 'Can a cardholder bring a guest?',
+        answer: 'One guest, and the guest must enter with you. At TD and CIBC the primary cardholder and each premium additional cardholder can bring one guest through December 31, 2026. Amex\'s terms allow the basic cardmember and each $199 supplementary cardmember one guest, with no expiry date currently stated. A no-fee Amex supplementary card does not carry the lounge benefit. Extra guests pay Air Canada\'s fee of $59 in the lounge\'s local currency, subject to change.',
       },
       {
-        question: 'Can I bring more than one guest to the Maple Leaf Lounge with an Aeroplan credit card?',
-        answer: 'Yes, but only the first is free. All three Aeroplan premium cards include one free companion guest per visit. Additional guests pay the standard Air Canada Maple Leaf Lounge walk-in rate ($59 CAD per guest). Cardholders also receive four One-Time Guest Passes per year for domestic and US Transborder MLL entry — usable as full lounge entries for named guests, without the cardholder needing to be present.',
+        question: 'Which card includes the most non-Air-Canada lounge visits?',
+        answer: 'TD and CIBC each include six Visa Airport Companion visits per membership year, through the DragonPass network — 1,200+ lounges worldwide, including more than 20 in Canada. Each visit is per person, so a guest\'s entry uses one of the six; extra visits cost US$32. The Amex Aeroplan Reserve includes fee-waived Priority Pass membership but every Priority Pass visit is billed at the prevailing rate — that is access at a member price, not included visits.',
       },
       {
-        question: 'Do Aeroplan credit cards work at the Air Canada Signature Suite in Toronto?',
-        answer: 'No. The Air Canada Signature Suite at YYZ Terminal 1 is exclusively for Air Canada Signature Class (international business class) passengers on same-day AC flights. No credit card grants access at any tier, and Aeroplan Elite status does not qualify.',
+        question: 'Is a $599 Aeroplan card worth it for lounge access?',
+        answer: 'At the $59 walk-in benchmark that Air Canada uses for extra guest fees, a solo traveller needs about 11 lounge visits a year to break even on the $599 fee. A cardholder-plus-guest pair needs about 6 shared visits with the guest benefit active. A couple who each want independent access is $748 a year on CIBC or $798 on TD or Amex — roughly 7 shared visits. Free first checked bags, insurance and Aeroplan earning sit on top of this and often decide the question.',
       },
       {
-        question: 'Can I use the Air Canada One-Time Guest Pass at any Maple Leaf Lounge?',
-        answer: 'No — One-Time Guest Passes issued with Aeroplan credit cards are valid at Canadian and US Transborder Maple Leaf Lounges only. They are explicitly excluded from international MLL locations (YVR Gate D, YYZ Gate F, YUL International). Guests must be travelling on a same-day Air Canada flight and have their own boarding pass.',
-      },
-      {
-        question: 'Which Aeroplan credit card has the best sign-up bonus?',
-        answer: 'Sign-up bonuses rotate frequently across all three issuers — TD, CIBC, and American Express. Compare current offers at RateHub or CreditCardGenius before applying, and confirm the earning window and minimum spend requirements. Well-timed applications during a promotional period can offset the first-year annual fee entirely.',
+        question: 'Which card is best after 2026?',
+        answer: 'There is no safe winner today. TD and CIBC put a date on their complimentary Maple Leaf Lounge guest — December 31, 2026 — with nothing published beyond that. Amex publishes one guest with no expiry date, which makes it look better for couples after 2026. But Air Canada\'s own lounge page calls complimentary guest admission a limited-time benefit that could change. Recheck the issuer terms in December 2026 before making a decision based on guest access alone.',
       },
     ],
   },
@@ -2055,7 +1834,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         question: 'How many guests can I bring with Amex Platinum?',
-        answer: 'Guest rules depend on the network. Through 2026, Plaza Premium and Priority Pass each include one complimentary guest per visit. Centurion Lounges outside Canada allow up to two guests on the Canadian card. Delta Sky Club includes no free guests — Delta charges per additional person. From January 1, 2027, a guest entry at Plaza Premium or Priority Pass consumes one of the capped visits rather than being free.',
+        answer: 'Guest rules depend on the network. Through 2026, Plaza Premium and Priority Pass each include one complimentary guest per visit. Centurion Lounges outside Canada allow one guest on the same flight, since July 8, 2026 (previously two). Delta Sky Club includes no free guests — Delta charges per additional person. From January 1, 2027, a guest entry at Plaza Premium or Priority Pass consumes one of the capped visits rather than being free.',
       },
       {
         question: 'Does Amex Platinum get you into Maple Leaf Lounges?',
@@ -2073,22 +1852,54 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'airport-lounge-guest-fees-canada',
-    title: 'Airport Lounge Guest Fees in Canada (2026): What You Will Actually Pay',
-    excerpt: "Priority Pass, DragonPass, Air Canada Maple Leaf, WestJet Elevation, Desjardins Odyssey — every guest fee spelled out. Updated June 2026.",
+    title: "Airport Lounge Guest Fees in Canada (2026): What You'll Actually Pay",
+    excerpt: 'Priority Pass US$35 per guest. Air Canada Maple Leaf Lounge $59 in local currency. WestJet Elevation $59–$65 + GST. National Bank Lounge YUL includes a guest and two kids on a $150 card. Full guest-fee breakdown, verified September 11, 2026.',
     coverImage: '/blog/couple-checking-in-lounge.png',
     publishedAt: '2026-06-06',
-    lastReviewed: '2026-08-25',
+    lastReviewed: '2026-09-11',
     category: 'Access Guides',
-    readingTime: '15 min read',
+    readingTime: '14 min read',
     metaTitle: "Airport Lounge Guest Fees in Canada (2026): What You'll Actually Pay",
-    metaDescription: 'Every airport lounge guest fee in Canada explained — Priority Pass, DragonPass, Air Canada Maple Leaf, WestJet Elevation and more. Updated June 2026.',
+    metaDescription: 'Every airport lounge guest fee in Canada — Priority Pass US$35, Maple Leaf Lounge $59 local, WestJet Elevation $59–$65 + GST, Desjardins Odyssey rules and the National Bank card that includes a guest. Verified September 11, 2026.',
     content: guestFeesContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: 'Every guest fee on this page comes from an operator page or issuer benefits guide, cross-referenced with Milesopedia, Prince of Travel and Frugal Flyer. Re-verified September 11, 2026; next scheduled review December 2026.',
     primaryCta: {
-      heading: 'Skip the guest fees',
-      subheading: 'Cards that include one or more free lounge guests per visit — compared side by side.',
-      ctaLabel: 'See Cards With Free Guests',
+      heading: 'Cheapest card with a guest built in',
+      subheading: 'The National Bank World Elite Mastercard is $150 a year and includes a guest plus two children at the National Bank Lounge YUL (international departures only).',
+      ctaLabel: 'See National Bank World Elite on FinlyWealth',
       affiliateKey: 'finlywealth-lounge-access-cards',
     },
+    faqs: [
+      {
+        question: 'Can I bring a guest to the Air Canada lounge?',
+        answer: 'Yes, one guest, and the guest must enter with you. Aeroplan 50K status and above, Star Alliance Gold, Maple Leaf Club members, and the three premium Aeroplan credit cards (TD Aeroplan VIP, CIBC Aeroplan VIP, Amex Aeroplan Reserve) all include one complimentary guest per visit on a same-day Air Canada or Star Alliance departure. Extra guests pay $59 in the lounge\'s local currency (CAD in Canada, USD in the US, EUR and GBP abroad) plus local taxes.',
+      },
+      {
+        question: 'How much does it cost to use the Air Canada lounge without status or a card?',
+        answer: 'You cannot walk in and pay at the door. Air Canada sells Maple Leaf Lounge access as a travel option on some fares, purchased at booking or at least 24 hours before departure. Published prices range from $25 (on Latitude) to $79 (on Flex), with $49 on Premium Economy and $59 on Comfort common in various channels.',
+      },
+      {
+        question: 'How much is a guest at a Priority Pass lounge in Canada?',
+        answer: 'US$35 per guest per visit at every Priority Pass lounge in Canada, at every tier of direct membership (Standard, Standard Plus, Prestige). Card-issued Priority Pass memberships vary: the Amex Platinum includes one complimentary guest through December 31, 2026 (a guest uses one of your six capped visits from 2027); the Amex Aeroplan Reserve charges the cardholder and every guest at the prevailing rate; the Scotiabank Platinum Amex counts a guest as one of your 10 annual visits.',
+      },
+      {
+        question: 'How do I get lounge access at Montréal airport for the least money?',
+        answer: 'For international departures out of YUL, the National Bank World Elite Mastercard ($150 annual fee) is the cheapest card in Canada with a guest included. It grants unlimited access to the National Bank Lounge near Gate 53 for the cardholder plus one guest and two children aged 12 or under. The lounge is currently in a temporary reduced-capacity space (August 2026 through about June 2028) during renovation, with a two-hour stay. Income requirements are $80,000 personal or $150,000 household.',
+      },
+      {
+        question: 'Do children pay guest fees at Canadian airport lounges?',
+        answer: 'It varies by operator. Children under 2 are admitted free at the National Bank Lounge, the Aspire lounges at YUL, WestJet Elevation and most Priority Pass lounges. Desjardins Odyssey admits under-3s free. WestJet charges a child rate of $30–$33 plus GST for ages 2–17. National Bank charges $26 plus tax per child beyond the two included with a World Elite card. Aeroplan 50K status and above covers up to five dependent children under 25 in Maple Leaf Lounges.',
+      },
+      {
+        question: 'What happens to Amex Platinum guests in 2027?',
+        answer: 'On January 1, 2027, the Amex Platinum\'s complimentary guest benefit at Plaza Premium and Priority Pass lounges ends. Under the new capped model, each person who enters — cardholder or guest — uses one of the six Plaza Premium or six Priority Pass visits per calendar year. A couple burns a network\'s six visits in three trips. Unlimited access with one complimentary guest per network returns if the account is charged $20,000 in eligible calendar-year spending. Centurion Lounge access separately dropped from two guests to one on July 8, 2026, with the guest required to be on the same flight.',
+      },
+      {
+        question: 'How do you get Air Canada lounge access without paying at the door?',
+        answer: 'The Aeroplan credit card fee funds the access — it is not literally free. Four routes exist: (1) a same-day Air Canada Signature Class or eligible business-class ticket includes access; (2) Aeroplan 50K, 75K or Super Elite 100K status; (3) an active Maple Leaf Club membership; or (4) a same-day Air Canada or Star Alliance ticket paired with a $599 premium Aeroplan credit card (TD Aeroplan VIP, CIBC Aeroplan VIP, or Amex Aeroplan Reserve). Walk-in day passes are not sold at Maple Leaf Lounges.',
+      },
+    ],
   },
   {
     slug: 'canadian-airport-lounges-shower-access',
@@ -2130,22 +1941,54 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'priority-pass-lounges-canada',
-    title: 'The Complete Guide to Priority Pass Lounges in Canada (2026)',
-    excerpt: 'Every Priority Pass lounge in Canada listed by airport — Toronto, Vancouver, Calgary, Montreal and more. Peak hours, guest rules, and what to expect.',
+    title: 'Priority Pass Lounges in Canada: Every Airport and Every Card (2026)',
+    excerpt: 'Priority Pass in Canada is Amex-only. Every Priority Pass lounge, every card that includes it, and what changes on January 1, 2027 when the Amex Platinum drops to 6 + 6 visits.',
     coverImage: '/blog/guide-priority-pass-canada.png',
     publishedAt: '2026-06-05',
-    lastReviewed: '2026-08-25',
+    lastReviewed: '2026-09-11',
     category: 'Lounge Guides',
-    readingTime: '12 min read',
-    metaTitle: 'Priority Pass Lounges in Canada: Every Airport Guide (2026)',
-    metaDescription: 'Every Priority Pass lounge in Canada listed by airport — Toronto, Vancouver, Calgary, Montreal and more. Peak hours, guest rules, and what to expect. 2026.',
+    readingTime: '16 min read',
+    metaTitle: 'Priority Pass Lounges in Canada: Every Airport and Every Card (2026)',
+    metaDescription: 'Priority Pass in Canada is Amex-only — the Amex Platinum, Business Platinum and Scotiabank Platinum Amex are the three cards that include visits. 23 lounges at 8 confirmed airports. Verified September 11, 2026.',
     content: priorityPassContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: 'Card and lounge facts verified against issuer pages and Priority Pass\'s Canadian directory. Re-verified September 11, 2026; next scheduled review December 2026 when the Amex Platinum cap takes effect on January 1, 2027.',
     primaryCta: {
-      heading: 'Get Priority Pass with a Canadian credit card',
-      subheading: 'The Amex Platinum and Amex Aeroplan Reserve both include Priority Pass Select — compare current benefits.',
+      heading: 'Best cards with Priority Pass',
+      subheading: 'Filtered to the three Amex-issued cards that include Priority Pass visits — Amex Platinum, Business Platinum, Scotiabank Platinum Amex.',
       ctaLabel: 'Compare Priority Pass Cards',
       affiliateKey: 'finlywealth-lounge-access-cards',
     },
+    faqs: [
+      {
+        question: 'Which Canadian credit cards offer Priority Pass lounge access?',
+        answer: 'As of September 11, 2026, only three Canadian cards include Priority Pass visits: the American Express Platinum ($799), the Business Platinum from Amex ($799), and the Scotiabank Platinum American Express ($399, 10 visits per year). The American Express Aeroplan Reserve ($599) includes a Priority Pass membership with the annual fee waived, but every visit is charged at the prevailing rate. Every Visa and Mastercard premium card in Canada — including the TD Aeroplan Visa Infinite Privilege, CIBC Aeroplan Visa Infinite Privilege, Scotiabank Passport Visa Infinite and RBC Avion Visa Infinite Privilege — uses DragonPass (Visa Airport Companion or Mastercard Travel Pass) instead.',
+      },
+      {
+        question: 'What lounges are under Priority Pass in Canada?',
+        answer: 'Priority Pass lists 23 lounges at 8 confirmed Canadian airports as of September 11, 2026: Toronto Pearson (5 Plaza Premium + Be Relax spa; T1 international closed), Vancouver (5, Plaza Premium First excluded), Montréal-Trudeau (5, National Bank in a temporary space), Calgary (3), Edmonton (2), Ottawa (1), Winnipeg (1), and Toronto Billy Bishop (1). Québec City is pending — the Boréal Lounge by YQB opens in fall 2026 but Priority Pass acceptance is unconfirmed.',
+      },
+      {
+        question: 'Is it free to use a lounge with a Priority Pass?',
+        answer: 'It is not literally free — the membership fee or the card fee funds it. Direct Priority Pass memberships cost US$99 (Standard, pay-per-visit), US$329 (Standard Plus, 10 included) or US$469 (Prestige, unlimited). Guests always cost US$35 each. On the Amex Platinum, visits are covered by the $799 annual fee. On the Amex Aeroplan Reserve, the membership fee is waived but every visit is billed at the prevailing rate. If a lounge is at capacity, Priority Pass members can be refused entry.',
+      },
+      {
+        question: 'How do I get Priority Pass without paying for a membership in Canada?',
+        answer: 'Hold one of the three Canadian cards that include it: the Amex Platinum or Business Platinum ($799, unlimited visits through December 31, 2026, then capped from 2027), or the Scotiabank Platinum Amex ($399 with 10 visits a year). The Amex Aeroplan Reserve technically includes the membership too, but every visit is charged — so it does not replace a paid membership for cost purposes.',
+      },
+      {
+        question: 'Is Priority Pass better than DragonPass in Canada?',
+        answer: 'They are different networks with meaningful overlap. In practice the same Canadian lounge — the Aspire lounges at Ottawa, Montréal and Billy Bishop, the WestJet Elevation Lounge at Calgary, Plaza Premium at Toronto/Vancouver/Edmonton/Winnipeg, the SkyTeam Lounge at Vancouver — often accepts both. What differs is the visit allotment on your card and the overage rate: US$35 on Priority Pass vs US$32 on DragonPass. The network name matters less than how many visits your card includes.',
+      },
+      {
+        question: 'What happens to Amex Platinum Priority Pass access in 2027?',
+        answer: 'On January 1, 2027, unlimited Priority Pass and Plaza Premium access ends. A basic Amex Platinum cardholder gets 6 Priority Pass visits and 6 Plaza Premium visits per calendar year, with each guest entry consuming one of those visits. A supplementary cardholder gets 2 of each. The escape hatch: spend $20,000 on the account in a calendar year and unlimited access with one complimentary guest per network is restored for the rest of that year and all of the next. Amex is already counting 2026 spend toward the 2027 threshold.',
+      },
+      {
+        question: 'Can I pre-book a Priority Pass lounge in Canada?',
+        answer: 'Yes, at select locations. As of September 11, 2026 the Canadian pre-book list includes the Aspire Lounge International and Aspire Lounge Transborder at Calgary (YYC), the Aspire Salon at Ottawa (YOW), the Aspire Lounge at Billy Bishop (YTZ), and the National Bank Lounge at Montréal-Trudeau (YUL). Pre-booking carries a small fee but guarantees a seat that a full lounge cannot refuse.',
+      },
+    ],
   },
 ]
 
