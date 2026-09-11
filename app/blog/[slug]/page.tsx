@@ -222,11 +222,79 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             </div>
 
+            {/* Primary affiliate CTA — appears right below the byline for
+                readers who arrive with commercial intent. Also repeats at
+                the bottom of the article (before FAQ). */}
+            {post.primaryCta && (
+              <div className="mb-10 bg-primary text-white p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div className="flex-1">
+                  <span className="font-label-caps text-[10px] uppercase tracking-widest text-primary-fixed/70 block mb-2">Sponsored</span>
+                  <h3 className="font-headline-md text-headline-md text-primary-fixed mb-2">{post.primaryCta.heading}</h3>
+                  <p className="text-bone-white/80 text-sm leading-relaxed">{post.primaryCta.subheading}</p>
+                </div>
+                <a
+                  href={affiliate(post.primaryCta.affiliateKey as Parameters<typeof affiliate>[0])}
+                  target="_blank"
+                  rel={AFFILIATE_REL}
+                  className="shrink-0 bg-primary-fixed text-on-primary-fixed px-8 py-4 font-label-caps text-[10px] uppercase tracking-widest hover:bg-white transition-all"
+                >
+                  {post.primaryCta.ctaLabel}
+                </a>
+              </div>
+            )}
+
+            {/* Comparison cards — for multi-card comparison posts. Each card
+                is a mini-profile with an individual "See on FinlyWealth" CTA. */}
+            {post.comparisonCards && post.comparisonCards.length > 0 && (
+              <div className="mb-10">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {post.comparisonCards.map((c, i) => (
+                    <div key={i} className="bg-white border border-outline-variant/30 p-5 flex flex-col">
+                      <div className="mb-3">
+                        <span className="font-label-caps text-[10px] uppercase tracking-widest text-secondary block mb-1">{c.annualFee}/yr</span>
+                        <h4 className="font-bold text-primary leading-snug">{c.name}</h4>
+                      </div>
+                      <p className="text-secondary text-xs leading-relaxed flex-1 mb-4">{c.highlight}</p>
+                      <a
+                        href={affiliate(c.affiliateKey as Parameters<typeof affiliate>[0])}
+                        target="_blank"
+                        rel={AFFILIATE_REL}
+                        className="block text-center bg-primary text-white py-3 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-opacity"
+                      >
+                        {c.ctaLabel ?? `See ${c.name}`}
+                      </a>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[9px] text-secondary/50 mt-3 text-center">Sponsored — we may earn a commission when you apply through these links.</p>
+              </div>
+            )}
+
             <div
               data-speakable="intro"
               className="prose-article"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
+
+            {/* Closing affiliate CTA — same primary CTA repeated after content,
+                before FAQs. Readers who scrolled the whole article are the
+                highest-intent conversion cohort. */}
+            {post.primaryCta && (
+              <div className="mt-12 bg-champagne-glint/50 border border-primary/20 p-6 md:p-8 text-center">
+                <span className="font-label-caps text-[10px] uppercase tracking-widest text-secondary block mb-3">Ready to apply?</span>
+                <h3 className="font-headline-md text-headline-md text-primary mb-3">{post.primaryCta.heading}</h3>
+                <p className="text-secondary max-w-xl mx-auto mb-6 leading-relaxed">{post.primaryCta.subheading}</p>
+                <a
+                  href={affiliate(post.primaryCta.affiliateKey as Parameters<typeof affiliate>[0])}
+                  target="_blank"
+                  rel={AFFILIATE_REL}
+                  className="inline-block bg-primary text-white px-10 py-4 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-opacity"
+                >
+                  {post.primaryCta.ctaLabel}
+                </a>
+                <p className="text-[9px] text-secondary/50 mt-4">Sponsored — we may earn a commission when you apply.</p>
+              </div>
+            )}
 
             {/* Structured FAQ block — feeds FAQPage schema + gives readers scannable Q&A */}
             {post.faqs && post.faqs.length > 0 && (

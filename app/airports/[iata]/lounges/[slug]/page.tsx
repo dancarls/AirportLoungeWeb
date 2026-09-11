@@ -24,6 +24,28 @@ function dayPassAffiliate(loungeName: string) {
   return affiliate('priority-pass-membership')
 }
 
+// Route the "Best cards for this lounge" CTA to the most relevant FinlyWealth
+// category page based on which network the lounge belongs to.
+function loungeAccessCardsAffiliate(loungeName: string): {
+  href: string
+  ctaLabel: string
+  heading: string
+} {
+  const n = loungeName.toLowerCase()
+  if (n.includes('maple leaf') || n.includes('air canada') || n.includes('signature suite')) {
+    return {
+      href: affiliate('finlywealth-aeroplan-cards'),
+      ctaLabel: 'Compare Aeroplan Cards',
+      heading: 'Cards that unlock the Maple Leaf Lounge',
+    }
+  }
+  return {
+    href: affiliate('finlywealth-lounge-access-cards'),
+    ctaLabel: 'Compare Lounge-Access Cards',
+    heading: 'Cards that get you into this lounge',
+  }
+}
+
 interface Props { params: Promise<{ iata: string; slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -421,25 +443,33 @@ export default async function LoungeDetailPage({ params }: Props) {
           {/* Photo gallery */}
           <GalleryLightbox images={orderedImages} loungeName={l.name} />
 
-          {/* Sponsored slot — routed via affiliate registry (Priority Pass) */}
-          <div className="bg-primary text-white p-8 rounded-xl flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
-            <div className="relative z-10">
-              <span className="font-label-caps text-[10px] opacity-70 mb-2 block uppercase tracking-widest">Sponsored</span>
-              <h4 className="font-headline-md text-headline-md mb-2">Discover Priority Pass</h4>
-              <p className="font-body-md text-body-md opacity-80 max-w-md">
-                Access 1,600+ lounges worldwide — regardless of your airline or class. Apply today.
-              </p>
-            </div>
-            <a
-              href={affiliate('priority-pass-membership')}
-              target="_blank"
-              rel={AFFILIATE_REL}
-              className="relative z-10 bg-white text-primary px-8 py-3 rounded font-label-caps text-label-caps uppercase tracking-wider hover:bg-champagne-glint transition-colors shrink-0"
-            >
-              Learn More
-            </a>
-            <div className="absolute right-0 top-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20" />
-          </div>
+          {/* Sponsored slot — routes to FinlyWealth category page best matched
+              to this lounge's network (Aeroplan cards for MLL, general
+              lounge-access cards otherwise). This is the primary in-content
+              conversion path for the lounge pages. */}
+          {(() => {
+            const cta = loungeAccessCardsAffiliate(l.name)
+            return (
+              <div className="bg-primary text-white p-8 rounded-xl flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
+                <div className="relative z-10">
+                  <span className="font-label-caps text-[10px] opacity-70 mb-2 block uppercase tracking-widest">Sponsored</span>
+                  <h4 className="font-headline-md text-headline-md mb-2">{cta.heading}</h4>
+                  <p className="font-body-md text-body-md opacity-80 max-w-md">
+                    Compare current Canadian credit cards with airport-lounge benefits, welcome bonuses, and any active cashback rebates.
+                  </p>
+                </div>
+                <a
+                  href={cta.href}
+                  target="_blank"
+                  rel={AFFILIATE_REL}
+                  className="relative z-10 bg-white text-primary px-8 py-3 rounded font-label-caps text-label-caps uppercase tracking-wider hover:bg-champagne-glint transition-colors shrink-0"
+                >
+                  {cta.ctaLabel}
+                </a>
+                <div className="absolute right-0 top-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20" />
+              </div>
+            )
+          })()}
 
           {/* Access eligibility */}
           {accessTypes.length > 0 && (

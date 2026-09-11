@@ -19,6 +19,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/about`,         priority: 0.7, changeFrequency: 'monthly', lastModified: NOW },
     { url: `${BASE}/blog`,          priority: 0.8, changeFrequency: 'weekly',  lastModified: NOW },
     { url: `${BASE}/operators`,     priority: 0.6, changeFrequency: 'monthly', lastModified: NOW },
+    { url: `${BASE}/credit-cards`,  priority: 0.85, changeFrequency: 'weekly',  lastModified: NOW },
+    { url: `${BASE}/credit-cards/best-for-airport-lounge-access`, priority: 0.9, changeFrequency: 'weekly', lastModified: NOW },
+    { url: `${BASE}/credit-cards/aeroplan-cards-compared`,        priority: 0.9, changeFrequency: 'weekly', lastModified: NOW },
+    { url: `${BASE}/credit-cards/rebates`,                        priority: 0.85, changeFrequency: 'weekly', lastModified: NOW },
     { url: `${BASE}/privacy`,       priority: 0.2, changeFrequency: 'yearly',  lastModified: NOW },
     { url: `${BASE}/terms`,         priority: 0.2, changeFrequency: 'yearly',  lastModified: NOW },
   ]

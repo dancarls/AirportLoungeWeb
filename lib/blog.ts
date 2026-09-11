@@ -3,6 +3,32 @@ export interface BlogPostFAQ {
   answer: string
 }
 
+/**
+ * Primary affiliate CTA rendered at the top and bottom of the post.
+ * `affiliateKey` matches a key in `lib/affiliates.ts` — the render layer
+ * calls `affiliate(key)` to produce the tracked URL, so IDs / UTM tagging
+ * are centralized rather than embedded in the post body.
+ */
+export interface BlogPostCta {
+  heading: string
+  subheading: string
+  ctaLabel: string
+  affiliateKey: string
+}
+
+/**
+ * Comparison-cards module for multi-card posts (Aeroplan comparison, best-of
+ * lists). Rendered inline near the top of the article. Each card links
+ * through the affiliate registry.
+ */
+export interface BlogPostComparisonCard {
+  name: string
+  annualFee: string
+  highlight: string
+  affiliateKey: string
+  ctaLabel?: string
+}
+
 export interface BlogPost {
   slug: string
   title: string
@@ -24,6 +50,10 @@ export interface BlogPost {
   authorName?: string
   /** Short author bio for the visible byline block. */
   authorBio?: string
+  /** Primary affiliate CTA rendered at the top + bottom of the article. */
+  primaryCta?: BlogPostCta
+  /** Comparison-card module rendered near the top of the article (below byline). */
+  comparisonCards?: BlogPostComparisonCard[]
 }
 
 const priorityPassContent = `
@@ -1446,196 +1476,240 @@ const guestFeesContent = `
 `
 
 const amexPlatinumContent = `
-<p data-speakable="intro"><strong>Every lounge the Canadian Amex Platinum unlocks, exactly what it gives you at the door, and where the card falls short — plus how it stacks up against the US version and the Aeroplan Reserve. Updated August 2026.</strong></p>
+<p data-speakable="intro"><strong>The Canadian Platinum Card from American Express costs $799 a year. It opens Plaza Premium, Priority Pass Select, Aspire, Centurion and Delta Sky Club lounges plus other partners. Through December 31, 2026 Plaza Premium and Priority Pass visits are unlimited, with one guest included. From January 1, 2027 those two networks are capped at 6 visits each per year (2 each on a supplementary card) unless you spend $20,000 in a calendar year. Amex is already counting 2026 spend. There are no Centurion Lounges in Canada, Delta Sky Club needs a same-day Delta flight, and the card does not open Maple Leaf Lounges. After the $200 travel and $200 dining credits, the net cost is about $399 — roughly 8 lounge entries a year at $50 each.</strong></p>
 
-<p>The American Express Platinum Card in Canada carries an $899 annual fee and one of the widest airport lounge benefit packages available to any Canadian traveller. Cardholders receive complimentary Priority Pass Select membership, direct access to American Express Centurion Lounges (outside Canada), Delta Sky Club access when flying Delta, and Plaza Premium Lounge visits through the International Airport Lounge Program — collectively adding up to over 1,600 lounges worldwide.</p>
+<p>You are not paying $799 for a card. You are paying for a quieter place to sit before a flight, and the fee is fair only if you use it. This guide answers the questions people actually search: which lounges the card opens in Canada, how many guests you can bring, what the January 2027 cap means, and how many visits it takes to come out ahead.</p>
 
-<p>But the on-the-ground reality in Canada is more nuanced than the marketing suggests. There are no Centurion Lounges in Canada. Guest rules changed in early 2025 and now cost cardholders more. And a few of the biggest Canadian lounges — including every Air Canada Maple Leaf Lounge — remain firmly outside the Amex Platinum network.</p>
-
-<p>This guide covers exactly which Canadian airport lounges you can enter with an Amex Platinum, what it costs to bring guests, how the Canadian version differs from the US one, and when the Aeroplan Reserve is actually the better card for lounge access.</p>
-
-<h2>The Short Answer: What Amex Platinum Canada Gets You at Canadian Airports</h2>
-
-<p>At every major Canadian airport hub, the Amex Platinum Canada unlocks access to the full Plaza Premium and Aspire lounge network via Priority Pass Select. It does <em>not</em> unlock any Air Canada Maple Leaf Lounge. Below is the quick-reference summary — full details follow further down.</p>
+<h2>Amex Platinum lounge access at a glance</h2>
 
 <table>
   <thead>
-    <tr>
-      <th>Benefit</th>
-      <th>What Canadian Amex Platinum includes</th>
-    </tr>
+    <tr><th>Network</th><th>Where it matters for Canadians</th><th>Visits in 2026</th><th>Visits from Jan 1, 2027</th><th>Guests</th></tr>
   </thead>
   <tbody>
-    <tr><td>Priority Pass Select</td><td>Unlimited complimentary visits; 1 free guest per visit (2nd guest onwards ~$35 USD each)</td></tr>
-    <tr><td>Centurion Lounges</td><td>Yes — but no locations in Canada; requires travel to US, Europe, Asia, or Australia</td></tr>
-    <tr><td>Delta Sky Club</td><td>Only when travelling on a same-day Delta flight; ends February 2027 per Amex changes</td></tr>
-    <tr><td>Plaza Premium (Intl Airport Lounge Program)</td><td>Up to 10 complimentary visits per calendar year, worldwide</td></tr>
-    <tr><td>Air Canada Maple Leaf Lounge</td><td>❌ Not included at any price. Requires TD/CIBC/Amex Aeroplan card or AC status.</td></tr>
-    <tr><td>WestJet Elevation Lounge</td><td>Priority Pass entry accepted for cardholder; guests pay $59–$65 CAD walk-in</td></tr>
+    <tr><td>Plaza Premium</td><td>Toronto Pearson, Vancouver, Edmonton, Winnipeg — plus Asia, UK and Middle East hubs</td><td>Unlimited</td><td>6 / year (2 on a supplementary card)*</td><td>1 included through 2026; uses a visit from 2027</td></tr>
+    <tr><td>Priority Pass Select</td><td>Most independent lounges worldwide; enrolment required</td><td>Unlimited</td><td>6 / year (2 supplementary)*</td><td>1 included through 2026; uses a visit from 2027</td></tr>
+    <tr><td>Aspire / Swissport</td><td>Calgary, Montreal, Ottawa, Halifax, Winnipeg; many European airports</td><td>Unlimited</td><td>Unlimited</td><td>Usually 1 companion — confirm on the lounge page</td></tr>
+    <tr><td>Centurion Lounges</td><td>None in Canada. Nearest: Seattle, New York JFK / LaGuardia, plus 20+ US and international sites</td><td>Unlimited</td><td>Unlimited</td><td>Up to 2 for Canadian cardholders</td></tr>
+    <tr><td>Delta Sky Club</td><td>US hubs, only when flying Delta same day, within 3 hours of departure</td><td>Unlimited</td><td>Unlimited</td><td>None included; pay per guest</td></tr>
+    <tr><td>Lufthansa lounges</td><td>Frankfurt, Munich, other Lufthansa Group airports</td><td>Ends Oct 1, 2026</td><td>Not included</td><td>n/a</td></tr>
   </tbody>
 </table>
 
-<h2>Every Priority Pass Lounge in Canada Accessible With Amex Platinum</h2>
+<p><em>*Unlimited again for the rest of the year and the whole following year once $20,000 is spent on the account in a calendar year. Verified September 11, 2026.</em></p>
 
-<p>Because Amex Platinum Canada includes an unlimited Priority Pass Select membership, cardholders have access to every Canadian lounge in the Priority Pass network. Below is the complete list, airport by airport, with the specific access rules that apply to Amex Platinum holders.</p>
+<h2>The major lounge-access change coming in 2027</h2>
 
-<h3>Toronto Pearson International Airport (YYZ)</h3>
+<p>In October 2025, American Express Canada put a cap on the two busiest networks on the card. From January 1, 2027, a basic cardholder gets 6 Plaza Premium visits and 6 Priority Pass visits per calendar year. A supplementary cardholder gets 2 of each. Each person who walks in uses one visit, so a guest costs you a visit or pays the lounge's own entry fee.</p>
 
-<p>Pearson has the largest Priority Pass footprint in Canada. Six Plaza Premium Lounges plus a Be Relax Spa credit are accessible to Amex Platinum cardholders — across both Terminal 1 and Terminal 3, covering Domestic, US Transborder, and International departures.</p>
-
-<ul>
-  <li>Plaza Premium Lounge — Terminal 1, Domestic Departures</li>
-  <li>Plaza Premium Lounge — Terminal 1, International Departures</li>
-  <li>Plaza Premium Lounge — Terminal 1, US Transborder (before US customs)</li>
-  <li>Plaza Premium Lounge — Terminal 3, Domestic Departures</li>
-  <li>Plaza Premium Lounge — Terminal 3, International Departures</li>
-  <li>Plaza Premium Lounge — Terminal 3, US Transborder (before US customs)</li>
-  <li>Be Relax Spa — Terminal 1 (spa credit alternative)</li>
-</ul>
-
-<blockquote>
-<p>The US Transborder lounges at YYZ are located <em>before</em> US customs. Once you clear US CBP pre-clearance, you cannot return to any lounge. Visit the transborder Plaza Premium <em>before</em> clearing customs on every US-bound flight.</p>
-</blockquote>
-
-<h3>Vancouver International Airport (YVR)</h3>
-
-<p>YVR is arguably the best Priority Pass airport in Canada. Amex Platinum cardholders can access:</p>
-
-<ul>
-  <li><strong>SkyTeam Lounge</strong> — International Terminal, Gate D53. Widely rated among the top Priority Pass lounges in the world.</li>
-  <li>Plaza Premium Lounge — International Departures (open 24 hours)</li>
-  <li>Plaza Premium Lounge — US Departures</li>
-  <li>Plaza Premium Lounge — Domestic (Gate B15)</li>
-  <li>Plaza Premium Lounge — Domestic (Gate C29, Pier C)</li>
-</ul>
-
-<h3>Calgary International Airport (YYC)</h3>
-
-<ul>
-  <li><strong>WestJet Elevation Lounge</strong> — Concourse B/C. Priority Pass eligible, but PP members are the first turned away at capacity — arrive early.</li>
-  <li>Aspire Lounge International — Concourse D</li>
-  <li>Aspire Lounge US Transborder — Concourse E (before US customs)</li>
-</ul>
-
-<h3>Montréal-Trudeau International Airport (YUL)</h3>
-
-<ul>
-  <li>National Bank Lounge — International departures only</li>
-  <li>Air France Lounge (operated by Plaza Premium) — International departures only</li>
-</ul>
-
-<blockquote>
-<p>YUL is the most limited Priority Pass airport in Canada. Neither full lounge covers domestic or US departures. Amex Platinum cardholders flying domestic or transborder from YUL may only qualify for a dining credit at a participating restaurant, depending on membership tier.</p>
-</blockquote>
-
-<h3>Edmonton, Ottawa, Winnipeg, Québec City, Billy Bishop</h3>
-
-<ul>
-  <li><strong>Edmonton (YEG)</strong> — Plaza Premium Lounge (Domestic and International) plus a separate Plaza Premium Lounge for US Transborder passengers.</li>
-  <li><strong>Ottawa (YOW)</strong> — Aspire Salon Lounge, covering Domestic and International departures.</li>
-  <li><strong>Winnipeg (YWG)</strong> — Plaza Premium Lounge past the main security checkpoint (Domestic and International only, no US Transborder).</li>
-  <li><strong>Québec City (YQB)</strong> — V.I.P. Lounge by Club Med (Domestic and International).</li>
-  <li><strong>Toronto Billy Bishop (YTZ)</strong> — Aspire Lounge / Air Canada Café (Domestic only).</li>
-</ul>
-
-<h2>Do Amex Centurion Lounges Exist in Canada?</h2>
-
-<p><strong>No. As of August 2026, there are no Amex Centurion Lounges anywhere in Canada.</strong> The Centurion Lounge network operates 30+ locations across the United States, and select international sites in London Heathrow, Hong Kong, Sydney, Buenos Aires, Mumbai, and elsewhere — but none in Toronto, Vancouver, Montréal, Calgary, or any other Canadian airport.</p>
-
-<p>Canadian Amex Platinum cardholders travelling through the US can use any Centurion Lounge on the day of a same-day US departure or arrival, with two free guests included. But if you rarely travel to the US, this benefit provides no direct Canadian value.</p>
-
-<h2>Guest Rules: How Much It Costs to Bring Someone With You</h2>
-
-<p>This is the most important rule change of the last two years and where many cardholders get caught off guard.</p>
-
-<p>As of February 2025, the Canadian Amex Platinum includes <strong>one free guest per visit</strong> at Priority Pass lounges. Every additional guest is charged approximately $35 USD per person per visit, billed to your Amex statement in Canadian dollars at the exchange rate of the day. This is a downgrade from the previous unlimited-guest policy that many long-time cardholders remember.</p>
-
-<p>The US Amex Platinum, by comparison, still includes <strong>two free guests</strong> per Priority Pass visit — a real difference for families and business travel groups. Travellers who split their time between the US and Canada sometimes hold the US card for this reason.</p>
+<p>There is an escape hatch: spend $20,000 on the account in a calendar year and access is unlimited for the rest of that year and all of the next. Amex is already counting 2026 spend, so $20,000 charged in 2026 buys unlimited access for 2027. That is about $1,670 a month. Centurion, Delta Sky Club, Aspire, Swissport and the other partner lounges keep their current rules.</p>
 
 <table>
   <thead>
-    <tr><th>Lounge Network</th><th>Amex Platinum Canada guest rule</th><th>Extra guest cost</th></tr>
+    <tr><th>Year and scenario</th><th>Plaza Premium visits</th><th>Priority Pass visits</th><th>Combined</th></tr>
   </thead>
   <tbody>
-    <tr><td>Priority Pass Plaza Premium / Aspire / SkyTeam</td><td>1 free guest per visit</td><td>~$35 USD each additional</td></tr>
-    <tr><td>WestJet Elevation Lounge (YYC / YVR)</td><td>0 free guests — PP covers cardholder entry only</td><td>$59–$65 CAD + GST walk-in for guests</td></tr>
-    <tr><td>Centurion Lounges (outside Canada)</td><td>2 free guests (or 1 guest + up to 2 children under 18)</td><td>$50 USD per additional guest</td></tr>
-    <tr><td>Delta Sky Club (Delta flights only, sunsetting Feb 2027)</td><td>0 free guests</td><td>$50 USD per guest</td></tr>
-    <tr><td>Air Canada Maple Leaf Lounge</td><td>Not eligible at any tier</td><td>N/A</td></tr>
+    <tr><td>2026, any spend level</td><td>Unlimited</td><td>Unlimited</td><td>Unlimited</td></tr>
+    <tr><td>2027, spend under $20,000</td><td>6</td><td>6</td><td>12 combined visits</td></tr>
+    <tr><td>2027, on a supplementary card</td><td>2</td><td>2</td><td>4 combined visits</td></tr>
+    <tr><td>2027, after $20,000 spend in 2026</td><td>Unlimited</td><td>Unlimited</td><td>Unlimited</td></tr>
   </tbody>
 </table>
 
-<h2>Amex Platinum Canada vs Amex Aeroplan Reserve: Which Is Better for Canadian Lounge Access?</h2>
+<p>One more date matters: Lufthansa lounges leave the Global Lounge Collection on October 1, 2026. A Frankfurt or Munich connection after that will not open a Lufthansa Business Lounge with this card.</p>
 
-<p>For travellers who fly Air Canada more than any other airline, the Amex Aeroplan Reserve ($599 annual fee) is often the smarter lounge card despite its lower price — because it unlocks the one network Amex Platinum cannot: the Air Canada Maple Leaf Lounge.</p>
+<h2>Which airport lounges does Amex Platinum Canada include?</h2>
+
+<h3>Plaza Premium lounges</h3>
+
+<p>Plaza Premium is the network you will use most in Canada. It runs the independent lounges at Toronto Pearson, Vancouver, Edmonton and Winnipeg, and big hubs across Asia, London and the Middle East. Show your physical Platinum Card and a same-day boarding pass at the door. No enrolment is needed. Access is subject to space, and busy lounges do turn people away at peak times.</p>
+
+<h3>Priority Pass Select lounges</h3>
+
+<p>Priority Pass is the largest independent lounge program in the world. The Platinum Card includes a Priority Pass Select membership, but you must enrol first — through Amex chat or by phone. Then use the Priority Pass app or digital card at the lounge. Some Priority Pass locations now also accept the Platinum Card itself, but do not count on it: enrol before your first trip. Priority Pass restaurant credits are not part of the Amex version of the membership.</p>
+
+<h3>Centurion Lounges</h3>
+
+<p>Centurion Lounges are Amex's own. The food and design are a clear step above the rest of the collection. There are none in Canada. The closest for most Canadians are Seattle, New York JFK and LaGuardia, and the rest of the US network. You need a same-day boarding pass and can enter within 3 hours of departure. Canadian cardholders can bring up to two guests, which is more generous than the US card's current rule at many locations.</p>
+
+<blockquote>
+<p>Centurion guest rules have become a source of contradictory third-party reporting. American Express's Canadian benefits language allows up to two companions at US and selected international locations, but individual lounge rules can differ. Check the specific Centurion Lounge in the Amex lounge finder before you fly.</p>
+</blockquote>
+
+<h3>Delta Sky Clubs</h3>
+
+<p>This is airline-conditional access, not general access. You get in only when flying Delta that day, within 3 hours of departure, or any time during a layover. No guests are included; Delta charges per guest at the door (roughly US$50 per person as of publication). For a Canadian who flies Air Canada or WestJet, this benefit is worth little.</p>
+
+<h3>Aspire, Swissport and other partners</h3>
+
+<p>Aspire runs the Platinum-eligible lounges at Calgary, Montreal (domestic), Ottawa and Halifax. Executive Lounges by Swissport cover many European and UK regional airports. Escape lounges are part of the broader collection where available. None of these are affected by the 2027 cap. Check each lounge's page in the Amex lounge finder for hours, terminal and guest policy before you go.</p>
+
+<h2>Amex Platinum lounge guest rules</h2>
 
 <table>
   <thead>
-    <tr><th></th><th>Amex Platinum Canada ($899/yr)</th><th>Amex Aeroplan Reserve ($599/yr)</th></tr>
+    <tr><th>Lounge</th><th>Guests included, 2026</th><th>Guests from 2027</th><th>Notes</th></tr>
   </thead>
   <tbody>
-    <tr><td>Priority Pass Select</td><td>✅ Unlimited, 1 free guest</td><td>✅ Unlimited, unlimited free guests</td></tr>
-    <tr><td>Air Canada Maple Leaf Lounge</td><td>❌ No access</td><td>✅ Unlimited access on same-day AC flights, 1 free guest</td></tr>
-    <tr><td>Centurion Lounge (outside Canada)</td><td>✅ Full access, 2 free guests</td><td>❌ No access</td></tr>
-    <tr><td>Delta Sky Club</td><td>✅ On Delta flights until Feb 2027</td><td>❌ No access</td></tr>
-    <tr><td>Best for</td><td>US and international travellers</td><td>Air Canada loyalists in Canada</td></tr>
+    <tr><td>Plaza Premium</td><td>1</td><td>Uses one of your visits</td><td>Children under 2 usually admitted with an adult</td></tr>
+    <tr><td>Priority Pass Select</td><td>1</td><td>Uses one of your visits</td><td>Extra guests pay the lounge's fee</td></tr>
+    <tr><td>Centurion Lounge</td><td>Up to 2</td><td>Up to 2</td><td>Canada-issued cards; same-day boarding pass</td></tr>
+    <tr><td>Aspire (YYC, YUL, YOW, YHZ)</td><td>1 companion (varies)</td><td>1 companion (varies)</td><td>Confirm on the lounge page</td></tr>
+    <tr><td>Delta Sky Club</td><td>0</td><td>0</td><td>Pay per guest; same-day Delta flight</td></tr>
   </tbody>
 </table>
 
-<blockquote>
-<p><strong>Editor's take:</strong> If your travel is 80%+ Air Canada out of Canadian airports, the Aeroplan Reserve delivers better lounge value than the Platinum. If you travel internationally through non-Star Alliance carriers, or fly Delta / United frequently, the Platinum wins. Some heavy travellers hold both — the Priority Pass guest allowance from the Reserve stacks with the Centurion Lounge access from the Platinum.</p>
-</blockquote>
+<p>A guest is anyone travelling with you, including your spouse and older children. Take a family of four. In 2026, one Platinum Card plus a supplementary card covers two people and two guests. In 2027 that same trip burns four visits from your two allotments.</p>
 
-<h2>Amex Platinum Canada vs US Amex Platinum for Canadian Lounges</h2>
-
-<p>The two cards look similar on paper but differ meaningfully at Canadian lounges:</p>
-
-<ul>
-  <li><strong>Priority Pass guests:</strong> Canadian card = 1 free guest per visit; US card = 2 free guests. In Canada, both cards give you access to the same physical lounges.</li>
-  <li><strong>Air Canada Maple Leaf Lounges:</strong> Neither card provides access. Only Aeroplan-branded cards or Air Canada elite status open MLLs.</li>
-  <li><strong>Annual fee:</strong> Canadian card is $899 CAD; US card is $695 USD (approximately $945 CAD at 2026 rates), so effectively comparable.</li>
-  <li><strong>Centurion Lounges in Canada:</strong> Irrelevant — neither card unlocks a benefit that does not physically exist here.</li>
-  <li><strong>Foreign exchange:</strong> The Canadian card does not charge foreign transaction fees on USD purchases, which offsets some Priority Pass guest charges.</li>
-</ul>
-
-<h2>When Amex Platinum Canada Is Worth It for Lounges Alone</h2>
-
-<p>Setting aside the card's other benefits — the travel credits, hotel status, transfer partners — here is a rough break-even math on lounge access alone. A single Priority Pass Standard membership costs $99 USD (~$135 CAD) per year plus $35 USD per visit. Amex Platinum's $899 annual fee is only recovered on lounge visits alone if you use the network heavily:</p>
-
-<ul>
-  <li>~24 solo Priority Pass visits per year matches the raw entry cost of a standalone Prestige membership.</li>
-  <li>~10 visits with one guest each recovers most of the fee versus paying à la carte guest fees.</li>
-  <li>The card is a stronger value when combined with the $200 travel credit, hotel status, and transfer partners — treat the lounge benefit as one lever of several, not the whole justification.</li>
-</ul>
-
-<blockquote>
-<p><strong>Practical rule:</strong> If you travel through YYZ, YVR, or YYC more than 6 times per year with a companion, the Amex Platinum's Priority Pass benefit alone justifies most of the annual fee. If you rarely bring a guest and fly primarily Air Canada, the Aeroplan Reserve is the better card at $300 less per year.</p>
-</blockquote>
-
-<h2>Six Practical Rules for Using Amex Platinum at Canadian Lounges</h2>
+<h2>How to activate and use lounge access</h2>
 
 <ol>
-  <li><em>Activate your Priority Pass Select membership through the Amex portal</em> before your first flight. The card does not auto-enroll — you must enroll and add each authorized user separately.</li>
-  <li><em>Use the Priority Pass app to scan in at every visit.</em> Present the digital card plus a same-day boarding pass. The physical card is optional.</li>
-  <li><em>At WestJet Elevation, arrive at least two hours before departure.</em> Priority Pass members are explicitly the first turned away when the lounge is at capacity. WestJet-status guests get priority.</li>
-  <li><em>Visit the US Transborder lounge before clearing US customs at YYZ, YVR, YYC, YUL, YWG, and YEG.</em> Once you pass through US CBP, you cannot return.</li>
-  <li><em>Confirm guest counts before you travel.</em> The 1-free-guest limit took effect in early 2025; a second guest is charged ~$35 USD at the door.</li>
-  <li><em>Do not attempt Maple Leaf Lounge access on Amex Platinum alone.</em> You will be declined at the door. Air Canada MLLs require a same-day AC ticket in premium cabin, Aeroplan 50K+ status, Star Alliance Gold, Maple Leaf Club membership, or a qualifying Aeroplan credit card.</li>
+  <li><em>Enrol in Priority Pass now.</em> Open the Amex app or website, use chat, or call the number on the back of the card and ask for Priority Pass Select enrolment. Download the Priority Pass app and add the digital card. This is the step most new cardholders skip.</li>
+  <li><em>Carry the physical Platinum Card.</em> Plaza Premium, Aspire and Centurion Lounges check the card itself plus a same-day boarding pass. A photo of the card is not accepted.</li>
+  <li><em>Check the lounge finder before you leave home.</em> Amex Canada's lounge finder lists every eligible lounge with its terminal, hours and guest rule. Lounges close, move and change terms — Toronto Pearson lost its Terminal 1 international Plaza Premium on December 27, 2025.</li>
+  <li><em>Arrive inside the entry window.</em> Centurion, Aspire and Delta lounges admit you within 3 hours of departure. Plaza Premium and Priority Pass lounges usually do not set a window but can refuse entry when full.</li>
+  <li><em>Track your visits from 2027.</em> Amex will show remaining visits in your account. Two networks, two counters. A guest counts.</li>
 </ol>
 
-<h2>What Amex Platinum Canada Does Not Do at Canadian Airports</h2>
+<h2>Which Canadian airports have useful coverage?</h2>
 
-<p>Clarity matters more than optimism when you are at the gate. The Canadian Amex Platinum does <strong>not</strong>:</p>
+<h3>Toronto Pearson (YYZ)</h3>
 
 <ul>
-  <li>Provide access to any Air Canada Maple Leaf Lounge or the Air Canada Signature Suite.</li>
-  <li>Open the Desjardins Odyssey Lounges at YUL (DragonPass only, not Priority Pass).</li>
-  <li>Guarantee entry when a Priority Pass lounge hits capacity — even paying members are turned away.</li>
-  <li>Give access to the Cathay Pacific Lounge at YVR (oneworld and CX-ticket only).</li>
-  <li>Include Delta Sky Club access after February 2027, when Amex is ending that benefit tier-wide.</li>
+  <li><strong>Terminal 1 domestic and transborder:</strong> Plaza Premium lounges in both zones, plus the Plaza Premium Infield lounge for bus-gate flights.</li>
+  <li><strong>Terminal 1 international:</strong> the Plaza Premium lounge near Gate E77 closed on December 27, 2025 for a full rebuild. No reopening date as of September 11, 2026. Priority Pass lists no replacement in this zone — a T1 international departure currently has no Amex-eligible lounge.</li>
+  <li><strong>Terminal 3:</strong> Plaza Premium domestic, international and transborder lounges. The KLM Crown Lounge is a Priority Pass option for international departures.</li>
 </ul>
 
-<p><em>Every access rule in this guide was reviewed against American Express Canada's official cardholder benefits terms, Priority Pass's published Canadian lounge directory, and operator confirmation as of August 2026. Card benefits can change without notice — always confirm with Amex Canada before applying.</em></p>
+<p>No Maple Leaf Lounge access with this card, in either terminal.</p>
+
+<h3>Vancouver (YVR)</h3>
+
+<ul>
+  <li><strong>Domestic:</strong> Plaza Premium at Gate B15 (full lounge, 5 am to 10 pm) and a smaller Plaza Premium outpost at Gate C29 built for short stays.</li>
+  <li><strong>International and US departures:</strong> Plaza Premium options in these zones have changed several times. Check the finder for the current Priority Pass options.</li>
+</ul>
+
+<h3>Calgary (YYC)</h3>
+
+<ul>
+  <li><strong>International, Concourse D:</strong> Aspire Lounge, entry within 3 hours of departure.</li>
+  <li><strong>Transborder (US), Concourse E:</strong> Aspire Lounge, 4:30 am to 7 pm.</li>
+  <li><strong>Domestic:</strong> the WestJet Elevation Lounge admits Priority Pass cardholders only (no guests on the Priority Pass benefit) and only for domestic flights.</li>
+</ul>
+
+<p>No Maple Leaf Lounge access. Aspire visits are not part of the 2027 cap.</p>
+
+<h3>Montreal-Trudeau (YUL) and Ottawa (YOW)</h3>
+
+<ul>
+  <li><strong>YUL Domestic:</strong> the Aspire American Express Lounge near Gates 1 and 2, 5 am to 9 pm, entry within 3 hours of departure.</li>
+  <li><strong>YUL International:</strong> the National Bank Lounge near Gate 53 (an Aspire lounge), same 3-hour window. The Air France–KLM Lounge by Plaza Premium is also in the international zone, reserved for Air France and KLM passengers in the late afternoon.</li>
+  <li><strong>YOW:</strong> Aspire Salon on Level 2 by Gate 18. Primary cardholder plus one travelling companion. Not available for US-bound departures after pre-clearance.</li>
+</ul>
+
+<h2>Does Amex Platinum include Maple Leaf Lounge access?</h2>
+
+<p>No, and this is the most common misunderstanding about the card. Air Canada's Maple Leaf Lounges are not in the Global Lounge Collection. The Platinum Card earns Membership Rewards points that convert to Aeroplan, but points are not lounge access.</p>
+
+<p>If Maple Leaf Lounge access is the goal, the cards that deliver it are the American Express Aeroplan Reserve Card ($599) and the TD Aeroplan Visa Infinite Privilege Card ($599) — both require a same-day Air Canada or Star Alliance flight. Many frequent flyers hold both: the Platinum for everything else, and an Aeroplan card for Maple Leaf Lounges.</p>
+
+<h2>Is Amex Platinum worth $799 for lounge access?</h2>
+
+<p>Start with the net cost. Most people find the $200 travel credit and the $200 dining credit easy to use. That brings the card down to $399. The NEXUS credit, hotel status and insurance are worth something too, but only you know how much. Then price a lounge entry: walk-in rates at Canadian independent lounges run roughly $45 to $85 per person. Plaza Premium walk-ins at Pearson and Vancouver are usually higher. $50 per entry is a fair, conservative number.</p>
+
+<table>
+  <thead>
+    <tr><th>What you count against the fee</th><th>Net cost</th><th>Solo entries at $50</th><th>Couple trips at $100</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Full fee, no credits used</td><td>$799</td><td>16</td><td>8</td></tr>
+    <tr><td>Fee minus one $200 credit</td><td>$599</td><td>12</td><td>6</td></tr>
+    <tr><td>Fee minus travel and dining credits</td><td>$399</td><td>8</td><td>4</td></tr>
+  </tbody>
+</table>
+
+<blockquote>
+<p><strong>The 2027 catch:</strong> without $20,000 of spend, a basic cardholder gets 12 capped visits across Plaza Premium and Priority Pass. Twelve visits at $50 is $600 — still above the $399 net cost. But a couple who fly together will use all twelve in six trips. Aspire, Centurion, Swissport and Delta visits are not capped, so a mixed lounge strategy stays viable.</p>
+</blockquote>
+
+<h3>Solo traveller</h3>
+<p>Roughly 8 lounge entries a year at $50 each covers the $399 net cost. If you fly 6+ times a year through Canadian hubs where Plaza Premium is available, the card breaks even comfortably.</p>
+
+<h3>Couple</h3>
+<p>Four trips a year at two entries each covers the fee. Watch the 2027 cap: 12 combined visits is six couple trips. After that, Aspire and Centurion visits still count.</p>
+
+<h3>Family</h3>
+<p>Model extra guest charges and location rules. Beginning in 2027, guest entries at Plaza Premium and Priority Pass consume visit entitlements, so a six-visit allowance disappears fast. A $250 supplementary Platinum can give a second adult independent access, but the supplementary card's 2027 allowance is only 2+2 visits.</p>
+
+<h2>Amex Platinum versus other Canadian lounge cards</h2>
+
+<table>
+  <thead>
+    <tr><th>Card</th><th>Annual fee</th><th>Lounge access</th><th>Best for</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Amex Platinum</td><td>$799</td><td>Global Lounge Collection; unlimited Plaza / Priority Pass in 2026, 6 + 6 from 2027 (unlimited with $20,000 spend)</td><td>Frequent flyers on any airline who use the credits</td></tr>
+    <tr><td>Amex Business Platinum</td><td>$799</td><td>Same lounge terms as the personal card</td><td>Owners who can put business spend toward the $20,000</td></tr>
+    <tr><td>Amex Aeroplan Reserve</td><td>$599</td><td>Maple Leaf Lounges on same-day Air Canada / Star Alliance flights</td><td>Air Canada loyalists</td></tr>
+    <tr><td>TD Aeroplan Visa Infinite Privilege</td><td>$599</td><td>Unlimited Maple Leaf Lounge on Air Canada flights + 6 DragonPass visits</td><td>Air Canada flyers who also fly other airlines</td></tr>
+    <tr><td>BMO eclipse Visa Infinite Privilege</td><td>$599</td><td>6 DragonPass visits; $200 annual lifestyle credit</td><td>BMO clients who want a flat credit</td></tr>
+    <tr><td>CIBC Aventura Visa Infinite Privilege</td><td>$499</td><td>6 DragonPass visits</td><td>Higher-income CIBC clients ($150k personal / $200k household)</td></tr>
+    <tr><td>RBC Avion Visa Infinite Privilege</td><td>$399</td><td>6 DragonPass visits</td><td>RBC clients who fly a few times a year</td></tr>
+    <tr><td>Scotiabank Passport Visa Infinite</td><td>$150 (first year sometimes waived)</td><td>6 DragonPass visits; no foreign transaction fee</td><td>Occasional travellers who want no FX fee</td></tr>
+    <tr><td>National Bank World Elite Mastercard</td><td>$150</td><td>Unlimited National Bank Lounge at Montreal + DragonPass</td><td>Montreal-based flyers</td></tr>
+  </tbody>
+</table>
+
+<p><em>Fees and lounge terms verified September 11, 2026. DragonPass visits are per calendar year; extra visits cost about US$32 each. Income requirements apply to all Visa Infinite Privilege cards.</em></p>
+
+<h2>Who should get the Amex Platinum — and who should not</h2>
+
+<h3>Strengths</h3>
+<ul>
+  <li>Widest lounge network on any Canadian card: five networks, 1,550+ lounges.</li>
+  <li>Unlimited Plaza Premium and Priority Pass visits through December 31, 2026 with one guest included.</li>
+  <li>Centurion access with two guests when travelling through the US.</li>
+  <li>$400 of credits most people can use naturally, cutting the real cost to about $399.</li>
+  <li>Aspire and Swissport lounges are not affected by the 2027 cap.</li>
+</ul>
+
+<h3>Weaknesses</h3>
+<ul>
+  <li>$799 is the highest fee among Canadian lounge cards.</li>
+  <li>No Maple Leaf Lounge access. No Centurion Lounge in Canada.</li>
+  <li>From 2027, 6 + 6 Plaza / Priority Pass visits unless you spend $20,000 a year on the card.</li>
+  <li>Priority Pass needs a separate enrolment many people forget.</li>
+  <li>2.5% foreign exchange fee; the Scotiabank Passport charges none.</li>
+</ul>
+
+<h3>Verdict</h3>
+<p>The Amex Platinum is still the best lounge card in Canada for one type of person: someone who flies often on more than one airline and will use the $200 travel and $200 dining credits. In 2026 the access is unlimited and the math is easy. In 2027 the card stays worth it for two groups. The first spends $20,000 a year on the card. The second needs fewer than twelve Plaza Premium and Priority Pass visits and leans on Aspire, Centurion or Swissport lounges for the rest. If you fly Air Canada almost exclusively, or fly less than five times a year, a cheaper card does the job.</p>
+
+<h2>How to check access before every trip</h2>
+
+<ul>
+  <li>Is the lounge in my departure zone (domestic, transborder, or international) open today? Check the Amex Canada lounge finder.</li>
+  <li>Am I inside the 3-hour window for Aspire, Centurion or Delta lounges?</li>
+  <li>Do I have the physical Platinum Card, a same-day boarding pass, and (for Priority Pass) the app?</li>
+  <li>From 2027: how many Plaza Premium and Priority Pass visits are left, and does my guest need one?</li>
+  <li>Has Amex changed the terms since the "last verified" date on this article? The Platinum travel benefits page is the source of truth.</li>
+</ul>
+
+<h2>Sources</h2>
+
+<ul>
+  <li>American Express Canada — Platinum Card travel benefits (lounge networks, guest rules, 2027 terms). Accessed September 11, 2026.</li>
+  <li>American Express Canada — The Platinum Card (annual fee, welcome offer, credits, earn rates). Accessed September 11, 2026.</li>
+  <li>American Express Canada — Global Lounge Collection finder (YYZ T1 international closure, YVR B15 and C29, YYC Concourse D and E, YUL international, YOW Aspire Salon).</li>
+  <li>Rewards Canada — Platinum Card lounge access benefit changes effective January 1, 2027.</li>
+  <li>Prince of Travel — Amex Canada to limit lounge access for Platinum cardholders in 2027; Priority Pass and Centurion access guides.</li>
+  <li>Milesopedia — Airport lounge access limit in 2027.</li>
+  <li>LoyaltyLobby — Amex discontinues Lufthansa lounge access from October 1, 2026.</li>
+  <li>Issuer pages for the comparison table: Amex Aeroplan Reserve, TD Aeroplan VIP, CIBC Aventura VIP, RBC Avion VIP, Scotiabank Passport Visa Infinite, National Bank World Elite Mastercard.</li>
+</ul>
+
+<p><em>All card benefits, fees, credits, welcome offers, lounge terms and rebate amounts in this guide reflect information current as of September 11, 2026. Rules change without notice — always confirm with American Express Canada and the lounge operator before travelling. Next scheduled review: January 2027, when the new visit caps take effect.</em></p>
 `
 
 const aeroplanCardsContent = `
@@ -1832,7 +1906,7 @@ const aeroplanCardsContent = `
 <ul>
   <li><strong>Maple Leaf Lounge, all three cards:</strong> One free guest per cardholder visit, on the same-day Air Canada flight. Additional guests are charged the standard $59 CAD walk-in rate at the door.</li>
   <li><strong>One-Time Guest Passes (all three cards):</strong> Four passes per calendar year, valid at Maple Leaf Lounges in Canada and the US only. Not valid at international MLLs (YVR Gate D, YYZ Gate F, YUL International).</li>
-  <li><strong>Priority Pass — Amex Reserve only:</strong> Unlimited visits, unlimited free guests. This is the strongest PP guest allowance of any Canadian card, including the Amex Platinum ($899 annual fee) which limits you to one free guest.</li>
+  <li><strong>Priority Pass — Amex Reserve only:</strong> Unlimited visits, unlimited free guests. This is the strongest PP guest allowance of any Canadian card, including the Amex Platinum ($799 annual fee) which limits you to one free guest through 2026 and caps Priority Pass at 6 visits per year from January 1, 2027 unless you spend $20,000 annually on the card.</li>
 </ul>
 
 <h2>Break-Even Math: Is $599 Worth It for Lounge Access?</h2>
@@ -1882,6 +1956,35 @@ export const blogPosts: BlogPost[] = [
     content: aeroplanCardsContent,
     authorName: 'AirportLounges.ca Editorial Team',
     authorBio: 'Canadian airport lounge access rules are verified against operator sources, cardholder benefit terms, and in-person visits — reviewed continuously and dated on every guide.',
+    primaryCta: {
+      heading: 'Compare Aeroplan cards side by side',
+      subheading: 'See current welcome bonuses, annual fees, and lounge benefits — with any active FinlyWealth rebates factored in.',
+      ctaLabel: 'Compare Aeroplan Cards',
+      affiliateKey: 'finlywealth-aeroplan-cards',
+    },
+    comparisonCards: [
+      {
+        name: 'Amex Aeroplan Reserve',
+        annualFee: '$599',
+        highlight: 'Only Aeroplan card with Priority Pass + Maple Leaf Lounge access',
+        affiliateKey: 'finlywealth-amex-aeroplan-reserve',
+        ctaLabel: 'See Amex Aeroplan Reserve',
+      },
+      {
+        name: 'TD Aeroplan Visa Infinite Privilege',
+        annualFee: '$599',
+        highlight: 'Companion voucher + 4 Maple Leaf Lounge One-Time Guest Passes',
+        affiliateKey: 'finlywealth-td-aeroplan-vip',
+        ctaLabel: 'See TD Aeroplan VIP',
+      },
+      {
+        name: 'CIBC Aeroplan Visa Infinite Privilege',
+        annualFee: '$599',
+        highlight: 'Highest Aeroplan earn on Air Canada tickets (2x)',
+        affiliateKey: 'finlywealth-cibc-aeroplan-vip',
+        ctaLabel: 'See CIBC Aeroplan VIP',
+      },
+    ],
     faqs: [
       {
         question: 'Which Aeroplan credit card is best for airport lounge access?',
@@ -1901,7 +2004,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         question: 'Is the Amex Aeroplan Reserve better than the Amex Platinum for airport lounge access?',
-        answer: 'For Canadian lounge access, yes — often. The Amex Aeroplan Reserve ($599/yr) unlocks both the Maple Leaf Lounge network and Priority Pass, while the Amex Platinum ($899/yr) only unlocks Priority Pass (with a downgraded 1-free-guest limit as of February 2025). The Platinum is only the better card if you also need Amex Centurion Lounge access when travelling to the US or want the additional non-lounge benefits.',
+        answer: 'For Canadian lounge access, yes — often. The Amex Aeroplan Reserve ($599/yr) unlocks both the Maple Leaf Lounge network and Priority Pass with unlimited free guests, while the Amex Platinum ($799/yr) only unlocks Priority Pass (with a 1-free-guest limit and a 6-visits-per-year cap starting January 1, 2027 unless you spend $20,000/yr on the card). The Platinum is the better card if you also need Amex Centurion Lounge access when travelling to the US or want the additional non-lounge benefits.',
       },
       {
         question: 'Can I bring more than one guest to the Maple Leaf Lounge with an Aeroplan credit card?',
@@ -1923,54 +2026,48 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'amex-platinum-airport-lounge-access-canada',
-    title: 'Amex Platinum Airport Lounge Access in Canada (2026): Every Lounge, Every Rule',
-    excerpt: 'Every Canadian airport lounge accessible on the Amex Platinum Canada — plus guest fees, how it compares to the Aeroplan Reserve, and when Priority Pass is worth it. Updated August 2026.',
+    title: 'Amex Platinum Airport Lounge Access in Canada (2026): Lounges, Guests and 2027 Changes',
+    excerpt: 'See which airport lounges the Canadian Amex Platinum accesses in 2026, guest rules, the $799 fee, and the confirmed Plaza Premium and Priority Pass limits coming in 2027.',
     coverImage: '/blog/guide-priority-pass-canada.png',
     publishedAt: '2026-08-25',
-    lastReviewed: '2026-08-25',
+    lastReviewed: '2026-09-11',
     category: 'Credit Cards',
-    readingTime: '13 min read',
-    metaTitle: 'Amex Platinum Airport Lounge Access in Canada (2026): The Complete Guide',
-    metaDescription: 'Every Canadian airport lounge the Amex Platinum unlocks — Priority Pass, Plaza Premium, WestJet Elevation, guest fees, and how it compares to the Aeroplan Reserve. Updated August 2026.',
+    readingTime: '12 min read',
+    metaTitle: 'Amex Platinum Airport Lounge Access in Canada (2026): Lounges, Guests and 2027 Changes',
+    metaDescription: 'See which airport lounges the Canadian Amex Platinum accesses in 2026, guest rules, the $799 fee, and the confirmed Plaza Premium and Priority Pass limits coming in 2027.',
     content: amexPlatinumContent,
     authorName: 'AirportLounges.ca Editorial Team',
     authorBio: 'Canadian airport lounge access rules are verified against operator sources, cardholder benefit terms, and in-person visits — reviewed continuously and dated on every guide.',
+    primaryCta: {
+      heading: 'Compare the Amex Platinum Offer',
+      subheading: 'Review the current welcome offer, annual fee and card terms on FinlyWealth before applying. Offers can change.',
+      ctaLabel: 'Compare the Amex Platinum Offer',
+      affiliateKey: 'finlywealth-amex-platinum',
+    },
     faqs: [
       {
-        question: 'Does Amex Platinum Canada give free airport lounge access?',
-        answer: 'Yes. The Amex Platinum Canada ($899 annual fee) includes a complimentary Priority Pass Select membership with unlimited visits and one free guest per visit at every Priority Pass lounge in Canada — including Plaza Premium, Aspire, WestJet Elevation, SkyTeam, and National Bank Lounge locations. It does not provide access to Air Canada Maple Leaf Lounges at any tier.',
+        question: 'Does the Amex Platinum Card give you airport lounge access in Canada?',
+        answer: 'Yes. The Canadian Platinum Card includes the American Express Global Lounge Collection — five networks and more than 1,550 lounges across 140 countries. In Canada that means Plaza Premium lounges at Toronto Pearson, Vancouver, Edmonton and Winnipeg, plus Aspire lounges at Calgary, Montreal, Ottawa and Halifax, plus most Priority Pass locations once you enrol. You must present the physical Platinum Card and a same-day boarding pass at the door.',
       },
       {
-        question: 'Are there Amex Centurion Lounges in Canada?',
-        answer: 'No. As of August 2026 there are no Amex Centurion Lounges in Canada. The Centurion network operates 30+ US locations and a small number of international sites (London Heathrow, Hong Kong, Sydney, Mumbai, Buenos Aires), but no Canadian airport currently has one. Canadian Amex Platinum cardholders can use Centurion Lounges when travelling to or from the US on a same-day flight.',
+        question: 'Is Amex Platinum lounge access unlimited?',
+        answer: 'Through December 31, 2026, yes — Plaza Premium and Priority Pass visits are unlimited with one guest included. Starting January 1, 2027, a basic cardholder is capped at 6 Plaza Premium visits and 6 Priority Pass visits per calendar year (2 each on a supplementary card) unless the account reaches $20,000 in eligible calendar-year spending, which restores unlimited access for the rest of the year and the following year.',
       },
       {
-        question: 'How many guests can I bring to a Priority Pass lounge with Amex Platinum Canada?',
-        answer: 'One free guest per visit. Additional guests are charged approximately $35 USD per person per visit, billed to your Amex statement in Canadian dollars at the day\'s exchange rate. This rule changed in February 2025 — earlier versions of the card included unlimited free guests, which is what many long-time cardholders remember.',
+        question: 'How many guests can I bring with Amex Platinum?',
+        answer: 'Guest rules depend on the network. Through 2026, Plaza Premium and Priority Pass each include one complimentary guest per visit. Centurion Lounges outside Canada allow up to two guests on the Canadian card. Delta Sky Club includes no free guests — Delta charges per additional person. From January 1, 2027, a guest entry at Plaza Premium or Priority Pass consumes one of the capped visits rather than being free.',
       },
       {
-        question: 'Does Amex Platinum work at Air Canada Maple Leaf Lounges?',
-        answer: 'No. The Amex Platinum Canada does not include access to any Air Canada Maple Leaf Lounge or the Air Canada Signature Suite. MLL access requires a same-day Air Canada premium cabin ticket, Aeroplan 50K/75K/Super Elite status, Star Alliance Gold, an active Maple Leaf Club membership, or a qualifying Aeroplan credit card (TD Aeroplan Visa Infinite Privilege, Amex Aeroplan Reserve, or CIBC Aeroplan Visa Infinite Privilege).',
+        question: 'Does Amex Platinum get you into Maple Leaf Lounges?',
+        answer: 'No. Air Canada Maple Leaf Lounges are not part of the American Express Global Lounge Collection. The Platinum Card earns Membership Rewards points that transfer to Aeroplan, but points do not equal lounge access. For Maple Leaf Lounge entry, hold an American Express Aeroplan Reserve, TD Aeroplan Visa Infinite Privilege, or CIBC Aeroplan Visa Infinite Privilege — access requires a same-day Air Canada or Star Alliance flight.',
       },
       {
-        question: 'Is Amex Platinum Canada or Amex Aeroplan Reserve better for airport lounges?',
-        answer: 'It depends on where you fly. The Amex Aeroplan Reserve ($599/yr) is better for Air Canada travellers because it unlocks the Maple Leaf Lounge network — which the Platinum cannot. The Amex Platinum ($899/yr) is better for travellers who fly non-Star Alliance carriers, need Centurion Lounge access in the US, or want the additional non-lounge benefits. Both cards include Priority Pass Select, but the Reserve permits unlimited free guests while the Platinum limits you to one.',
+        question: 'Is the Amex Platinum worth it just for lounge access?',
+        answer: 'For a solo traveller who uses both the $200 travel credit and $200 dining credit each year, the net cost is about $399. At an illustrative $50 value per lounge entry, roughly 8 solo entries or 4 couple trips a year cover the fee — a reasonable target for anyone flying 5+ times a year through a Canadian hub. If you fly Air Canada almost exclusively, or fewer than 5 times a year, a cheaper Canadian lounge card is usually the better choice.',
       },
       {
-        question: 'What is the difference between Amex Platinum Canada and the US Amex Platinum at Canadian lounges?',
-        answer: 'Both cards grant Priority Pass access to identical Canadian lounges. The meaningful differences are guest allowances (US card includes 2 free guests per Priority Pass visit vs 1 for the Canadian card) and Centurion Lounge guest rules (both grant 2 free guests, but only outside Canada). If you split time between the two countries, the US Platinum has a slight edge for family lounge use — the Canadian Platinum has the edge on foreign-transaction fees.',
-      },
-      {
-        question: 'How do I use Amex Platinum for lounge access at Canadian airports?',
-        answer: 'Enroll in Priority Pass Select through the Amex Canada portal or app before your first flight — the benefit does not activate automatically. Once enrolled, install the Priority Pass app, present the digital card and a same-day boarding pass at the lounge desk, and you will be scanned in. For WestJet Elevation and Centurion Lounges, present your physical Amex Platinum card at check-in instead.',
-      },
-      {
-        question: 'Which Canadian airports have Priority Pass lounges I can enter with Amex Platinum?',
-        answer: 'Nine Canadian airports currently participate: Toronto Pearson (YYZ) — 6 lounges; Vancouver (YVR) — 5 lounges including the SkyTeam Lounge; Calgary (YYC) — 3 lounges; Montréal-Trudeau (YUL) — 2 lounges (international only); Ottawa (YOW), Edmonton (YEG), Winnipeg (YWG), Québec City (YQB), and Toronto Billy Bishop (YTZ) — 1 lounge each.',
-      },
-      {
-        question: 'Can I use Amex Platinum for lounge access on a domestic flight?',
-        answer: 'Yes, at most Canadian airports. Priority Pass lounges accessible on Amex Platinum cover domestic departures at YYZ (T1 and T3 Domestic), YVR (Gate B15, Pier C), YYC (WestJet Elevation), YEG, YOW, YWG, YQB, and YTZ. YUL is the exception — both Priority Pass lounges at Montréal are international-only, so domestic flyers may only qualify for a dining credit at a participating YUL restaurant.',
+        question: 'What will change for Amex Platinum lounge access in 2027?',
+        answer: 'Starting January 1, 2027, Plaza Premium and Priority Pass access will be capped at 6 visits each per calendar year on a basic card, and 2 each on a supplementary card. Each person who enters counts as one visit, so a guest costs you a visit. Aspire, Swissport, Centurion and Delta Sky Club lounges are not affected by the cap. The account can restore unlimited access by reaching $20,000 in eligible calendar-year spending; Amex is already counting 2026 spend toward the 2027 threshold.',
       },
     ],
   },
@@ -1986,6 +2083,12 @@ export const blogPosts: BlogPost[] = [
     metaTitle: "Airport Lounge Guest Fees in Canada (2026): What You'll Actually Pay",
     metaDescription: 'Every airport lounge guest fee in Canada explained — Priority Pass, DragonPass, Air Canada Maple Leaf, WestJet Elevation and more. Updated June 2026.',
     content: guestFeesContent,
+    primaryCta: {
+      heading: 'Skip the guest fees',
+      subheading: 'Cards that include one or more free lounge guests per visit — compared side by side.',
+      ctaLabel: 'See Cards With Free Guests',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
   },
   {
     slug: 'canadian-airport-lounges-shower-access',
@@ -1999,6 +2102,12 @@ export const blogPosts: BlogPost[] = [
     metaTitle: 'Canadian Airport Lounges with Showers (2026): Every Location Reviewed',
     metaDescription: 'Every Canadian airport lounge with shower access reviewed — facilities, bath products, who gets in free, and how to avoid a long wait. June 2026.',
     content: showerAccessContent,
+    primaryCta: {
+      heading: 'Which cards get you free access?',
+      subheading: 'Compare the Canadian credit cards that unlock the shower-equipped lounges above.',
+      ctaLabel: 'Compare Lounge-Access Cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
   },
   {
     slug: 'best-airport-lounges-remote-work-canada',
@@ -2012,6 +2121,12 @@ export const blogPosts: BlogPost[] = [
     metaTitle: 'Top 10 Airport Lounges for Remote Work in Canada (2026)',
     metaDescription: 'The 10 best Canadian airport lounges for remote workers — ranked by Wi-Fi, power outlets, quiet zones, and desk space. Updated June 2026.',
     content: remoteWorkContent,
+    primaryCta: {
+      heading: 'The card that unlocks the most work-friendly lounges',
+      subheading: 'The Amex Aeroplan Reserve stacks Priority Pass + Maple Leaf Lounge access on one card — see current terms.',
+      ctaLabel: 'See Amex Aeroplan Reserve',
+      affiliateKey: 'finlywealth-amex-aeroplan-reserve',
+    },
   },
   {
     slug: 'priority-pass-lounges-canada',
@@ -2025,6 +2140,12 @@ export const blogPosts: BlogPost[] = [
     metaTitle: 'Priority Pass Lounges in Canada: Every Airport Guide (2026)',
     metaDescription: 'Every Priority Pass lounge in Canada listed by airport — Toronto, Vancouver, Calgary, Montreal and more. Peak hours, guest rules, and what to expect. 2026.',
     content: priorityPassContent,
+    primaryCta: {
+      heading: 'Get Priority Pass with a Canadian credit card',
+      subheading: 'The Amex Platinum and Amex Aeroplan Reserve both include Priority Pass Select — compare current benefits.',
+      ctaLabel: 'Compare Priority Pass Cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
   },
 ]
 

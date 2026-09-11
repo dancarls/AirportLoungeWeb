@@ -26,6 +26,7 @@ type AffiliateKey =
   | 'priority-pass'
   | 'priority-pass-membership'
   | 'dragonpass'
+  // Ratehub via Impact.com — legacy fallback + backup for cards FinlyWealth doesn't monetize.
   | 'ratehub-amex-platinum'
   | 'ratehub-amex-aeroplan-reserve'
   | 'ratehub-td-aeroplan-vip'
@@ -34,6 +35,24 @@ type AffiliateKey =
   | 'ratehub-scotiabank-passport'
   | 'ratehub-index'
   | 'credit-card-genius'
+  // FinlyWealth — primary Canadian credit-card affiliate. URLs confirmed by rep 2026-09-09.
+  // Each will be wrapped by the FinlyWealth link generator once we have the affiliate ID —
+  // until then the plain URL still works and the ID slots in via NEXT_PUBLIC_AFF_FINLYWEALTH.
+  | 'finlywealth-compare-tool'
+  | 'finlywealth-rebates-catalog'
+  | 'finlywealth-lounge-access-cards'
+  | 'finlywealth-aeroplan-cards'
+  | 'finlywealth-priority-pass-guide'
+  | 'finlywealth-amex-platinum'
+  | 'finlywealth-amex-aeroplan-reserve'
+  | 'finlywealth-td-aeroplan-vip'
+  | 'finlywealth-cibc-aeroplan-vip'
+  | 'finlywealth-rbc-avion-vip'
+  | 'finlywealth-scotia-passport'
+  // FinlyWealth interactive tools (destination pages, not embeds).
+  | 'finlywealth-quiz'
+  | 'finlywealth-combos-calculator'
+  | 'finlywealth-rewards-calculator-index'
   | 'amazon-noise-cancelling-headphones'
   | 'amazon-usb-c-charger'
   | 'amazon-packing-cubes'
@@ -128,6 +147,77 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
     paramKey: 'aff',
     extraParams: { utm_source: 'airportlounges_ca' },
   },
+  // FinlyWealth destinations — pasted per rep's confirmation email (2026-09-09).
+  // The FinlyWealth affiliate program requires links to be routed through their
+  // in-house link generator; once we have the tracking parameter name they use
+  // (typically `subid` or `partnerRef`), paramKey below gets that value applied
+  // via NEXT_PUBLIC_AFF_FINLYWEALTH env var. Until then the raw URLs still work.
+  'finlywealth-compare-tool': {
+    url: 'https://www.finlywealth.com/credit-cards/compare',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'compare_tool' },
+  },
+  'finlywealth-rebates-catalog': {
+    url: 'https://www.finlywealth.com/rebates',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'rebates_catalog' },
+  },
+  'finlywealth-lounge-access-cards': {
+    url: 'https://www.finlywealth.com/best-credit-cards/lounge-access',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'lounge_access_cards' },
+  },
+  'finlywealth-aeroplan-cards': {
+    url: 'https://www.finlywealth.com/best-credit-cards/aeroplan',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'aeroplan_cards' },
+  },
+  'finlywealth-priority-pass-guide': {
+    url: 'https://www.finlywealth.com/blog/credit-cards/priority-pass',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'priority_pass_guide' },
+  },
+  'finlywealth-amex-platinum': {
+    url: 'https://www.finlywealth.com/credit-cards/reviews/amex-platinum',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'amex_platinum' },
+  },
+  'finlywealth-amex-aeroplan-reserve': {
+    url: 'https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'amex_aeroplan_reserve' },
+  },
+  'finlywealth-td-aeroplan-vip': {
+    url: 'https://www.finlywealth.com/credit-cards/reviews/td-aeroplan-visa-infinite-privilege',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'td_aeroplan_vip' },
+  },
+  'finlywealth-cibc-aeroplan-vip': {
+    url: 'https://www.finlywealth.com/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'cibc_aeroplan_vip' },
+  },
+  'finlywealth-rbc-avion-vip': {
+    url: 'https://www.finlywealth.com/credit-cards/reviews/rbc-avion-visa-infinite-privilege',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'rbc_avion_vip' },
+  },
+  'finlywealth-scotia-passport': {
+    url: 'https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'scotia_passport' },
+  },
   // Amazon Associates.ca — travel-gear posts. The `tag` parameter is the official
   // Amazon Associates identifier; use the .ca product URLs.
   'amazon-noise-cancelling-headphones': {
@@ -177,6 +267,73 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
     paramKey: 'ref',
     extraParams: { utm_source: 'airportlounges_ca', utm_medium: 'daypass' },
   },
+  // FinlyWealth interactive tools — destination pages, not embeds.
+  'finlywealth-quiz': {
+    url: 'https://www.finlywealth.com/credit-cards/quiz',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'quiz' },
+  },
+  'finlywealth-combos-calculator': {
+    url: 'https://www.finlywealth.com/credit-cards/combos-calculator',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'combos_calc' },
+  },
+  'finlywealth-rewards-calculator-index': {
+    url: 'https://www.finlywealth.com/credit-cards',
+    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
+    paramKey: 'ref',
+    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'rewards_calc_index' },
+  },
+}
+
+/**
+ * Construct a tracked link to FinlyWealth's side-by-side comparison page for
+ * any two cards. URL pattern verified against
+ * `/credit-cards/side-by-side/amex-cobalt-vs-amex-gold` — deterministic, so
+ * we build these on demand without registering each pair individually.
+ *
+ *   sideBySide('amex-platinum', 'amex-aeroplan-reserve')
+ *   sideBySide('td-aeroplan-visa-infinite-privilege', 'cibc-aeroplan-visa-infinite-privilege')
+ */
+export function sideBySide(cardA: string, cardB: string): string {
+  const url = new URL(`https://www.finlywealth.com/credit-cards/side-by-side/${cardA}-vs-${cardB}`)
+  const id = process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
+  if (id) url.searchParams.set('ref', id)
+  url.searchParams.set('utm_source', 'airportlounges_ca')
+  url.searchParams.set('utm_medium', 'referral')
+  url.searchParams.set('utm_content', `side_by_side_${cardA}_vs_${cardB}`.replace(/[^a-z0-9_]/g, '_'))
+  return url.toString()
+}
+
+/**
+ * Tracked link to FinlyWealth's per-program points value calculator.
+ *
+ *   pointsCalculator('aeroplan')
+ *   pointsCalculator('american-express-membership-rewards')
+ */
+export function pointsCalculator(programSlug: string): string {
+  const url = new URL(`https://www.finlywealth.com/points-calculator/${programSlug}`)
+  const id = process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
+  if (id) url.searchParams.set('ref', id)
+  url.searchParams.set('utm_source', 'airportlounges_ca')
+  url.searchParams.set('utm_content', `points_calc_${programSlug}`.replace(/[^a-z0-9_]/g, '_'))
+  return url.toString()
+}
+
+/**
+ * Tracked link to FinlyWealth's per-card rewards calculator.
+ *
+ *   rewardsCalculator('amex-aeroplan-reserve')
+ */
+export function rewardsCalculator(cardSlug: string): string {
+  const url = new URL(`https://www.finlywealth.com/credit-cards/rewards-calculator/${cardSlug}`)
+  const id = process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
+  if (id) url.searchParams.set('ref', id)
+  url.searchParams.set('utm_source', 'airportlounges_ca')
+  url.searchParams.set('utm_content', `rewards_calc_${cardSlug}`.replace(/[^a-z0-9_]/g, '_'))
+  return url.toString()
 }
 
 /**

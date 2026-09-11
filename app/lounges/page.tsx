@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import LoungeGrid from '@/components/LoungeGrid'
 import { COLLECTIONS } from '@/lib/collections'
+import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -133,6 +134,26 @@ export default async function LoungesPage() {
       </div>
 
       <div className="max-w-container-max mx-auto px-gutter py-10">
+        {/* Compact affiliate banner — subtle placement, routes commercial-intent
+            readers to FinlyWealth's Canadian lounge-access-card comparison. */}
+        <div className="mb-8 bg-champagne-glint/60 border border-primary/15 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <span className="material-symbols-outlined text-primary shrink-0 mt-0.5" style={{ fontSize: '22px' }}>credit_card</span>
+            <div>
+              <p className="font-semibold text-primary text-sm">Which credit card gets you in?</p>
+              <p className="text-secondary text-xs leading-relaxed">Compare Canadian cards with lounge access, welcome bonuses, and any active cashback rebates.</p>
+            </div>
+          </div>
+          <a
+            href={affiliate('finlywealth-lounge-access-cards')}
+            target="_blank"
+            rel={AFFILIATE_REL}
+            className="shrink-0 bg-primary text-white px-5 py-3 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-opacity whitespace-nowrap"
+          >
+            Compare Cards
+          </a>
+        </div>
+
         {/* Curated collections — indexable landing pages for specific search intents.
             Placed above the grid so both readers and Google's crawler see them first. */}
         <section className="mb-12" aria-label="Curated lounge collections">
