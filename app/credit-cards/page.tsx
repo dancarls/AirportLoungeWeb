@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
+import { affiliate, AFFILIATE_REL, pointsCalculator } from '@/lib/affiliates'
 
 export const metadata: Metadata = {
   title: 'Canadian Credit Cards for Airport Lounge Access',
@@ -120,7 +120,7 @@ export default function CreditCardsHubPage() {
             {[
               { href: affiliate('finlywealth-quiz'), title: 'Card recommendation quiz', desc: 'Answer a few questions, get a personalized card pick.' },
               { href: affiliate('finlywealth-combos-calculator'), title: 'Multi-card combos calculator', desc: 'Find the best two- or three-card combination for your spending.' },
-              { href: 'https://www.finlywealth.com/points-calculator/aeroplan?utm_source=airportlounges_ca', title: 'Aeroplan points calculator', desc: 'See what a specific number of Aeroplan points is worth in cash.' },
+              { href: pointsCalculator('aeroplan'), title: 'Aeroplan points calculator', desc: 'See what a specific number of Aeroplan points is worth in cash.' },
             ].map(t => (
               <a
                 key={t.title}

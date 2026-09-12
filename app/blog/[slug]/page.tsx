@@ -10,6 +10,27 @@ import AdSlot from '@/components/AdSlot'
 import { getWeather } from '@/lib/weather'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 
+/**
+ * Any inline FinlyWealth link inside the blog content HTML gets the affiliate
+ * `ref` parameter injected at render time — the registry can't touch links
+ * that live in HTML string constants, so this bridge closes the gap. If the
+ * NEXT_PUBLIC_AFF_FINLYWEALTH env var is unset the content is untouched.
+ */
+function injectFinlyWealthRef(html: string): string {
+  const id = process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
+  if (!id) return html
+  // Match href="https://(www.)?finlywealth.com/…". Add ref=<id> only if the
+  // URL does not already carry a ref parameter.
+  return html.replace(
+    /href="(https:\/\/(?:www\.)?finlywealth\.com\/[^"]*)"/g,
+    (match, url: string) => {
+      if (/[?&]ref=/.test(url)) return match
+      const separator = url.includes('?') ? '&' : '?'
+      return `href="${url}${separator}ref=${encodeURIComponent(id)}"`
+    }
+  )
+}
+
 interface Props { params: Promise<{ slug: string }> }
 
 export async function generateStaticParams() {
@@ -273,7 +294,7 @@ export default async function BlogPostPage({ params }: Props) {
             <div
               data-speakable="intro"
               className="prose-article"
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              dangerouslySetInnerHTML={{ __html: injectFinlyWealthRef(post.content) }}
             />
 
             {/* Closing affiliate CTA — same primary CTA repeated after content,
