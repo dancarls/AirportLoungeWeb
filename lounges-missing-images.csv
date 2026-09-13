@@ -1,0 +1,34 @@
+Airport,City,Lounge,Terminal,Slug,Live URL
+YEG,Edmonton,Plaza Premium Lounge,Main Terminal,plaza-premium-lounge-yeg,https://www.airportlounges.ca/airports/YEG/lounges/plaza-premium-lounge-yeg
+YEG,Edmonton,Plaza Premium Lounge (US Transborder),Main Terminal,plaza-premium-transborder-yeg,https://www.airportlounges.ca/airports/YEG/lounges/plaza-premium-transborder-yeg
+YOW,Ottawa,Aspire Salon Lounge,Main Terminal,aspire-salon-lounge-yow,https://www.airportlounges.ca/airports/YOW/lounges/aspire-salon-lounge-yow
+YQB,Québec City,Salon YQB,Main,salon-yqb,https://www.airportlounges.ca/airports/YQB/lounges/salon-yqb
+YQR,Regina,Air Canada Maple Leaf Lounge,Main Terminal,ac-maple-leaf-lounge-yqr,https://www.airportlounges.ca/airports/YQR/lounges/ac-maple-leaf-lounge-yqr
+YUL,Montreal,Air Canada Maple Leaf Lounge (International),Main Terminal,ac-maple-leaf-lounge-international-yul,https://www.airportlounges.ca/airports/YUL/lounges/ac-maple-leaf-lounge-international-yul
+YUL,Montreal,Air Canada Maple Leaf Lounge (Transborder),Main Terminal,ac-maple-leaf-lounge-transborder-yul,https://www.airportlounges.ca/airports/YUL/lounges/ac-maple-leaf-lounge-transborder-yul
+YUL,Montreal,Air France / KLM Lounge,Main Terminal,air-france-klm-lounge-yul,https://www.airportlounges.ca/airports/YUL/lounges/air-france-klm-lounge-yul
+YUL,Montreal,Aspire International Lounge,Main Terminal,aspire-international-lounge-yul,https://www.airportlounges.ca/airports/YUL/lounges/aspire-international-lounge-yul
+YUL,Montreal,Desjardins Odyssey Lounge (International),Main Terminal,desjardins-odyssey-lounge-international-yul,https://www.airportlounges.ca/airports/YUL/lounges/desjardins-odyssey-lounge-international-yul
+YUL,Montreal,Desjardins Odyssey Lounge (Transborder),Main Terminal,desjardins-odyssey-lounge-transborder-yul,https://www.airportlounges.ca/airports/YUL/lounges/desjardins-odyssey-lounge-transborder-yul
+YUL,Montreal,National Bank Lounge,Main Terminal,national-bank-lounge-yul,https://www.airportlounges.ca/airports/YUL/lounges/national-bank-lounge-yul
+YVR,Vancouver,Air Canada Café,Main,air-canada-cafe-yvr,https://www.airportlounges.ca/airports/YVR/lounges/air-canada-cafe-yvr
+YVR,Vancouver,Air Canada Maple Leaf Lounge (Domestic),Domestic,ac-maple-leaf-lounge-domestic-yvr,https://www.airportlounges.ca/airports/YVR/lounges/ac-maple-leaf-lounge-domestic-yvr
+YVR,Vancouver,Air Canada Maple Leaf Lounge (US Departures),US Transborder,ac-maple-leaf-lounge-transborder-yvr,https://www.airportlounges.ca/airports/YVR/lounges/ac-maple-leaf-lounge-transborder-yvr
+YVR,Vancouver,Air Canada Petit Café,Main,air-canada-petit-cafe-yvr,https://www.airportlounges.ca/airports/YVR/lounges/air-canada-petit-cafe-yvr
+YVR,Vancouver,Air Canada Signature Suite,International,ac-signature-suite-yvr,https://www.airportlounges.ca/airports/YVR/lounges/ac-signature-suite-yvr
+YWG,Winnipeg,Plaza Premium Lounge,Main Terminal,plaza-premium-lounge-ywg,https://www.airportlounges.ca/airports/YWG/lounges/plaza-premium-lounge-ywg
+YXE,Saskatoon,Air Canada Maple Leaf Lounge,Main Terminal,ac-maple-leaf-lounge-yxe,https://www.airportlounges.ca/airports/YXE/lounges/ac-maple-leaf-lounge-yxe
+YYC,Calgary,Air Canada Maple Leaf Lounge (Domestic),Domestic,ac-maple-leaf-lounge-yyc,https://www.airportlounges.ca/airports/YYC/lounges/ac-maple-leaf-lounge-yyc
+YYC,Calgary,Aspire Lounge (International Departures),International,aspire-lounge-yyc-international,https://www.airportlounges.ca/airports/YYC/lounges/aspire-lounge-yyc-international
+YYC,Calgary,Aspire Lounge (US Transborder),US Transborder,aspire-lounge-yyc-us-transborder,https://www.airportlounges.ca/airports/YYC/lounges/aspire-lounge-yyc-us-transborder
+YYC,Calgary,M Club (Marriott),International,m-club-marriott-yyc,https://www.airportlounges.ca/airports/YYC/lounges/m-club-marriott-yyc
+YYC,Calgary,WestJet Elevation Lounge,Domestic,westjet-elevation-lounge-yyc,https://www.airportlounges.ca/airports/YYC/lounges/westjet-elevation-lounge-yyc
+YYC,Calgary,YYC Quiet Space,Domestic,yyc-quiet-space,https://www.airportlounges.ca/airports/YYC/lounges/yyc-quiet-space
+YYZ,Toronto,Air Canada Maple Leaf Lounge (Express),1,ac-maple-leaf-lounge-express-yyz,https://www.airportlounges.ca/airports/YYZ/lounges/ac-maple-leaf-lounge-express-yyz
+YYZ,Toronto,Air France / KLM Crown Lounge,3,air-france-klm-crown-lounge-yyz,https://www.airportlounges.ca/airports/YYZ/lounges/air-france-klm-crown-lounge-yyz
+YYZ,Toronto,American Airlines Admirals Club,3,american-airlines-admirals-club-yyz,https://www.airportlounges.ca/airports/YYZ/lounges/american-airlines-admirals-club-yyz
+YYZ,Toronto,Plaza Premium Lounge (Domestic T3),3,plaza-premium-domestic-t3-yyz,https://www.airportlounges.ca/airports/YYZ/lounges/plaza-premium-domestic-t3-yyz
+YYZ,Toronto,Plaza Premium Lounge (Domestic T1),1,plaza-premium-domestic-t1-yyz,https://www.airportlounges.ca/airports/YYZ/lounges/plaza-premium-domestic-t1-yyz
+YYZ,Toronto,Plaza Premium Lounge (International T3),3,plaza-premium-international-t3-yyz,https://www.airportlounges.ca/airports/YYZ/lounges/plaza-premium-international-t3-yyz
+YYZ,Toronto,Plaza Premium Lounge (US Transborder T1),1,plaza-premium-transborder-t1-yyz,https://www.airportlounges.ca/airports/YYZ/lounges/plaza-premium-transborder-t1-yyz
+YYZ,Toronto,Plaza Premium Lounge (US Transborder T3),3,plaza-premium-transborder-t3-yyz,https://www.airportlounges.ca/airports/YYZ/lounges/plaza-premium-transborder-t3-yyz

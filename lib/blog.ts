@@ -56,6 +56,178 @@ export interface BlogPost {
   comparisonCards?: BlogPostComparisonCard[]
 }
 
+const sleepPodsContent = `
+<p data-speakable="intro"><strong>Canada does not have Napcabs, GoSleep pods or dedicated per-hour nap suites like Munich, Helsinki or Singapore Changi. What we have are five lounges with real rest facilities: individual reclining pods, spa-style rest suites, day-bed corners, or an all-night operating schedule that lets you actually stretch out between flights. Only one of them accepts Priority Pass. Only one is open 24 hours a day. Full breakdown below, with the card that unlocks each. Verified September 12, 2026.</strong></p>
+
+<blockquote>
+<p><strong>Editorial disclosure:</strong> AirportLounges.ca may receive compensation if you apply for a card through links on this page. This does not affect the issuer's terms or the price you pay. Rest-facility descriptions were verified against operator pages and our own on-file lounge data on September 12, 2026.</p>
+</blockquote>
+
+<h2>What "sleep pod" actually means in a Canadian airport lounge</h2>
+
+<p>The phrase is used loosely across the travel press. In Europe and Asia, a "sleep pod" usually means an enclosed capsule you rent by the hour (Yotel cabins, Napcabs, sleepbox units). None of that infrastructure exists in Canadian airports today. What the term describes at Canadian lounges is one of four distinct things:</p>
+
+<ul>
+  <li><strong>Reclining chair pods</strong> — semi-private individual seats that recline nearly flat, spaced for privacy. The Cathay Pacific Lounge at YVR is the only Canadian lounge with these in a purpose-built configuration.</li>
+  <li><strong>Spa-style rest suites</strong> — private treatment-room-sized spaces designed for pre-flight rest, often paired with shower facilities. Plaza Premium First at YVR is the Canadian example.</li>
+  <li><strong>Day-bed corners</strong> — un-partitioned lounge sections with wide flat seating, dimmed lighting, and quiet-zone rules. Plaza Premium's international 24-hour lounge at YVR uses this format.</li>
+  <li><strong>Nap-permissive quiet zones</strong> — lounge sections that explicitly allow sleeping without a formal pod, usually enforced through no-phone quiet-room policies. Plaza Premium at Winnipeg is the clearest Canadian example.</li>
+</ul>
+
+<p>If a headline says "airport sleep pods in Canada," it is almost always describing one of these four things, not a Napcab. Set that expectation before booking any flight around a lounge rest.</p>
+
+<h2>Every Canadian airport lounge with a real rest facility</h2>
+
+<h3>1. Cathay Pacific Lounge — Vancouver (YVR)</h3>
+
+<p>The <a href="/airports/YVR/lounges/cathay-pacific-lounge-yvr">Cathay Pacific Lounge at YVR</a> is the closest thing to a purpose-built sleep-pod lounge in Canada. The 108-seat mezzanine above Pier D includes a dedicated Solus Chair area — individual reclining seats spaced for privacy, spec'd by London studio Studioilse. They are semi-enclosed by high partitions, dimmable overhead lighting, and each has a side table with power. This is where Cathay Pacific business-class passengers on a red-eye eastbound to Hong Kong actually sleep before boarding.</p>
+
+<ul>
+  <li><strong>Format:</strong> Solus Chair reclining pods (unspecified count; part of the 108-seat lounge)</li>
+  <li><strong>Time limit:</strong> Standard lounge stay — up to 4 hours before departure; not sold by the hour</li>
+  <li><strong>Access:</strong> Cathay Pacific / Cathay Dragon business or first class same-day ticket, Marco Polo Club Silver / Gold / Diamond, oneworld Sapphire / Emerald status on a same-day oneworld flight. <strong>Priority Pass is not accepted.</strong> No walk-in day pass.</li>
+  <li><strong>Extra cost:</strong> None beyond your ticket / status</li>
+  <li><strong>Operating hours:</strong> Aligned with Cathay's twice-daily YVR departures (typically morning + evening banks) — not open all day</li>
+</ul>
+
+<h3>2. Plaza Premium First — Vancouver (YVR)</h3>
+
+<p><a href="/airports/YVR/lounges/plaza-premium-first-yvr">Plaza Premium First at YVR</a> is Plaza Premium's premium tier — a physically separate lounge next to the standard Plaza Premium International lounge. It offers private spa-style suites specifically designed for pre-flight rest, alongside individual shower rooms with Aesop products. The rest suites are booked at reception on arrival, subject to availability.</p>
+
+<ul>
+  <li><strong>Format:</strong> Spa-style private rest suites + reclining seat area</li>
+  <li><strong>Time limit:</strong> Standard entry is a two-hour visit; extensions possible if quiet</li>
+  <li><strong>Access:</strong> Direct purchase at $110 CAD for a two-hour stay, or a $30 CAD upgrade from the standard Plaza Premium International next door. <strong>Priority Pass is not accepted at the First tier</strong> — the standard PPL next door is Priority Pass-eligible, and you pay the $30 upgrade to cross over.</li>
+  <li><strong>Extra cost:</strong> $30 upgrade minimum on top of any card benefit at the standard lounge; $110 direct otherwise</li>
+  <li><strong>Operating hours:</strong> Check the Plaza Premium page for current times — typically aligned with international departure banks</li>
+</ul>
+
+<h3>3. Plaza Premium International Lounge — Vancouver (YVR), 24-hour</h3>
+
+<p>The <a href="/airports/YVR/lounges/plaza-premium-international-yvr">Plaza Premium Lounge at YVR International</a> is the only Canadian airport lounge open 24 hours a day, every day. It doesn't market itself as a sleep-pod facility, but during overnight layovers on transpacific arrivals it is functionally the only place in Canada where a Priority Pass member can lie down between flights. Shower suites, dimmed sections, and a two-hour Priority Pass stay limit make it a workable overnight rest option.</p>
+
+<ul>
+  <li><strong>Format:</strong> Wider-seat lounge sections + shower suites (no dedicated pods)</li>
+  <li><strong>Time limit:</strong> 2 hours on Priority Pass; longer if you pay walk-in or hold an Amex-tier entry</li>
+  <li><strong>Access:</strong> Priority Pass (via Amex Platinum, Amex Business Platinum, Scotiabank Platinum Amex, or standalone membership), Amex Platinum direct entry, DragonPass via Visa Airport Companion or Mastercard Travel Pass, walk-in day pass at Plaza Premium's published rate.</li>
+  <li><strong>Extra cost:</strong> Included with card / membership; walk-in from about $69 CAD</li>
+  <li><strong>Operating hours:</strong> 24/7 — the only Canadian lounge that never closes</li>
+</ul>
+
+<h3>4. Plaza Premium Lounge — Winnipeg (YWG)</h3>
+
+<p><a href="/airports/YWG/lounges/plaza-premium-lounge-ywg">Plaza Premium at Winnipeg Richardson International</a> is the smallest name on this list but the one most Canadians overlook. Located airside directly opposite Gate 6 in the Domestic and International Departures area, its lounge description explicitly documents a nap section with dimmed lighting. It is not a "pod" — it is a wider-seat quiet corner — but for a red-eye eastbound from Winnipeg it is the only rest facility inside YWG's secure area.</p>
+
+<ul>
+  <li><strong>Format:</strong> Quiet nap corner (no pods; expanded seat spacing)</li>
+  <li><strong>Time limit:</strong> Standard Plaza Premium 2-hour Priority Pass stay; longer if you pay walk-in</li>
+  <li><strong>Access:</strong> Priority Pass (Amex-issued cards + Scotiabank Platinum Amex), Amex Platinum direct, DragonPass, walk-in day pass</li>
+  <li><strong>Extra cost:</strong> Included with card; walk-in around $60–65 CAD</li>
+  <li><strong>Operating hours:</strong> 04:00 to 21:00 (verify on the day)</li>
+</ul>
+
+<h3>5. Air Canada Signature Suite — Toronto Pearson (YYZ Terminal 1)</h3>
+
+<p>The <a href="/airports/YYZ/lounges/ac-signature-suite-yyz">Air Canada Signature Suite</a> is the most exclusive lounge on this list and the one with the strongest documented editorial rest area — private semi-enclosed seating pods with reclining chairs, table lamps, and side privacy. It is invitation-only and impossible to access unless you meet a very narrow criteria: same-day Air Canada Signature Class (international business class) ticket, or Aeroplan Super Elite 100K travelling on a Signature Class routing. No credit card unlocks it. No status alone unlocks it.</p>
+
+<ul>
+  <li><strong>Format:</strong> Semi-enclosed private booths with reclining seating; private dining suites</li>
+  <li><strong>Time limit:</strong> Standard 3-hour pre-departure window</li>
+  <li><strong>Access:</strong> Air Canada Signature Class (international business) same-day ticket only. Not accessible on Aeroplan status alone, not accessible on any Amex or Aeroplan credit card, not accessible on Priority Pass.</li>
+  <li><strong>Extra cost:</strong> None beyond your business-class ticket</li>
+  <li><strong>Operating hours:</strong> Aligned with Air Canada international departure schedule from YYZ T1</li>
+</ul>
+
+<h2>Best lounge for your rest situation</h2>
+
+<table>
+  <thead>
+    <tr><th>Your situation</th><th>Best rest lounge</th><th>Why</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Overnight transpacific layover</td><td>Plaza Premium International YVR (24-hour)</td><td>The only lounge in Canada open all night; shower suites available</td></tr>
+    <tr><td>Red-eye from YWG</td><td>Plaza Premium Winnipeg</td><td>Only rest facility inside YWG's secure area</td></tr>
+    <tr><td>Flying Cathay Pacific business class</td><td>Cathay Pacific Lounge YVR</td><td>Purpose-built Solus Chair reclining pods; only ticket-only lounge with true pods</td></tr>
+    <tr><td>Willing to spend $30–$110 for premium rest</td><td>Plaza Premium First YVR</td><td>Private spa-style rest suites + Aesop showers; the closest to a real sleep pod for cardholders</td></tr>
+    <tr><td>Flying Air Canada Signature Class international</td><td>AC Signature Suite YYZ</td><td>Private booth seating; not accessible on any card, must be on the ticket</td></tr>
+    <tr><td>Any of the above with Priority Pass</td><td>Plaza Premium International YVR (24-hour) or Plaza Premium YWG</td><td>The only two Priority Pass-eligible lounges on this list</td></tr>
+  </tbody>
+</table>
+
+<h2>Which credit card unlocks which rest lounge?</h2>
+
+<p>Only two of the five lounges here are accessible via a Canadian credit card. Neither requires a specific "sleep pod" upgrade — the cards get you into the lounge and the rest facility is inside.</p>
+
+<ul>
+  <li><strong>American Express Platinum ($799) or Business Platinum ($799)</strong> — Direct entry to Plaza Premium at YVR International (24-hour) and Plaza Premium at YWG. Also includes Priority Pass Select. Through December 31, 2026 both are unlimited-visit; from January 1, 2027 they are capped at 6 Priority Pass + 6 Plaza Premium visits per year unless the account is charged $20,000 in a calendar year. Details: <a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum airport lounge access guide</a>.</li>
+  <li><strong>Scotiabank Platinum American Express ($399)</strong> — Priority Pass with 10 visits a year covers both Plaza Premium locations above.</li>
+  <li><strong>Any Amex-issued Priority Pass Select membership</strong> — Same coverage as the Platinum, minus Plaza Premium direct entry.</li>
+</ul>
+
+<blockquote>
+<p>The Amex Aeroplan Reserve is worth mentioning because it technically includes a Priority Pass membership — but every Priority Pass visit is charged at the prevailing rate for the cardholder AND guests. That is access at a member price, not free rest. Its actual free lounge benefit is Maple Leaf Lounge, and no Maple Leaf Lounge in Canada has a documented sleep-pod facility.</p>
+</blockquote>
+
+<h2>What about the other Canadian airport lounges?</h2>
+
+<p>Most Canadian premium lounges have "quiet rooms" or dimmed areas but no dedicated rest suites. Air Canada Maple Leaf Lounges vary — the YYZ International and YVR International locations enforce cell-free quiet zones but no reclining seats. WestJet Elevation at YYC has a focus space designed for work, not rest. Aspire lounges at YUL, YOW and YHZ (currently closed) have standard seating. If a specific lounge you use has a genuine sleep area that we have missed, <a href="/about#corrections">let us know</a> and we will verify it.</p>
+
+<h2>Alternatives when a lounge is not the right answer</h2>
+
+<ul>
+  <li><strong>Airport hotels with day-use rates</strong> — Fairmont YVR, Sheraton Gateway YYZ Terminal 3, ALT Hotel YUL. Day-use rooms typically $89–$149 for four to six hours, book on the hotel's own site. Actually flat, actually quiet, actually private.</li>
+  <li><strong>Priority Pass "Rest Zone" partners</strong> — no such partners exist in Canada. This is a European feature.</li>
+  <li><strong>Off-airport sleep pods</strong> — none in Canadian airports as of September 2026. GoSleep, Napcabs, Minute Suites — all US and international footprints only.</li>
+  <li><strong>Gate-area quiet zones</strong> — YYZ T1's Chapel &amp; Meditation Room, YVR's Level 3 South, YUL's Aeroquay near Gate 47 all get quieter overnight; not private but tolerable if lounges are closed.</li>
+</ul>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Which Canadian airport lounge has actual sleep pods?</h3>
+<p>The <a href="/airports/YVR/lounges/cathay-pacific-lounge-yvr">Cathay Pacific Lounge at Vancouver International (YVR)</a> is the only Canadian airport lounge with purpose-built individual reclining pods (Solus Chair units). Access requires a same-day Cathay Pacific business class ticket or oneworld Sapphire / Emerald status — no credit card and no Priority Pass unlocks it.</p>
+
+<h3>Is there a 24-hour airport lounge in Canada?</h3>
+<p>Yes — the <a href="/airports/YVR/lounges/plaza-premium-international-yvr">Plaza Premium Lounge at YVR International Departures</a> is open 24 hours a day, every day. It is Priority Pass-eligible, DragonPass-eligible, Amex Platinum-eligible, and takes walk-in day passes. It is the only Canadian lounge you can access overnight.</p>
+
+<h3>Can I sleep at an airport lounge in Canada?</h3>
+<p>You can rest with your eyes closed at most Canadian premium lounges — nobody will wake you unless you are snoring loudly or blocking multiple seats. But "actual bed" facilities are limited to five lounges: Cathay Pacific YVR (Solus Chair pods), Plaza Premium First YVR (private spa suites), Plaza Premium International YVR (day-bed sections + 24-hour operation), Plaza Premium YWG (nap corner), and Air Canada Signature Suite YYZ (private booth seating, invitation-only).</p>
+
+<h3>Which credit card gets me into an airport rest suite?</h3>
+<p>The American Express Platinum ($799 annual fee), Business Platinum ($799), and Scotiabank Platinum American Express ($399) all include Priority Pass, which grants entry to the Plaza Premium International (24-hour) lounge at YVR and Plaza Premium YWG. The Amex Platinum also allows direct entry via its own card benefit. None of these cards unlock the Cathay Pacific Lounge YVR or the Air Canada Signature Suite YYZ — those require specific ticket or airline status.</p>
+
+<h3>Can I book an airport nap in Canada by the hour?</h3>
+<p>Not in the way Munich, Helsinki, or Singapore Changi offer through Napcabs or GoSleep pods. No Canadian airport has hourly per-pod bookings on either side of security. The closest alternative is an airport-hotel day-use rate (Fairmont YVR, Sheraton Gateway YYZ, ALT Hotel YUL) at roughly $89–$149 for a four- to six-hour daytime stay.</p>
+
+<h3>Are there sleep pods at Toronto Pearson (YYZ)?</h3>
+<p>No dedicated sleep pods for the general traveller. The <a href="/airports/YYZ/lounges/ac-signature-suite-yyz">Air Canada Signature Suite</a> at Terminal 1 offers private booth seating but is restricted to Air Canada Signature Class international passengers. Plaza Premium lounges at YYZ T1 and T3 have quiet zones but no sleep suites.</p>
+
+<h3>Are there sleep pods at Montréal (YUL) or Calgary (YYC)?</h3>
+<p>No dedicated sleep pods at either. YUL's National Bank Lounge (currently in a temporary reduced-capacity space until about June 2028) and Aspire lounges have standard seating. YYC's WestJet Elevation Lounge and both Aspire lounges are seating-focused. The <a href="/lounges/quiet-workspace">quiet-workspace collection</a> covers focus areas rather than rest.</p>
+
+<h3>What's the cheapest Canadian credit card that gets me into a lounge with rest facilities?</h3>
+<p>The Scotiabank Platinum American Express at $399 annual fee. It includes 10 Priority Pass visits per year, which cover both Plaza Premium locations on this list (YVR International 24-hour and YWG). Below that tier, the Scotiabank Passport Visa Infinite ($150) uses DragonPass rather than Priority Pass — DragonPass typically accepts the same two Plaza Premium lounges but each visit uses one of only 6 annual pool entries. <a href="/credit-cards/best-for-airport-lounge-access">Full lounge-access card comparison</a>.</p>
+
+<h2>Methodology</h2>
+<p>Lounge rest facilities were verified against operator descriptions (Plaza Premium, Cathay Pacific, Air Canada), AirportLounges.ca's own lounge-page data, and traveller reports on Milesopedia, Prince of Travel, and Frugal Flyer, cross-referenced with the amenities tags in our own Supabase directory. Where a specific facility ("Solus Chair", "spa suite", "nap corner") is named, it comes from an operator page or an on-file description; where it is characterized more loosely, the source is stated. This article intentionally does not list "sleep-pod" claims from third-party aggregators without operator confirmation, because most such claims describe standard Priority Pass lounges without actual rest facilities.</p>
+
+<h2>Change log</h2>
+<ul>
+  <li><strong>September 12, 2026:</strong> First published. Four Canadian lounges confirmed with rest amenity tagging in Supabase (Cathay Pacific YVR, Plaza Premium First YVR, Plaza Premium International YVR 24-hour, Plaza Premium YWG). Air Canada Signature Suite YYZ documented but not tagged because access is invitation-only.</li>
+</ul>
+
+<h2>Sources</h2>
+<ul>
+  <li>Cathay Pacific Airways — Vancouver lounge page (Solus Chair area, hours, access rules).</li>
+  <li>Plaza Premium Group — YVR First lounge ($110 direct, $30 upgrade, Priority Pass not accepted); YVR International 24-hour lounge; YWG lounge (hours, amenities, access).</li>
+  <li>Air Canada — Signature Suite YYZ eligibility, Air Canada Signature Class benefits.</li>
+  <li>Priority Pass — Canadian directory (which Plaza Premium locations are eligible).</li>
+  <li>AirportLounges.ca — <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a>, <a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum airport lounge access in Canada</a>, <a href="/blog/canadian-airport-lounges-shower-access">Canadian airport lounges with shower access</a>.</li>
+  <li>Milesopedia, Prince of Travel, Frugal Flyer — traveller reports cross-referenced only where an operator page did not describe a facility explicitly.</li>
+</ul>
+
+<p><em>All lounge facts on this page reflect information current as of September 12, 2026. Access rules and hours change without notice — always confirm with the lounge operator before travelling. Next scheduled review: December 2026 (Amex Platinum cap on January 1, 2027).</em></p>
+`
+
 const priorityPassContent = `
 <p data-speakable="intro"><strong>In Canada, Priority Pass comes only with American Express-branded cards. The Amex Platinum and Business Platinum ($799) include unlimited visits through December 31, 2026. The Scotiabank Platinum American Express ($399) includes 10 visits a year. Every Visa and Mastercard premium card uses DragonPass instead. The Amex Aeroplan Reserve includes the membership but charges every visit. From January 1, 2027, Amex Platinum access drops to 6 Priority Pass and 6 Plaza Premium visits a year. Guests use visits. Only $20,000 of annual spend restores unlimited access, and 2026 spend decides 2027. Priority Pass lists 23 lounges at 8 Canadian airports; Québec City is pending. Bought direct, membership costs US$99, US$329 or US$469 a year, with a US$35 guest fee.</strong></p>
 
@@ -1898,6 +2070,61 @@ export const blogPosts: BlogPost[] = [
       {
         question: 'How do you get Air Canada lounge access without paying at the door?',
         answer: 'The Aeroplan credit card fee funds the access — it is not literally free. Four routes exist: (1) a same-day Air Canada Signature Class or eligible business-class ticket includes access; (2) Aeroplan 50K, 75K or Super Elite 100K status; (3) an active Maple Leaf Club membership; or (4) a same-day Air Canada or Star Alliance ticket paired with a $599 premium Aeroplan credit card (TD Aeroplan VIP, CIBC Aeroplan VIP, or Amex Aeroplan Reserve). Walk-in day passes are not sold at Maple Leaf Lounges.',
+      },
+    ],
+  },
+  {
+    slug: 'canadian-airport-lounges-sleep-pods',
+    title: 'Canadian Airport Lounges with Sleep Pods and Rest Facilities (2026)',
+    excerpt: 'The five Canadian airport lounges with real rest facilities — reclining pods, spa suites, day-bed corners, and the only 24-hour lounge in the country. Which cards unlock each, verified September 12, 2026.',
+    coverImage: '/blog/premium-shower-lounge-hero.png',
+    publishedAt: '2026-09-12',
+    lastReviewed: '2026-09-12',
+    category: 'Lounge Guides',
+    readingTime: '10 min read',
+    metaTitle: 'Canadian Airport Lounges with Sleep Pods and Rest Facilities (2026)',
+    metaDescription: 'Only five Canadian airport lounges have real rest facilities — Cathay Pacific YVR Solus pods, Plaza Premium First YVR spa suites, the 24-hour Plaza Premium YVR, Plaza Premium YWG, and AC Signature Suite YYZ. Which cards unlock each. September 2026.',
+    content: sleepPodsContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: 'Rest-facility descriptions verified against operator pages, our own on-file lounge data, and traveller reports. Reviewed September 12, 2026; next check December 2026.',
+    primaryCta: {
+      heading: 'Which card unlocks a Canadian rest lounge?',
+      subheading: 'Compare Amex Platinum, Scotiabank Platinum American Express, and other Priority Pass–eligible cards that get you into the two Plaza Premium lounges with rest facilities.',
+      ctaLabel: 'Compare Priority Pass Cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
+    faqs: [
+      {
+        question: 'Which Canadian airport lounge has actual sleep pods?',
+        answer: 'The Cathay Pacific Lounge at Vancouver International (YVR) is the only Canadian airport lounge with purpose-built individual reclining pods — Solus Chair units in a semi-enclosed configuration. Access requires a same-day Cathay Pacific business class ticket or oneworld Sapphire / Emerald status. No Canadian credit card and no Priority Pass tier unlocks it. The other four lounges on our list (Plaza Premium First YVR, Plaza Premium International YVR 24-hour, Plaza Premium YWG, and Air Canada Signature Suite YYZ) have rest facilities of different formats — spa suites, day-bed corners, private booths — but not literal capsule pods.',
+      },
+      {
+        question: 'Is there a 24-hour airport lounge in Canada?',
+        answer: 'Yes — the Plaza Premium Lounge at YVR International Departures is open 24 hours a day, every day. It is the only Canadian airport lounge that never closes. It accepts Priority Pass (2-hour stay limit), DragonPass via Visa Airport Companion, Amex Platinum direct entry, and walk-in day passes from about $69 CAD.',
+      },
+      {
+        question: 'Can I sleep at a Canadian airport lounge?',
+        answer: 'You can rest with your eyes closed at most Canadian premium lounges without being disturbed. Five lounges have dedicated rest facilities beyond standard seating: Cathay Pacific YVR (Solus Chair pods), Plaza Premium First YVR (private spa suites, $30 upgrade or $110 direct), Plaza Premium International YVR (24-hour operation + day-bed corners), Plaza Premium YWG (nap section opposite Gate 6), and Air Canada Signature Suite YYZ Terminal 1 (private booth seating, invitation-only for Signature Class international passengers).',
+      },
+      {
+        question: 'Which credit card gets me into a Canadian rest lounge?',
+        answer: 'Only two of the five rest lounges are accessible via a Canadian credit card. The Amex Platinum ($799 annual fee), Business Platinum ($799), and Scotiabank Platinum American Express ($399, 10 visits/year) all include Priority Pass and cover both Plaza Premium locations with rest facilities (YVR 24-hour and YWG). The Cathay Pacific Lounge and Air Canada Signature Suite are ticket-only — no credit card unlocks either.',
+      },
+      {
+        question: 'Are there Napcabs, GoSleep or hourly sleep pods at any Canadian airport?',
+        answer: 'No. Hourly-rental capsule pods like Napcabs (Munich, Helsinki, Vienna), GoSleep (Abu Dhabi, Helsinki) and Minute Suites (multiple US airports) do not have any Canadian airport installations as of September 2026. Every rest option at a Canadian airport is either inside a lounge on the list above or via a nearby airport hotel with a day-use rate.',
+      },
+      {
+        question: 'What is the cheapest way to sleep at a Canadian airport?',
+        answer: 'For a Priority Pass holder: the Plaza Premium International (24-hour) lounge at YVR — included at zero marginal cost with an Amex Platinum, Amex Business Platinum, or Scotiabank Platinum Amex. For everyone else: an airport hotel day-use rate at $89–$149 for four to six hours is more comfortable than any Canadian lounge nap. Fairmont Vancouver Airport, Sheraton Gateway at YYZ Terminal 3 (Toronto), and ALT Hotel YUL (Montréal) all publish day-use rates on their own websites.',
+      },
+      {
+        question: 'Do any Air Canada Maple Leaf Lounges have sleep pods?',
+        answer: 'No Air Canada Maple Leaf Lounge in Canada has a documented sleep-pod or rest-suite facility. The YYZ International and YVR International Maple Leaf Lounges enforce cell-free quiet zones with genuine noise policing, which makes closed-eye rest feasible, but there are no reclining pods or private rest suites. The Air Canada Signature Suite at YYZ Terminal 1 has private booth seating but is invitation-only for Air Canada Signature Class international passengers.',
+      },
+      {
+        question: 'How long can I stay in a Canadian airport rest lounge?',
+        answer: 'Two hours is the standard on Priority Pass at every Plaza Premium location, including the 24-hour lounge at YVR (which lets you re-enter after a gap if space permits). Amex Platinum direct entry typically allows a three-hour stay. Cathay Pacific and Air Canada Signature Suite align with the lounge\'s operating hours — usually opening three to four hours before the associated flight and closing after boarding. There is no hourly sleep-pod booking system in Canada.',
       },
     ],
   },
