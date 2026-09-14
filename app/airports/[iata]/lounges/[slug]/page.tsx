@@ -10,12 +10,27 @@ import LoungePlaceholder from '@/components/LoungePlaceholder'
 import NewsletterCTA from '@/components/NewsletterCTA'
 import GooglePlacesEnrichment from '@/components/GooglePlacesEnrichment'
 import LoungeClosureBanner from '@/components/LoungeClosureBanner'
+import LoungeDetailV2 from '@/components/LoungeDetailV2'
 import { getWeather } from '@/lib/weather'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 import AdSlot from '@/components/AdSlot'
 import type { Metadata } from 'next'
 import type { Lounge, Review, AccessType } from '@/lib/types'
 import type { GooglePlace } from '@/lib/google-places'
+
+// ─────────────────────────────────────────────────────────────────────────────
+// V2 editorial layout — feature-flagged by slug allowlist. Every lounge NOT in
+// this set continues to render the legacy V1 layout. All SEO signals (URL,
+// title, meta, canonical, JSON-LD, H1, data-speakable) are identical across V1
+// and V2, so flipping a slug in or out is index-safe.
+//
+// Kill switch: `?v=v1` on the URL forces the V1 render for a V2 slug (for
+// eyeballing side-by-side). `?v=v2` forces V2 for any slug (for previewing
+// upcoming candidates). No override: allowlist decides.
+// ─────────────────────────────────────────────────────────────────────────────
+const V2_SLUGS = new Set<string>([
+  'skyteam-lounge-yvr',
+])
 
 // Route a walk-in day-pass CTA to the most likely affiliate operator based on
 // the lounge name. Falls back to Priority Pass if no operator brand matches.
@@ -49,7 +64,10 @@ function loungeAccessCardsAffiliate(loungeName: string): {
   }
 }
 
-interface Props { params: Promise<{ iata: string; slug: string }> }
+interface Props {
+  params: Promise<{ iata: string; slug: string }>
+  searchParams?: Promise<{ v?: string }>
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { iata, slug } = await params
@@ -155,8 +173,10 @@ function accessIcon(type: string): string {
 
 const DAY_ORDER = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const
 
-export default async function LoungeDetailPage({ params }: Props) {
+export default async function LoungeDetailPage({ params, searchParams }: Props) {
   const { iata, slug } = await params
+  const sp = searchParams ? await searchParams : undefined
+  const layoutOverride = sp?.v // 'v1' forces legacy, 'v2' forces new
   const code = iata.toUpperCase()
   const supabase = await createClient()
 
@@ -361,6 +381,39 @@ export default async function LoungeDetailPage({ params }: Props) {
     }),
     ...(l.website && { sameAs: l.website }),
     ...(reviewLd.length > 0 && { review: reviewLd }),
+  }
+
+  // ─── V2 editorial layout gate ─────────────────────────────────────────
+  // Slug allowlist controls default rendering; ?v=v1 / ?v=v2 override for A/B.
+  // All JSON-LD blocks below are emitted identically for V1 and V2 so switching
+  // the layout has zero SEO surface-area impact.
+  const useV2 =
+    layoutOverride === 'v2'
+      ? true
+      : layoutOverride === 'v1'
+        ? false
+        : V2_SLUGS.has(slug)
+
+  if (useV2) {
+    const cardsCta = loungeAccessCardsAffiliate(l.name)
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableLd) }} />
+        <LoungeDetailV2
+          lounge={l}
+          reviews={reviewsTyped}
+          weather={weather}
+          googlePlace={googlePlace}
+          alternativeLounges={alternativeLounges}
+          code={code}
+          dayPassHref={dayPassAffiliate(l.name)}
+          cardsCta={cardsCta}
+          isSignedIn={!!user}
+        />
+      </>
+    )
   }
 
   return (
