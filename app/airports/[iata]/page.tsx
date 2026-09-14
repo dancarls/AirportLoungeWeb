@@ -1,10 +1,14 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getWeather } from '@/lib/weather'
+import { getAirportAirQuality } from '@/lib/air-quality'
+import { getAirportDepartures } from '@/lib/flights'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import AirportLoungeGridFiltered, { type LoungeSummary } from '@/components/AirportLoungeGridFiltered'
 import WeatherWidget from '@/components/WeatherWidget'
+import AirQualityWidget from '@/components/AirQualityWidget'
+import DepartureBoard from '@/components/DepartureBoard'
 import { INDOOR_COVERED } from '@/lib/mapbox/indoor'
 
 interface Props { params: Promise<{ iata: string }> }
@@ -119,7 +123,7 @@ export default async function AirportPage({ params }: Props) {
 
   if (!airport) notFound()
 
-  const [{ data: rawLounges }, weather] = await Promise.all([
+  const [{ data: rawLounges }, weather, airQuality, departures] = await Promise.all([
     supabase
       .from('lounges')
       .select('id, name, slug, terminal, location_detail, description, rating, review_count, access_types, updated_at, images:lounge_images(storage_path, is_primary, sort_order)')
@@ -129,6 +133,10 @@ export default async function AirportPage({ params }: Props) {
     airport.latitude && airport.longitude
       ? getWeather(airport.latitude, airport.longitude)
       : Promise.resolve(null),
+    airport.latitude && airport.longitude
+      ? getAirportAirQuality(airport.id, airport.latitude, airport.longitude)
+      : Promise.resolve(null),
+    getAirportDepartures(code).catch(() => []),
   ])
 
   const lounges: LoungeSummary[] = (rawLounges ?? []).map(l => ({
@@ -305,6 +313,12 @@ export default async function AirportPage({ params }: Props) {
 
         {/* ── Sidebar ─────────────────────────────────────── */}
         <aside className="lg:col-span-4 space-y-8">
+
+          {/* Live departures — AeroDataBox, cached 2 min */}
+          <DepartureBoard iata={code} departures={departures} />
+
+          {/* Air quality — Google Air Quality API, cached 1 hour */}
+          <AirQualityWidget reading={airQuality} airportCity={airport.city} iata={code} />
 
           {/* Weather */}
           {weather && (

@@ -8,11 +8,13 @@ import GalleryLightbox from '@/components/GalleryLightbox'
 import WeatherWidget from '@/components/WeatherWidget'
 import LoungePlaceholder from '@/components/LoungePlaceholder'
 import NewsletterCTA from '@/components/NewsletterCTA'
+import GooglePlacesEnrichment from '@/components/GooglePlacesEnrichment'
 import { getWeather } from '@/lib/weather'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 import AdSlot from '@/components/AdSlot'
 import type { Metadata } from 'next'
 import type { Lounge, Review, AccessType } from '@/lib/types'
+import type { GooglePlace } from '@/lib/google-places'
 
 // Route a walk-in day-pass CTA to the most likely affiliate operator based on
 // the lounge name. Falls back to Priority Pass if no operator brand matches.
@@ -159,11 +161,13 @@ export default async function LoungeDetailPage({ params }: Props) {
 
   const { data: lounge } = await supabase
     .from('lounges')
-    .select('*, airport:airports(*), amenities(*), images:lounge_images(*)')
+    .select('*, airport:airports(*), amenities(*), images:lounge_images(*), google_place_data')
     .eq('slug', slug)
     .single()
 
   if (!lounge) notFound()
+
+  const googlePlace = (lounge.google_place_data as GooglePlace | null) ?? null
 
   const [{ data: reviews }, { data: { user } }, weather] = await Promise.all([
     supabase
@@ -724,6 +728,10 @@ export default async function LoungeDetailPage({ params }: Props) {
           {weather && l.airport && (
             <WeatherWidget weather={weather} city={l.airport.city} iata={code} />
           )}
+
+          {/* Google Places enrichment — rating, photos, verified hours, Maps link.
+              Renders nothing until the lounge is backfilled with google_place_data. */}
+          <GooglePlacesEnrichment place={googlePlace} loungeName={l.name} />
 
           {/* Newsletter capture in the sidebar — high-intent slot */}
           <NewsletterCTA

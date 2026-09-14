@@ -38,3 +38,6 @@ Thumbs.db
 # sentry
 .sentryclirc
 .env.sentry-build-plugin
+
+.vercel
+.env*
