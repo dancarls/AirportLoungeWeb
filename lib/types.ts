@@ -59,6 +59,14 @@ export interface Lounge {
   airport?: Airport
   amenities?: Amenity[]
   images?: LoungeImage[]
+  // Closure state — a lounge with any status other than 'open' renders the
+  // signature LoungeClosureBanner instead of business-as-usual guidance.
+  closure_status?: 'open' | 'temporary_closure' | 'reduced_capacity' | 'permanent_closure'
+  closure_reason?: string | null
+  closure_started_on?: string | null
+  closure_reopen_estimate?: string | null
+  closure_alternatives?: string | null
+  closure_source_url?: string | null
 }
 
 export interface BusyTimes {

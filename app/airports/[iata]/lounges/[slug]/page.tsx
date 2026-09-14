@@ -9,6 +9,7 @@ import WeatherWidget from '@/components/WeatherWidget'
 import LoungePlaceholder from '@/components/LoungePlaceholder'
 import NewsletterCTA from '@/components/NewsletterCTA'
 import GooglePlacesEnrichment from '@/components/GooglePlacesEnrichment'
+import LoungeClosureBanner from '@/components/LoungeClosureBanner'
 import { getWeather } from '@/lib/weather'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 import AdSlot from '@/components/AdSlot'
@@ -161,13 +162,49 @@ export default async function LoungeDetailPage({ params }: Props) {
 
   const { data: lounge } = await supabase
     .from('lounges')
-    .select('*, airport:airports(*), amenities(*), images:lounge_images(*), google_place_data')
+    .select('*, airport:airports(*), amenities(*), images:lounge_images(*), google_place_data, closure_status, closure_reason, closure_started_on, closure_reopen_estimate, closure_alternatives, closure_source_url')
     .eq('slug', slug)
     .single()
 
   if (!lounge) notFound()
 
   const googlePlace = (lounge.google_place_data as GooglePlace | null) ?? null
+
+  // If this lounge is closed / reduced-capacity, auto-suggest alternatives at
+  // the same airport, ranked by whether they share access types with the closed
+  // lounge (a Priority Pass user needs a Priority Pass alternative first).
+  let alternativeLounges: { slug: string; name: string; terminal: string | null; airport_iata: string }[] = []
+  if (lounge.closure_status && lounge.closure_status !== 'open' && lounge.airport?.id) {
+    const closedAccessNames = new Set(
+      ((lounge.access_types ?? []) as AccessType[]).map(a => a.name.toLowerCase())
+    )
+    const { data: alts } = await supabase
+      .from('lounges')
+      .select('slug, name, terminal, access_types')
+      .eq('airport_id', lounge.airport.id)
+      .eq('is_active', true)
+      .eq('closure_status', 'open')
+      .neq('id', lounge.id)
+      .limit(8)
+    alternativeLounges = ((alts ?? []) as Array<{ slug: string; name: string; terminal: string | null; access_types: unknown }>)
+      .map(alt => {
+        const accessNames = new Set(
+          ((alt.access_types ?? []) as AccessType[]).map(a => a.name.toLowerCase())
+        )
+        // Score = how many access types the alternative shares with the closed lounge
+        const shared = [...accessNames].filter(n => closedAccessNames.has(n)).length
+        return {
+          slug: alt.slug,
+          name: alt.name,
+          terminal: alt.terminal,
+          airport_iata: code,
+          score: shared,
+        }
+      })
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3)
+      .map(({ slug, name, terminal, airport_iata }) => ({ slug, name, terminal, airport_iata }))
+  }
 
   const [{ data: reviews }, { data: { user } }, weather] = await Promise.all([
     supabase
@@ -371,6 +408,22 @@ export default async function LoungeDetailPage({ params }: Props) {
         {/* Main content (3/4) */}
         <div className="lg:col-span-3 space-y-12">
 
+          {/* Closure banner — renders only when the lounge is closed or reduced-capacity.
+              Signature site-wide visual with auto-suggested alternatives. */}
+          {l.closure_status && l.closure_status !== 'open' && (
+            <LoungeClosureBanner
+              status={l.closure_status as 'temporary_closure' | 'reduced_capacity' | 'permanent_closure'}
+              reason={l.closure_reason ?? null}
+              startedOn={l.closure_started_on ?? null}
+              reopenEstimate={l.closure_reopen_estimate ?? null}
+              alternatives={l.closure_alternatives ?? null}
+              alternativeLounges={alternativeLounges}
+              sourceUrl={l.closure_source_url ?? null}
+              verifiedAt={l.updated_at ?? null}
+              loungeName={l.name}
+            />
+          )}
+
           {/* Editorial intro */}
           <div className="border-b border-outline-variant/30 pb-12">
             <div className="flex justify-between items-start mb-8 flex-wrap gap-4">
@@ -495,35 +548,6 @@ export default async function LoungeDetailPage({ params }: Props) {
                   </div>
                 ))}
               </div>
-            </div>
-          )}
-
-          {/* Opening hours */}
-          {l.opening_hours && Object.keys(l.opening_hours).length > 0 && (
-            <div className="bg-white border border-outline-variant/30 p-10 rounded-xl">
-              <h3 className="font-headline-md text-headline-md mb-8 flex items-center gap-3">
-                <span className="material-symbols-outlined text-primary">schedule</span>
-                Opening Hours
-              </h3>
-              {l.opening_hours.is_24_7 ? (
-                <p className="text-green-600 font-bold text-lg">Open 24 / 7</p>
-              ) : (
-                <div className="grid grid-cols-2 gap-x-8 gap-y-1">
-                  {DAY_ORDER.map(day => {
-                    const hours = l.opening_hours[day]
-                    if (!hours) return null
-                    return (
-                      <div key={day} className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
-                        <span className="capitalize text-on-surface-variant">{day.slice(0, 3)}</span>
-                        <span className="font-medium">{hours}</span>
-                      </div>
-                    )
-                  })}
-                </div>
-              )}
-              {l.opening_hours.notes && (
-                <p className="text-xs text-secondary mt-4">{l.opening_hours.notes}</p>
-              )}
             </div>
           )}
 
@@ -720,6 +744,46 @@ export default async function LoungeDetailPage({ params }: Props) {
                     Official Terminal Map
                   </a>
                 </div>
+              )}
+            </div>
+          )}
+
+          {/* Opening hours — sidebar placement so readers see it near the top-of-fold
+              next to the terminal map. Renders as an "Currently closed" state when the
+              lounge closure_status is set, so users don't try to walk over. */}
+          {l.opening_hours && Object.keys(l.opening_hours).length > 0 && (
+            <div className="bg-surface border border-sand-dark/10 p-6 shadow-sm">
+              <h4 className="font-label-caps text-label-caps text-sand-dark mb-4 flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary" style={{ fontSize: '16px' }}>schedule</span>
+                OPENING HOURS
+              </h4>
+              {l.closure_status && l.closure_status !== 'open' ? (
+                <div className="mb-3 p-3 bg-amber-50 border border-amber-200 rounded">
+                  <p className="text-sm font-semibold text-amber-800">Currently closed</p>
+                  {l.closure_reopen_estimate && (
+                    <p className="text-xs text-amber-700 mt-1">Expected return: {l.closure_reopen_estimate}</p>
+                  )}
+                  <p className="text-[10px] text-amber-700 mt-2 italic">Hours below reflect the pre-closure schedule.</p>
+                </div>
+              ) : null}
+              {l.opening_hours.is_24_7 ? (
+                <p className="text-green-600 font-bold text-lg">Open 24 / 7</p>
+              ) : (
+                <div className="space-y-1">
+                  {DAY_ORDER.map(day => {
+                    const hours = l.opening_hours[day]
+                    if (!hours) return null
+                    return (
+                      <div key={day} className="flex justify-between text-xs py-1 border-b border-outline-variant/10 last:border-0">
+                        <span className="capitalize text-on-surface-variant">{day.slice(0, 3)}</span>
+                        <span className="font-medium text-on-surface">{hours}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+              {l.opening_hours.notes && (
+                <p className="text-[10px] text-secondary mt-3 leading-relaxed">{l.opening_hours.notes}</p>
               )}
             </div>
           )}
