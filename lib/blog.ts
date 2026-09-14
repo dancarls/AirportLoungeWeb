@@ -820,6 +820,13 @@ const remoteWorkContent = `
 <h3>What should I bring to a Canadian airport lounge for a productive work session?</h3>
 <p>A laptop charger and a personal mobile hotspot as backup are the two most useful items. Even in higher-ranked lounges, power outlets are not always at every seat, and Wi-Fi reliability varies. Noise-cancelling headphones help in lounges without enforced quiet zones. If you plan to print anything, the WestJet Elevation Lounges at YYC and YVR are currently the only Priority Pass locations in Canada with wireless printing.</p>
 
+<h2>Related reading</h2>
+<ul>
+  <li><a href="/blog/canadian-airport-lounges-sleep-pods">Canadian airport lounges with sleep pods and rest facilities</a> — the five lounges with real rest amenities, including the only 24-hour lounge in the country</li>
+  <li><a href="/blog/canadian-airport-lounges-shower-access">Canadian airport lounges with shower access</a> — companion guide covering every lounge with a shower</li>
+  <li><a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum airport lounge access in Canada</a> — cross-reference for card-based access to the work-friendly lounges</li>
+</ul>
+
 <p><em>All data in this guide was compiled as of June 2026. Lounge access policies, hours, Priority Pass eligibility, and physical facilities are subject to change — always verify with the lounge operator or your card issuer before travel.</em></p>
 `
 
