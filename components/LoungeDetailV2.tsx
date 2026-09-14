@@ -26,7 +26,15 @@ import LoungeClosureBanner from '@/components/LoungeClosureBanner'
 import ReviewCard from '@/components/ReviewCard'
 import ReviewForm from '@/components/ReviewForm'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
-import { getImageUrl, amenityIcon, DAY_ORDER, accessTierIcon, accessTierBadge } from '@/lib/lounge-helpers'
+import {
+  getImageUrl,
+  amenityIcon,
+  DAY_ORDER,
+  accessTierIcon,
+  accessTierBadge,
+  getBookingDestination,
+  getLiveStatus,
+} from '@/lib/lounge-helpers'
 import type { Lounge, Review, AccessType } from '@/lib/types'
 import type { GooglePlace } from '@/lib/google-places'
 
@@ -46,7 +54,11 @@ interface Props {
   googlePlace: GooglePlace | null
   alternativeLounges: { slug: string; name: string; terminal: string | null; airport_iata: string }[]
   code: string
-  dayPassHref: string
+  /**
+   * Card-affiliate CTA for this lounge. Always safe to render since it points
+   * to a FinlyWealth landing page that exists whether or not the affiliate ID
+   * is set (see lib/affiliates.ts).
+   */
   cardsCta: { href: string; ctaLabel: string; heading: string }
   isSignedIn: boolean
 }
@@ -64,7 +76,6 @@ export default function LoungeDetailV2({
   googlePlace,
   alternativeLounges,
   code,
-  dayPassHref,
   cardsCta,
   isSignedIn,
 }: Props) {
@@ -99,10 +110,19 @@ export default function LoungeDetailV2({
     .filter(Boolean)
     .join(' · ') || (l.terminal ? `Terminal ${l.terminal}` : `${l.airport?.name ?? code}`)
 
-  // The "Guaranteed Access Pass" pricing card renders when the lounge has a
-  // guest_fee OR an explicit day-pass access type. Otherwise it degrades
-  // gracefully to a "Member Access" panel that routes to the operator site.
-  const hasPaidAccess = l.guest_fee != null || accessTypes.some(at => at.type === 'day_pass' || /day pass|walk[- ]in/i.test(at.name))
+  // Booking destination — no fabricated CTA. Either affiliate flow, operator
+  // site, or nothing. See lib/lounge-helpers.ts for resolution order.
+  const booking = getBookingDestination(l.name, l.website ?? null)
+
+  // Live open/closed calc using the airport's timezone. Falls back to
+  // 'unknown' when either data is missing so the UI never invents a status.
+  const liveStatus = isClosed
+    ? { kind: 'closed' as const, label: `Closed${l.closure_reopen_estimate ? ` · reopens ${l.closure_reopen_estimate}` : ''}`, tone: 'closed' as const }
+    : getLiveStatus(l.opening_hours, l.airport?.timezone ?? null)
+
+  // Access-highlight bullets for the booking card — derived from real amenities,
+  // never fabricated. Keeps the visual density of the mockup while staying honest.
+  const amenityHighlights = buildAmenityHighlights(l.amenities ?? [])
 
   return (
     <div className={`${displayFont.variable} bg-[#faf9f6] min-h-screen`}>
@@ -281,13 +301,21 @@ export default function LoungeDetailV2({
             <a href="#traveler-reviews" className="text-[#42474b] hover:text-[#0e2a38] py-1 transition-colors">Reviews</a>
           </div>
           <div className="hidden md:flex items-center gap-2 shrink-0">
-            <span className={`inline-block w-2 h-2 rounded-full ${isClosed ? 'bg-amber-500' : 'bg-[#059669]'}`} />
-            <span className={`text-[11px] font-bold uppercase tracking-[0.08em] ${isClosed ? 'text-amber-700' : 'text-[#059669]'}`}>
-              {isClosed
-                ? 'Currently Closed'
-                : l.opening_hours?.is_24_7
-                  ? 'Open 24 / 7'
-                  : 'See Hours Below'}
+            <span
+              className={`inline-block w-2 h-2 rounded-full ${
+                liveStatus.tone === 'open' ? 'bg-[#059669]'
+                : liveStatus.tone === 'closed' ? 'bg-amber-500'
+                : 'bg-slate-400'
+              }`}
+            />
+            <span
+              className={`text-[11px] font-bold uppercase tracking-[0.08em] ${
+                liveStatus.tone === 'open' ? 'text-[#059669]'
+                : liveStatus.tone === 'closed' ? 'text-amber-700'
+                : 'text-slate-500'
+              }`}
+            >
+              {liveStatus.label}
             </span>
           </div>
         </div>
@@ -650,26 +678,49 @@ export default function LoungeDetailV2({
 
           {/* ─── RIGHT COLUMN: STICKY ACTION RAIL ───────────────────── */}
           <aside className="lg:col-span-4 space-y-4 lg:sticky lg:top-16">
-            {/* Live status / capacity */}
+            {/* Live status card — real-time open/closed using airport timezone */}
             <div className="bg-white rounded-xl p-5 border border-[#e5e7eb] shadow-md space-y-3">
               <div className="flex items-center justify-between pb-2 border-b border-[#e5e7eb]">
                 <div className="flex items-center gap-2">
                   <span className="relative flex h-3 w-3">
-                    {!isClosed && (
+                    {liveStatus.tone === 'open' && (
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#059669] opacity-75" />
                     )}
-                    <span className={`relative inline-flex rounded-full h-3 w-3 ${isClosed ? 'bg-amber-500' : 'bg-[#059669]'}`} />
+                    <span
+                      className={`relative inline-flex rounded-full h-3 w-3 ${
+                        liveStatus.tone === 'open' ? 'bg-[#059669]'
+                        : liveStatus.tone === 'closed' ? 'bg-amber-500'
+                        : 'bg-slate-400'
+                      }`}
+                    />
                   </span>
-                  <span className={`text-sm font-bold uppercase tracking-wider ${isClosed ? 'text-amber-700' : 'text-[#059669]'}`}>
-                    {isClosed ? 'Currently Closed' : l.opening_hours?.is_24_7 ? 'Always Open' : 'Live Status'}
+                  <span
+                    className={`text-sm font-bold uppercase tracking-wider ${
+                      liveStatus.tone === 'open' ? 'text-[#059669]'
+                      : liveStatus.tone === 'closed' ? 'text-amber-700'
+                      : 'text-slate-500'
+                    }`}
+                  >
+                    {liveStatus.tone === 'open' ? 'Open Now'
+                     : liveStatus.tone === 'closed' ? 'Closed'
+                     : 'Schedule'}
                   </span>
                 </div>
-                {l.opening_hours?.is_24_7 && !isClosed && (
-                  <span className="text-xs font-mono text-[#42474b]">24 / 7</span>
+                {l.airport?.timezone && liveStatus.kind !== 'unknown' && (
+                  <span className="text-[10px] font-mono text-[#42474b]">
+                    {new Intl.DateTimeFormat('en-CA', {
+                      timeZone: l.airport.timezone,
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: false,
+                    }).format(new Date())} {l.airport.city} time
+                  </span>
                 )}
               </div>
 
-              {/* Compact weekly toggle */}
+              <p className="text-sm text-[#0e2a38]">{liveStatus.label}</p>
+
+              {/* 7-day schedule toggle — only when we have a real schedule to show */}
               {l.opening_hours && !l.opening_hours.is_24_7 && !isClosed && (
                 <details className="group">
                   <summary className="flex items-center justify-between cursor-pointer list-none font-semibold text-sm text-[#0e2a38] hover:text-[#059669] py-1 transition-colors">
@@ -679,7 +730,12 @@ export default function LoungeDetailV2({
                   <div className="pt-2 space-y-1 text-[13px] border-t border-[#e5e7eb] mt-2">
                     {DAY_ORDER.map(day => {
                       const h = l.opening_hours[day]
-                      if (!h) return null
+                      if (!h) return (
+                        <div key={day} className="flex justify-between py-1 px-2 text-slate-400">
+                          <span className="capitalize">{DAY_ABBR[day]}</span>
+                          <span>Closed</span>
+                        </div>
+                      )
                       return (
                         <div key={day} className="flex justify-between py-1 px-2 text-[#42474b]">
                           <span className="capitalize">{DAY_ABBR[day]}</span>
@@ -691,102 +747,91 @@ export default function LoungeDetailV2({
                 </details>
               )}
 
-              {isClosed && l.closure_reopen_estimate && (
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-                  <p className="text-sm font-semibold text-amber-800">Expected reopening</p>
-                  <p className="text-sm text-amber-700 mt-1">{l.closure_reopen_estimate}</p>
-                </div>
+              {l.opening_hours?.notes && (
+                <p className="text-[11px] text-[#42474b] italic leading-relaxed pt-1 border-t border-[#e5e7eb]">
+                  {l.opening_hours.notes}
+                </p>
               )}
             </div>
 
-            {/* Access / booking card — variant depends on paid vs member-only */}
-            {hasPaidAccess ? (
-              <div className="bg-[#0e2a38] text-white rounded-xl p-5 shadow-xl space-y-4 relative overflow-hidden">
-                <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-[#059669]/20 rounded-full blur-2xl pointer-events-none" />
-                <div className="flex items-start justify-between relative z-10">
-                  <div>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-[0.08em] bg-[#059669] text-white">
-                      Guaranteed Access Pass
-                    </span>
-                    {l.guest_fee ? (
-                      <div className="font-[family-name:var(--font-display)] text-3xl font-bold text-white mt-2">
-                        ${l.guest_fee} <span className="text-sm font-normal text-[#68dba9]">{l.guest_fee_currency ?? 'CAD'}</span>
-                      </div>
-                    ) : (
-                      <div className="font-[family-name:var(--font-display)] text-2xl font-bold text-white mt-2">
-                        Book Walk-in Access
-                      </div>
-                    )}
-                    <p className="text-xs text-white/70 mt-1">Single-entry standard guest allocation</p>
-                  </div>
-                  <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-[#68dba9]">
-                    <span className="material-symbols-outlined text-[24px]">confirmation_number</span>
-                  </div>
-                </div>
-                <div className="space-y-2 text-[13px] text-white/90 relative z-10">
-                  <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[#68dba9] text-[18px]">done</span>
-                    <span>Access typically valid 3 hours pre-departure</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[#68dba9] text-[18px]">done</span>
-                    <span>Food, drinks, showers &amp; Wi-Fi included</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[#68dba9] text-[18px]">done</span>
-                    <span>Book direct or via the operator</span>
-                  </div>
-                </div>
-                <a
-                  href={dayPassHref}
-                  target="_blank"
-                  rel={AFFILIATE_REL}
-                  className="relative z-10 w-full bg-[#059669] hover:bg-[#047857] text-white font-semibold py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-md group"
-                >
-                  <span>
-                    {l.guest_fee
-                      ? `Book Now · $${l.guest_fee} ${l.guest_fee_currency ?? 'CAD'}`
-                      : 'Book Lounge Access'}
+            {/* Access & Booking card — truth-only. Content depends on what we
+                actually know: real published price, real booking destination,
+                real amenities. No fabricated perks or unverified claims. */}
+            <div className="bg-[#0e2a38] text-white rounded-xl p-5 shadow-xl space-y-4 relative overflow-hidden">
+              <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-[#059669]/20 rounded-full blur-2xl pointer-events-none" />
+
+              {/* Header row: badge, headline, icon */}
+              <div className="flex items-start justify-between relative z-10">
+                <div className="min-w-0">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-[0.08em] bg-[#059669] text-white">
+                    {l.guest_fee != null ? 'Day-Pass Access' : booking.kind !== 'none' ? 'Access & Booking' : 'How to Get In'}
                   </span>
-                  <span className="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">arrow_forward</span>
-                </a>
-                <div className="grid grid-cols-2 gap-2 pt-1 relative z-10">
-                  {l.phone && (
-                    <a
-                      href={`tel:${l.phone.replace(/[^\d+]/g, '')}`}
-                      className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-colors"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">call</span>
-                      Call Lounge
-                    </a>
+
+                  {/* Only show a price when the DB has one — never a fabricated "$50" */}
+                  {l.guest_fee != null ? (
+                    <div className="mt-2">
+                      <div className="font-[family-name:var(--font-display)] text-3xl font-bold text-white leading-none">
+                        ${l.guest_fee}
+                        <span className="text-sm font-normal text-[#68dba9] ml-1">
+                          {l.guest_fee_currency ?? 'CAD'}
+                        </span>
+                      </div>
+                      <p className="text-xs text-white/70 mt-1">
+                        Published walk-in rate · confirm on the operator site before travelling
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="mt-2">
+                      <div className="font-[family-name:var(--font-display)] text-xl font-bold text-white leading-snug">
+                        {accessTypes.length > 0
+                          ? 'Complimentary via eligible fare, elite status or card'
+                          : 'Access via the operator'}
+                      </div>
+                      <p className="text-xs text-white/70 mt-1">
+                        This lounge does not publish a walk-in price with us
+                      </p>
+                    </div>
                   )}
-                  <Link
-                    href={`/airports/${code}`}
-                    className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-colors"
-                  >
-                    <span className="material-symbols-outlined text-[16px]">explore</span>
-                    All {code}
-                  </Link>
+                </div>
+                <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-[#68dba9] shrink-0 ml-2">
+                  <span className="material-symbols-outlined text-[24px]">
+                    {l.guest_fee != null ? 'confirmation_number' : 'workspace_premium'}
+                  </span>
                 </div>
               </div>
-            ) : (
-              /* Member-only variant */
-              <div className="bg-[#0e2a38] text-white rounded-xl p-5 shadow-xl space-y-4 relative overflow-hidden">
-                <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-[#059669]/20 rounded-full blur-2xl pointer-events-none" />
-                <div className="flex items-start justify-between relative z-10">
-                  <div>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-[0.08em] bg-[#0e2a38] border border-[#68dba9] text-[#68dba9]">
-                      Member / Status Access
+
+              {/* Amenity chips — real amenities only, up to 3 */}
+              {amenityHighlights.length > 0 && (
+                <div className="flex flex-wrap gap-2 relative z-10">
+                  {amenityHighlights.map(h => (
+                    <span
+                      key={h.label}
+                      className="inline-flex items-center gap-1.5 text-[12px] font-medium text-white/90 bg-white/10 px-2.5 py-1 rounded-full"
+                    >
+                      <span className="material-symbols-outlined text-[#68dba9] text-[15px]">{h.icon}</span>
+                      {h.label}
                     </span>
-                    <div className="font-[family-name:var(--font-display)] text-xl font-bold text-white mt-2 leading-tight">
-                      Access via eligible fare, elite status, or card membership
-                    </div>
-                    <p className="text-xs text-white/70 mt-1">This lounge does not sell walk-in passes.</p>
-                  </div>
-                  <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-[#68dba9]">
-                    <span className="material-symbols-outlined text-[24px]">workspace_premium</span>
-                  </div>
+                  ))}
                 </div>
+              )}
+
+              {/* Primary CTA — always lands on a real destination */}
+              {booking.url && booking.ctaLabel && (
+                <a
+                  href={booking.url}
+                  target="_blank"
+                  rel={booking.kind === 'affiliate' ? AFFILIATE_REL : 'noopener noreferrer'}
+                  className="relative z-10 w-full bg-[#059669] hover:bg-[#047857] text-white font-semibold py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-md group"
+                >
+                  <span>{booking.ctaLabel}</span>
+                  <span className="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">
+                    arrow_forward
+                  </span>
+                </a>
+              )}
+              {/* When we cannot connect them anywhere, be honest about it and
+                  route to card comparison instead — never a fake "Book" button */}
+              {!booking.url && (
                 <a
                   href={cardsCta.href}
                   target="_blank"
@@ -794,30 +839,44 @@ export default function LoungeDetailV2({
                   className="relative z-10 w-full bg-[#059669] hover:bg-[#047857] text-white font-semibold py-3 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-md group"
                 >
                   <span>{cardsCta.ctaLabel}</span>
-                  <span className="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">arrow_forward</span>
+                  <span className="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-1">
+                    arrow_forward
+                  </span>
                 </a>
-                <div className="grid grid-cols-2 gap-2 pt-1 relative z-10">
-                  {l.website && (
-                    <a
-                      href={l.website}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-colors"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">open_in_new</span>
-                      Operator site
-                    </a>
-                  )}
-                  <Link
-                    href={`/airports/${code}`}
+              )}
+
+              {/* Attribution caption — shows the reader where the link goes,
+                  and discloses the affiliate relationship where relevant */}
+              {booking.url && booking.hostname && (
+                <p className="relative z-10 text-[11px] text-white/60 text-center leading-relaxed">
+                  {booking.kind === 'affiliate'
+                    ? <>Reservation via {booking.hostname} · we may earn a commission</>
+                    : <>Reservation on {booking.hostname}</>}
+                </p>
+              )}
+
+              {/* Secondary utility row */}
+              <div className="grid grid-cols-2 gap-2 pt-1 relative z-10">
+                {l.phone && (
+                  <a
+                    href={`tel:${l.phone.replace(/[^\d+]/g, '')}`}
                     className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-colors"
                   >
-                    <span className="material-symbols-outlined text-[16px]">explore</span>
-                    All {code}
-                  </Link>
-                </div>
+                    <span className="material-symbols-outlined text-[16px]">call</span>
+                    Call Lounge
+                  </a>
+                )}
+                <Link
+                  href={`/airports/${code}`}
+                  className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-colors ${
+                    !l.phone ? 'col-span-2' : ''
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-[16px]">explore</span>
+                  All {code} lounges
+                </Link>
               </div>
-            )}
+            </div>
 
             {/* Terminal Navigation */}
             {l.airport?.latitude && l.airport?.longitude && (
@@ -934,4 +993,25 @@ function MetaTile({ icon, label, value }: { icon: string; label: string; value: 
       </div>
     </div>
   )
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Amenity-highlight builder for the booking sidebar card. Uses only real DB
+// amenities — never invented perks. Returns up to 3 icon + label pairs.
+// ────────────────────────────────────────────────────────────────────────────
+interface AmenityHighlight { icon: string; label: string }
+
+function buildAmenityHighlights(amenities: { name: string }[]): AmenityHighlight[] {
+  const names = amenities.map(a => a.name.toLowerCase())
+  const has = (needle: string) => names.some(n => n.includes(needle))
+
+  const picks: AmenityHighlight[] = []
+  if (has('wifi') || has('wi-fi'))                           picks.push({ icon: 'wifi',        label: 'Wi-Fi' })
+  if (has('shower'))                                          picks.push({ icon: 'shower',      label: 'Showers' })
+  if (has('hot food') || has('buffet') || has('dining'))     picks.push({ icon: 'soup_kitchen', label: 'Hot food' })
+  if (picks.length < 3 && (has('bar') || has('wine') || has('drinks'))) picks.push({ icon: 'local_bar',   label: 'Full bar' })
+  if (picks.length < 3 && (has('coffee') || has('barista'))) picks.push({ icon: 'local_cafe',  label: 'Barista coffee' })
+  if (picks.length < 3 && (has('quiet') || has('sleep') || has('nap'))) picks.push({ icon: 'do_not_disturb', label: 'Quiet zone' })
+  if (picks.length < 3 && (has('business') || has('printing'))) picks.push({ icon: 'business_center', label: 'Business area' })
+  return picks.slice(0, 3)
 }

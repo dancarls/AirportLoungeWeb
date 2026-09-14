@@ -19,16 +19,19 @@ import type { Lounge, Review, AccessType } from '@/lib/types'
 import type { GooglePlace } from '@/lib/google-places'
 
 // ─────────────────────────────────────────────────────────────────────────────
-// V2 editorial layout — feature-flagged by slug allowlist. Every lounge NOT in
-// this set continues to render the legacy V1 layout. All SEO signals (URL,
-// title, meta, canonical, JSON-LD, H1, data-speakable) are identical across V1
-// and V2, so flipping a slug in or out is index-safe.
-//
-// Kill switch: `?v=v1` on the URL forces the V1 render for a V2 slug (for
-// eyeballing side-by-side). `?v=v2` forces V2 for any slug (for previewing
-// upcoming candidates). No override: allowlist decides.
+// V2 editorial layout rollout.
+//   'all'       — every lounge renders V2 (current: production default)
+//   'allowlist' — only slugs in V2_SLUGS render V2
+//   'off'       — every lounge renders the legacy V1 layout
+// Kill switch:
+//   ?v=v1 on any URL → force V1 for that request
+//   ?v=v2 on any URL → force V2 for that request
+// All SEO signals (URL, title, meta, canonical, JSON-LD, H1, data-speakable)
+// are identical across V1 and V2, so flipping this constant is index-safe.
 // ─────────────────────────────────────────────────────────────────────────────
+const V2_ROLLOUT: 'all' | 'allowlist' | 'off' = 'all'
 const V2_SLUGS = new Set<string>([
+  // Kept for reference / rollback to allowlist mode.
   'skyteam-lounge-yvr',
 ])
 
@@ -392,7 +395,11 @@ export default async function LoungeDetailPage({ params, searchParams }: Props) 
       ? true
       : layoutOverride === 'v1'
         ? false
-        : V2_SLUGS.has(slug)
+        : V2_ROLLOUT === 'all'
+          ? true
+          : V2_ROLLOUT === 'off'
+            ? false
+            : V2_SLUGS.has(slug)
 
   if (useV2) {
     const cardsCta = loungeAccessCardsAffiliate(l.name)
@@ -408,7 +415,6 @@ export default async function LoungeDetailPage({ params, searchParams }: Props) 
           googlePlace={googlePlace}
           alternativeLounges={alternativeLounges}
           code={code}
-          dayPassHref={dayPassAffiliate(l.name)}
           cardsCta={cardsCta}
           isSignedIn={!!user}
         />
