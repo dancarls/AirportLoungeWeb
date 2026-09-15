@@ -1,16 +1,25 @@
 import * as Sentry from '@sentry/nextjs'
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
+  // Session Replay's DOM cloner recurses over the page structure. A handful
+  // of blog posts here render very long, deeply nested HTML tables. On iOS
+  // WebKit inside the Google Search in-app browser, that traversal overflows
+  // the JS call stack (RangeError). Skip Replay on those specific pages.
+  const REPLAY_SKIP_PATHS = ['/blog/canadian-airport-lounges-shower-access']
+  const shouldReplay =
+    typeof window === 'undefined' ||
+    !REPLAY_SKIP_PATHS.includes(window.location.pathname)
+
   Sentry.init({
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
     environment: process.env.VERCEL_ENV ?? process.env.NODE_ENV,
     release: process.env.VERCEL_GIT_COMMIT_SHA,
     tracesSampleRate: 0.1,
     replaysSessionSampleRate: 0,
-    replaysOnErrorSampleRate: 1.0,
-    integrations: [
-      Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false }),
-    ],
+    replaysOnErrorSampleRate: shouldReplay ? 1.0 : 0,
+    integrations: shouldReplay
+      ? [Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false })]
+      : [],
     ignoreErrors: [
       // Browser / extension noise we don't want to log
       'ResizeObserver loop limit exceeded',
@@ -35,6 +44,10 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
       // Next.js internal control-flow exceptions that are not actual errors
       'NEXT_NOT_FOUND',
       'NEXT_REDIRECT',
+      // Call-stack overflows fired from Sentry's own Session Replay traversal
+      // on iOS WebKit in-app browsers (Google Search app, ChatGPT app). Not
+      // actionable from app code; scope is narrowed above by REPLAY_SKIP_PATHS.
+      'Maximum call stack size exceeded',
     ],
     beforeSend(event) {
       // Drop events from unsupported third-party origins

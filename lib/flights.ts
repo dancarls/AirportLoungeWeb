@@ -55,7 +55,10 @@ export async function getAirportDepartures(iataCode: string): Promise<FlightStat
   const to = new Date(now.getTime() + 8 * 60 * 60 * 1000)
     .toISOString().replace('T', ' ').substring(0, 16)
 
-  const url = `${BASE}/flights/airports/iata/${iataCode}/${encodeURIComponent(from)}/${encodeURIComponent(to)}?direction=Departure&withLeg=false&withCancelled=true&withCodeshared=false&withCargo=false&withPrivate=false`
+  // withLeg=true is required for arrival airport / destination info on each
+  // departure — without it, `arrival.airport` and `arrival.iata` come back
+  // empty and the DepartureBoard falls back to "Destination TBA".
+  const url = `${BASE}/flights/airports/iata/${iataCode}/${encodeURIComponent(from)}/${encodeURIComponent(to)}?direction=Departure&withLeg=true&withCancelled=true&withCodeshared=false&withCargo=false&withPrivate=false`
 
   const res = await fetch(url, { headers: HEADERS, next: { revalidate: 120 } })
   if (!res.ok) return []
