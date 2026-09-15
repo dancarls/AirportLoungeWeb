@@ -34,7 +34,9 @@ import {
   accessTierBadge,
   getBookingDestination,
   getLiveStatus,
+  sellsWalkInDayPass,
 } from '@/lib/lounge-helpers'
+import { photoUrl as googlePhotoUrl } from '@/lib/google-places'
 import type { Lounge, Review, AccessType } from '@/lib/types'
 import type { GooglePlace } from '@/lib/google-places'
 
@@ -85,9 +87,15 @@ export default function LoungeDetailV2({
     ? [images[primaryIdx], ...images.filter((_, i) => i !== primaryIdx)]
     : images
 
-  const heroPrimary  = orderedImages[0]
-  const heroSecondary = orderedImages[1]
-  const heroTertiary = orderedImages[2]
+  // Hero-photo pipeline: prefer local uploads, then fall back to Google Places
+  // photos (the enrichment already fetches up to 10 per lounge). Every hero
+  // slot has provenance metadata so the UI can render the Google-attribution
+  // caption when required by Google's Places API terms.
+  const heroPhotos = buildHeroPhotos(orderedImages, googlePlace, l.name)
+  const heroPrimary   = heroPhotos[0]
+  const heroSecondary = heroPhotos[1]
+  const heroTertiary  = heroPhotos[2]
+  const hasGooglePhotoInHero = heroPhotos.some(p => p?.provenance === 'google')
 
   const accessTypes = (l.access_types ?? []) as AccessType[]
   const isClosed = !!l.closure_status && l.closure_status !== 'open'
@@ -110,9 +118,23 @@ export default function LoungeDetailV2({
     .filter(Boolean)
     .join(' · ') || (l.terminal ? `Terminal ${l.terminal}` : `${l.airport?.name ?? code}`)
 
-  // Booking destination — no fabricated CTA. Either affiliate flow, operator
-  // site, or nothing. See lib/lounge-helpers.ts for resolution order.
-  const booking = getBookingDestination(l.name, l.website ?? null)
+  // Booking destination — no fabricated CTA. Verified affiliate → Priority
+  // Pass page → Google Maps (guaranteed live) → verified operator domain →
+  // hidden. See lib/lounge-helpers.ts for the full resolution order.
+  const booking = getBookingDestination({
+    name: l.name,
+    website: l.website ?? null,
+    googlePlaceId: (l as { google_place_id?: string | null }).google_place_id ?? null,
+  })
+
+  // Whether the DB's `guest_fee` should be displayed as a walk-in price on the
+  // primary Book card. Air Canada MLL rows have $59 in guest_fee — but that's
+  // the member-brings-guest fee, NOT a walk-in ticket. Showing it prominently
+  // as "Book Now $59" would mislead a non-member reader.
+  const showFeeAsWalkIn = l.guest_fee != null && sellsWalkInDayPass(l.name, accessTypes)
+  // Otherwise, if guest_fee is set, we'll display it in the Access section as
+  // "Additional guest fee" so members still see it — but as context, not price.
+  const showFeeAsGuestSurcharge = l.guest_fee != null && !sellsWalkInDayPass(l.name, accessTypes)
 
   // Live open/closed calc using the airport's timezone. Falls back to
   // 'unknown' when either data is missing so the UI never invents a status.
@@ -208,26 +230,28 @@ export default function LoungeDetailV2({
             </div>
           </div>
 
-          {/* ── HERO GALLERY: 1 large + 2 stacked (or graceful fallbacks) ── */}
+          {/* ── HERO GALLERY: 1 large + 2 stacked (falls back to Google Places) ── */}
           <div className="mt-6 grid grid-cols-1 md:grid-cols-12 gap-2 rounded-xl overflow-hidden shadow-2xl">
             <div className="md:col-span-8 relative h-72 lg:h-96 group">
               {heroPrimary ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  src={getImageUrl(heroPrimary.storage_path)}
-                  alt={heroPrimary.alt_text ?? `${l.name} interior`}
+                  src={heroPrimary.url}
+                  alt={heroPrimary.alt}
                   loading="eager"
                 />
               ) : (
                 <LoungePlaceholder name={l.name} variant="hero" />
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-[#0e2a38]/70 via-transparent to-transparent" />
-              {orderedImages.length > 0 && (
+              {heroPhotos.length > 0 && (
                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-xs">
                   <span className="flex items-center gap-1.5 bg-[#0e2a38]/60 backdrop-blur-md px-3 py-1 rounded-full">
                     <span className="material-symbols-outlined text-[16px] text-[#68dba9]">photo_camera</span>
-                    {orderedImages.length} verified photos
+                    {hasGooglePhotoInHero
+                      ? `${heroPhotos.length} photo${heroPhotos.length === 1 ? '' : 's'} · via Google`
+                      : `${orderedImages.length} verified photo${orderedImages.length === 1 ? '' : 's'}`}
                   </span>
                   {l.terminal && (
                     <span className="font-mono text-[#68dba9] text-xs bg-[#0e2a38]/60 backdrop-blur-md px-3 py-1 rounded-full">
@@ -243,8 +267,8 @@ export default function LoungeDetailV2({
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    src={getImageUrl(heroSecondary.storage_path)}
-                    alt={heroSecondary.alt_text ?? `${l.name} — detail 1`}
+                    src={heroSecondary.url}
+                    alt={heroSecondary.alt}
                   />
                 ) : (
                   <div className="w-full h-full bg-[#071e28]" />
@@ -256,8 +280,8 @@ export default function LoungeDetailV2({
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    src={getImageUrl(heroTertiary.storage_path)}
-                    alt={heroTertiary.alt_text ?? `${l.name} — detail 2`}
+                    src={heroTertiary.url}
+                    alt={heroTertiary.alt}
                   />
                 ) : (
                   <div className="w-full h-full bg-[#071e28]" />
@@ -442,6 +466,22 @@ export default function LoungeDetailV2({
                     Admittance to {l.name} is governed by these access channels. Verify eligibility before travel — rules can change.
                   </p>
                 </div>
+                {/* Honest disclosure of the additional-guest fee for lounges
+                    where a member can bring a companion. Not a walk-in price. */}
+                {showFeeAsGuestSurcharge && (
+                  <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 flex items-start gap-3">
+                    <span className="material-symbols-outlined text-amber-600 text-[22px] shrink-0 mt-0.5">payments</span>
+                    <div>
+                      <p className="text-sm font-semibold text-amber-900">
+                        Additional guest fee: ${l.guest_fee} {l.guest_fee_currency ?? 'CAD'}
+                      </p>
+                      <p className="text-[13px] text-amber-800 mt-0.5 leading-snug">
+                        This is what an <em>eligible member</em> pays to bring one companion. It is <strong>not</strong> a walk-in ticket — non-members cannot enter by paying this amount. Verify at check-in; rates change without notice.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 <div className="space-y-3">
                   {accessTypes.map((at, i) => {
                     const badge = accessTierBadge(at.type, at.name)
@@ -760,15 +800,18 @@ export default function LoungeDetailV2({
             <div className="bg-[#0e2a38] text-white rounded-xl p-5 shadow-xl space-y-4 relative overflow-hidden">
               <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-[#059669]/20 rounded-full blur-2xl pointer-events-none" />
 
-              {/* Header row: badge, headline, icon */}
+              {/* Header row: badge, headline, icon.
+                  Fee display is CONDITIONAL: only surfaces as a walk-in price
+                  when the operator actually sells walk-in access. For lounges
+                  where guest_fee means "member brings guest", we hide the
+                  number here and show it in the Access section instead. */}
               <div className="flex items-start justify-between relative z-10">
                 <div className="min-w-0">
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-[0.08em] bg-[#059669] text-white">
-                    {l.guest_fee != null ? 'Day-Pass Access' : booking.kind !== 'none' ? 'Access & Booking' : 'How to Get In'}
+                    {showFeeAsWalkIn ? 'Walk-in Day Pass' : 'Access & Booking'}
                   </span>
 
-                  {/* Only show a price when the DB has one — never a fabricated "$50" */}
-                  {l.guest_fee != null ? (
+                  {showFeeAsWalkIn ? (
                     <div className="mt-2">
                       <div className="font-[family-name:var(--font-display)] text-3xl font-bold text-white leading-none">
                         ${l.guest_fee}
@@ -777,25 +820,25 @@ export default function LoungeDetailV2({
                         </span>
                       </div>
                       <p className="text-xs text-white/70 mt-1">
-                        Published walk-in rate · confirm on the operator site before travelling
+                        Published walk-in rate · verify on the operator site
                       </p>
                     </div>
                   ) : (
                     <div className="mt-2">
                       <div className="font-[family-name:var(--font-display)] text-xl font-bold text-white leading-snug">
                         {accessTypes.length > 0
-                          ? 'Complimentary via eligible fare, elite status or card'
+                          ? 'Access via eligible fare, elite status or card'
                           : 'Access via the operator'}
                       </div>
                       <p className="text-xs text-white/70 mt-1">
-                        This lounge does not publish a walk-in price with us
+                        This lounge does not sell walk-in day passes with us
                       </p>
                     </div>
                   )}
                 </div>
                 <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-[#68dba9] shrink-0 ml-2">
                   <span className="material-symbols-outlined text-[24px]">
-                    {l.guest_fee != null ? 'confirmation_number' : 'workspace_premium'}
+                    {showFeeAsWalkIn ? 'confirmation_number' : 'workspace_premium'}
                   </span>
                 </div>
               </div>
@@ -845,13 +888,18 @@ export default function LoungeDetailV2({
                 </a>
               )}
 
-              {/* Attribution caption — shows the reader where the link goes,
-                  and discloses the affiliate relationship where relevant */}
+              {/* Attribution caption — always tells the reader exactly where
+                  the button will take them, and discloses the commercial
+                  relationship where one exists */}
               {booking.url && booking.hostname && (
                 <p className="relative z-10 text-[11px] text-white/60 text-center leading-relaxed">
                   {booking.kind === 'affiliate'
-                    ? <>Reservation via {booking.hostname} · we may earn a commission</>
-                    : <>Reservation on {booking.hostname}</>}
+                    ? <>Booking on {booking.hostname} · we may earn a commission</>
+                    : booking.kind === 'priority_pass'
+                      ? <>Verified Priority Pass listing · current hours, access rules & photos</>
+                      : booking.kind === 'google_maps'
+                        ? <>Live listing on Google Maps · current hours, photos, reviews &amp; directions</>
+                        : <>Info on {booking.hostname}</>}
                 </p>
               )}
 
@@ -993,6 +1041,38 @@ function MetaTile({ icon, label, value }: { icon: string; label: string; value: 
       </div>
     </div>
   )
+}
+
+// ────────────────────────────────────────────────────────────────────────────
+// Hero photos: prefer local uploads (curated), fall back to Google Places
+// photos (up to 3 total). Every entry carries provenance so the UI can render
+// the "via Google" attribution required by Google Places API terms.
+// ────────────────────────────────────────────────────────────────────────────
+interface HeroPhoto {
+  url: string
+  alt: string
+  provenance: 'local' | 'google'
+}
+
+function buildHeroPhotos(
+  localImages: Array<{ storage_path: string; alt_text: string | null }>,
+  googlePlace: GooglePlace | null,
+  loungeName: string,
+): HeroPhoto[] {
+  const HERO_COUNT = 3
+  const locals: HeroPhoto[] = localImages.slice(0, HERO_COUNT).map((img, i) => ({
+    url: getImageUrl(img.storage_path),
+    alt: img.alt_text ?? `${loungeName} — interior view ${i + 1}`,
+    provenance: 'local',
+  }))
+  if (locals.length >= HERO_COUNT) return locals
+  const need = HERO_COUNT - locals.length
+  const gPhotos = (googlePlace?.photos ?? []).slice(0, need).map((p, i) => ({
+    url: googlePhotoUrl(p.name, 1600),
+    alt: `${loungeName} — photo ${locals.length + i + 1} (via Google)`,
+    provenance: 'google' as const,
+  }))
+  return [...locals, ...gPhotos]
 }
 
 // ────────────────────────────────────────────────────────────────────────────

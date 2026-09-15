@@ -96,18 +96,30 @@ export function accessTierBadge(type: string, name: string): { label: string; to
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Booking destination resolution — every "Book Access" button MUST land on a
-// working reservation surface. Order of preference:
-//   1. Operator-specific affiliate booking flow (Plaza Premium, Aspire, WestJet)
-//   2. The lounge's own operator website (lounge.website) — always the truth
-//   3. Null — the CTA is hidden entirely (never a fake "Book" button)
+// Booking-destination resolution — every "Book / View / Reserve" button MUST
+// land on a page that actually resolves. Empirical audit (2026-09-14) showed
+// that a large fraction of operator URLs we had in the DB now 404 (Air Canada,
+// WestJet, Cathay Pacific, SkyTeam regional, KLM Crown, aspireairportlounges).
+// So the resolver is now URL-rot-resilient:
 //
-// The kind flag lets the UI decide when to apply rel="sponsored nofollow" and
-// when to show the "Reservation via operator" caption.
+//   1. Real, verified affiliate booking flow (Plaza Premium, Aspire → Executive
+//      Lounges) — return a "Book on X" CTA.
+//   2. Priority Pass hosts a per-lounge page for many network lounges; when
+//      the lounge.website is a prioritypass.com URL, use it (verified working).
+//   3. When we have a Google Place ID, use its Google Maps listing — it is
+//      always live, always current on hours/photos/reviews, and functions as
+//      a reliable "learn more / get directions" surface for every lounge.
+//   4. Only if we have no google_place_id AND we have a lounge.website that
+//      is on a first-party operator domain we consider stable (aa.com, nbc.ca,
+//      desjardins.com, aeroportdequebec.com) do we fall back to that.
+//   5. Otherwise the CTA is hidden — no fake booking button, ever.
+//
+// The `kind` flag drives (a) whether we apply rel="sponsored nofollow" and
+// (b) the caption line under the button.
 // ────────────────────────────────────────────────────────────────────────────
 import { affiliate } from './affiliates'
 
-export type BookingKind = 'affiliate' | 'operator_website' | 'none'
+export type BookingKind = 'affiliate' | 'priority_pass' | 'google_maps' | 'operator_website' | 'none'
 export interface BookingDestination {
   url: string | null
   kind: BookingKind
@@ -117,35 +129,94 @@ export interface BookingDestination {
   hostname: string | null
 }
 
-const OPERATOR_AFFILIATES: { match: RegExp; key: 'plaza-premium-booking' | 'aspire-lounge-booking' | 'westjet-elevation-booking'; brand: string }[] = [
-  { match: /plaza premium/i, key: 'plaza-premium-booking',      brand: 'Plaza Premium' },
-  { match: /aspire/i,        key: 'aspire-lounge-booking',       brand: 'Aspire' },
-  { match: /westjet/i,       key: 'westjet-elevation-booking',   brand: 'WestJet' },
+const OPERATOR_AFFILIATES: { match: RegExp; key: 'plaza-premium-booking' | 'aspire-lounge-booking'; brand: string; cta: string }[] = [
+  { match: /plaza premium/i, key: 'plaza-premium-booking', brand: 'Plaza Premium', cta: 'View on Plaza Premium' },
+  { match: /aspire/i,        key: 'aspire-lounge-booking', brand: 'Aspire',        cta: 'View on Executive Lounges' },
 ]
 
-export function getBookingDestination(loungeName: string, loungeWebsite: string | null): BookingDestination {
-  // 1. Known operator-affiliate booking flows
+/**
+ * Whether the operator brand ACTUALLY sells walk-in day passes to the general
+ * public. Used by the UI to decide whether to display `guest_fee` as a
+ * prominent "Book Now $XX" price on the primary card. Air Canada MLLs have
+ * a `guest_fee` in the DB — but that is the additional-guest fee an eligible
+ * *member* pays to bring a companion, NOT a walk-in ticket price. Showing it
+ * as "Book Now $59" would be misleading to a non-member reader.
+ */
+export function sellsWalkInDayPass(loungeName: string, accessTypes: readonly { type: string; name: string }[]): boolean {
+  const n = loungeName.toLowerCase()
+  if (n.includes('plaza premium')) return true
+  if (n.includes('aspire'))         return true
+  if (n.includes('westjet'))        return true
+  // Fall-through: only if the DB explicitly marks a day_pass access type NOT
+  // labelled as an "add-on" or "fare" (which are fare-conditional, not walk-in)
+  return accessTypes.some(at =>
+    at.type === 'day_pass' && !/add[- ]on|fare/i.test(at.name)
+  )
+}
+
+// Domains we treat as verified stable operator sites — checked 2026-09-14.
+// Any lounge.website hostname not on this list is treated as suspect and we
+// prefer the Google Maps listing instead. Add to this list ONLY after verifying
+// the URL resolves 200.
+const VERIFIED_OPERATOR_HOSTS = new Set([
+  'prioritypass.com',
+  'aa.com',
+  'americanairlines.com',
+  'desjardins.com',
+  'nbc.ca',
+  'aeroportdequebec.com',
+  'plazapremiumlounge.com',
+  'executivelounges.com',
+])
+
+interface BookingContext {
+  name: string
+  website: string | null
+  googlePlaceId: string | null
+}
+
+export function getBookingDestination(ctx: BookingContext): BookingDestination {
+  // 1. Real operator-affiliate booking flow (Plaza Premium, Aspire)
   for (const op of OPERATOR_AFFILIATES) {
-    if (op.match.test(loungeName)) {
+    if (op.match.test(ctx.name)) {
       const url = affiliate(op.key)
-      return {
-        url,
-        kind: 'affiliate',
-        ctaLabel: `Book on ${op.brand}`,
-        hostname: safeHostname(url),
-      }
+      return { url, kind: 'affiliate', ctaLabel: op.cta, hostname: safeHostname(url) }
     }
   }
-  // 2. Operator's own website — the source of truth
-  if (loungeWebsite) {
+
+  // 2. Priority Pass network lounges — their per-lounge page is verified working
+  if (ctx.website && /prioritypass\.com/i.test(ctx.website)) {
     return {
-      url: loungeWebsite,
-      kind: 'operator_website',
-      ctaLabel: 'Reserve on operator site',
-      hostname: safeHostname(loungeWebsite),
+      url: ctx.website,
+      kind: 'priority_pass',
+      ctaLabel: 'View on Priority Pass',
+      hostname: 'prioritypass.com',
     }
   }
-  // 3. No booking path
+
+  // 3. Google Maps place listing — the reliable universal fallback. Always
+  //    resolves, always current on hours/photos/reviews/directions.
+  if (ctx.googlePlaceId) {
+    return {
+      url: `https://www.google.com/maps/place/?q=place_id:${ctx.googlePlaceId}`,
+      kind: 'google_maps',
+      ctaLabel: 'View on Google Maps',
+      hostname: 'google.com',
+    }
+  }
+
+  // 4. Fall back to lounge.website ONLY when it's on our verified-stable list
+  const host = ctx.website ? safeHostname(ctx.website) : null
+  if (ctx.website && host && VERIFIED_OPERATOR_HOSTS.has(host)) {
+    return {
+      url: ctx.website,
+      kind: 'operator_website',
+      ctaLabel: 'View on operator site',
+      hostname: host,
+    }
+  }
+
+  // 5. No verified path — the CTA is hidden
   return { url: null, kind: 'none', ctaLabel: null, hostname: null }
 }
 
