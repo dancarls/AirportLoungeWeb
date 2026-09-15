@@ -129,9 +129,9 @@ export interface BookingDestination {
   hostname: string | null
 }
 
-const OPERATOR_AFFILIATES: { match: RegExp; key: 'plaza-premium-booking' | 'aspire-lounge-booking'; brand: string; cta: string }[] = [
-  { match: /plaza premium/i, key: 'plaza-premium-booking', brand: 'Plaza Premium', cta: 'View on Plaza Premium' },
-  { match: /aspire/i,        key: 'aspire-lounge-booking', brand: 'Aspire',        cta: 'View on Executive Lounges' },
+const OPERATOR_AFFILIATES: { match: RegExp; key: 'plaza-premium-booking' | 'aspire-lounge-booking'; brand: string; cta: string; primaryHost: string }[] = [
+  { match: /plaza premium/i, key: 'plaza-premium-booking', brand: 'Plaza Premium',    cta: 'View on Plaza Premium',    primaryHost: 'plazapremiumlounge.com' },
+  { match: /aspire/i,        key: 'aspire-lounge-booking', brand: 'Executive Lounges', cta: 'View on Executive Lounges', primaryHost: 'executivelounges.com' },
 ]
 
 /**
@@ -176,9 +176,20 @@ interface BookingContext {
 }
 
 export function getBookingDestination(ctx: BookingContext): BookingDestination {
-  // 1. Real operator-affiliate booking flow (Plaza Premium, Aspire)
+  // 1. Real operator-affiliate booking flow (Plaza Premium, Aspire).
+  //    Empirical finding (2026-09-14 curl audit): the generic affiliate search
+  //    URLs (plazapremiumlounge.com/en-uk/find?utm_source=...) redirect to
+  //    a soft-404 when hit with UTM params. But the per-lounge URLs stored in
+  //    lounge.website (…/en-uk/find/americas/canada/toronto/…) all return 200.
+  //    So: when the DB has a lounge.website on the operator's own hostname,
+  //    prefer it — it's per-lounge specific AND verified working. Fall back
+  //    to the affiliate registry only if lounge.website is missing.
   for (const op of OPERATOR_AFFILIATES) {
     if (op.match.test(ctx.name)) {
+      const websiteHost = ctx.website ? safeHostname(ctx.website) : null
+      if (ctx.website && websiteHost === op.primaryHost) {
+        return { url: ctx.website, kind: 'affiliate', ctaLabel: op.cta, hostname: op.primaryHost }
+      }
       const url = affiliate(op.key)
       return { url, kind: 'affiliate', ctaLabel: op.cta, hostname: safeHostname(url) }
     }

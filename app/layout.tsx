@@ -39,6 +39,12 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'MqIm81wvmdy1xQCa-LvcLU2-G55iu3uAAxBrpBGwv4k',
+    // Impact.com affiliate-network domain verification. Emitted as
+    //   <meta name="impact-site-verification" value="…">
+    // via Next.js's Metadata API `other` bag (site-specific verifier keys).
+    other: {
+      'impact-site-verification': 'ead76e99-a37c-4586-ad88-09e3af0c3c5e',
+    },
   },
   icons: {
     icon: [

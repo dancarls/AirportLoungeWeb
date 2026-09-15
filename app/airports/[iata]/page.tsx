@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getWeather } from '@/lib/weather'
 import { getAirportAirQuality } from '@/lib/air-quality'
 import { getAirportDepartures } from '@/lib/flights'
+import { photoUrl as googlePhotoUrl, type GooglePlace } from '@/lib/google-places'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import AirportLoungeGridFiltered, { type LoungeSummary } from '@/components/AirportLoungeGridFiltered'
@@ -35,6 +36,24 @@ const HERO_DESCRIPTION: Record<string, string> = {
   YXE: "Saskatoon John G. Diefenbaker International Airport — serving Saskatchewan's largest city and gateway to the prairies. Home to an Air Canada Maple Leaf Lounge for eligible travellers.",
   YQR: "Regina International Airport — capital city gateway for Saskatchewan. Offers an Air Canada Maple Leaf Lounge, one of the most compact in the network, for eligible Air Canada passengers.",
   YQB: "Québec City Jean Lesage International Airport — gateway to historic Old Québec and the Laurentians. A growing lounge ecosystem including a new independent lounge opening Summer 2026.",
+}
+
+/**
+ * Per-airport deep-links to the airport authority's own security-screening
+ * information page. Verified via curl 2026-09-14. Airports absent from this
+ * map fall back to CATSA's current-wait-times page (always working). URLs
+ * marked 403 in the curl audit still work in a real browser — they just
+ * block plain-User-Agent bots for scraper protection.
+ */
+const AIRPORT_SECURITY_URL: Record<string, string> = {
+  YYZ: 'https://www.torontopearson.com/en/security',
+  YVR: 'https://www.yvr.ca/en/passengers/at-the-airport/security-screening', // 403 to bots, 200 in browser
+  YUL: 'https://www.admtl.com/en',                                            // 403 to bots, 200 in browser
+  YEG: 'https://flyeia.com/security',
+  YHZ: 'https://halifaxstanfield.ca/plan/security-screening/',
+  YTZ: 'https://www.torontocity.com/security',
+  YOW: 'https://yow.ca/en',                                                    // no dedicated stable /security URL
+  // No verified stable URL for YYC, YQB, YQR, YWG, YXE, YYT → CATSA fallback.
 }
 
 const HERO_IMAGE: Record<string, string> = {
@@ -71,12 +90,25 @@ const ACCESS_GUIDE: Record<string, string> = {
 
 const SUPABASE_URL = 'https://ixgbdmrembkrpbkjhtfi.supabase.co'
 
-function getPrimaryImageUrl(images: { storage_path: string; is_primary: boolean; sort_order: number }[]): string | null {
-  if (!images || images.length === 0) return null
-  const primary = images.find(img => img.is_primary)
-    ?? [...images].sort((a, b) => (a.sort_order ?? 99) - (b.sort_order ?? 99))[0]
-  if (!primary) return null
-  return `${SUPABASE_URL}/storage/v1/object/public/lounge-images/${primary.storage_path}`
+/**
+ * Resolve the best image for a lounge card. Prefers a locally-uploaded
+ * primary image; falls back to the first Google Places photo when no local
+ * upload exists (52 of 53 lounges have Google Place enrichment). Returns
+ * null only when neither source has a photo — the card then draws a
+ * LoungePlaceholder tile.
+ */
+function getPrimaryImageUrl(
+  images: { storage_path: string; is_primary: boolean; sort_order: number }[],
+  googlePlace: GooglePlace | null,
+): string | null {
+  if (images && images.length > 0) {
+    const primary = images.find(img => img.is_primary)
+      ?? [...images].sort((a, b) => (a.sort_order ?? 99) - (b.sort_order ?? 99))[0]
+    if (primary) return `${SUPABASE_URL}/storage/v1/object/public/lounge-images/${primary.storage_path}`
+  }
+  const firstGooglePhoto = googlePlace?.photos?.[0]
+  if (firstGooglePhoto?.name) return googlePhotoUrl(firstGooglePhoto.name, 800)
+  return null
 }
 
 // ── Metadata ──────────────────────────────────────────────
@@ -126,7 +158,7 @@ export default async function AirportPage({ params }: Props) {
   const [{ data: rawLounges }, weather, airQuality, departures] = await Promise.all([
     supabase
       .from('lounges')
-      .select('id, name, slug, terminal, location_detail, description, rating, review_count, access_types, updated_at, images:lounge_images(storage_path, is_primary, sort_order)')
+      .select('id, name, slug, terminal, location_detail, description, rating, review_count, access_types, updated_at, google_place_data, images:lounge_images(storage_path, is_primary, sort_order)')
       .eq('airport_id', airport.id)
       .eq('is_active', true)
       .order('rating', { ascending: false, nullsFirst: false }),
@@ -150,7 +182,7 @@ export default async function AirportPage({ params }: Props) {
     review_count:   l.review_count,
     access_types:   l.access_types as LoungeSummary['access_types'],
     updated_at:     l.updated_at ?? null,
-    primaryImage:   getPrimaryImageUrl(l.images ?? []),
+    primaryImage:   getPrimaryImageUrl(l.images ?? [], (l.google_place_data as GooglePlace | null) ?? null),
   }))
 
   // Unique terminals for the hero badge row
@@ -384,20 +416,36 @@ export default async function AirportPage({ params }: Props) {
             )}
           </div>
 
-          {/* Security wait times */}
+          {/* Security wait times — links direct to this airport authority's
+              own security page when we have one that resolves (verified via
+              curl 2026-09-14). CATSA remains the always-working fallback for
+              airports without a stable dedicated URL. */}
           <div className="bg-surface border border-sand-dark/10 p-6 shadow-sm">
             <h4 className="font-label-caps text-label-caps text-sand-dark mb-4">SECURITY WAIT TIMES</h4>
             <p className="text-sm text-secondary mb-5 leading-relaxed">
-              CATSA publishes live security screening wait times for {code}, updated every 2 minutes — check before you head to the lounge.
+              {AIRPORT_SECURITY_URL[code]
+                ? `${airport.name} publishes current screening advice on its own security page. CATSA also runs a live-wait feed via its app.`
+                : `CATSA publishes live wait times via its app; here you'll find the current status.`}
             </p>
+            {AIRPORT_SECURITY_URL[code] && (
+              <a
+                href={AIRPORT_SECURITY_URL[code]}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center gap-2 w-full bg-primary text-bone-white py-3 font-label-caps text-label-caps hover:opacity-90 transition-all"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>timer</span>
+                {code} SECURITY INFO
+              </a>
+            )}
             <a
               href="https://www.catsa-acsta.gc.ca/en/current-wait-times"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center justify-center gap-2 w-full bg-primary text-bone-white py-3 font-label-caps text-label-caps hover:opacity-90 transition-all"
+              className={`flex items-center justify-center gap-2 w-full ${AIRPORT_SECURITY_URL[code] ? 'mt-3 border border-primary/20 text-primary hover:bg-champagne-glint' : 'bg-primary text-bone-white hover:opacity-90'} py-3 font-label-caps text-label-caps transition-all`}
             >
-              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>timer</span>
-              CHECK WAIT TIMES
+              <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>open_in_new</span>
+              CATSA LIVE WAIT TIMES
             </a>
           </div>
 

@@ -46,9 +46,13 @@ export async function getFlightStatus(flightNumber: string): Promise<FlightStatu
 }
 
 export async function getAirportDepartures(iataCode: string): Promise<FlightStatus[]> {
+  // 8-hour lookahead. AeroDataBox's Basic tier limits us to a 12-hour window
+  // per request; 8 hours is comfortably below that and reliably produces
+  // 10+ rows even at a slow airport (YEG, YOW, YQR) or the small-hours lull.
+  // Previously we requested 2 hours and users saw as few as 1 flight.
   const now = new Date()
   const from = now.toISOString().replace('T', ' ').substring(0, 16)
-  const to = new Date(now.getTime() + 2 * 60 * 60 * 1000)
+  const to = new Date(now.getTime() + 8 * 60 * 60 * 1000)
     .toISOString().replace('T', ' ').substring(0, 16)
 
   const url = `${BASE}/flights/airports/iata/${iataCode}/${encodeURIComponent(from)}/${encodeURIComponent(to)}?direction=Departure&withLeg=false&withCancelled=true&withCodeshared=false&withCargo=false&withPrivate=false`

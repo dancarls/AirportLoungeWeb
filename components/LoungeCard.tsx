@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { Lounge } from '@/lib/types'
 import LoungePlaceholder from './LoungePlaceholder'
+import { photoUrl as googlePhotoUrl, type GooglePlace } from '@/lib/google-places'
 
 interface Props {
   lounge: Lounge
@@ -10,6 +11,24 @@ interface Props {
 
 function getImageUrl(path: string): string {
   return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${path}`
+}
+
+/**
+ * Resolve the best card image: locally-uploaded primary → Google Places
+ * first photo → null (placeholder). 52 of 53 lounges have Google enrichment,
+ * so this backfills virtually every card that lacked a local upload.
+ */
+function resolveCardImage(lounge: Lounge): { url: string; alt: string; provenance: 'local' | 'google' } | null {
+  const primary = lounge.images?.find(i => i.is_primary) ?? lounge.images?.[0]
+  if (primary) {
+    return { url: getImageUrl(primary.storage_path), alt: primary.alt_text ?? lounge.name, provenance: 'local' }
+  }
+  const gp = (lounge as unknown as { google_place_data?: GooglePlace | null }).google_place_data
+  const firstGooglePhoto = gp?.photos?.[0]
+  if (firstGooglePhoto?.name) {
+    return { url: googlePhotoUrl(firstGooglePhoto.name, 800), alt: `${lounge.name} — photo via Google`, provenance: 'google' }
+  }
+  return null
 }
 
 function isOpenNow(hours: Lounge['opening_hours']): boolean | null {
@@ -54,26 +73,32 @@ function StarRow({ rating, count }: { rating: number; count: number }) {
 export default function LoungeCard({ lounge, airportIata }: Props) {
   const iata         = airportIata ?? lounge.airport?.iata_code
   const href         = iata ? `/airports/${iata}/lounges/${lounge.slug}` : `/lounges/${lounge.slug}`
-  const primaryImage = lounge.images?.find(i => i.is_primary) ?? lounge.images?.[0]
+  const cardImage    = resolveCardImage(lounge)
   const openStatus   = isOpenNow(lounge.opening_hours)
   const accessTypes  = (lounge.access_types ?? []) as Array<{ type: string; name: string }>
 
   return (
     <Link href={href} className="bg-white fine-border group block overflow-hidden hover:shadow-md transition-shadow">
 
-      {/* Image */}
+      {/* Image — local upload, Google Places fallback, then placeholder */}
       <div className="relative h-48 bg-secondary-fixed overflow-hidden">
-        {primaryImage ? (
+        {cardImage ? (
           <Image
-            src={getImageUrl(primaryImage.storage_path)}
-            alt={primaryImage.alt_text ?? lounge.name}
+            src={cardImage.url}
+            alt={cardImage.alt}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
+            unoptimized={cardImage.provenance === 'google'}
           />
         ) : (
           <LoungePlaceholder name={lounge.name} variant="card" />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+        {cardImage?.provenance === 'google' && (
+          <span className="absolute bottom-2 right-2 text-[8px] font-semibold uppercase tracking-widest text-white/80 bg-black/40 px-1.5 py-0.5 rounded">
+            via Google
+          </span>
+        )}
 
         {/* IATA + terminal badge */}
         {iata && (
