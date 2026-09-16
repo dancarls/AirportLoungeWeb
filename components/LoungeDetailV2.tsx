@@ -96,6 +96,7 @@ export default function LoungeDetailV2({
   const heroSecondary = heroPhotos[1]
   const heroTertiary  = heroPhotos[2]
   const hasGooglePhotoInHero = heroPhotos.some(p => p?.provenance === 'google')
+  const hasAiPhotoInHero     = heroPhotos.some(p => p?.provenance === 'ai')
 
   const accessTypes = (l.access_types ?? []) as AccessType[]
   const isClosed = !!l.closure_status && l.closure_status !== 'open'
@@ -248,10 +249,14 @@ export default function LoungeDetailV2({
               {heroPhotos.length > 0 && (
                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-xs">
                   <span className="flex items-center gap-1.5 bg-[#0e2a38]/60 backdrop-blur-md px-3 py-1 rounded-full">
-                    <span className="material-symbols-outlined text-[16px] text-[#68dba9]">photo_camera</span>
-                    {hasGooglePhotoInHero
-                      ? `${heroPhotos.length} photo${heroPhotos.length === 1 ? '' : 's'} · via Google`
-                      : `${orderedImages.length} verified photo${orderedImages.length === 1 ? '' : 's'}`}
+                    <span className="material-symbols-outlined text-[16px] text-[#68dba9]">
+                      {hasAiPhotoInHero ? 'auto_awesome' : 'photo_camera'}
+                    </span>
+                    {hasAiPhotoInHero
+                      ? 'AI-generated placeholder · real photos coming soon'
+                      : hasGooglePhotoInHero
+                        ? `${heroPhotos.length} photo${heroPhotos.length === 1 ? '' : 's'} · via Google`
+                        : `${orderedImages.length} verified photo${orderedImages.length === 1 ? '' : 's'}`}
                   </span>
                   {l.terminal && (
                     <span className="font-mono text-[#68dba9] text-xs bg-[#0e2a38]/60 backdrop-blur-md px-3 py-1 rounded-full">
@@ -290,6 +295,16 @@ export default function LoungeDetailV2({
               </div>
             </div>
           </div>
+
+          {/* Honest AI-attribution disclaimer directly under the gallery.
+              Mirrors the caption on the hero pill so viewers still see it
+              even if they missed the pill (mobile, or above the fold on desktop). */}
+          {hasAiPhotoInHero && (
+            <p className="mt-2 text-[11px] text-white/60 italic leading-relaxed">
+              <span className="material-symbols-outlined align-middle text-[13px] mr-1">auto_awesome</span>
+              These images are AI-generated placeholders while we source real photography of {l.name}. Amenities, hours and access rules on this page are verified from operator sources.
+            </p>
+          )}
 
           {/* ── QUICK META STRIP (4 tiles) ─────────────────────────────── */}
           <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -1051,11 +1066,11 @@ function MetaTile({ icon, label, value }: { icon: string; label: string; value: 
 interface HeroPhoto {
   url: string
   alt: string
-  provenance: 'local' | 'google'
+  provenance: 'local' | 'google' | 'ai'
 }
 
 function buildHeroPhotos(
-  localImages: Array<{ storage_path: string; alt_text: string | null }>,
+  localImages: Array<{ storage_path: string; alt_text: string | null; is_ai_generated?: boolean }>,
   googlePlace: GooglePlace | null,
   loungeName: string,
 ): HeroPhoto[] {
@@ -1063,7 +1078,7 @@ function buildHeroPhotos(
   const locals: HeroPhoto[] = localImages.slice(0, HERO_COUNT).map((img, i) => ({
     url: getImageUrl(img.storage_path),
     alt: img.alt_text ?? `${loungeName} — interior view ${i + 1}`,
-    provenance: 'local',
+    provenance: img.is_ai_generated ? 'ai' : 'local',
   }))
   if (locals.length >= HERO_COUNT) return locals
   const need = HERO_COUNT - locals.length

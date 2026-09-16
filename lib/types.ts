@@ -30,6 +30,13 @@ export interface LoungeImage {
   alt_text: string | null
   is_primary: boolean
   sort_order: number
+  /**
+   * True when this image is an AI-generated placeholder (uploaded because no
+   * real photo of the lounge exists yet). The UI renders a small
+   * "AI-generated placeholder" caption below the hero so viewers are never
+   * misled into thinking it is a photograph of the specific space.
+   */
+  is_ai_generated?: boolean
 }
 
 export interface Lounge {

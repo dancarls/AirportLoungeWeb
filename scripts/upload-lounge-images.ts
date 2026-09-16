@@ -51,9 +51,26 @@ interface Upload {
   sort_order: number
   /** Human-readable alt text (SEO + accessibility) */
   alt_text: string
+  /**
+   * True for AI-generated placeholder images. The UI renders a small
+   * "AI-generated placeholder" caption below the hero when the primary
+   * image on a lounge is flagged this way.
+   */
+  is_ai_generated?: boolean
 }
 
+const AC_CAFE_DIR = 'C:/Users/danca/.claude/jobs/04bcb101/tmp/openart'
+
 const MANIFEST: Upload[] = [
+  // ── YUL Air Canada Café (Domestic) — AI-generated placeholders ───────
+  { file: `${AC_CAFE_DIR}/ac-cafe-hero-yul.png`,          slug: 'air-canada-cafe-domestic-yul',    is_primary: true,  sort_order: 1, alt_text: 'AI-generated placeholder: modern airport café interior with nitro cold brew tap, self-serve pastry case, and workstations', is_ai_generated: true },
+  { file: `${AC_CAFE_DIR}/ac-cafe-pastry-case.png`,       slug: 'air-canada-cafe-domestic-yul',    is_primary: false, sort_order: 2, alt_text: 'AI-generated placeholder: self-serve pastry and grab-and-go case with Montreal bagels and pastries', is_ai_generated: true },
+  { file: `${AC_CAFE_DIR}/ac-cafe-workstations.png`,      slug: 'air-canada-cafe-domestic-yul',    is_primary: false, sort_order: 3, alt_text: 'AI-generated placeholder: airport lounge workstations with leather-topped surfaces, brass task lamps, and USB-C charging', is_ai_generated: true },
+  // ── YUL Air Canada Café (Transborder) — same AI placeholders ─────────
+  { file: `${AC_CAFE_DIR}/ac-cafe-hero-yul.png`,          slug: 'air-canada-cafe-transborder-yul', is_primary: true,  sort_order: 1, alt_text: 'AI-generated placeholder: modern airport café interior with nitro cold brew tap, self-serve pastry case, and workstations', is_ai_generated: true },
+  { file: `${AC_CAFE_DIR}/ac-cafe-pastry-case.png`,       slug: 'air-canada-cafe-transborder-yul', is_primary: false, sort_order: 2, alt_text: 'AI-generated placeholder: self-serve pastry and grab-and-go case with Montreal bagels and pastries', is_ai_generated: true },
+  { file: `${AC_CAFE_DIR}/ac-cafe-workstations.png`,      slug: 'air-canada-cafe-transborder-yul', is_primary: false, sort_order: 3, alt_text: 'AI-generated placeholder: airport lounge workstations with leather-topped surfaces, brass task lamps, and USB-C charging', is_ai_generated: true },
+  // ── (Previous YEG + YUL Desjardins uploads are already in Storage — not re-uploaded here.) ──
   // ── YEG Plaza Premium Lounge (Non-US / International Departures) ─────
   { file: 'C:/Users/danca/Downloads/airportimages/YEG PLaza Premium Lounge Non-Us Departures.1.jpg', slug: 'plaza-premium-lounge-yeg', is_primary: true,  sort_order: 1, alt_text: 'Plaza Premium Lounge YEG (Non-US Departures) — main seating area' },
   { file: 'C:/Users/danca/Downloads/airportimages/YEG PLaza Premium Lounge Non-Us Departures.2.jpg', slug: 'plaza-premium-lounge-yeg', is_primary: false, sort_order: 2, alt_text: 'Plaza Premium Lounge YEG (Non-US Departures) — bar and food service' },
@@ -154,11 +171,12 @@ async function main() {
     // Delete-then-insert (no schema dependency on a unique constraint)
     await supabase.from('lounge_images').delete().eq('lounge_id', loungeId).eq('storage_path', storagePath)
     const { error: rowErr } = await supabase.from('lounge_images').insert({
-      lounge_id:    loungeId,
-      storage_path: storagePath,
-      alt_text:     item.alt_text,
-      is_primary:   item.is_primary,
-      sort_order:   item.sort_order,
+      lounge_id:       loungeId,
+      storage_path:    storagePath,
+      alt_text:        item.alt_text,
+      is_primary:      item.is_primary,
+      sort_order:      item.sort_order,
+      is_ai_generated: item.is_ai_generated ?? false,
     })
     if (rowErr) {
       console.error(`    ✗ row insert failed: ${rowErr.message}`)
