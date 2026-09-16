@@ -145,8 +145,17 @@ export default function AeroplanComparedPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableLd) }} />
 
-      <header className="bg-primary text-white py-16">
-        <div className="max-w-container-max mx-auto px-gutter">
+      {/* Hero — editorial background image + dark overlay for legibility */}
+      <header
+        className="relative bg-primary text-white py-16 overflow-hidden"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(0,52,52,0.86), rgba(0,52,52,0.86)), url(/blog/aeroplan-cards-compared-hero.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="max-w-container-max mx-auto px-gutter relative">
           <nav className="text-sm mb-4">
             <Link href="/" className="text-primary-fixed/80 hover:text-primary-fixed underline underline-offset-2">Home</Link>
             <span className="text-primary-fixed/40 mx-2">›</span>

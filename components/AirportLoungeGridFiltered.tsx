@@ -15,6 +15,12 @@ export interface LoungeSummary {
   review_count: number
   access_types: { type: string; name: string; details?: string }[] | null
   primaryImage: string | null
+  /**
+   * True when `primaryImage` is an AI-generated placeholder rather than a
+   * real photograph. The card renders a small "AI" corner badge on top-left
+   * of the tile so viewers are never misled.
+   */
+  primaryImageIsAi?: boolean
   updated_at: string | null
 }
 
@@ -257,6 +263,19 @@ export default function AirportLoungeGridFiltered({ lounges, iata }: Props) {
                   <div className="absolute bottom-4 left-4">
                     <span className="bg-primary-container text-on-primary-container text-[9px] font-label-caps px-2 py-0.5">
                       {tier}
+                    </span>
+                  </div>
+                )}
+                {/* AI-generated placeholder disclosure — small corner badge
+                    the reader can spot at card scale without dominating. */}
+                {lounge.primaryImageIsAi && (
+                  <div className="absolute top-3 left-3">
+                    <span
+                      title="This image is an AI-generated placeholder; real photography of this lounge is being sourced."
+                      className="inline-flex items-center gap-1 bg-amber-500/95 text-white text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm shadow-sm"
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: '11px' }}>auto_awesome</span>
+                      AI
                     </span>
                   </div>
                 )}

@@ -180,9 +180,19 @@ export default function BestCreditCardsForLoungeAccessPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableLd) }} />
 
-      {/* Hero */}
-      <header className="bg-primary text-white py-16">
-        <div className="max-w-container-max mx-auto px-gutter">
+      {/* Hero — editorial background image + dark overlay keeps the text
+          legible while lifting the page above a flat-colour band. Overlay
+          uses primary at 85% opacity so the palette stays on-brand. */}
+      <header
+        className="relative bg-primary text-white py-16 overflow-hidden"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(0,52,52,0.86), rgba(0,52,52,0.86)), url(/blog/best-for-lounge-access-hero.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="max-w-container-max mx-auto px-gutter relative">
           <nav className="text-sm mb-4">
             <Link href="/" className="text-primary-fixed/80 hover:text-primary-fixed underline underline-offset-2">Home</Link>
             <span className="text-primary-fixed/40 mx-2">›</span>

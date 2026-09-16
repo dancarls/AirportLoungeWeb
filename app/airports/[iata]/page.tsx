@@ -93,21 +93,29 @@ const SUPABASE_URL = 'https://ixgbdmrembkrpbkjhtfi.supabase.co'
 /**
  * Resolve the best image for a lounge card. Prefers a locally-uploaded
  * primary image; falls back to the first Google Places photo when no local
- * upload exists (52 of 53 lounges have Google Place enrichment). Returns
- * null only when neither source has a photo — the card then draws a
- * LoungePlaceholder tile.
+ * upload exists (52 of 53 lounges have Google Place enrichment). Also
+ * surfaces provenance so the card can render an honest "AI" corner badge
+ * on lounges whose primary image is a placeholder.
  */
-function getPrimaryImageUrl(
-  images: { storage_path: string; is_primary: boolean; sort_order: number }[],
+function getPrimaryImage(
+  images: { storage_path: string; is_primary: boolean; sort_order: number; is_ai_generated?: boolean }[],
   googlePlace: GooglePlace | null,
-): string | null {
+): { url: string; isAi: boolean; isGoogle: boolean } | null {
   if (images && images.length > 0) {
     const primary = images.find(img => img.is_primary)
       ?? [...images].sort((a, b) => (a.sort_order ?? 99) - (b.sort_order ?? 99))[0]
-    if (primary) return `${SUPABASE_URL}/storage/v1/object/public/lounge-images/${primary.storage_path}`
+    if (primary) {
+      return {
+        url: `${SUPABASE_URL}/storage/v1/object/public/lounge-images/${primary.storage_path}`,
+        isAi: !!primary.is_ai_generated,
+        isGoogle: false,
+      }
+    }
   }
   const firstGooglePhoto = googlePlace?.photos?.[0]
-  if (firstGooglePhoto?.name) return googlePhotoUrl(firstGooglePhoto.name, 800)
+  if (firstGooglePhoto?.name) {
+    return { url: googlePhotoUrl(firstGooglePhoto.name, 800), isAi: false, isGoogle: true }
+  }
   return null
 }
 
@@ -158,7 +166,7 @@ export default async function AirportPage({ params }: Props) {
   const [{ data: rawLounges }, weather, airQuality, departures] = await Promise.all([
     supabase
       .from('lounges')
-      .select('id, name, slug, terminal, location_detail, description, rating, review_count, access_types, updated_at, google_place_data, images:lounge_images(storage_path, is_primary, sort_order)')
+      .select('id, name, slug, terminal, location_detail, description, rating, review_count, access_types, updated_at, google_place_data, images:lounge_images(storage_path, is_primary, sort_order, is_ai_generated)')
       .eq('airport_id', airport.id)
       .eq('is_active', true)
       .order('rating', { ascending: false, nullsFirst: false }),
@@ -171,19 +179,23 @@ export default async function AirportPage({ params }: Props) {
     getAirportDepartures(code).catch(() => []),
   ])
 
-  const lounges: LoungeSummary[] = (rawLounges ?? []).map(l => ({
-    id:             l.id,
-    name:           l.name,
-    slug:           l.slug,
-    terminal:       l.terminal,
-    location_detail: l.location_detail ?? null,
-    description:    l.description,
-    rating:         l.rating,
-    review_count:   l.review_count,
-    access_types:   l.access_types as LoungeSummary['access_types'],
-    updated_at:     l.updated_at ?? null,
-    primaryImage:   getPrimaryImageUrl(l.images ?? [], (l.google_place_data as GooglePlace | null) ?? null),
-  }))
+  const lounges: LoungeSummary[] = (rawLounges ?? []).map(l => {
+    const img = getPrimaryImage(l.images ?? [], (l.google_place_data as GooglePlace | null) ?? null)
+    return {
+      id:                l.id,
+      name:              l.name,
+      slug:              l.slug,
+      terminal:          l.terminal,
+      location_detail:   l.location_detail ?? null,
+      description:       l.description,
+      rating:            l.rating,
+      review_count:      l.review_count,
+      access_types:      l.access_types as LoungeSummary['access_types'],
+      updated_at:        l.updated_at ?? null,
+      primaryImage:      img?.url ?? null,
+      primaryImageIsAi:  img?.isAi ?? false,
+    }
+  })
 
   // Unique terminals for the hero badge row
   const terminals = [...new Set(lounges.map(l => l.terminal).filter(Boolean) as string[])].sort()

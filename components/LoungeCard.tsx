@@ -17,11 +17,17 @@ function getImageUrl(path: string): string {
  * Resolve the best card image: locally-uploaded primary → Google Places
  * first photo → null (placeholder). 52 of 53 lounges have Google enrichment,
  * so this backfills virtually every card that lacked a local upload.
+ * When the local primary is flagged is_ai_generated, provenance is 'ai' so
+ * the card can render an honest "AI" corner badge.
  */
-function resolveCardImage(lounge: Lounge): { url: string; alt: string; provenance: 'local' | 'google' } | null {
+function resolveCardImage(lounge: Lounge): { url: string; alt: string; provenance: 'local' | 'google' | 'ai' } | null {
   const primary = lounge.images?.find(i => i.is_primary) ?? lounge.images?.[0]
   if (primary) {
-    return { url: getImageUrl(primary.storage_path), alt: primary.alt_text ?? lounge.name, provenance: 'local' }
+    return {
+      url: getImageUrl(primary.storage_path),
+      alt: primary.alt_text ?? lounge.name,
+      provenance: primary.is_ai_generated ? 'ai' : 'local',
+    }
   }
   const gp = (lounge as unknown as { google_place_data?: GooglePlace | null }).google_place_data
   const firstGooglePhoto = gp?.photos?.[0]
@@ -97,6 +103,15 @@ export default function LoungeCard({ lounge, airportIata }: Props) {
         {cardImage?.provenance === 'google' && (
           <span className="absolute bottom-2 right-2 text-[8px] font-semibold uppercase tracking-widest text-white/80 bg-black/40 px-1.5 py-0.5 rounded">
             via Google
+          </span>
+        )}
+        {cardImage?.provenance === 'ai' && (
+          <span
+            title="AI-generated placeholder; real photography of this lounge is being sourced."
+            className="absolute top-3 left-3 inline-flex items-center gap-1 bg-amber-500/95 text-white text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm shadow-sm"
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: '11px' }}>auto_awesome</span>
+            AI
           </span>
         )}
 
