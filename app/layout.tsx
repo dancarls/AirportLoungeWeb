@@ -3,6 +3,7 @@ import Script from 'next/script'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import OutboundClickTracker from '@/components/OutboundClickTracker'
 
 const BASE = 'https://www.airportlounges.ca'
 
@@ -128,6 +129,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />
+        <OutboundClickTracker />
         {/* Google Analytics */}
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-FM95J545RS" strategy="afterInteractive" />
         <Script id="gtag-init" strategy="afterInteractive">{`
