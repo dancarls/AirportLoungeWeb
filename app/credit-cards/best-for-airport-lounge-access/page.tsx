@@ -260,7 +260,7 @@ export default function BestCreditCardsForLoungeAccessPage() {
             </p>
             <FinlyEmbed
               tool="credit-cards-compare"
-              filters={{ benefits: 'lounge_access' }}
+              filters={{ benefits: 'airport-lounge' }}
               fallbackHeading="Compare cards for airport lounge access"
               fallbackLabel="Open the Comparison Tool"
               fallbackAffiliateKey="finlywealth-lounge-access-cards"

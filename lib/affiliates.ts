@@ -75,6 +75,43 @@ interface AffiliateEntry {
   paramKey?: string
   /** Optional extra query params always appended (utm_source, etc.). */
   extraParams?: Record<string, string>
+  /**
+   * When set, the entry is routed through FinlyWealth's redirect at
+   *   https://finlywealth.com/r/<code>?url=<path>&utm_source=<placement>
+   * per Shang's onboarding note (2026-09-27). `url` in this case is the
+   * destination path *inside* finlywealth.com; `placement` becomes utm_source
+   * (the only UTM axis their affiliate hub reports on per-link).
+   *
+   * FinlyWealth does not attribute clicks that go directly to a
+   * finlywealth.com page with `?ref=<code>` — the `/r/` redirect is
+   * mandatory. Do NOT set both `finlywealthRedirect` and `envVar`/`paramKey`.
+   */
+  finlywealthRedirect?: { placement: string }
+}
+
+const FINLYWEALTH_REDIRECT_HOST = 'https://finlywealth.com'
+const FINLYWEALTH_DIRECT_HOST = 'https://www.finlywealth.com'
+
+/**
+ * Build a FinlyWealth affiliate URL that routes through their /r/ redirect.
+ * Every FinlyWealth outbound link on the site MUST go through this shape:
+ *   https://finlywealth.com/r/<code>?url=<path>&utm_source=<placement>
+ * Only `utm_source` reaches FinlyWealth's per-placement reporting; other
+ * UTM params added here are dropped by their redirect.
+ */
+function buildFinlywealthUrl(destPath: string, placement: string): string {
+  const code = process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
+  if (!code) {
+    // Direct fallback so links still resolve; not attributed.
+    return `${FINLYWEALTH_DIRECT_HOST}${destPath}`
+  }
+  const params = new URLSearchParams()
+  params.set('url', destPath)
+  params.set('utm_source', placement)
+  // URLSearchParams percent-encodes `/`; FinlyWealth's documented example
+  // uses literal slashes in the `url` param. Restore them to match.
+  const qs = params.toString().replace(/%2F/g, '/')
+  return `${FINLYWEALTH_REDIRECT_HOST}/r/${encodeURIComponent(code)}?${qs}`
 }
 
 const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
@@ -147,76 +184,53 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
     paramKey: 'aff',
     extraParams: { utm_source: 'airportlounges_ca' },
   },
-  // FinlyWealth destinations — pasted per rep's confirmation email (2026-09-09).
-  // The FinlyWealth affiliate program requires links to be routed through their
-  // in-house link generator; once we have the tracking parameter name they use
-  // (typically `subid` or `partnerRef`), paramKey below gets that value applied
-  // via NEXT_PUBLIC_AFF_FINLYWEALTH env var. Until then the raw URLs still work.
+  // FinlyWealth destinations — routed through /r/<code>?url=<path> per Shang's
+  // 2026-09-27 onboarding note. Attribution to the affiliate account happens
+  // via the /r/ redirect, NOT via a ?ref= parameter on a direct link. The
+  // placement string becomes utm_source in FinlyWealth's per-link reporting.
   'finlywealth-compare-tool': {
-    url: 'https://www.finlywealth.com/credit-cards/compare',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'compare_tool' },
+    url: '/credit-cards/compare',
+    finlywealthRedirect: { placement: 'compare-tool' },
   },
   'finlywealth-rebates-catalog': {
-    url: 'https://www.finlywealth.com/rebates',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'rebates_catalog' },
+    url: '/rebates',
+    finlywealthRedirect: { placement: 'rebates-catalog' },
   },
   'finlywealth-lounge-access-cards': {
-    url: 'https://www.finlywealth.com/best-credit-cards/lounge-access',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'lounge_access_cards' },
+    url: '/best-credit-cards/lounge-access',
+    finlywealthRedirect: { placement: 'lounge-access-cards' },
   },
   'finlywealth-aeroplan-cards': {
-    url: 'https://www.finlywealth.com/best-credit-cards/aeroplan',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'aeroplan_cards' },
+    url: '/best-credit-cards/aeroplan',
+    finlywealthRedirect: { placement: 'aeroplan-cards' },
   },
   'finlywealth-priority-pass-guide': {
-    url: 'https://www.finlywealth.com/blog/credit-cards/priority-pass',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'priority_pass_guide' },
+    url: '/blog/credit-cards/priority-pass',
+    finlywealthRedirect: { placement: 'priority-pass-guide' },
   },
   'finlywealth-amex-platinum': {
-    url: 'https://www.finlywealth.com/credit-cards/reviews/amex-platinum',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'amex_platinum' },
+    url: '/credit-cards/reviews/amex-platinum',
+    finlywealthRedirect: { placement: 'amex-platinum' },
   },
   'finlywealth-amex-aeroplan-reserve': {
-    url: 'https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'amex_aeroplan_reserve' },
+    url: '/credit-cards/reviews/amex-aeroplan-reserve',
+    finlywealthRedirect: { placement: 'amex-aeroplan-reserve' },
   },
   'finlywealth-td-aeroplan-vip': {
-    url: 'https://www.finlywealth.com/credit-cards/reviews/td-aeroplan-visa-infinite-privilege',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'td_aeroplan_vip' },
+    url: '/credit-cards/reviews/td-aeroplan-visa-infinite-privilege',
+    finlywealthRedirect: { placement: 'td-aeroplan-vip' },
   },
   'finlywealth-cibc-aeroplan-vip': {
-    url: 'https://www.finlywealth.com/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'cibc_aeroplan_vip' },
+    url: '/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege',
+    finlywealthRedirect: { placement: 'cibc-aeroplan-vip' },
   },
   'finlywealth-rbc-avion-vip': {
-    url: 'https://www.finlywealth.com/credit-cards/reviews/rbc-avion-visa-infinite-privilege',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'rbc_avion_vip' },
+    url: '/credit-cards/reviews/rbc-avion-visa-infinite-privilege',
+    finlywealthRedirect: { placement: 'rbc-avion-vip' },
   },
   'finlywealth-scotia-passport': {
-    url: 'https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'scotia_passport' },
+    url: '/credit-cards/reviews/scotia-passport-visa-infinite',
+    finlywealthRedirect: { placement: 'scotia-passport' },
   },
   // Amazon Associates.ca — travel-gear posts. The `tag` parameter is the official
   // Amazon Associates identifier; use the .ca product URLs.
@@ -269,22 +283,16 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
   },
   // FinlyWealth interactive tools — destination pages, not embeds.
   'finlywealth-quiz': {
-    url: 'https://www.finlywealth.com/credit-cards/quiz',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'quiz' },
+    url: '/credit-cards/quiz',
+    finlywealthRedirect: { placement: 'quiz' },
   },
   'finlywealth-combos-calculator': {
-    url: 'https://www.finlywealth.com/credit-cards/combos-calculator',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'combos_calc' },
+    url: '/credit-cards/combos-calculator',
+    finlywealthRedirect: { placement: 'combos-calculator' },
   },
   'finlywealth-rewards-calculator-index': {
-    url: 'https://www.finlywealth.com/credit-cards',
-    envVar: 'NEXT_PUBLIC_AFF_FINLYWEALTH',
-    paramKey: 'ref',
-    extraParams: { utm_source: 'airportlounges_ca', utm_content: 'rewards_calc_index' },
+    url: '/credit-cards',
+    finlywealthRedirect: { placement: 'rewards-calc-index' },
   },
 }
 
@@ -295,31 +303,20 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
  * we build these on demand without registering each pair individually.
  *
  *   sideBySide('amex-platinum', 'amex-aeroplan-reserve')
- *   sideBySide('td-aeroplan-visa-infinite-privilege', 'cibc-aeroplan-visa-infinite-privilege')
  */
 export function sideBySide(cardA: string, cardB: string): string {
-  const url = new URL(`https://www.finlywealth.com/credit-cards/side-by-side/${cardA}-vs-${cardB}`)
-  const id = process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
-  if (id) url.searchParams.set('ref', id)
-  url.searchParams.set('utm_source', 'airportlounges_ca')
-  url.searchParams.set('utm_medium', 'referral')
-  url.searchParams.set('utm_content', `side_by_side_${cardA}_vs_${cardB}`.replace(/[^a-z0-9_]/g, '_'))
-  return url.toString()
+  const placement = `side-by-side-${cardA}-vs-${cardB}`.replace(/[^a-z0-9-]/g, '-')
+  return buildFinlywealthUrl(`/credit-cards/side-by-side/${cardA}-vs-${cardB}`, placement)
 }
 
 /**
  * Tracked link to FinlyWealth's per-program points value calculator.
  *
  *   pointsCalculator('aeroplan')
- *   pointsCalculator('american-express-membership-rewards')
  */
 export function pointsCalculator(programSlug: string): string {
-  const url = new URL(`https://www.finlywealth.com/points-calculator/${programSlug}`)
-  const id = process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
-  if (id) url.searchParams.set('ref', id)
-  url.searchParams.set('utm_source', 'airportlounges_ca')
-  url.searchParams.set('utm_content', `points_calc_${programSlug}`.replace(/[^a-z0-9_]/g, '_'))
-  return url.toString()
+  const placement = `points-calc-${programSlug}`.replace(/[^a-z0-9-]/g, '-')
+  return buildFinlywealthUrl(`/points-calculator/${programSlug}`, placement)
 }
 
 /**
@@ -328,12 +325,8 @@ export function pointsCalculator(programSlug: string): string {
  *   rewardsCalculator('amex-aeroplan-reserve')
  */
 export function rewardsCalculator(cardSlug: string): string {
-  const url = new URL(`https://www.finlywealth.com/credit-cards/rewards-calculator/${cardSlug}`)
-  const id = process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
-  if (id) url.searchParams.set('ref', id)
-  url.searchParams.set('utm_source', 'airportlounges_ca')
-  url.searchParams.set('utm_content', `rewards_calc_${cardSlug}`.replace(/[^a-z0-9_]/g, '_'))
-  return url.toString()
+  const placement = `rewards-calc-${cardSlug}`.replace(/[^a-z0-9-]/g, '-')
+  return buildFinlywealthUrl(`/credit-cards/rewards-calculator/${cardSlug}`, placement)
 }
 
 /**
@@ -344,6 +337,9 @@ export function rewardsCalculator(cardSlug: string): string {
 export function affiliate(key: AffiliateKey): string {
   const entry = REGISTRY[key]
   if (!entry) return '#'
+  if (entry.finlywealthRedirect) {
+    return buildFinlywealthUrl(entry.url, entry.finlywealthRedirect.placement)
+  }
   const url = new URL(entry.url)
   if (entry.envVar && entry.paramKey) {
     const id = process.env[entry.envVar]
@@ -363,7 +359,9 @@ export function affiliate(key: AffiliateKey): string {
  */
 export function isAffiliated(key: AffiliateKey): boolean {
   const entry = REGISTRY[key]
-  return !!(entry?.envVar && process.env[entry.envVar])
+  if (!entry) return false
+  if (entry.finlywealthRedirect) return !!process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
+  return !!(entry.envVar && process.env[entry.envVar])
 }
 
 /**

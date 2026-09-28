@@ -11,22 +11,28 @@ import { getWeather } from '@/lib/weather'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 
 /**
- * Any inline FinlyWealth link inside the blog content HTML gets the affiliate
- * `ref` parameter injected at render time — the registry can't touch links
- * that live in HTML string constants, so this bridge closes the gap. If the
- * NEXT_PUBLIC_AFF_FINLYWEALTH env var is unset the content is untouched.
+ * Any inline FinlyWealth link inside the blog content HTML gets rewritten
+ * at render time to route through FinlyWealth's affiliate redirect at
+ *   https://finlywealth.com/r/<code>?url=<path>&utm_source=blog-<slug>
+ * per Shang's onboarding note (2026-09-27). FinlyWealth does NOT attribute
+ * clicks on direct finlywealth.com URLs even with a `?ref=<code>` query —
+ * the /r/ redirect is mandatory. If NEXT_PUBLIC_AFF_FINLYWEALTH is unset
+ * the content is left untouched.
  */
-function injectFinlyWealthRef(html: string): string {
-  const id = process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
-  if (!id) return html
-  // Match href="https://(www.)?finlywealth.com/…". Add ref=<id> only if the
-  // URL does not already carry a ref parameter.
+function rewriteFinlywealthLinks(html: string, slug: string): string {
+  const code = process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
+  if (!code) return html
+  const placement = `blog-${slug}`.slice(0, 80)
   return html.replace(
-    /href="(https:\/\/(?:www\.)?finlywealth\.com\/[^"]*)"/g,
-    (match, url: string) => {
-      if (/[?&]ref=/.test(url)) return match
-      const separator = url.includes('?') ? '&' : '?'
-      return `href="${url}${separator}ref=${encodeURIComponent(id)}"`
+    /href="https:\/\/(?:www\.)?finlywealth\.com([^"]*)"/g,
+    (match, pathAndQuery: string) => {
+      // Skip if already routed through the /r/ redirect.
+      if (pathAndQuery.startsWith('/r/')) return match
+      const params = new URLSearchParams()
+      params.set('url', pathAndQuery)
+      params.set('utm_source', placement)
+      const qs = params.toString().replace(/%2F/g, '/')
+      return `href="https://finlywealth.com/r/${encodeURIComponent(code)}?${qs}"`
     }
   )
 }
@@ -294,7 +300,7 @@ export default async function BlogPostPage({ params }: Props) {
             <div
               data-speakable="intro"
               className="prose-article"
-              dangerouslySetInnerHTML={{ __html: injectFinlyWealthRef(post.content) }}
+              dangerouslySetInnerHTML={{ __html: rewriteFinlywealthLinks(post.content, post.slug) }}
             />
 
             {/* Closing affiliate CTA — same primary CTA repeated after content,
