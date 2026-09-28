@@ -31,8 +31,7 @@ function rewriteFinlywealthLinks(html: string, slug: string): string {
       const params = new URLSearchParams()
       params.set('url', pathAndQuery)
       params.set('utm_source', placement)
-      const qs = params.toString().replace(/%2F/g, '/')
-      return `href="https://finlywealth.com/r/${encodeURIComponent(code)}?${qs}"`
+      return `href="https://www.finlywealth.com/r/${encodeURIComponent(code)}?${params.toString()}"`
     }
   )
 }

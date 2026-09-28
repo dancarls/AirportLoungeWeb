@@ -89,29 +89,28 @@ interface AffiliateEntry {
   finlywealthRedirect?: { placement: string }
 }
 
-const FINLYWEALTH_REDIRECT_HOST = 'https://finlywealth.com'
-const FINLYWEALTH_DIRECT_HOST = 'https://www.finlywealth.com'
+const FINLYWEALTH_HOST = 'https://www.finlywealth.com'
 
 /**
  * Build a FinlyWealth affiliate URL that routes through their /r/ redirect.
  * Every FinlyWealth outbound link on the site MUST go through this shape:
- *   https://finlywealth.com/r/<code>?url=<path>&utm_source=<placement>
- * Only `utm_source` reaches FinlyWealth's per-placement reporting; other
- * UTM params added here are dropped by their redirect.
+ *   https://www.finlywealth.com/r/<code>?url=<encoded-path>&utm_source=<placement>
+ * matching the exact output of FinlyWealth's own link generator at
+ *   finlywealth.com/affiliate-hub/link-generator
+ * verified against a real generated link 2026-09-28. Only `utm_source`
+ * reaches FinlyWealth's per-placement reporting; other UTM params added
+ * here are dropped by their redirect.
  */
 function buildFinlywealthUrl(destPath: string, placement: string): string {
   const code = process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
   if (!code) {
     // Direct fallback so links still resolve; not attributed.
-    return `${FINLYWEALTH_DIRECT_HOST}${destPath}`
+    return `${FINLYWEALTH_HOST}${destPath}`
   }
   const params = new URLSearchParams()
   params.set('url', destPath)
   params.set('utm_source', placement)
-  // URLSearchParams percent-encodes `/`; FinlyWealth's documented example
-  // uses literal slashes in the `url` param. Restore them to match.
-  const qs = params.toString().replace(/%2F/g, '/')
-  return `${FINLYWEALTH_REDIRECT_HOST}/r/${encodeURIComponent(code)}?${qs}`
+  return `${FINLYWEALTH_HOST}/r/${encodeURIComponent(code)}?${params.toString()}`
 }
 
 const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
