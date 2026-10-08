@@ -2102,7 +2102,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'yvr-domestic-maple-leaf-lounge-closure-2026',
     title: 'Air Canada Domestic Maple Leaf Lounge at YVR Closes October 14, 2026 — Where to Go Instead',
     excerpt: 'Last day October 13, 2026. Full renovation through early 2028. The two Air Canada Cafés at YVR are the only official alternative — no Priority Pass swap, no vouchers, no Plaza Premium comp announced as of October 8, 2026. We\'ll keep this page updated.',
-    coverImage: '/blog/air-canada-maple-leaf-lounge.png',
+    coverImage: '/blog/yvr-domestic-closure-hero.png',
     publishedAt: '2026-10-08',
     lastReviewed: '2026-10-08',
     category: 'Lounge Updates',

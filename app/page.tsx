@@ -198,6 +198,44 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── OPERATIONAL ALERT STRIP ─────────────────────────────── */}
+      {/* Time-boxed homepage callout for the YVR Domestic MLL closure
+          (Oct 14, 2026 → Early 2028). Hides automatically after Apr 1, 2028
+          so we don't need a redeploy to remove it. */}
+      {new Date() < new Date('2028-04-01') && (
+        <section className="bg-amber-50 border-y border-amber-200">
+          <div className="max-w-container-max mx-auto px-gutter py-5">
+            <Link
+              href="/blog/yvr-domestic-maple-leaf-lounge-closure-2026"
+              className="flex items-start md:items-center gap-4 group"
+            >
+              <span
+                className="material-symbols-outlined text-amber-700 shrink-0 mt-0.5 md:mt-0"
+                style={{ fontSize: '22px' }}
+                aria-hidden="true"
+              >
+                schedule
+              </span>
+              <div className="flex-1 min-w-0">
+                <p className="font-label-caps text-[9px] uppercase tracking-widest text-amber-800 mb-0.5">
+                  Operational alert · YVR
+                </p>
+                <p className="text-sm text-amber-900 leading-snug">
+                  <strong>Air Canada Domestic Maple Leaf Lounge at Vancouver closes October 14, 2026</strong> for a full renovation through early 2028. Last day October 13. See alternatives and the full timeline.
+                </p>
+              </div>
+              <span
+                className="material-symbols-outlined text-amber-700 shrink-0 group-hover:translate-x-1 transition-transform hidden md:block"
+                style={{ fontSize: '20px' }}
+                aria-hidden="true"
+              >
+                arrow_forward
+              </span>
+            </Link>
+          </div>
+        </section>
+      )}
+
       {/* ── FEATURED LOUNGE (with working buttons + modals) ─────── */}
       {fl && (
         <FeaturedLoungeSection lounge={fl} primaryImageUrl={flImgUrl} />
