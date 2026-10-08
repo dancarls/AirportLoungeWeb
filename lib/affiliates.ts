@@ -26,6 +26,11 @@ type AffiliateKey =
   | 'priority-pass'
   | 'priority-pass-membership'
   | 'dragonpass'
+  // Travel-adjacent partners — editorial, understated placements in sidebars
+  // and inline where relevant. Links fall back to the plain brand URL until
+  // each env var is set from the respective affiliate dashboard.
+  | 'airalo-esim'
+  | 'monos-luggage'
   // Ratehub via Impact.com — legacy fallback + backup for cards FinlyWealth doesn't monetize.
   | 'ratehub-amex-platinum'
   | 'ratehub-amex-aeroplan-reserve'
@@ -71,7 +76,15 @@ interface AffiliateEntry {
    * When the env var is unset, the plain `url` is returned unchanged.
    */
   envVar?: string
-  /** Query-string key used to attach the affiliate ID. */
+  /**
+   * Query-string key used to attach the affiliate ID.
+   *
+   * Special sentinel `'__full_url__'`: the env var's value IS a full tracked
+   * deeplink (e.g. an Impact.com or Partnerize URL like
+   * `https://airalo.pxf.io/xxxxx/campaign/`). When the env var is set, that
+   * URL completely replaces `url`; when unset, the plain brand `url` renders
+   * so links never break.
+   */
   paramKey?: string
   /** Optional extra query params always appended (utm_source, etc.). */
   extraParams?: Record<string, string>
@@ -254,6 +267,28 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
     paramKey: 'aid',
     extraParams: { utm_source: 'airportlounges_ca' },
   },
+  // Airalo eSIM — Partnerize affiliate program (partners.airalo.com).
+  // Once approved the dashboard emits a deeplink like
+  //   https://airalo.pxf.io/<xxxxx>/<campaign>/
+  // Store the FULL deeplink in NEXT_PUBLIC_AFF_AIRALO; this entry falls back
+  // to the plain brand URL until it is set so the link never breaks.
+  'airalo-esim': {
+    url: 'https://www.airalo.com/',
+    envVar: 'NEXT_PUBLIC_AFF_AIRALO',
+    paramKey: '__full_url__',
+    extraParams: { utm_source: 'airportlounges_ca', utm_medium: 'sidebar' },
+  },
+  // Monos luggage — Impact.com partner program. Approved affiliates get a
+  // tracked deeplink of the form
+  //   https://monos.sjv.io/<xxxxx>
+  // Store the FULL deeplink in NEXT_PUBLIC_AFF_MONOS; falls back to the
+  // plain brand URL until it is set.
+  'monos-luggage': {
+    url: 'https://www.monos.com/',
+    envVar: 'NEXT_PUBLIC_AFF_MONOS',
+    paramKey: '__full_url__',
+    extraParams: { utm_source: 'airportlounges_ca', utm_medium: 'sidebar' },
+  },
   // Day-pass booking — commission-eligible programs. Fallback URLs go to the
   // operator's main booking page even without an affiliate ID.
   'plaza-premium-booking': {
@@ -338,6 +373,26 @@ export function affiliate(key: AffiliateKey): string {
   if (!entry) return '#'
   if (entry.finlywealthRedirect) {
     return buildFinlywealthUrl(entry.url, entry.finlywealthRedirect.placement)
+  }
+  // Full-deeplink entries (Partnerize / Impact.com partners): the env var,
+  // when set, is itself a tracked URL and replaces `url` entirely.
+  if (entry.envVar && entry.paramKey === '__full_url__') {
+    const deeplink = process.env[entry.envVar]
+    if (deeplink) {
+      try {
+        const url = new URL(deeplink)
+        if (entry.extraParams) {
+          for (const [k, v] of Object.entries(entry.extraParams)) {
+            url.searchParams.set(k, v)
+          }
+        }
+        return url.toString()
+      } catch {
+        // Malformed env var — fall through to plain brand URL.
+      }
+    }
+    // Env var unset → render the plain brand URL (link never breaks).
+    return entry.url
   }
   const url = new URL(entry.url)
   if (entry.envVar && entry.paramKey) {

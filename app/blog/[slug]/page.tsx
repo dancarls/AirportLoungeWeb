@@ -6,7 +6,7 @@ import { getPost, getAllPosts } from '@/lib/blog'
 import FlightStatusWidget from '@/components/FlightStatusWidget'
 import WeatherWidget from '@/components/WeatherWidget'
 import NewsletterCTA from '@/components/NewsletterCTA'
-import AdSlot from '@/components/AdSlot'
+import SidebarAffiliate from '@/components/SidebarAffiliate'
 import { getWeather } from '@/lib/weather'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 
@@ -410,9 +410,10 @@ export default async function BlogPostPage({ params }: Props) {
             {/* Newsletter capture — replaces the pre-launch ad placeholder. */}
             <NewsletterCTA source={`blog:${post.slug}`} variant="light" />
 
-            {/* Reserved sidebar ad slot — invisible until a display-ad network
-                (Mediavine Journey / Raptive / AdSense) is enabled site-wide. */}
-            <AdSlot slot="blog-sidebar" size="sidebar" />
+            {/* Airalo eSIM partner — only renders once NEXT_PUBLIC_AFF_AIRALO
+                is set in Vercel. Travel-adjacent fit; natural pitch for
+                anyone reading a lounge guide ahead of an international trip. */}
+            <SidebarAffiliate brand="airalo" />
 
             {/* CTA */}
             <div className="bg-primary p-6 text-white">
