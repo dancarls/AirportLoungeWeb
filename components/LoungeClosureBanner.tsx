@@ -48,11 +48,22 @@ export default function LoungeClosureBanner({
   const isReducedCapacity = status === 'reduced_capacity'
   const isPermanent       = status === 'permanent_closure'
 
+  // Treat the closure as "upcoming" when startedOn is a future date — lets us
+  // publish the banner ahead of the actual close date so readers can plan.
+  // Server-rendered date comparison flips automatically on the start date.
+  const today = new Date().toISOString().slice(0, 10)
+  const isUpcoming = !!startedOn && startedOn > today && !isReducedCapacity && !isPermanent
+  const startedOnFormatted = startedOn
+    ? new Date(startedOn).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })
+    : null
+
   const heading = isReducedCapacity
     ? `${loungeName} is operating in a temporary space`
     : isPermanent
       ? `${loungeName} is permanently closed`
-      : `${loungeName} is currently closed for renovation`
+      : isUpcoming
+        ? `${loungeName} closes ${startedOnFormatted} for renovation`
+        : `${loungeName} is currently closed for renovation`
 
   return (
     <aside
@@ -70,7 +81,13 @@ export default function LoungeClosureBanner({
           </div>
           <div className="flex-1 min-w-0">
             <p className="font-label-caps text-[10px] uppercase tracking-widest text-amber-800 mb-1">
-              {isReducedCapacity ? 'Reduced capacity' : isPermanent ? 'Permanently closed' : 'Temporarily closed'}
+              {isReducedCapacity
+                ? 'Reduced capacity'
+                : isPermanent
+                  ? 'Permanently closed'
+                  : isUpcoming
+                    ? 'Upcoming closure'
+                    : 'Temporarily closed'}
             </p>
             <h2 className="font-headline-md text-headline-md text-primary leading-tight">
               {heading}
@@ -89,11 +106,11 @@ export default function LoungeClosureBanner({
             )}
             {startedOn && (
               <div>
-                <p className="font-label-caps text-[9px] uppercase tracking-widest text-amber-700 mb-1">Closed since</p>
+                <p className="font-label-caps text-[9px] uppercase tracking-widest text-amber-700 mb-1">
+                  {isUpcoming ? 'Closes on' : 'Closed since'}
+                </p>
                 <p className="text-sm text-on-surface leading-snug">
-                  <time dateTime={startedOn}>
-                    {new Date(startedOn).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
-                  </time>
+                  <time dateTime={startedOn}>{startedOnFormatted}</time>
                 </p>
               </div>
             )}
