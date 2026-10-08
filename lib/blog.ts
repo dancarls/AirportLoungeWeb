@@ -56,6 +56,21 @@ export interface BlogPost {
   comparisonCards?: BlogPostComparisonCard[]
 }
 
+/**
+ * Reusable amber callout block to drop into any existing article that
+ * references a lounge now affected by the YVR Domestic MLL renovation.
+ * Keeps the host article's old copy readable without rewriting it, and
+ * links out to the operational-alert post for the full picture. Visual
+ * matches the LoungeClosureBanner styling (amber-50 bg, amber-500 bar).
+ */
+const yvrDomesticClosureAddendum = `
+<aside style="margin:1.75em 0;padding:1em 1.25em 1em 1.5em;border-left:4px solid #f59e0b;background:#fef3c7;color:#78350f;">
+  <p style="margin:0 0 0.4em;font-size:0.75em;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;">Closure note — October 2026 update</p>
+  <p style="margin:0;font-size:0.95em;line-height:1.5;color:#78350f;">The <strong>Air Canada Domestic Maple Leaf Lounge at Vancouver (YVR)</strong> closes October 14, 2026 for a full renovation and will reopen in early 2028. Last day for guests is October 13. During the closure, eligible travellers can use the two Air Canada Cafés at YVR (Gate C50 and Gate C46). The International and Transborder Maple Leaf Lounges, and the YVR Signature Suite, stay open. Full details, alternatives, and FAQ: <a href="/blog/yvr-domestic-maple-leaf-lounge-closure-2026" style="color:#78350f;text-decoration:underline;font-weight:600;">YVR Domestic Maple Leaf Lounge closure guide</a>.</p>
+</aside>
+
+`
+
 const sleepPodsContent = `
 <p data-speakable="intro"><strong>Canada does not have Napcabs, GoSleep pods or dedicated per-hour nap suites like Munich, Helsinki or Singapore Changi. What we have are five lounges with real rest facilities: individual reclining pods, spa-style rest suites, day-bed corners, or an all-night operating schedule that lets you actually stretch out between flights. Only one of them accepts Priority Pass. Only one is open 24 hours a day. Full breakdown below, with the card that unlocks each. Verified September 12, 2026.</strong></p>
 
@@ -1019,6 +1034,8 @@ const showerAccessContent = `
 
 <p><em>Access: Air Canada Business/First class; Star Alliance Gold; Aeroplan 50K+ status; TD, CIBC, or Amex Aeroplan premium cards. Not Priority Pass eligible.</em></p>
 
+${yvrDomesticClosureAddendum}
+
 <p>Air Canada lists showers as a standard Maple Leaf Lounge amenity, but not every location has them and quality varies. Here is a location-by-location breakdown of what you can actually expect.</p>
 
 <table style="width:100%; border-collapse:collapse; font-size:0.88em;">
@@ -1903,7 +1920,227 @@ const aeroplanCardsContent = `
 <p><em>All fees, offers, benefits and insurance limits in this guide reflect information current as of September 11, 2026. Rules and offers change without notice — always confirm the current terms with the issuer before applying. Next scheduled review: December 2026, when the TD and CIBC guest terms expire.</em></p>
 `
 
+const yvrDomesticClosureContent = `
+<p data-speakable="intro"><strong>Air Canada's Domestic Maple Leaf Lounge at Vancouver (YVR) closes October 14, 2026 for a full renovation and reopens in early 2028. Last day for guests is Tuesday, October 13. During the closure, eligible travellers can use one of two Air Canada Cafés at YVR — the main Café near Gate C50/D50 (06:00–22:00) and the smaller Petit Café between Gates 46 and 47 (05:00–20:00). Both are after security, Level 3 Departures, Main Terminal. The YVR International Maple Leaf Lounge, Transborder Maple Leaf Lounge, and the YVR Signature Suite all stay open as usual. As of October 8, 2026, Air Canada has NOT announced extended Priority Pass acceptance, meal vouchers, or an Aspire-style cross-lounge arrangement at YVR — unlike the swap offered during the Montreal MLL renovation. We'll update this page the moment that changes.</strong></p>
+
+<blockquote>
+<p><strong>Editorial note:</strong> AirportLounges.ca does not have any paid relationship with Air Canada or any YVR lounge operator. This page is editorial; it is updated as new facts arrive and all claims are sourced below. If you have on-the-ground information from a recent YVR visit — the Café at Gate C50 was overflowing, a desk agent offered a Plaza Premium voucher, hours have changed — <a href="/about#corrections">tell us</a> and we'll verify and update.</p>
+</blockquote>
+
+<h2>The closure in one line</h2>
+
+<ul>
+  <li><strong>Last day open:</strong> Tuesday, October 13, 2026.</li>
+  <li><strong>Closed from:</strong> Wednesday, October 14, 2026.</li>
+  <li><strong>Expected reopening:</strong> Early 2028 (no exact month confirmed by Air Canada as of October 8, 2026).</li>
+  <li><strong>Scope:</strong> Pier C, Gates C29–C30, Level 3 — the Domestic Maple Leaf Lounge only.</li>
+  <li><strong>Reason:</strong> Full-scale renovation.</li>
+</ul>
+
+<h2>What's open vs closed at YVR during the renovation</h2>
+
+<table>
+  <thead>
+    <tr><th>Lounge</th><th>Status</th><th>Who it serves</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Air Canada Maple Leaf Lounge — Domestic (Pier C)</strong></td><td>Closed Oct 14 2026 – Early 2028</td><td>Domestic Air Canada departures</td></tr>
+    <tr><td>Air Canada Café (Gate C50/D50)</td><td>Open</td><td>Domestic departures, eligible travellers only</td></tr>
+    <tr><td>Air Canada Petit Café (Gate C46)</td><td>Open</td><td>Domestic departures, eligible travellers only</td></tr>
+    <tr><td>Air Canada Maple Leaf Lounge — International (Gate D52)</td><td>Open</td><td>International Air Canada departures</td></tr>
+    <tr><td>Air Canada Maple Leaf Lounge — US Transborder (Gates E85–E86)</td><td>Open</td><td>US-bound Air Canada departures</td></tr>
+    <tr><td>YVR Signature Suite</td><td>Open</td><td>Air Canada Signature Class international</td></tr>
+    <tr><td>Plaza Premium Domestic (Gate B15)</td><td>Open</td><td>Priority Pass, DragonPass, walk-in from ~$60 CAD</td></tr>
+    <tr><td>Plaza Premium Domestic Pier C outpost (Gate C29)</td><td>Open</td><td>Priority Pass, DragonPass, short stays</td></tr>
+    <tr><td>Plaza Premium International (Pier D)</td><td>Open</td><td>Priority Pass, DragonPass, 24-hour</td></tr>
+    <tr><td>Plaza Premium First (Pier D)</td><td>Open</td><td>Direct $110 or $30 upgrade; Priority Pass NOT accepted</td></tr>
+    <tr><td>Plaza Premium US Departures (Gate E88)</td><td>Open</td><td>Priority Pass, DragonPass, US-bound only</td></tr>
+    <tr><td>SkyTeam Lounge (Pier D)</td><td>Open</td><td>SkyTeam Elite Plus, Priority Pass, international only</td></tr>
+    <tr><td>Cathay Pacific Lounge (Pier D)</td><td>Open</td><td>Cathay/oneworld Sapphire+, international only</td></tr>
+  </tbody>
+</table>
+
+<p>If you fly domestically from YVR as an Aeroplan 50K/75K/Super Elite member, Business class passenger, Star Alliance Gold on an AC-operated flight, or on a premium Aeroplan credit card — the Domestic Maple Leaf Lounge was your lounge. From October 14 onward, Air Canada routes you to one of the two Air Canada Cafés instead.</p>
+
+<h2>The two Air Canada Cafés at YVR — what they actually are</h2>
+
+<p>These are grab-and-go spaces, not full lounges. Expect counter food, barista coffee, limited seating, and no washrooms inside the Café itself. Both have Air Canada's dedicated high-speed Wi-Fi and power at every seat (one of only two lounges in Canada with that spec).</p>
+
+<h3>Air Canada Café — Gate C50/D50 (the larger one)</h3>
+
+<ul>
+  <li><strong>Location:</strong> Near Gate C50/D50, Level 3 Departures, Main Terminal, after security.</li>
+  <li><strong>Hours:</strong> 06:00–22:00 daily.</li>
+  <li><strong>Capacity:</strong> Larger of the two; counter-style and bar seating; expect a wait around domestic banks (06:00–08:00 and 17:00–19:00).</li>
+  <li><strong>Food:</strong> Nitro cold brew, Montreal bagels, grab-and-go sandwiches and bowls, a small bar.</li>
+  <li><strong>Wi-Fi &amp; power:</strong> Dedicated Air Canada network; AC + USB-C at every seat.</li>
+  <li><strong>What it isn't:</strong> No showers, no full meal service, no quiet zone, no washrooms inside — use the terminal washrooms before you enter.</li>
+</ul>
+
+<p>Our lounge page: <a href="/airports/YVR/lounges/air-canada-cafe-yvr">Air Canada Café YVR</a>.</p>
+
+<h3>Air Canada Petit Café — between Gates 46 and 47 (the smaller one)</h3>
+
+<ul>
+  <li><strong>Location:</strong> Near Gate C46, Level 3 Departures, Main Terminal, after security.</li>
+  <li><strong>Hours:</strong> 05:00–20:00 daily.</li>
+  <li><strong>Capacity:</strong> Small-format; standing bar + a handful of seats. Opens earlier than the main Café — the practical choice for 05:00–06:00 domestic departures.</li>
+  <li><strong>Food:</strong> Same compact menu; less selection than the main Café.</li>
+  <li><strong>Wi-Fi &amp; power:</strong> Same spec as the main Café.</li>
+</ul>
+
+<p>Our lounge page: <a href="/airports/YVR/lounges/air-canada-petit-cafe-yvr">Air Canada Petit Café YVR</a>.</p>
+
+<h3>Who the Cafés let in</h3>
+
+<p>Eligibility matches the Maple Leaf Lounge: Business class same-day Air Canada or Star Alliance ticket, Aeroplan Super Elite 100K / 75K / 50K, Star Alliance Gold on an AC-operated flight, Maple Leaf Club Canada or Worldwide, or holders of the premium Aeroplan credit cards (TD Aeroplan Visa Infinite Privilege, CIBC Aeroplan Visa Infinite Privilege, Amex Aeroplan Reserve). Walk-in day passes are not sold. Entry is via eGate — no desk check-in.</p>
+
+<h2>What Air Canada is NOT offering (as of October 8, 2026)</h2>
+
+<p>We know this is the question most readers will have. Based on Air Canada's own closure announcement and reporting from Milesopedia and LoyaltyLobby, here is what has <strong>not</strong> been offered:</p>
+
+<ul>
+  <li><strong>No Priority Pass acceptance extended to the Maple Leaf network.</strong> Aeroplan Elite members who use the Domestic MLL do not get temporary Priority Pass access through the closure.</li>
+  <li><strong>No meal vouchers.</strong> Unlike some Air Canada operational disruptions where $14 CAD meal vouchers are issued at the desk, no equivalent voucher is attached to this planned closure.</li>
+  <li><strong>No Plaza Premium swap.</strong> Air Canada has not reached a comp arrangement with Plaza Premium that would let affected members use Plaza Premium Pier B/C instead.</li>
+  <li><strong>No Aspire-style cross-lounge offer.</strong> This differs from Montreal: when the Montreal National Bank Lounge went into temporary reduced capacity in 2026, Air Canada allowed select Aeroplan Elite tiers to use the Aspire Amex Lounge as an alternative. Nothing equivalent has been announced for YVR.</li>
+  <li><strong>No day-pass credit at other YVR lounges.</strong> Nothing comparable to the YYZ Signature Suite closure comp announced in September 2026.</li>
+</ul>
+
+<p>None of this is permanent. Air Canada frequently expands remediation during long closures as member pushback accumulates — Montreal's Aspire swap was not announced on day one. We'll update this page the moment anything changes.</p>
+
+<h2>If the two Air Canada Cafés aren't enough</h2>
+
+<p>If you need a seat, a shower, or a proper meal before a YVR domestic departure, there are workable options outside Air Canada's own network — but they cost money or a card.</p>
+
+<ul>
+  <li><strong>Plaza Premium at Pier B / Gate B15</strong> — Full-size Priority Pass lounge in the Domestic Terminal. Walk-in from about $60 CAD, free with Priority Pass (Amex Platinum, Business Platinum, Scotiabank Platinum Amex, standalone PP membership) or DragonPass. Showers available with a $25 CAD surcharge. 05:00–22:00 daily.</li>
+  <li><strong>Plaza Premium Pier C outpost / Gate C29</strong> — Smaller Priority Pass space in the same concourse as the closed MLL. Same card acceptance; shower-free. Useful for short connections.</li>
+  <li><strong>Pay for Maple Leaf Lounge access on a future ticket</strong> — Air Canada sells pre-flight MLL access at $25 (Latitude), $50 (Flex) and higher as a bookable add-on. This only works for the International or Transborder MLL during the Domestic closure.</li>
+  <li><strong>Shift to Fairmont Vancouver Airport day-use</strong> — Day-use rooms at the on-site Fairmont are quiet and private; not a lounge, but comparable price to a walk-in lounge plus private washroom + bed if you need rest.</li>
+</ul>
+
+<p>For a full card-by-card breakdown of what unlocks Plaza Premium at YVR, see our <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a> guide. For who-gets-what into Air Canada's own lounges, see our <a href="/blog/best-aeroplan-credit-card-airport-lounge-access">best Aeroplan card for lounge access</a> guide.</p>
+
+<h2>What the renovated lounge will look like (per Air Canada)</h2>
+
+<p>Air Canada's announcement describes the following for the reopened lounge:</p>
+
+<ul>
+  <li>Quiet work zones</li>
+  <li>Improved accessibility</li>
+  <li>A central fireplace gathering area</li>
+  <li>Locally inspired culinary offerings</li>
+  <li>A full-service bar</li>
+</ul>
+
+<p>No square footage, seat count, or specific amenity updates (shower suites, business centre) have been published. Expect the finished space to broadly match the recent YYZ Domestic MLL redesign and the Montreal National Bank Lounge upgrade — editorial reviewers will have a clearer picture six to eight weeks before the reopening when PR access typically begins.</p>
+
+<h2>How to contact Air Canada about this closure</h2>
+
+<ul>
+  <li><strong>Air Canada Concierge</strong> — Available to Aeroplan Super Elite 100K; discreet in-airport desk at YVR for last-minute lounge, rebooking and voucher questions. Based on the second level of the main terminal.</li>
+  <li><strong>Aeroplan Elite 75K / 50K</strong> — Dedicated priority telephone line published in the Aeroplan portal under "Contact us". Expect faster resolution than the general number.</li>
+  <li><strong>General Air Canada Reservations</strong> — 1-888-247-2262 (Canada and US). Long hold times during disruptions; use the chat flow in the mobile app instead when possible.</li>
+  <li><strong>In-airport, same day</strong> — Any Air Canada check-in desk at YVR can escalate; mention Super Elite / 75K / 50K / Business class and ask specifically whether any discretionary accommodation is available for the day.</li>
+</ul>
+
+<h2>We'll keep this page updated</h2>
+
+<p>Three things we'll be watching for and amending above as they land:</p>
+
+<ol>
+  <li><strong>Any extended lounge access.</strong> If Air Canada announces Priority Pass swap, Plaza Premium acceptance, or a cross-airport compensation offer, this page updates within 24 hours of a verified source.</li>
+  <li><strong>A specific reopening date.</strong> "Early 2028" means Q1 or Q2 2028. A specific month or day is expected 1–3 months before reopening; our next scheduled review is December 2027.</li>
+  <li><strong>Café capacity reality.</strong> Reader reports about seat availability, wait times, and whether the Cafés can actually absorb the displaced MLL traffic. If they're overflowing, we'll say so clearly.</li>
+</ol>
+
+<p>Check back any time, or <a href="/blog">subscribe via the Lounge Library</a> for monthly updates. If you've had a recent experience that would help other readers, <a href="/about#corrections">tell us</a>.</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>When exactly does the Air Canada Domestic Maple Leaf Lounge at YVR close?</h3>
+<p>The last day of service for guests is Tuesday, October 13, 2026. The lounge closes for renovation on Wednesday, October 14, 2026 and is scheduled to reopen in early 2028. No specific month or day in 2028 has been confirmed by Air Canada as of October 8, 2026.</p>
+
+<h3>What should I do if I usually use the YVR Domestic Maple Leaf Lounge?</h3>
+<p>Air Canada's official alternative is either of two Air Canada Cafés at YVR — the larger Café near Gate C50/D50 (06:00–22:00) or the smaller Petit Café between Gates 46 and 47 (05:00–20:00). Both are after security on Level 3 Departures in the Main Terminal. Eligibility is the same as the Maple Leaf Lounge (Business class, Aeroplan 50K+, Star Alliance Gold, Maple Leaf Club, premium Aeroplan credit cards).</p>
+
+<h3>Can I use Priority Pass or Plaza Premium instead?</h3>
+<p>Priority Pass is Amex-only in Canada and does not grant Maple Leaf Lounge access either way. However, Plaza Premium at YVR Pier B (Gate B15) accepts Priority Pass, DragonPass, and walk-in day passes from about $60 CAD — this is the full-size paid alternative in the domestic terminal and stays open throughout the Maple Leaf Lounge renovation. See our <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a> guide for exactly which cards work.</p>
+
+<h3>Is Air Canada offering compensation or vouchers for this closure?</h3>
+<p>Not as of October 8, 2026. There is no announced meal voucher, no Priority Pass swap, no Plaza Premium comp, and no cross-airport credit. This is unlike the Montreal MLL renovation where select Aeroplan Elite tiers were granted Aspire Amex Lounge access as an alternative. Air Canada may expand remediation later; this page updates when that happens.</p>
+
+<h3>Does the YVR International or Transborder Maple Leaf Lounge close too?</h3>
+<p>No. Only the Domestic Maple Leaf Lounge at Pier C closes. The International Maple Leaf Lounge (Gate D52), the Transborder/US Departures Maple Leaf Lounge (Gates E85–E86), and the YVR Signature Suite all stay open as usual throughout the renovation period.</p>
+
+<h3>Do the Air Canada Cafés at YVR have showers?</h3>
+<p>No. The Cafés are grab-and-go spaces centred on food and barista coffee. Neither has shower facilities. For a shower in the domestic terminal during the closure, Plaza Premium at Pier B offers shower rooms for a $25 CAD surcharge on top of lounge entry (free with Priority Pass or DragonPass). The YVR International Maple Leaf Lounge and Plaza Premium First (international) have showers for travellers connecting internationally.</p>
+
+<h3>What will the renovated lounge look like?</h3>
+<p>Air Canada says the reopened lounge will include quiet work zones, improved accessibility, a central fireplace gathering area, locally inspired culinary offerings, and a full-service bar. No specific seat count, square footage, or amenity detail (showers, business centre, shower suite count) has been published yet.</p>
+
+<h2>Change log</h2>
+<ul>
+  <li><strong>October 8, 2026:</strong> First published. Closure confirmed by Air Canada; dates and alternatives verified via Milesopedia and LoyaltyLobby. No extended access remediation announced at time of writing.</li>
+</ul>
+
+<h2>Sources</h2>
+<ul>
+  <li>Air Canada — Vancouver Maple Leaf Lounge closure notice (October 2026).</li>
+  <li><a href="https://milesopedia.com/en/news/airports/vancouver-domestic-maple-leaf-lounge-closure/">Milesopedia — YVR Maple Leaf Lounge Closed 14 Months: Where to Go</a>.</li>
+  <li><a href="https://loyaltylobby.com/2026/10/06/air-canada-vancouver-domestic-maple-leaf-lounge-closure-october-14-early-2028/">LoyaltyLobby — Air Canada Vancouver Domestic Maple Leaf Lounge Closure October 14 → Early 2028</a>.</li>
+  <li>AirportLounges.ca lounge pages — <a href="/airports/YVR/lounges/ac-maple-leaf-lounge-domestic-yvr">AC Maple Leaf Lounge Domestic YVR</a>, <a href="/airports/YVR/lounges/air-canada-cafe-yvr">Air Canada Café YVR</a>, <a href="/airports/YVR/lounges/air-canada-petit-cafe-yvr">Air Canada Petit Café YVR</a>.</li>
+  <li>Related guides — <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a>, <a href="/blog/best-aeroplan-credit-card-airport-lounge-access">Best Aeroplan credit card for airport lounge access</a>, <a href="/blog/canadian-airport-lounges-shower-access">Canadian airport lounges with shower access</a>.</li>
+</ul>
+
+<p><em>All facts on this page reflect information current as of October 8, 2026. Access rules, hours, and remediation offers change without notice — always confirm with Air Canada and the lounge operator before travelling. Next scheduled review: December 2027 (confirming the exact reopening date in Q1 2028).</em></p>
+`
+
 export const blogPosts: BlogPost[] = [
+  {
+    slug: 'yvr-domestic-maple-leaf-lounge-closure-2026',
+    title: 'Air Canada Domestic Maple Leaf Lounge at YVR Closes October 14, 2026 — Where to Go Instead',
+    excerpt: 'Last day October 13, 2026. Full renovation through early 2028. The two Air Canada Cafés at YVR are the only official alternative — no Priority Pass swap, no vouchers, no Plaza Premium comp announced as of October 8, 2026. We\'ll keep this page updated.',
+    coverImage: '/blog/air-canada-maple-leaf-lounge.png',
+    publishedAt: '2026-10-08',
+    lastReviewed: '2026-10-08',
+    category: 'Lounge Updates',
+    readingTime: '7 min read',
+    metaTitle: 'YVR Domestic Maple Leaf Lounge Closes Oct 14, 2026 — Alternatives Guide',
+    metaDescription: 'Air Canada\'s Domestic Maple Leaf Lounge at YVR closes Oct 14, 2026 through early 2028. Full guide to the two Air Canada Café alternatives, who is eligible, what else is open at YVR, and what Air Canada has (and has not) offered as compensation. Verified October 8, 2026.',
+    content: yvrDomesticClosureContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: 'Airport operational alerts verified against Air Canada, airport authority announcements, and traveller reports. Updated continuously as remediation details and reopening confirmations arrive.',
+    primaryCta: {
+      heading: 'Cards that unlock the alternatives',
+      subheading: 'Priority Pass gets you into Plaza Premium at YVR Pier B/C during the Maple Leaf Lounge closure. The three Canadian cards that include it are the Amex Platinum, Business Platinum and Scotiabank Platinum Amex.',
+      ctaLabel: 'Compare Lounge-Access Cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
+    faqs: [
+      {
+        question: 'When exactly does the YVR Domestic Maple Leaf Lounge close?',
+        answer: 'Tuesday, October 13, 2026 is the last day for guests. The lounge closes for a full renovation on Wednesday, October 14, 2026 and is scheduled to reopen in early 2028.',
+      },
+      {
+        question: 'What are the alternatives Air Canada is offering?',
+        answer: 'Two Air Canada Cafés at YVR, both after security on Level 3 Departures of the Main Terminal: the main Café near Gate C50/D50 (open 06:00–22:00 daily) and the smaller Petit Café between Gates 46 and 47 (open 05:00–20:00 daily). Eligibility matches the Maple Leaf Lounge — Business class, Aeroplan 50K+, Star Alliance Gold, Maple Leaf Club, or a premium Aeroplan credit card.',
+      },
+      {
+        question: 'Is Air Canada offering vouchers or extended Priority Pass access during the closure?',
+        answer: 'Not as of October 8, 2026. There is no meal voucher, no Priority Pass swap, no Plaza Premium comp arrangement, and no cross-airport credit announced. This differs from the Montreal Maple Leaf Lounge renovation where select Aeroplan Elite tiers were granted temporary Aspire Amex Lounge access. If Air Canada expands remediation, we update this page.',
+      },
+      {
+        question: 'Does the YVR International or Transborder Maple Leaf Lounge close too?',
+        answer: 'No. Only the Domestic Maple Leaf Lounge at Pier C closes. The International (Gate D52), Transborder (Gates E85–E86), and the YVR Signature Suite all stay open throughout the renovation.',
+      },
+      {
+        question: 'Can Priority Pass holders use any lounge in the YVR domestic terminal during the closure?',
+        answer: 'Yes. Plaza Premium at Pier B (Gate B15) and the Pier C outpost (Gate C29) both accept Priority Pass, DragonPass, and walk-in day passes throughout. Pier B is full-size, shower-equipped (with a $25 CAD surcharge), and the practical substitute for the closed Maple Leaf Lounge for Priority Pass holders.',
+      },
+    ],
+  },
   {
     slug: 'best-aeroplan-credit-card-airport-lounge-access',
     title: 'Best Aeroplan Credit Card for Airport Lounge Access in Canada (2026)',
@@ -2138,10 +2375,10 @@ export const blogPosts: BlogPost[] = [
   {
     slug: 'canadian-airport-lounges-shower-access',
     title: 'Canadian Airport Lounges with Shower Access (2026)',
-    excerpt: 'Every Canadian airport lounge with shower access reviewed — facilities, bath products, who gets in free, and how to avoid a long wait. Updated June 2026.',
+    excerpt: 'Every Canadian airport lounge with shower access reviewed — facilities, bath products, who gets in free, and how to avoid a long wait. Updated October 2026.',
     coverImage: '/blog/shower-access-canada-hero.png',
     publishedAt: '2026-06-05',
-    lastReviewed: '2026-08-25',
+    lastReviewed: '2026-10-08',
     category: 'Lounge Guides',
     readingTime: '11 min read',
     metaTitle: 'Canadian Airport Lounges with Showers (2026): Every Location Reviewed',
