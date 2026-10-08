@@ -174,8 +174,8 @@ const sleepPodsContent = `
 <p>Only two of the five lounges here are accessible via a Canadian credit card. Neither requires a specific "sleep pod" upgrade — the cards get you into the lounge and the rest facility is inside.</p>
 
 <ul>
-  <li><strong>American Express Platinum ($799) or Business Platinum ($799)</strong> — Direct entry to Plaza Premium at YVR International (24-hour) and Plaza Premium at YWG. Also includes Priority Pass Select. Through December 31, 2026 both are unlimited-visit; from January 1, 2027 they are capped at 6 Priority Pass + 6 Plaza Premium visits per year unless the account is charged $20,000 in a calendar year. Details: <a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum airport lounge access guide</a>.</li>
-  <li><strong>Scotiabank Platinum American Express ($399)</strong> — Priority Pass with 10 visits a year covers both Plaza Premium locations above.</li>
+  <li><strong><a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">American Express Platinum</a> ($799) or Business Platinum ($799)</strong> — Direct entry to Plaza Premium at YVR International (24-hour) and Plaza Premium at YWG. Also includes Priority Pass Select. Through December 31, 2026 both are unlimited-visit; from January 1, 2027 they are capped at 6 Priority Pass + 6 Plaza Premium visits per year unless the account is charged $20,000 in a calendar year. Details: <a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum airport lounge access guide</a>.</li>
+  <li><strong><a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum American Express</a> ($399)</strong> — Priority Pass with 10 visits a year covers both Plaza Premium locations above.</li>
   <li><strong>Any Amex-issued Priority Pass Select membership</strong> — Same coverage as the Platinum, minus Plaza Premium direct entry.</li>
 </ul>
 
@@ -208,7 +208,7 @@ const sleepPodsContent = `
 <p>You can rest with your eyes closed at most Canadian premium lounges — nobody will wake you unless you are snoring loudly or blocking multiple seats. But "actual bed" facilities are limited to five lounges: Cathay Pacific YVR (Solus Chair pods), Plaza Premium First YVR (private spa suites), Plaza Premium International YVR (day-bed sections + 24-hour operation), Plaza Premium YWG (nap corner), and Air Canada Signature Suite YYZ (private booth seating, invitation-only).</p>
 
 <h3>Which credit card gets me into an airport rest suite?</h3>
-<p>The American Express Platinum ($799 annual fee), Business Platinum ($799), and Scotiabank Platinum American Express ($399) all include Priority Pass, which grants entry to the Plaza Premium International (24-hour) lounge at YVR and Plaza Premium YWG. The Amex Platinum also allows direct entry via its own card benefit. None of these cards unlock the Cathay Pacific Lounge YVR or the Air Canada Signature Suite YYZ — those require specific ticket or airline status.</p>
+<p>The <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">American Express Platinum</a> ($799 annual fee), Business Platinum ($799), and <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum American Express</a> ($399) all include Priority Pass, which grants entry to the Plaza Premium International (24-hour) lounge at YVR and Plaza Premium YWG. The Amex Platinum also allows direct entry via its own card benefit. None of these cards unlock the Cathay Pacific Lounge YVR or the Air Canada Signature Suite YYZ — those require specific ticket or airline status.</p>
 
 <h3>Can I book an airport nap in Canada by the hour?</h3>
 <p>Not in the way Munich, Helsinki, or Singapore Changi offer through Napcabs or GoSleep pods. No Canadian airport has hourly per-pod bookings on either side of security. The closest alternative is an airport-hotel day-use rate (Fairmont YVR, Sheraton Gateway YYZ, ALT Hotel YUL) at roughly $89–$149 for a four- to six-hour daytime stay.</p>
@@ -220,7 +220,7 @@ const sleepPodsContent = `
 <p>No dedicated sleep pods at either. YUL's National Bank Lounge (currently in a temporary reduced-capacity space until about June 2028) and Aspire lounges have standard seating. YYC's WestJet Elevation Lounge and both Aspire lounges are seating-focused. The <a href="/lounges/quiet-workspace">quiet-workspace collection</a> covers focus areas rather than rest.</p>
 
 <h3>What's the cheapest Canadian credit card that gets me into a lounge with rest facilities?</h3>
-<p>The Scotiabank Platinum American Express at $399 annual fee. It includes 10 Priority Pass visits per year, which cover both Plaza Premium locations on this list (YVR International 24-hour and YWG). Below that tier, the Scotiabank Passport Visa Infinite ($150) uses DragonPass rather than Priority Pass — DragonPass typically accepts the same two Plaza Premium lounges but each visit uses one of only 6 annual pool entries. <a href="/credit-cards/best-for-airport-lounge-access">Full lounge-access card comparison</a>.</p>
+<p>The <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum American Express</a> at $399 annual fee. It includes 10 Priority Pass visits per year, which cover both Plaza Premium locations on this list (YVR International 24-hour and YWG). Below that tier, the <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Passport Visa Infinite</a> ($150) uses DragonPass rather than Priority Pass — DragonPass typically accepts the same two Plaza Premium lounges but each visit uses one of only 6 annual pool entries. <a href="/credit-cards/best-for-airport-lounge-access">Full lounge-access card comparison</a>.</p>
 
 <h2>Methodology</h2>
 <p>Lounge rest facilities were verified against operator descriptions (Plaza Premium, Cathay Pacific, Air Canada), AirportLounges.ca's own lounge-page data, and traveller reports on Milesopedia, Prince of Travel, and Frugal Flyer, cross-referenced with the amenities tags in our own Supabase directory. Where a specific facility ("Solus Chair", "spa suite", "nap corner") is named, it comes from an operator page or an on-file description; where it is characterized more loosely, the source is stated. This article intentionally does not list "sleep-pod" claims from third-party aggregators without operator confirmation, because most such claims describe standard Priority Pass lounges without actual rest facilities.</p>
@@ -244,7 +244,7 @@ const sleepPodsContent = `
 `
 
 const priorityPassContent = `
-<p data-speakable="intro"><strong>In Canada, Priority Pass comes only with American Express-branded cards. The Amex Platinum and Business Platinum ($799) include unlimited visits through December 31, 2026. The Scotiabank Platinum American Express ($399) includes 10 visits a year. Every Visa and Mastercard premium card uses DragonPass instead. The Amex Aeroplan Reserve includes the membership but charges every visit. From January 1, 2027, Amex Platinum access drops to 6 Priority Pass and 6 Plaza Premium visits a year. Guests use visits. Only $20,000 of annual spend restores unlimited access, and 2026 spend decides 2027. Priority Pass lists 23 lounges at 8 Canadian airports; Québec City is pending. Bought direct, membership costs US$99, US$329 or US$469 a year, with a US$35 guest fee.</strong></p>
+<p data-speakable="intro"><strong>In Canada, Priority Pass comes only with American Express-branded cards. The <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a> and Business Platinum ($799) include unlimited visits through December 31, 2026. The <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum American Express</a> ($399) includes 10 visits a year. Every Visa and Mastercard premium card uses DragonPass instead. The Amex Aeroplan Reserve includes the membership but charges every visit. From January 1, 2027, Amex Platinum access drops to 6 Priority Pass and 6 Plaza Premium visits a year. Guests use visits. Only $20,000 of annual spend restores unlimited access, and 2026 spend decides 2027. Priority Pass lists 23 lounges at 8 Canadian airports; Québec City is pending. Bought direct, membership costs US$99, US$329 or US$469 a year, with a US$35 guest fee.</strong></p>
 
 <h2>What changed in this update (September 11, 2026)</h2>
 
@@ -272,7 +272,7 @@ const priorityPassContent = `
 
 <h3>Scotiabank Platinum Amex: 10 visits without the $799 fee</h3>
 
-<p>The card almost nobody covers. The Scotiabank Platinum American Express costs $399. It includes Priority Pass with 10 visits a year for the primary cardholder and 4 for a supplementary cardholder, counted from the date of enrolment. A cardholder plus one guest counts as two visits. After that, the prevailing retail rate applies. It also charges no foreign transaction fee. If you want Priority Pass a few times a year without the Platinum's fee, it is the only middle option in Canada.</p>
+<p>The card almost nobody covers. <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">The Scotiabank Platinum American Express</a> costs $399. It includes Priority Pass with 10 visits a year for the primary cardholder and 4 for a supplementary cardholder, counted from the date of enrolment. A cardholder plus one guest counts as two visits. After that, the prevailing retail rate applies. It also charges no foreign transaction fee. If you want Priority Pass a few times a year without the Platinum's fee, it is the only middle option in Canada.</p>
 
 <h3>Full Canadian card comparison</h3>
 
@@ -281,15 +281,15 @@ const priorityPassContent = `
     <tr><th>Card</th><th>Annual fee</th><th>Lounge network</th><th>Included visits</th><th>Guests</th></tr>
   </thead>
   <tbody>
-    <tr><td>Amex Platinum</td><td>$799</td><td>Priority Pass Select + Plaza Premium + Centurion, Aspire, Delta</td><td>Unlimited through Dec 31, 2026; 6 + 6 from 2027*</td><td>1 included in 2026; uses a visit from 2027</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a></td><td>$799</td><td>Priority Pass Select + Plaza Premium + Centurion, Aspire, Delta</td><td>Unlimited through Dec 31, 2026; 6 + 6 from 2027*</td><td>1 included in 2026; uses a visit from 2027</td></tr>
     <tr><td>Business Platinum from Amex</td><td>$799</td><td>Same as Platinum</td><td>Same as Platinum</td><td>Same as Platinum</td></tr>
-    <tr><td>Scotiabank Platinum American Express</td><td>$399</td><td>Priority Pass</td><td>10 primary, 4 supplementary, per 12 months</td><td>A guest uses a visit</td></tr>
-    <tr><td>Amex Aeroplan Reserve</td><td>$599</td><td>Priority Pass (membership only) + Maple Leaf Lounge</td><td>0; every visit billed at the prevailing rate (about US$35)</td><td>Billed too</td></tr>
-    <tr><td>Scotiabank Passport Visa Infinite +</td><td>$150</td><td>DragonPass (Visa Airport Companion)</td><td>6, primary cardholder only</td><td>Uses a visit; US$32 after</td></tr>
-    <tr><td>CIBC Aeroplan Visa Infinite Privilege</td><td>$599</td><td>DragonPass (Visa Airport Companion)</td><td>6 per membership year</td><td>Uses a visit; US$32 after</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum American Express</a></td><td>$399</td><td>Priority Pass</td><td>10 primary, 4 supplementary, per 12 months</td><td>A guest uses a visit</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a></td><td>$599</td><td>Priority Pass (membership only) + Maple Leaf Lounge</td><td>0; every visit billed at the prevailing rate (about US$35)</td><td>Billed too</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Passport Visa Infinite +</a></td><td>$150</td><td>DragonPass (Visa Airport Companion)</td><td>6, primary cardholder only</td><td>Uses a visit; US$32 after</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">CIBC Aeroplan Visa Infinite Privilege</a></td><td>$599</td><td>DragonPass (Visa Airport Companion)</td><td>6 per membership year</td><td>Uses a visit; US$32 after</td></tr>
     <tr><td>CIBC Aventura Visa Infinite</td><td>$139</td><td>DragonPass (Visa Airport Companion)</td><td>4 per membership year</td><td>Uses a visit; US$32 after</td></tr>
     <tr><td>TD First Class Travel Visa Infinite</td><td>$139</td><td>DragonPass (Visa Airport Companion)</td><td>4 per year</td><td>Uses a visit</td></tr>
-    <tr><td>RBC Avion Visa Infinite Privilege</td><td>$399</td><td>DragonPass (Visa Airport Companion)</td><td>6 per year</td><td>Uses a visit</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/rbc-avion-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">RBC Avion Visa Infinite Privilege</a></td><td>$399</td><td>DragonPass (Visa Airport Companion)</td><td>6 per year</td><td>Uses a visit</td></tr>
     <tr><td>Rogers Red World Elite Mastercard</td><td>$0</td><td>DragonPass (Mastercard Travel Pass)</td><td>0; US$32 per person per visit</td><td>US$32 each</td></tr>
   </tbody>
 </table>
@@ -1250,7 +1250,7 @@ ${yvrDomesticClosureAddendum}
 `
 
 const guestFeesContent = `
-<p data-speakable="intro"><strong>Canada has no single guest-fee system. The same companion costs $0 at one lounge and $65 plus GST at the next. The price depends on your card as much as the lounge. The benchmarks: US$35 per guest at any Priority Pass lounge, US$32 per person once a DragonPass or Visa Airport Companion pool is used up, $59 for an extra guest at an Air Canada Maple Leaf Lounge, $59 to $65 plus GST at WestJet's Elevation Lounge, and $37 plus tax at the National Bank Lounge in Montréal. No Canadian card includes unlimited Priority Pass guests. The closest one, the Amex Platinum, is capped from January 1, 2027. The cheapest card with a guest built in is the National Bank World Elite Mastercard at $150, for international departures from Montréal.</strong></p>
+<p data-speakable="intro"><strong>Canada has no single guest-fee system. The same companion costs $0 at one lounge and $65 plus GST at the next. The price depends on your card as much as the lounge. The benchmarks: US$35 per guest at any Priority Pass lounge, US$32 per person once a DragonPass or Visa Airport Companion pool is used up, $59 for an extra guest at an Air Canada Maple Leaf Lounge, $59 to $65 plus GST at WestJet's Elevation Lounge, and $37 plus tax at the National Bank Lounge in Montréal. No Canadian card includes unlimited Priority Pass guests. The closest one, the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a>, is capped from January 1, 2027. The cheapest card with a guest built in is the National Bank World Elite Mastercard at $150, for international departures from Montréal.</strong></p>
 
 <h2>What changed in this update (September 11, 2026)</h2>
 
@@ -1310,7 +1310,7 @@ const guestFeesContent = `
   </tbody>
 </table>
 
-<p>That last column is the number that sends people looking for a credit card. A couple on Prestige pays past US$800 for ten trips. Card-issued Priority Pass Select memberships are different. The Amex Platinum's includes one complimentary guest through 2026. The Amex Aeroplan Reserve's includes none and bills the cardholder too. If you travel as a pair, start with the Canadian cards that include at least one complimentary lounge guest rather than a retail membership.</p>
+<p>That last column is the number that sends people looking for a credit card. A couple on Prestige pays past US$800 for ten trips. Card-issued Priority Pass Select memberships are different. The <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a>'s includes one complimentary guest through 2026. The <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a>'s includes none and bills the cardholder too. If you travel as a pair, start with the Canadian cards that include at least one complimentary lounge guest rather than a retail membership.</p>
 
 <h2>DragonPass and the Visa Airport Companion: the pool problem</h2>
 
@@ -1325,9 +1325,9 @@ const guestFeesContent = `
   <tbody>
     <tr><td>Scotiabank Passport Visa Infinite +</td><td>$150</td><td>6</td><td>Primary cardholder only</td><td>US$32 / person</td></tr>
     <tr><td>Scotiabank Passport Visa Infinite Privilege</td><td>$599</td><td>10</td><td>Each cardholder</td><td>US$32 / person</td></tr>
-    <tr><td>CIBC Aeroplan Visa Infinite Privilege</td><td>$599</td><td>6</td><td>Each enrolled cardholder</td><td>US$32 / person</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">CIBC Aeroplan Visa Infinite Privilege</a></td><td>$599</td><td>6</td><td>Each enrolled cardholder</td><td>US$32 / person</td></tr>
     <tr><td>CIBC Aventura Visa Infinite Privilege</td><td>$599</td><td>6</td><td>Cardholder</td><td>US$32 / person</td></tr>
-    <tr><td>TD Aeroplan Visa Infinite Privilege</td><td>$599</td><td>6</td><td>Cardholder</td><td>US$32 / person (program rate)</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/td-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">TD Aeroplan Visa Infinite Privilege</a></td><td>$599</td><td>6</td><td>Cardholder</td><td>US$32 / person (program rate)</td></tr>
     <tr><td>BMO Ascend World Elite Mastercard</td><td>$150</td><td>4</td><td>Primary, usable for companions</td><td>US$32 / person</td></tr>
   </tbody>
 </table>
@@ -1391,9 +1391,9 @@ const guestFeesContent = `
   <tbody>
     <tr><td>National Bank World Elite Mastercard</td><td>$150</td><td>National Bank Lounge YUL: 1 guest + 2 children ≤12</td><td>International departures only; income $80,000 / $150,000</td></tr>
     <tr><td>Desjardins Odyssey World Elite Mastercard</td><td>About $130</td><td>Odyssey Lounges YUL: 8 passes a year usable for companions</td><td>YUL only; each person over 3 uses a pass; delays cost a pass</td></tr>
-    <tr><td>TD Aeroplan Visa Infinite Privilege</td><td>$599</td><td>Maple Leaf Lounge: 1 guest per cardholder</td><td>Confirmed through Dec 31, 2026; income $150,000 / $200,000; 6 DragonPass visits shared with guests</td></tr>
-    <tr><td>CIBC Aeroplan Visa Infinite Privilege</td><td>$599</td><td>Maple Leaf Lounge and Air Canada Café: 1 guest per cardholder</td><td>Confirmed through Dec 31, 2026; 6 Visa Airport Companion visits shared with guests</td></tr>
-    <tr><td>Amex Aeroplan Reserve</td><td>$599</td><td>Maple Leaf Lounge only: 1 guest</td><td>Priority Pass is pay-per-visit for cardholder and guests</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/td-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">TD Aeroplan Visa Infinite Privilege</a></td><td>$599</td><td>Maple Leaf Lounge: 1 guest per cardholder</td><td>Confirmed through Dec 31, 2026; income $150,000 / $200,000; 6 DragonPass visits shared with guests</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">CIBC Aeroplan Visa Infinite Privilege</a></td><td>$599</td><td>Maple Leaf Lounge and Air Canada Café: 1 guest per cardholder</td><td>Confirmed through Dec 31, 2026; 6 Visa Airport Companion visits shared with guests</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a></td><td>$599</td><td>Maple Leaf Lounge only: 1 guest</td><td>Priority Pass is pay-per-visit for cardholder and guests</td></tr>
     <tr><td>Amex Platinum (Canada)</td><td>$799</td><td>Priority Pass and Plaza Premium: 1 guest; Centurion: 1 guest on the same flight</td><td>Capped at 6 + 6 visits from Jan 1, 2027 unless $20,000 annual spend; guests use visits</td></tr>
     <tr><td>Aeroplan 50K+ status (not a card)</td><td>n/a</td><td>Maple Leaf Lounge: partner, up to 5 children under 25, plus 1 guest</td><td>Extra guests $59</td></tr>
     <tr><td>WestJet RBC World Elite Mastercard</td><td>$119</td><td>Elevation Lounge via companion voucher exchanged for 2 lounge vouchers</td><td>Voucher exchange required; not a standing allowance</td></tr>
@@ -1465,7 +1465,7 @@ const guestFeesContent = `
 `
 
 const amexPlatinumContent = `
-<p data-speakable="intro"><strong>The Canadian Platinum Card from American Express costs $799 a year. It opens Plaza Premium, Priority Pass Select, Aspire, Centurion and Delta Sky Club lounges plus other partners. Through December 31, 2026 Plaza Premium and Priority Pass visits are unlimited, with one guest included. From January 1, 2027 those two networks are capped at 6 visits each per year (2 each on a supplementary card) unless you spend $20,000 in a calendar year. Amex is already counting 2026 spend. There are no Centurion Lounges in Canada, Delta Sky Club needs a same-day Delta flight, and the card does not open Maple Leaf Lounges. After the $200 travel and $200 dining credits, the net cost is about $399 — roughly 8 lounge entries a year at $50 each.</strong></p>
+<p data-speakable="intro"><strong>The <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Canadian Platinum Card from American Express</a> costs $799 a year. It opens Plaza Premium, Priority Pass Select, Aspire, Centurion and Delta Sky Club lounges plus other partners. Through December 31, 2026 Plaza Premium and Priority Pass visits are unlimited, with one guest included. From January 1, 2027 those two networks are capped at 6 visits each per year (2 each on a supplementary card) unless you spend $20,000 in a calendar year. Amex is already counting 2026 spend. There are no Centurion Lounges in Canada, Delta Sky Club needs a same-day Delta flight, and the card does not open Maple Leaf Lounges. After the $200 travel and $200 dining credits, the net cost is about $399 — roughly 8 lounge entries a year at $50 each.</strong></p>
 
 <p>You are not paying $799 for a card. You are paying for a quieter place to sit before a flight, and the fee is fair only if you use it. This guide answers the questions people actually search: which lounges the card opens in Canada, how many guests you can bring, what the January 2027 cap means, and how many visits it takes to come out ahead.</p>
 
@@ -1515,7 +1515,7 @@ const amexPlatinumContent = `
 
 <h3>Priority Pass Select lounges</h3>
 
-<p>Priority Pass is the largest independent lounge program in the world. The Platinum Card includes a Priority Pass Select membership, but you must enrol first — through Amex chat or by phone. Then use the Priority Pass app or digital card at the lounge. Some Priority Pass locations now also accept the Platinum Card itself, but do not count on it: enrol before your first trip. Priority Pass restaurant credits are not part of the Amex version of the membership.</p>
+<p>Priority Pass is the largest independent lounge program in the world. <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">The Platinum Card</a> includes a Priority Pass Select membership, but you must enrol first — through Amex chat or by phone. Then use the Priority Pass app or digital card at the lounge. Some Priority Pass locations now also accept the Platinum Card itself, but do not count on it: enrol before your first trip. Priority Pass restaurant credits are not part of the Amex version of the membership.</p>
 
 <h3>Centurion Lounges</h3>
 
@@ -1601,7 +1601,7 @@ const amexPlatinumContent = `
 
 <p>No, and this is the most common misunderstanding about the card. Air Canada's Maple Leaf Lounges are not in the Global Lounge Collection. The Platinum Card earns Membership Rewards points that convert to Aeroplan, but points are not lounge access.</p>
 
-<p>If Maple Leaf Lounge access is the goal, the cards that deliver it are the American Express Aeroplan Reserve Card ($599) and the TD Aeroplan Visa Infinite Privilege Card ($599) — both require a same-day Air Canada or Star Alliance flight. Many frequent flyers hold both: the Platinum for everything else, and an Aeroplan card for Maple Leaf Lounges.</p>
+<p>If Maple Leaf Lounge access is the goal, the cards that deliver it are the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">American Express Aeroplan Reserve Card</a> ($599) and the <a href="https://www.finlywealth.com/credit-cards/reviews/td-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">TD Aeroplan Visa Infinite Privilege Card</a> ($599) — both require a same-day Air Canada or Star Alliance flight. Many frequent flyers hold both: the Platinum for everything else, and an Aeroplan card for Maple Leaf Lounges.</p>
 
 <h2>Is Amex Platinum worth $799 for lounge access?</h2>
 
@@ -1638,14 +1638,14 @@ const amexPlatinumContent = `
     <tr><th>Card</th><th>Annual fee</th><th>Lounge access</th><th>Best for</th></tr>
   </thead>
   <tbody>
-    <tr><td>Amex Platinum</td><td>$799</td><td>Global Lounge Collection; unlimited Plaza / Priority Pass in 2026, 6 + 6 from 2027 (unlimited with $20,000 spend)</td><td>Frequent flyers on any airline who use the credits</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a></td><td>$799</td><td>Global Lounge Collection; unlimited Plaza / Priority Pass in 2026, 6 + 6 from 2027 (unlimited with $20,000 spend)</td><td>Frequent flyers on any airline who use the credits</td></tr>
     <tr><td>Amex Business Platinum</td><td>$799</td><td>Same lounge terms as the personal card</td><td>Owners who can put business spend toward the $20,000</td></tr>
-    <tr><td>Amex Aeroplan Reserve</td><td>$599</td><td>Maple Leaf Lounges on same-day Air Canada / Star Alliance flights</td><td>Air Canada loyalists</td></tr>
-    <tr><td>TD Aeroplan Visa Infinite Privilege</td><td>$599</td><td>Unlimited Maple Leaf Lounge on Air Canada flights + 6 DragonPass visits</td><td>Air Canada flyers who also fly other airlines</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a></td><td>$599</td><td>Maple Leaf Lounges on same-day Air Canada / Star Alliance flights</td><td>Air Canada loyalists</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/td-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">TD Aeroplan Visa Infinite Privilege</a></td><td>$599</td><td>Unlimited Maple Leaf Lounge on Air Canada flights + 6 DragonPass visits</td><td>Air Canada flyers who also fly other airlines</td></tr>
     <tr><td>BMO eclipse Visa Infinite Privilege</td><td>$599</td><td>6 DragonPass visits; $200 annual lifestyle credit</td><td>BMO clients who want a flat credit</td></tr>
     <tr><td>CIBC Aventura Visa Infinite Privilege</td><td>$499</td><td>6 DragonPass visits</td><td>Higher-income CIBC clients ($150k personal / $200k household)</td></tr>
-    <tr><td>RBC Avion Visa Infinite Privilege</td><td>$399</td><td>6 DragonPass visits</td><td>RBC clients who fly a few times a year</td></tr>
-    <tr><td>Scotiabank Passport Visa Infinite</td><td>$150 (first year sometimes waived)</td><td>6 DragonPass visits; no foreign transaction fee</td><td>Occasional travellers who want no FX fee</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/rbc-avion-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">RBC Avion Visa Infinite Privilege</a></td><td>$399</td><td>6 DragonPass visits</td><td>RBC clients who fly a few times a year</td></tr>
+    <tr><td><a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Passport Visa Infinite</a></td><td>$150 (first year sometimes waived)</td><td>6 DragonPass visits; no foreign transaction fee</td><td>Occasional travellers who want no FX fee</td></tr>
     <tr><td>National Bank World Elite Mastercard</td><td>$150</td><td>Unlimited National Bank Lounge at Montreal (international departures only) + DragonPass</td><td>Montreal-based international flyers</td></tr>
   </tbody>
 </table>
@@ -1673,7 +1673,7 @@ const amexPlatinumContent = `
 </ul>
 
 <h3>Verdict</h3>
-<p>The Amex Platinum is still the best lounge card in Canada for one type of person: someone who flies often on more than one airline and will use the $200 travel and $200 dining credits. In 2026 the access is unlimited and the math is easy. In 2027 the card stays worth it for two groups. The first spends $20,000 a year on the card. The second needs fewer than twelve Plaza Premium and Priority Pass visits and leans on Aspire, Centurion or Swissport lounges for the rest. If you fly Air Canada almost exclusively, or fly less than five times a year, a cheaper card does the job.</p>
+<p>The <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a> is still the best lounge card in Canada for one type of person: someone who flies often on more than one airline and will use the $200 travel and $200 dining credits. In 2026 the access is unlimited and the math is easy. In 2027 the card stays worth it for two groups. The first spends $20,000 a year on the card. The second needs fewer than twelve Plaza Premium and Priority Pass visits and leans on Aspire, Centurion or Swissport lounges for the rest. If you fly Air Canada almost exclusively, or fly less than five times a year, a cheaper card does the job.</p>
 
 <h2>How to check access before every trip</h2>
 
@@ -1702,7 +1702,7 @@ const amexPlatinumContent = `
 `
 
 const aeroplanCardsContent = `
-<p data-speakable="intro"><strong>For most eligible Canadians, the CIBC Aeroplan Visa Infinite Privilege is the strongest lounge card of the three. It pairs unlimited eligible Maple Leaf Lounge access with six Visa Airport Companion visits a year, and has the cheapest premium supplementary card at $149. TD Aeroplan Visa Infinite Privilege has nearly the same package and wins when its welcome offer or a TD banking rebate is better. Amex Aeroplan Reserve is the pick for heavy Air Canada spending (3 points per $1), for applicants below the Visa Infinite Privilege income floor, and for Toronto Pearson regulars — but its Priority Pass visits are paid, not included. All three cost $599 a year. One caution: TD and CIBC confirm the one-guest benefit only through December 31, 2026.</strong></p>
+<p data-speakable="intro"><strong>For most eligible Canadians, the <a href="https://www.finlywealth.com/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">CIBC Aeroplan Visa Infinite Privilege</a> is the strongest lounge card of the three. It pairs unlimited eligible Maple Leaf Lounge access with six Visa Airport Companion visits a year, and has the cheapest premium supplementary card at $149. <a href="https://www.finlywealth.com/credit-cards/reviews/td-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">TD Aeroplan Visa Infinite Privilege</a> has nearly the same package and wins when its welcome offer or a TD banking rebate is better. <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a> is the pick for heavy Air Canada spending (3 points per $1), for applicants below the Visa Infinite Privilege income floor, and for Toronto Pearson regulars — but its Priority Pass visits are paid, not included. All three cost $599 a year. One caution: TD and CIBC confirm the one-guest benefit only through December 31, 2026.</strong></p>
 
 <blockquote>
 <p><strong>Editorial disclosure:</strong> AirportLounges.ca may receive compensation if you apply through links on this page. This does not affect the card issuer's terms or the price you pay. Card details and offers can change; verify the current terms on the application page before applying. Facts on this page were checked against issuer and Air Canada pages on September 11, 2026.</p>
