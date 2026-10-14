@@ -134,11 +134,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const title = `${city} Airport Lounges (${code})`
   const desc  = `Find every premium lounge at ${name} (${code}). Access requirements, amenities, opening hours, and traveller reviews for all ${city} airport lounges.`
 
+  // Airport-hub FR translations we have shipped — add codes here as new FR
+  // hub pages go live. Keeps hreflang alternates honest (never points Google
+  // at a non-existent FR page).
+  const HAS_FR_HUB = new Set(['YUL'])
+
   return {
     title,
     description: desc,
     alternates: {
       canonical: `https://www.airportlounges.ca/airports/${code}`,
+      languages: HAS_FR_HUB.has(code)
+        ? {
+            'en-CA': `https://www.airportlounges.ca/airports/${code}`,
+            'fr-CA': `https://www.airportlounges.ca/fr/airports/${code}`,
+            'x-default': `https://www.airportlounges.ca/airports/${code}`,
+          }
+        : undefined,
     },
     openGraph: {
       title: `${code} Lounges — ${city} | AirportLounges.ca`,
@@ -257,9 +269,20 @@ export default async function AirportPage({ params }: Props) {
 
             {/* Left: name + description */}
             <div className="max-w-3xl">
-              <span className="inline-block font-label-caps text-label-caps text-primary-fixed mb-4 tracking-widest bg-primary-container/40 backdrop-blur-sm px-3 py-1">
-                {province.toUpperCase()}, CANADA
-              </span>
+              <div className="flex items-center gap-3 mb-4 flex-wrap">
+                <span className="inline-block font-label-caps text-label-caps text-primary-fixed tracking-widest bg-primary-container/40 backdrop-blur-sm px-3 py-1">
+                  {province.toUpperCase()}, CANADA
+                </span>
+                {code === 'YUL' && (
+                  <Link
+                    href={`/fr/airports/${code}`}
+                    hrefLang="fr-CA"
+                    className="font-label-caps text-[10px] uppercase tracking-widest text-primary-fixed hover:opacity-80 transition-opacity underline underline-offset-4"
+                  >
+                    Lire en français
+                  </Link>
+                )}
+              </div>
               <h1 className="font-display-lg md:text-display-lg text-display-lg-mobile text-bone-white mb-4 leading-none">
                 {airport.name}
               </h1>
