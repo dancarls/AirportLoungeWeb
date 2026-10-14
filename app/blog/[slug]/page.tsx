@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getPost, getAllPosts } from '@/lib/blog'
+import { SLUGS_WITH_FR } from '@/lib/blog-fr'
 import FlightStatusWidget from '@/components/FlightStatusWidget'
 import WeatherWidget from '@/components/WeatherWidget'
 import NewsletterCTA from '@/components/NewsletterCTA'
@@ -46,11 +47,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const post = getPost(slug)
   if (!post) return {}
+  const hasFr = SLUGS_WITH_FR.has(slug)
   return {
     title: post.metaTitle,
     description: post.metaDescription,
     alternates: {
       canonical: `https://www.airportlounges.ca/blog/${post.slug}`,
+      // Hreflang alternates — only emitted when a French translation exists,
+      // so Google doesn't advertise non-existent pages.
+      languages: hasFr
+        ? {
+            'en-CA': `https://www.airportlounges.ca/blog/${post.slug}`,
+            'fr-CA': `https://www.airportlounges.ca/fr/blog/${post.slug}`,
+            'x-default': `https://www.airportlounges.ca/blog/${post.slug}`,
+          }
+        : undefined,
     },
     openGraph: {
       title: post.metaTitle,
@@ -67,6 +78,8 @@ export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
   const post = getPost(slug)
   if (!post) notFound()
+
+  const hasFr = SLUGS_WITH_FR.has(slug)
 
   const weather = await getWeather(49.1947, -123.1792)
 
@@ -186,7 +199,7 @@ export default async function BlogPostPage({ params }: Props) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-aviation-navy/80 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 max-w-container-max mx-auto px-gutter pb-10">
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-3 mb-4 flex-wrap">
             <Link
               href="/blog"
               className="font-label-caps text-[9px] uppercase tracking-widest text-primary-fixed hover:opacity-80 transition-opacity"
@@ -197,6 +210,18 @@ export default async function BlogPostPage({ params }: Props) {
             <span className="font-label-caps text-[9px] uppercase tracking-widest text-primary-fixed bg-primary/60 px-2 py-1">
               {post.category}
             </span>
+            {hasFr && (
+              <>
+                <span className="text-bone-white/30">·</span>
+                <Link
+                  href={`/fr/blog/${post.slug}`}
+                  hrefLang="fr-CA"
+                  className="font-label-caps text-[9px] uppercase tracking-widest text-primary-fixed hover:opacity-80 transition-opacity underline underline-offset-4"
+                >
+                  Lire en français
+                </Link>
+              </>
+            )}
           </div>
           <h1 className="font-headline-lg text-headline-lg text-white max-w-3xl leading-tight">
             {post.title}

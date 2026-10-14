@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import { getAllPosts } from '@/lib/blog'
+import { getAllPostsFr } from '@/lib/blog-fr'
 import { allCollectionSlugs } from '@/lib/collections'
 
 const BASE = 'https://www.airportlounges.ca'
@@ -35,6 +36,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: post.publishedAt ? new Date(post.publishedAt).toISOString() : NOW,
   }))
 
+  // French-locale blog posts (`/fr/blog/...`) + the French index page.
+  const blogPagesFr: MetadataRoute.Sitemap = [
+    { url: `${BASE}/fr/blog`, priority: 0.7, changeFrequency: 'weekly' as const, lastModified: NOW },
+    ...getAllPostsFr().map(post => ({
+      url: `${BASE}/fr/blog/${post.slug}`,
+      priority: 0.85,
+      changeFrequency: 'monthly' as const,
+      lastModified: post.publishedAt ? new Date(post.publishedAt).toISOString() : NOW,
+    })),
+  ]
+
   // Collection landing pages — one per curated lounge collection
   const collectionPages: MetadataRoute.Sitemap = allCollectionSlugs().map(slug => ({
     url: `${BASE}/lounges/${slug}`,
@@ -43,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: NOW,
   }))
 
-  if (!url || !key) return [...staticPages, ...blogPages, ...collectionPages]
+  if (!url || !key) return [...staticPages, ...blogPages, ...blogPagesFr, ...collectionPages]
 
   const supabase = createClient(url, key)
 
@@ -80,5 +92,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
     .filter(Boolean) as MetadataRoute.Sitemap
 
-  return [...staticPages, ...blogPages, ...collectionPages, ...airportPages, ...loungePages]
+  return [...staticPages, ...blogPages, ...blogPagesFr, ...collectionPages, ...airportPages, ...loungePages]
 }

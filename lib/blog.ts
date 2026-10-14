@@ -1920,6 +1920,209 @@ const aeroplanCardsContent = `
 <p><em>All fees, offers, benefits and insurance limits in this guide reflect information current as of September 11, 2026. Rules and offers change without notice — always confirm the current terms with the issuer before applying. Next scheduled review: December 2026, when the TD and CIBC guest terms expire.</em></p>
 `
 
+const airFranceYulContent = `
+<p data-speakable="intro"><strong>The Air France – KLM Lounge by Plaza Premium at Montréal-Trudeau (YUL) sits between Gates 55 and 57 in the international zone. It is reserved exclusively for Air France and KLM Business Class and SkyTeam Elite Plus customers every day from 3:30 p.m. to 6:30 p.m. — the daily transatlantic bank. Outside that window the lounge accepts Priority Pass and DragonPass. There is no walk-in day pass and no credit-card direct entry; it is a Priority Pass lounge in the mornings and an airline lounge in the late afternoon. If you need YUL international lounge access during that 3-hour closed window, the Aspire International Lounge between Gates 52 and 53 is the direct substitute.</strong></p>
+
+<blockquote>
+<p><strong>Editorial disclosure:</strong> AirportLounges.ca may receive compensation if you apply for a card through links on this page. Facts verified October 13, 2026 against Plaza Premium's YUL page, SkyTeam's Elite Plus lounge directory, and Priority Pass's Canadian listing.</p>
+</blockquote>
+
+<h2>Who gets in — and when</h2>
+
+<table>
+  <thead>
+    <tr><th>Access route</th><th>All day</th><th>3:30 p.m. – 6:30 p.m. transatlantic bank</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Air France / KLM Business Class</strong> same-day ticket</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td><strong>SkyTeam Elite Plus</strong> on an Air France, KLM or SkyTeam-operated flight</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td><strong>Flying Blue Platinum</strong></td><td>Yes</td><td>Yes</td></tr>
+    <tr><td><strong>Priority Pass</strong> (via <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a>, Business Platinum, <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum Amex</a>, or standalone PP membership)</td><td>Yes</td><td>No — reserved for AF/KL customers only</td></tr>
+    <tr><td><strong>DragonPass</strong> (Visa Airport Companion, Mastercard Travel Pass)</td><td>Yes</td><td>No</td></tr>
+    <tr><td><strong>Walk-in day pass</strong></td><td>Not sold</td><td>Not sold</td></tr>
+    <tr><td><strong>Credit card direct entry</strong></td><td>Not available</td><td>Not available</td></tr>
+  </tbody>
+</table>
+
+<p>This is a less-common access pattern in Canada — most Canadian lounges either take Priority Pass or they do not. The AF-KLM lounge switches eligibility by time of day because the operator (Plaza Premium) and Air France Group have a contract that reserves the physical space during the daily European departure bank. Outside those three hours, the lounge monetises on Priority Pass volume.</p>
+
+<h2>Location and hours</h2>
+
+<ul>
+  <li><strong>Where:</strong> Level 3 International Departures, between Gates 55 and 57 at YUL. Follow signs past the Aspire International Lounge; it is a short walk further down the pier.</li>
+  <li><strong>Daily hours:</strong> approximately 05:30 to 22:00. Priority Pass members are admitted up to 3 hours before their flight.</li>
+  <li><strong>Closed to Priority Pass:</strong> 3:30 p.m. to 6:30 p.m. every day.</li>
+  <li><strong>Operator:</strong> Plaza Premium Group under an Air France contract.</li>
+  <li><strong>Stay limit:</strong> 3 hours on Priority Pass; no cap for Business Class or Elite Plus customers.</li>
+</ul>
+
+<h2>What's inside</h2>
+
+<ul>
+  <li>Hot buffet including French- and Québécois-leaning dishes; cheese and charcuterie selection; soups and salads.</li>
+  <li>Barista coffee station; full bar including French wine and champagne by the glass; Quebec craft beers.</li>
+  <li>Shower suites (first-come first-served; towels and amenity kit provided).</li>
+  <li>Business workstation with printers; private phone-booth cabins.</li>
+  <li>Floor-to-ceiling windows with tarmac views over Pier 55; dim-lit quiet corner.</li>
+</ul>
+
+<p>The AF-KLM lounge is the strongest-reviewed international-side lounge at YUL for food. Travellers often rate it ahead of the Aspire International Lounge for the Business Class service during the daily European departure window.</p>
+
+<h2>What to do when the lounge is closed to Priority Pass</h2>
+
+<p>Between 3:30 p.m. and 6:30 p.m. the AF-KLM lounge is reserved for Air France and KLM customers only. If you have Priority Pass and your YUL departure falls in that window, these are the alternatives in the same international zone:</p>
+
+<ul>
+  <li><strong>Aspire International Lounge</strong> (Gates 52–53) — same Priority Pass acceptance, same 3-hour stay window, next door. The direct Priority Pass substitute. Also accepts DragonPass, DreamFolks, and Amex Platinum direct entry. Verified 06:00–22:00 daily.</li>
+  <li><strong>National Bank Lounge</strong> (temporary space near Gate 53, Oct 2026 – June 2028) — Priority Pass acceptance at the temporary lounge is unconfirmed as of October 13, 2026. Verify in the Priority Pass app before you walk over.</li>
+  <li><strong>Air Canada Maple Leaf Lounge</strong> near Gate 53 — not Priority Pass eligible. Requires Air Canada Business ticket, Aeroplan 50K+, Star Alliance Gold, Maple Leaf Club, or one of the <a href="https://www.finlywealth.com/credit-cards/reviews/td-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">TD</a>, <a href="https://www.finlywealth.com/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">CIBC</a> or <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a> cards.</li>
+</ul>
+
+<h2>Pre-flight checklist for Priority Pass members</h2>
+
+<ol>
+  <li>Confirm your Air France or KLM flight time. If it departs before 3:30 p.m. or after 6:30 p.m. you can use the AF-KLM lounge on Priority Pass without issue.</li>
+  <li>If your flight is in the closed window and you only have Priority Pass, head directly to the Aspire International Lounge (Gates 52–53) — same facilities, no AF restriction.</li>
+  <li>Open the Priority Pass app at the door to confirm current acceptance. The AF-KLM lounge is on the Canadian directory but acceptance windows have been edited twice in 2026.</li>
+  <li>Allow 3 hours before departure as the earliest entry — most lounges in Canada apply this limit and the AF-KLM lounge enforces it.</li>
+  <li>Shower? Arrive within the first 45 minutes of your lounge visit — shower suites are first-come first-served and the AF-KLM lounge sees heavy transatlantic shower traffic in the morning window.</li>
+</ol>
+
+<h2>Which card gets you in</h2>
+
+<p>Priority Pass is Amex-only in Canada — three cards include visits that open the AF-KLM lounge outside the 3:30–6:30 window.</p>
+
+<ul>
+  <li><strong><a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">American Express Platinum</a> ($799)</strong> — Priority Pass Select with one guest, unlimited through December 31, 2026, capped from January 1, 2027. Also includes direct Plaza Premium entry at other Canadian airports (not relevant at YUL since the Aspire + AF-KLM are not Plaza Premium – direct).</li>
+  <li><strong><a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Business Platinum</a> ($799)</strong> — same Priority Pass terms as the personal Platinum.</li>
+  <li><strong><a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum American Express</a> ($399)</strong> — Priority Pass with 10 visits per year for the primary cardholder, 4 for a supplementary. No foreign transaction fee.</li>
+</ul>
+
+<p>Standalone Priority Pass memberships also work: Standard (US$99 + US$35 per visit), Standard Plus (US$329 + 10 visits), Prestige (US$469 + unlimited). For a Montreal-based international flyer who only wants Priority Pass for this one lounge, Prestige at US$469 is cheaper than the Amex Platinum net cost of about $399 — but you also lose the credits and the direct Plaza Premium entry at other airports.</p>
+
+<p>Full card comparison in our <a href="/blog/best-credit-card-montreal-yul-airport-lounge-access">Best Credit Card for Montreal (YUL) Airport Lounge Access guide</a>.</p>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Does Priority Pass work at the Air France lounge at Montreal (YUL)?</h3>
+<p>Yes — outside the daily 3:30 p.m. to 6:30 p.m. transatlantic bank, when the lounge is reserved for Air France and KLM Business Class and SkyTeam Elite Plus customers only. From roughly 05:30 to 15:30 and from 18:30 to 22:00, Priority Pass is accepted with the standard 3-hour pre-departure window and 3-hour stay limit.</p>
+
+<h3>What are the Air France lounge hours at YUL?</h3>
+<p>Approximately 05:30 to 22:00 daily. Entry is limited to 3 hours before departure for all guests. Priority Pass members are not admitted between 3:30 p.m. and 6:30 p.m. — that window is reserved for Air France and KLM Business Class and SkyTeam Elite Plus customers.</p>
+
+<h3>Where is the Air France lounge at YUL located?</h3>
+<p>Level 3 International Departures, between Gates 55 and 57. From security clearance follow signs toward Pier 55; the lounge is past the Aspire International Lounge (which sits at Gates 52–53).</p>
+
+<h3>Does the Air France lounge at YUL have showers?</h3>
+<p>Yes — shower suites are first-come first-served. Towels and an amenity kit are provided. The lounge sees heavy shower traffic from arriving transatlantic Business Class customers in the morning; mid-afternoon and evening are quieter.</p>
+
+<h3>Can I buy a walk-in day pass to the AF-KLM lounge at Montreal?</h3>
+<p>No. There is no walk-in day pass sold at the door or online. Access requires one of: an Air France or KLM Business Class same-day ticket, SkyTeam Elite Plus status on a SkyTeam-operated flight, Flying Blue Platinum, a Priority Pass or DragonPass membership (outside the 3:30–6:30 p.m. window), or an eligible credit card that includes Priority Pass or DragonPass.</p>
+
+<h3>What's the best alternative when the AF-KLM lounge is closed to Priority Pass?</h3>
+<p>The Aspire International Lounge between Gates 52 and 53 is the direct substitute — same Priority Pass acceptance, same stay limit, next door. Also accepts DragonPass, DreamFolks, Amex Platinum direct entry, and walk-in day passes.</p>
+
+<h2>Sources</h2>
+<ul>
+  <li>Plaza Premium Group — Air France-KLM Lounge Montréal operator page.</li>
+  <li>Priority Pass — Canadian directory listing for the Air France-KLM Lounge at YUL.</li>
+  <li>Air France — SkyTeam Elite Plus and Business Class lounge access policy.</li>
+  <li>AirportLounges.ca — <a href="/airports/YUL/lounges/air-france-klm-lounge-yul">Air France-KLM Lounge YUL</a> detail page.</li>
+  <li>Related: <a href="/blog/best-credit-card-montreal-yul-airport-lounge-access">Best Credit Card for Montreal (YUL) Airport Lounge Access</a>, <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a>.</li>
+</ul>
+
+<p><em>All facts on this page reflect information current as of October 13, 2026. Access rules change without notice — always confirm with Air France and the lounge operator before travelling.</em></p>
+`
+
+const priorityPassYulContent = `
+<p data-speakable="intro"><strong>Priority Pass accepts five Canadian lounges at Montréal-Trudeau (YUL) across all three terminal zones. Domestic: Aspire American Express Lounge (Gates 1–2, opened July 2025). International: Aspire International Lounge (Gates 52–53), Air France – KLM Lounge by Plaza Premium (outside 3:30–6:30 p.m.), and National Bank Lounge (temporary space, acceptance unconfirmed as of October 13, 2026). US Transborder: Desjardins Odyssey Lounge by Plaza Premium (Gate 81). Three Canadian credit cards include Priority Pass — the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a>, Business Platinum, and <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum Amex</a>. The Aspire American Express Lounge is on the Priority Pass pre-book list — reserve a seat ahead of your flight.</strong></p>
+
+<h2>Every Priority Pass lounge at YUL</h2>
+
+<table>
+  <thead>
+    <tr><th>Lounge</th><th>Zone</th><th>Hours</th><th>Priority Pass stay</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><a href="/airports/YUL/lounges/aspire-amex-lounge-yul">Aspire American Express Lounge</a></td><td>Domestic (Gates 1–2)</td><td>05:00 – 21:00</td><td>3 hours</td><td>Opened July 2025. Pre-book eligible via the Priority Pass app.</td></tr>
+    <tr><td><a href="/airports/YUL/lounges/aspire-international-lounge-yul">Aspire International Lounge</a></td><td>International (Gates 52–53)</td><td>06:00 – 22:00</td><td>3 hours</td><td>Also accepts DragonPass, DreamFolks, Amex Platinum direct entry.</td></tr>
+    <tr><td><a href="/airports/YUL/lounges/air-france-klm-lounge-yul">Air France – KLM Lounge</a></td><td>International (Gates 55–57)</td><td>05:30 – 22:00</td><td>3 hours</td><td><strong>Closed to Priority Pass 3:30 p.m. – 6:30 p.m. daily</strong> (reserved for AF/KL Business + Elite Plus). See our <a href="/blog/air-france-klm-lounge-montreal-yul-access">dedicated AF-KLM guide</a>.</td></tr>
+    <tr><td><a href="/airports/YUL/lounges/national-bank-lounge-yul">National Bank Lounge</a></td><td>International (near Gate 53, temporary space)</td><td>Reduced capacity</td><td>2 hours (3 for NB Private Banking)</td><td>Original lounge closed Oct 4 2026, reopens June 2028. <strong>Priority Pass acceptance at the temporary lounge is unconfirmed as of Oct 13 2026</strong> — verify in the app.</td></tr>
+    <tr><td><a href="/airports/YUL/lounges/desjardins-odyssey-lounge-transborder-yul">Desjardins Odyssey Lounge</a></td><td>US Transborder (above Gate 81)</td><td>04:30 – 20:30</td><td>2 hours</td><td>After US preclearance — cannot return. Also accepts DragonPass, Amex Platinum direct, and the Desjardins Odyssey Visa Infinite.</td></tr>
+  </tbody>
+</table>
+
+<p>Five lounges, three zones. For a Montreal-based traveller with Priority Pass, this is actually one of the richest Canadian airports — most other Canadian hubs offer only 2–3 Priority Pass options.</p>
+
+<h2>Which Canadian cards include Priority Pass</h2>
+
+<p>Priority Pass is Amex-only in Canada. Three cards include visits:</p>
+
+<ul>
+  <li><strong><a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">American Express Platinum</a> ($799)</strong> — Priority Pass Select with one guest included, unlimited through December 31, 2026, capped at 6 visits per year from January 1, 2027 unless $20,000 spent on the account.</li>
+  <li><strong>Business Platinum from Amex ($799)</strong> — same Priority Pass terms as the personal Platinum.</li>
+  <li><strong><a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum American Express</a> ($399)</strong> — 10 Priority Pass visits per year for the primary cardholder, 4 for a supplementary. No foreign transaction fee.</li>
+</ul>
+
+<p>Every Visa and Mastercard premium card in Canada — including the Scotiabank Passport VI, TD Aeroplan Visa Infinite Privilege, CIBC Aeroplan Visa Infinite Privilege, RBC Avion Visa Infinite Privilege — uses DragonPass (Visa Airport Companion or Mastercard Travel Pass) instead. DragonPass is accepted at the same five YUL lounges as Priority Pass (with the same AF-KLM window exclusion), but with 4 to 6 pool visits a year rather than 10 or unlimited.</p>
+
+<p>The <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a> ($599) includes a Priority Pass membership with the fee waived — but every visit is billed at the prevailing rate (about US$35) for the cardholder and any guests. Treat it as pay-per-visit access, not "free Priority Pass."</p>
+
+<h2>Pre-booking a Priority Pass seat at YUL</h2>
+
+<p>Priority Pass's pre-book feature lets you reserve a seat at specific lounges for a small fee. At YUL, as of October 13, 2026, pre-booking is available at:</p>
+
+<ul>
+  <li>Aspire American Express Lounge (Gates 1–2, Domestic)</li>
+  <li>National Bank Lounge (temporary space — availability varies while renovation runs)</li>
+</ul>
+
+<p>The pre-book list changes — check the Priority Pass app or priority-pass pre-book page for current coverage. A reserved seat is one a full lounge cannot refuse, which matters most during busy evening international banks (6:00 p.m. – 9:00 p.m.) and the morning domestic rush (05:30 – 08:00).</p>
+
+<h2>Which YUL Priority Pass lounge should you pick?</h2>
+
+<table>
+  <thead>
+    <tr><th>Flight type</th><th>Best lounge</th><th>Why</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Morning domestic (05:00–11:00)</td><td>Aspire American Express Lounge, Gates 1–2</td><td>Only Priority Pass option in the domestic zone. Opens at 05:00.</td></tr>
+    <tr><td>Early-afternoon international (before 15:30)</td><td>Air France – KLM Lounge, Gates 55–57</td><td>Best food of the YUL international lounges. Priority Pass fully accepted outside the 15:30–18:30 window.</td></tr>
+    <tr><td>Evening international (after 18:30)</td><td>Aspire International Lounge, Gates 52–53, or AF-KLM</td><td>Aspire is a safe default; AF-KLM reopens to Priority Pass after 18:30 and runs until 22:00.</td></tr>
+    <tr><td>International, 15:30–18:30 departure</td><td>Aspire International Lounge, Gates 52–53</td><td>AF-KLM is closed to Priority Pass. Aspire is the direct substitute.</td></tr>
+    <tr><td>US-bound after preclearance</td><td>Desjardins Odyssey, above Gate 81</td><td>Only Priority Pass lounge airside after US customs. Cannot return to pre-clearance side once you leave.</td></tr>
+    <tr><td>Flying as a couple on a capped card (2027)</td><td>Aspire International or Domestic</td><td>Aspire visits are NOT capped under the 2027 Amex Platinum changes — Plaza Premium and Priority Pass visits are. See our <a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum guide</a>.</td></tr>
+  </tbody>
+</table>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>How many Priority Pass lounges are at Montreal YUL?</h3>
+<p>Five, across all three zones: Aspire American Express (domestic), Aspire International, Air France – KLM Lounge (international, with a 3:30–6:30 p.m. closure to Priority Pass daily), National Bank Lounge (temporary space — PP acceptance unconfirmed as of Oct 13 2026), and Desjardins Odyssey (US transborder). Verify current acceptance in the Priority Pass app before you walk to any specific lounge.</p>
+
+<h3>Which Canadian credit card is best for Priority Pass at YUL?</h3>
+<p>The <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a> ($799) is the strongest if you fly frequently — unlimited Priority Pass through December 31 2026 (capped at 6 visits from Jan 1 2027 unless $20K spent). The <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum Amex</a> ($399) with 10 visits per year is the strongest mid-tier option. For Montreal-specific travellers who fly only a few trips, the National Bank World Elite Mastercard at $150 (unlimited National Bank Lounge access) is a better value than any Priority Pass card.</p>
+
+<h3>Can I pre-book a Priority Pass seat at YUL?</h3>
+<p>Yes — at the Aspire American Express Lounge (Gates 1–2, Domestic) and the National Bank Lounge (temporary space). Pre-booking carries a small fee but guarantees a seat that a full lounge cannot refuse. Not available at the Aspire International, AF-KLM, or Desjardins Odyssey as of October 13, 2026.</p>
+
+<h3>Does Priority Pass work at the Air France lounge at Montreal?</h3>
+<p>Yes, outside the daily 3:30 p.m. – 6:30 p.m. window. Full detail in our <a href="/blog/air-france-klm-lounge-montreal-yul-access">Air France – KLM Lounge Montreal YUL access guide</a>.</p>
+
+<h3>Does Priority Pass work at the National Bank Lounge at YUL right now?</h3>
+<p>Acceptance at the temporary National Bank Lounge (operating since Oct 5 2026) is unconfirmed in operator notices as of Oct 13 2026. Verify in the Priority Pass app before you walk over. The Aspire International Lounge next door is a confirmed alternative.</p>
+
+<h2>Sources</h2>
+<ul>
+  <li>Priority Pass — Canadian airport directory, YUL listings.</li>
+  <li>Plaza Premium Group, Aspire Lounges, National Bank of Canada — operator pages.</li>
+  <li>Milesopedia — October 2026 reporting on the National Bank Lounge renovation.</li>
+  <li>AirportLounges.ca — <a href="/airports/YUL">Montreal YUL airport directory</a>, <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a>, <a href="/blog/best-credit-card-montreal-yul-airport-lounge-access">Best Credit Card for Montreal (YUL) Airport Lounge Access</a>.</li>
+</ul>
+
+<p><em>All facts current as of October 13, 2026. Priority Pass acceptance and lounge hours change without notice — always confirm in the app before travelling.</em></p>
+`
+
 const yulLoungeAccessContent = `
 <p data-speakable="intro"><strong>Six lounges operate at Montréal-Trudeau (YUL) and each one has its own card and status rules. For a Montreal-based traveller who flies two or three times a year, the <a href="https://www.finlywealth.com/credit-cards/reviews/national-bank-world-elite-mastercard" target="_blank" rel="sponsored nofollow noopener">National Bank World Elite Mastercard</a> ($150) is the best-value lounge card in Canada — unlimited access to the National Bank Lounge for the cardholder plus one guest and two children. For international flyers who want options at every Canadian airport the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a> ($799) remains the strongest card — Priority Pass plus direct Plaza Premium plus Aspire access. For Air Canada regulars the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a> ($599) is the only Canadian card that stacks Maple Leaf Lounge with Priority Pass. One operational note: the National Bank Lounge moved to a reduced-capacity temporary space near Gate 53 on October 5, 2026 and stays there until the full renovation reopens in June 2028, with a 2-hour stay limit.</strong></p>
 
@@ -2281,6 +2484,88 @@ const yvrDomesticClosureContent = `
 `
 
 export const blogPosts: BlogPost[] = [
+  {
+    slug: 'air-france-klm-lounge-montreal-yul-access',
+    title: 'Air France – KLM Lounge Montréal (YUL) Access — Priority Pass Hours, Eligibility & What\'s Inside (2026)',
+    excerpt: 'The AF-KLM Lounge at YUL takes Priority Pass outside the daily 3:30–6:30 p.m. transatlantic bank. Who gets in all day vs. who gets locked out, hours, showers, food, and the Aspire International fallback. Verified October 13, 2026.',
+    coverImage: '/blog/yul-montreal-lounge-hero.png',
+    publishedAt: '2026-10-13',
+    lastReviewed: '2026-10-13',
+    category: 'Airport Guides',
+    readingTime: '6 min read',
+    metaTitle: 'Air France Lounge Montreal YUL — Priority Pass Hours & Access (2026)',
+    metaDescription: 'The Air France – KLM Lounge at Montréal-Trudeau (YUL) takes Priority Pass outside the daily 3:30–6:30 p.m. transatlantic bank. Hours, access rules, food, showers, and alternative Priority Pass lounges when the AF-KLM lounge is closed. Verified October 2026.',
+    content: airFranceYulContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: 'YUL lounge access rules verified against Plaza Premium, Priority Pass, and Air France operator pages. Updated continuously as access windows and operator contracts change.',
+    primaryCta: {
+      heading: 'The cards that get Priority Pass at Montreal',
+      subheading: 'Amex Platinum, Business Platinum and Scotiabank Platinum Amex are the three Canadian cards that include Priority Pass visits.',
+      ctaLabel: 'Compare Priority Pass Cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
+    faqs: [
+      {
+        question: 'Does Priority Pass work at the Air France lounge at Montreal (YUL)?',
+        answer: 'Yes, outside the daily 3:30 p.m. – 6:30 p.m. window, which is reserved for Air France and KLM Business Class and SkyTeam Elite Plus customers only. Priority Pass is accepted from approximately 05:30 to 15:30 and from 18:30 to 22:00.',
+      },
+      {
+        question: 'What are the Air France lounge hours at YUL?',
+        answer: 'Approximately 05:30 to 22:00 daily. Entry is limited to 3 hours before departure. Priority Pass members are not admitted between 3:30 p.m. and 6:30 p.m. — that window is reserved for AF/KL Business and SkyTeam Elite Plus.',
+      },
+      {
+        question: 'Where is the Air France lounge at YUL located?',
+        answer: 'Level 3 International Departures, between Gates 55 and 57. Past the Aspire International Lounge (Gates 52–53), further down Pier 55.',
+      },
+      {
+        question: 'Can I buy a walk-in day pass to the AF-KLM lounge at Montreal?',
+        answer: 'No. There is no walk-in day pass. Access requires an Air France or KLM Business Class same-day ticket, SkyTeam Elite Plus status on a SkyTeam-operated flight, Flying Blue Platinum, a Priority Pass or DragonPass membership (outside the 3:30–6:30 p.m. window), or an eligible credit card that includes Priority Pass or DragonPass.',
+      },
+      {
+        question: 'What is the best alternative when the AF-KLM lounge is closed to Priority Pass?',
+        answer: 'The Aspire International Lounge between Gates 52 and 53 — same Priority Pass acceptance, same 3-hour stay window, next door. Also accepts DragonPass, DreamFolks, Amex Platinum direct entry, and walk-in day passes.',
+      },
+    ],
+  },
+  {
+    slug: 'priority-pass-lounges-montreal-yul',
+    title: 'Priority Pass Lounges at Montréal-Trudeau (YUL) — Every Eligible Lounge and Card (2026)',
+    excerpt: 'Five Priority Pass lounges across all three YUL terminal zones. The three Canadian cards that include Priority Pass, pre-booking availability, and which lounge to use for which flight. Verified October 13, 2026.',
+    coverImage: '/blog/priority-pass-canada-hero.png',
+    publishedAt: '2026-10-13',
+    lastReviewed: '2026-10-13',
+    category: 'Airport Guides',
+    readingTime: '7 min read',
+    metaTitle: 'Priority Pass Lounges Montreal YUL — Every Eligible Lounge (2026)',
+    metaDescription: 'Priority Pass accepts five lounges at Montreal-Trudeau (YUL) across domestic, international, and US transborder zones. Hours, zones, pre-booking, and the Canadian credit cards that include Priority Pass visits. Verified October 2026.',
+    content: priorityPassYulContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: 'Priority Pass acceptance verified against the operator directory and each lounge\'s operator page. Updated continuously as acceptance windows and card terms change.',
+    primaryCta: {
+      heading: 'The three Canadian cards that include Priority Pass',
+      subheading: 'Amex Platinum ($799, unlimited through 2026), Business Platinum ($799, same), Scotiabank Platinum Amex ($399, 10 visits/year). Compare current terms side by side.',
+      ctaLabel: 'Compare Priority Pass Cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
+    faqs: [
+      {
+        question: 'How many Priority Pass lounges are at Montreal YUL?',
+        answer: 'Five, across all three zones: Aspire American Express (domestic), Aspire International, Air France – KLM Lounge (international, with a 3:30–6:30 p.m. closure to Priority Pass daily), National Bank Lounge (temporary space — PP acceptance unconfirmed as of Oct 13 2026), and Desjardins Odyssey (US transborder).',
+      },
+      {
+        question: 'Which Canadian credit card is best for Priority Pass at YUL?',
+        answer: 'The Amex Platinum ($799) if you fly frequently — unlimited Priority Pass through December 31 2026, capped at 6 from January 1 2027 unless $20K spent. The Scotiabank Platinum Amex ($399) with 10 visits/year is the mid-tier option. For Montreal-specific travellers who fly only a few trips a year, the National Bank World Elite Mastercard at $150 (unlimited National Bank Lounge access) is better value than any Priority Pass card.',
+      },
+      {
+        question: 'Can I pre-book a Priority Pass seat at YUL?',
+        answer: 'Yes — at the Aspire American Express Lounge (Gates 1–2, Domestic) and the National Bank Lounge (temporary space). Pre-booking carries a small fee but guarantees a seat.',
+      },
+      {
+        question: 'Does Priority Pass work at the Air France lounge at Montreal?',
+        answer: 'Yes, outside the daily 3:30 p.m. – 6:30 p.m. window. Full detail in our dedicated AF-KLM access guide.',
+      },
+    ],
+  },
   {
     slug: 'best-credit-card-montreal-yul-airport-lounge-access',
     title: 'Best Credit Card for Montreal (YUL) Airport Lounge Access (2026)',
