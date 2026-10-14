@@ -8,6 +8,8 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import AirportLoungeGridFiltered, { type LoungeSummary } from '@/components/AirportLoungeGridFiltered'
 import WeatherWidget from '@/components/WeatherWidget'
+import SidebarAffiliate from '@/components/SidebarAffiliate'
+import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 import AirQualityWidget from '@/components/AirQualityWidget'
 import DepartureBoard from '@/components/DepartureBoard'
 import { INDOOR_COVERED } from '@/lib/mapbox/indoor'
@@ -503,6 +505,38 @@ export default async function AirportPage({ params }: Props) {
               </a>
             )}
           </div>
+
+          {/* Cards that unlock lounges at this airport — single understated
+              FinlyWealth CTA. Hub pages drive the bulk of traffic (YUL alone
+              was 389 views in a 7-day window) and had zero affiliate CTA
+              before this. Specifically pitched to the "which card gets me in"
+              question that the surrounding content answers. */}
+          <div className="bg-white border border-outline-variant/30 p-6 text-center">
+            <span className="font-label-caps text-[9px] text-sand-dark uppercase tracking-widest block mb-3">
+              Sponsored · FinlyWealth
+            </span>
+            <h5 className="font-bold text-primary mb-2 leading-snug">
+              Cards that unlock lounges at {code}
+            </h5>
+            <p className="text-sm text-secondary mb-4 leading-relaxed">
+              Compare the Canadian credit cards with Priority Pass, Plaza Premium or Maple Leaf Lounge access — current terms, fees and welcome offers.
+            </p>
+            <a
+              href={affiliate('finlywealth-lounge-access-cards')}
+              target="_blank"
+              rel={AFFILIATE_REL}
+              className="inline-block bg-primary text-white px-6 py-3 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-opacity"
+            >
+              Compare Lounge Cards
+            </a>
+            <p className="text-[9px] text-secondary/50 mt-3">
+              Sponsored — we may earn a commission.
+            </p>
+          </div>
+
+          {/* Airalo eSIM — rendered only once NEXT_PUBLIC_AFF_AIRALO is set,
+              so the layout stays stable before vs. after affiliate activation. */}
+          <SidebarAffiliate brand="airalo" />
 
           {/* Back to all airports */}
           <Link
