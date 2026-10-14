@@ -236,7 +236,7 @@ const sleepPodsContent = `
   <li>Plaza Premium Group — YVR First lounge ($110 direct, $30 upgrade, Priority Pass not accepted); YVR International 24-hour lounge; YWG lounge (hours, amenities, access).</li>
   <li>Air Canada — Signature Suite YYZ eligibility, Air Canada Signature Class benefits.</li>
   <li>Priority Pass — Canadian directory (which Plaza Premium locations are eligible).</li>
-  <li>AirportLounges.ca — <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a>, <a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum airport lounge access in Canada</a>, <a href="/blog/canadian-airport-lounges-shower-access">Canadian airport lounges with shower access</a>.</li>
+  <li>AirportLounges.ca — <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a>, <a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum airport lounge access in Canada</a>, <a href="/blog/canadian-airport-lounges-shower-access">Canadian airport lounges with shower access</a>, <a href="/blog/priority-pass-vs-dragonpass-canada">Priority Pass vs DragonPass in Canada</a>, <a href="/blog/centurion-lounge-canada">Centurion Lounge Canada</a>.</li>
   <li>Milesopedia, Prince of Travel, Frugal Flyer — traveller reports cross-referenced only where an operator page did not describe a facility explicitly.</li>
 </ul>
 
@@ -1920,6 +1920,225 @@ const aeroplanCardsContent = `
 <p><em>All fees, offers, benefits and insurance limits in this guide reflect information current as of September 11, 2026. Rules and offers change without notice — always confirm the current terms with the issuer before applying. Next scheduled review: December 2026, when the TD and CIBC guest terms expire.</em></p>
 `
 
+const loungeCostCanadaContent = `
+<p data-speakable="intro"><strong>Canadian airport lounge day-pass walk-in rates generally fall between C$55 and C$110 for 2 to 3 hours. Plaza Premium at Toronto Pearson and Vancouver runs C$59–75 for a 2-hour visit. Aspire lounges in Calgary, Montreal and Ottawa charge C$55–65 for 3 hours. Plaza Premium First at YVR is the premium exception at C$110 for 2 hours. The National Bank Lounge at YUL charges C$63.24 per adult / C$40.24 per child for non-cardholders. Air Canada Maple Leaf Lounges do NOT sell walk-in day passes but offer pre-booked lounge upgrades at C$25–79 added to your ticket. Priority Pass overage runs US$35 per person and DragonPass runs US$32. The cheapest route to lounge access overall is a credit card: the <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Passport Visa Infinite</a> at C$150 (often first-year waived) covers 6 DragonPass visits annually.</strong></p>
+
+<blockquote>
+<p><strong>Editorial disclosure:</strong> AirportLounges.ca may receive compensation if you apply for a card through links on this page. Walk-in rates and card facts verified October 14, 2026 against operator rate cards and issuer benefit guides.</p>
+</blockquote>
+
+<h2>What walk-in day passes actually cost in Canada</h2>
+
+<table>
+  <thead>
+    <tr><th>Lounge type</th><th>Walk-in rate (CAD)</th><th>Duration</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Plaza Premium (standard)</td><td>$59–75</td><td>2 hours</td><td>Available at YYZ T1/T3, YVR Pier B/C/D/E, YEG, YUL Odyssey (US), YWG</td></tr>
+    <tr><td>Plaza Premium First YVR</td><td>$110 direct or $30 upgrade</td><td>2 hours</td><td>Premium-tier; Priority Pass NOT accepted</td></tr>
+    <tr><td>Aspire Lounges</td><td>$55–65</td><td>3 hours</td><td>YYC International + Transborder, YUL Aspire Int'l + Aspire Amex Domestic, YOW Aspire Salon, YHZ, YTZ</td></tr>
+    <tr><td>WestJet Elevation Lounge YYC</td><td>Not sold at door</td><td>n/a</td><td>Priority Pass + DragonPass only; walk-ins turned away</td></tr>
+    <tr><td>National Bank Lounge YUL (non-cardholders)</td><td>$63.24 adult / $40.24 child (ages 2–12)</td><td>2 hours</td><td>25% NBC discount; cardholders free</td></tr>
+    <tr><td>Air Canada Maple Leaf Lounge (pre-booked)</td><td>$25–$79</td><td>Flight-duration access</td><td>Not sold at door; pre-book at ticket purchase or 24 hours ahead</td></tr>
+    <tr><td>Air Canada Signature Suite YYZ</td><td>Not sold at any price</td><td>n/a</td><td>Invitation only — Signature Class ticket or Super Elite 100K</td></tr>
+    <tr><td>Air France – KLM Lounge YUL (walk-in)</td><td>Not sold at door</td><td>n/a</td><td>Access requires AF/KL Business ticket, SkyTeam Elite Plus, Priority Pass (outside 3:30–6:30 p.m.) or DragonPass</td></tr>
+    <tr><td>Cathay Pacific Lounge YVR</td><td>Not sold at door</td><td>n/a</td><td>Cathay Business ticket or oneworld Sapphire+ status only</td></tr>
+  </tbody>
+</table>
+
+<p>Range: C$55 at the low end for an Aspire walk-in to C$110 at the premium end for Plaza Premium First at YVR. The average walk-in across Plaza Premium and Aspire sits around C$60–65. Priority Pass direct membership overage runs US$35 per person per visit — roughly C$48 at current exchange — making Priority Pass more expensive than a walk-in in some cases.</p>
+
+<h2>Priority Pass vs DragonPass overage rates</h2>
+
+<p>If you have a Priority Pass or DragonPass card and exceed your visit allotment, overage charges apply:</p>
+
+<ul>
+  <li><strong>Priority Pass:</strong> US$35 per person per visit after your included visits are used (US$47 CAD approximately).</li>
+  <li><strong>DragonPass (Visa Airport Companion / Mastercard Travel Pass):</strong> US$32 per person per visit (US$43 CAD approximately).</li>
+  <li><strong>Guest fees:</strong> Both networks charge US$32–35 per guest even when the cardholder entry is included.</li>
+</ul>
+
+<p>Full comparison in our <a href="/blog/priority-pass-vs-dragonpass-canada">Priority Pass vs DragonPass Canada guide</a>.</p>
+
+<h2>The cheapest route to Canadian lounge access</h2>
+
+<p>Walk-ins add up fast. Three round trips with lounge visits at both ends at C$60 average equals C$360 — more than the net annual cost of several lounge-access credit cards. The cheapest paths:</p>
+
+<ol>
+  <li><strong><a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Passport Visa Infinite</a> — C$150 annual fee</strong> (often first-year waived). Six DragonPass visits per year + no foreign transaction fees. Breakeven: 2–3 lounge visits per year.</li>
+  <li><strong>National Bank World Elite Mastercard — C$150 annual fee</strong>. If you fly through Montreal (YUL), this is unmatched — unlimited National Bank Lounge access with +1 guest + 2 kids, plus 4 DragonPass visits a year.</li>
+  <li><strong><a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum American Express</a> — C$399 annual fee</strong>. 10 Priority Pass visits per year, no foreign transaction fee. Breakeven for a solo traveller: 7 lounge visits.</li>
+  <li><strong><a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a> — C$799 annual fee (net ~C$399 after credits)</strong>. Unlimited Priority Pass + Plaza Premium through December 31, 2026; capped at 6+6 from January 1, 2027 unless $20,000 is spent. For frequent flyers this is the best value Canadian-wide.</li>
+</ol>
+
+<h2>Lounge pricing by airport</h2>
+
+<h3>Toronto Pearson (YYZ)</h3>
+<p>Plaza Premium walk-ins at both T1 and T3 run C$59 for 2 hours. The T3 Landmark (Gate C32) is Plaza Premium's YYZ flagship. T1 International Plaza Premium closed December 2025 for rebuild. Air Canada Maple Leaf Lounge pre-booked access C$25 (Latitude) up to C$79 (Flex). The Air Canada Signature Suite is not sold at any price. Full card-by-card analysis in our <a href="/blog/best-credit-card-toronto-pearson-yyz-airport-lounge-access">YYZ card guide</a>.</p>
+
+<h3>Vancouver (YVR)</h3>
+<p>Plaza Premium walk-ins across all four locations run C$65–75 for 2 hours. Plaza Premium First (Pier D, premium tier) runs C$110 direct or C$30 upgrade from the standard Plaza Premium International next door — Priority Pass NOT accepted at Plaza Premium First. The SkyTeam Lounge is Priority Pass only; the Cathay Pacific Lounge is Cathay/oneworld only.</p>
+
+<h3>Montreal (YUL)</h3>
+<p>The National Bank Lounge charges non-cardholders C$63.24 per adult / C$40.24 per child in its temporary space (October 2026 – June 2028). Aspire International and Aspire American Express (Domestic) run C$55–65 for 3 hours. Desjardins Odyssey Transborder matches that pricing. Full detail in our <a href="/blog/best-credit-card-montreal-yul-airport-lounge-access">YUL card guide</a>.</p>
+
+<h3>Calgary (YYC), Ottawa (YOW), Edmonton (YEG), Winnipeg (YWG), Halifax (YHZ)</h3>
+<p>Aspire walk-in rates sit at C$55 (YYC International + Transborder) to C$65 (YOW Aspire Salon). Plaza Premium at YEG and YWG matches Vancouver pricing at approximately C$65–75. WestJet Elevation Lounge at YYC does not sell walk-ins. HWY MLL at Halifax is currently closed for renovation.</p>
+
+<h2>What's included in the walk-in price</h2>
+
+<p>Standard Canadian lounge walk-in includes:</p>
+<ul>
+  <li>Hot and cold buffet food (varies by lounge)</li>
+  <li>Full bar — beer, wine, spirits (premium pours may incur extra charges)</li>
+  <li>Wi-Fi and workspace</li>
+  <li>Showers where available (shower surcharge of C$25 at Plaza Premium Pier B YVR; Aspire typically includes showers)</li>
+  <li>Comfortable seating with power at every seat (not always; varies)</li>
+</ul>
+
+<p>Not included:</p>
+<ul>
+  <li>Pre-flight meals in a sit-down restaurant format (except Signature Suite at YYZ, which is invitation-only anyway)</li>
+  <li>Massages or spa treatments (Be Relax at YYZ T1 offers Priority Pass treatment credit, not seated lounge access)</li>
+  <li>Priority security or expedited boarding</li>
+  <li>Private sleep rooms (Plaza Premium First at YVR has rest suites but at the $110 price point)</li>
+</ul>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>How much does an airport lounge cost in Canada?</h3>
+<p>Walk-in day passes at Canadian airport lounges typically cost between C$55 and C$75 for 2–3 hours. Plaza Premium charges C$59–75 for 2 hours; Aspire lounges charge C$55–65 for 3 hours; the premium Plaza Premium First at Vancouver costs C$110 for 2 hours. The National Bank Lounge at Montreal charges non-cardholders C$63.24 per adult. Air Canada Maple Leaf Lounges don't sell walk-in day passes but offer pre-booked lounge access at C$25–79 added to your ticket.</p>
+
+<h3>What's the cheapest way to get lounge access in Canada?</h3>
+<p>A C$150 credit card is the cheapest sustainable route. The <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Passport Visa Infinite</a> (C$150, often first-year waived) includes 6 DragonPass visits per year plus no foreign transaction fees. For Montreal residents, the National Bank World Elite Mastercard (C$150) with unlimited National Bank Lounge access + 1 guest + 2 kids is unmatched.</p>
+
+<h3>Does Priority Pass have an overage charge in Canada?</h3>
+<p>Yes. Once you exhaust your included visits (10 on the Scotiabank Platinum Amex, 6 on the Amex Platinum from 2027, or 0 on the Amex Aeroplan Reserve), each additional visit costs US$35 per person — about C$48. Guests always cost US$35 each regardless of your card. Full detail in our <a href="/blog/priority-pass-vs-dragonpass-canada">Priority Pass vs DragonPass Canada guide</a>.</p>
+
+<h3>Can I buy an Air Canada Maple Leaf Lounge day pass?</h3>
+<p>Not at the door. Air Canada does not sell walk-in day passes at any of its Maple Leaf Lounges. However, you can purchase a pre-booked lounge add-on at ticket purchase or up to 24 hours before departure for C$25 (Latitude fare) up to C$79 (Flex fare). Other fare classes fall in between. This purchase gives you flight-duration lounge access, not a fixed stay limit.</p>
+
+<h3>Does Air Canada Signature Suite at YYZ sell day passes?</h3>
+<p>No. The Air Canada Signature Suite at Toronto Pearson Terminal 1 is invitation-only. Access requires a same-day Air Canada Signature Class international ticket or Aeroplan Super Elite 100K travelling on a Signature Class routing. No credit card, no walk-in rate, no pre-book option. See our <a href="/blog/best-credit-card-toronto-pearson-yyz-airport-lounge-access">YYZ card guide</a> for alternatives.</p>
+
+<h3>How does Canadian lounge pricing compare to the US and UK?</h3>
+<p>Similar to US airport lounges — US walk-in rates at Plaza Premium and Priority Pass equivalent lounges run US$45–75, which maps to C$60–100 CAD. UK pricing is slightly higher (£35–55 ≈ C$60–95). Premium tiers like Plaza Premium First at YVR or the Centurion Lounges in the US are more expensive per hour but include substantially better food and amenities.</p>
+
+<h2>Sources</h2>
+<ul>
+  <li>Plaza Premium Group — walk-in rate cards for all Canadian locations.</li>
+  <li>Aspire Lounges — walk-in pricing (verified October 14, 2026).</li>
+  <li>National Bank of Canada — National Bank Lounge temporary pricing notice.</li>
+  <li>Air Canada — Maple Leaf Lounge pre-booked access pricing by fare class.</li>
+  <li>Priority Pass and DragonPass (Visa Airport Companion / Mastercard Travel Pass) — overage rate schedules.</li>
+  <li>AirportLounges.ca — <a href="/blog/best-credit-card-toronto-pearson-yyz-airport-lounge-access">YYZ card guide</a>, <a href="/blog/best-credit-card-montreal-yul-airport-lounge-access">YUL card guide</a>, <a href="/blog/priority-pass-vs-dragonpass-canada">Priority Pass vs DragonPass</a>, <a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum guide</a>.</li>
+</ul>
+
+<p><em>All walk-in rates and card fees reflect information current as of October 14, 2026. Prices change without notice — always confirm with the lounge operator before travelling.</em></p>
+`
+
+const loungeEntryTimingCanadaContent = `
+<p data-speakable="intro"><strong>Most Canadian airport lounges let you in 3 hours before departure. The standard window applies at Aspire, Centurion, Delta Sky Club, Cathay Pacific, Air Canada Maple Leaf Lounges and the Air Canada Signature Suite. Plaza Premium lounges don't enforce a formal pre-departure window — enter any time space permits, but capacity-limit refusals happen first to Priority Pass members during busy banks. Priority Pass itself has no fixed window; your card's digital pass works from the moment you clear security. The two exceptions worth knowing: Plaza Premium at Vancouver (24-hour) admits any time; the Air France – KLM Lounge at Montreal reserves 3:30–6:30 p.m. daily for AF/KL Business and SkyTeam Elite Plus only.</strong></p>
+
+<blockquote>
+<p><strong>Editorial disclosure:</strong> AirportLounges.ca may receive compensation if you apply for a card through links on this page. Lounge access windows verified October 14, 2026 against operator pages and Priority Pass's Canadian directory.</p>
+</blockquote>
+
+<h2>The standard: 3 hours before departure</h2>
+
+<p>Across most Canadian lounges — including Air Canada's own Maple Leaf Lounges and the Signature Suite — you can enter up to 3 hours before your scheduled departure. The window is enforced by the lounge agent scanning your boarding pass; a 4-hour-ahead attempt will typically be refused with a request to come back later.</p>
+
+<table>
+  <thead>
+    <tr><th>Lounge type</th><th>Entry window</th><th>Enforced?</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Air Canada Maple Leaf Lounge</td><td>3 hours before departure</td><td>Yes, scanned at door</td></tr>
+    <tr><td>Air Canada Signature Suite (YYZ)</td><td>3 hours before departure (Signature Class ticket)</td><td>Yes</td></tr>
+    <tr><td>Aspire Lounges (YYC, YUL, YOW, YHZ, YTZ)</td><td>3 hours before departure</td><td>Yes</td></tr>
+    <tr><td>Centurion Lounges (US — Amex Platinum)</td><td>3 hours before departure</td><td>Yes</td></tr>
+    <tr><td>Delta Sky Club (US)</td><td>3 hours before departure OR during a layover</td><td>Yes</td></tr>
+    <tr><td>Cathay Pacific Lounge YVR</td><td>Aligned with Cathay departure times (not sold outside window)</td><td>Yes</td></tr>
+    <tr><td>Air France – KLM Lounge YUL</td><td>Flight-time aligned; 3:30–6:30 p.m. reserved for AF/KL customers only</td><td>Strict</td></tr>
+    <tr><td>Plaza Premium (standard)</td><td>No formal window — enter any time; capacity-based</td><td>No window, but capacity enforced</td></tr>
+    <tr><td>Plaza Premium YVR International (24-hour)</td><td>Any time, 24/7</td><td>None — only Canadian 24-hour lounge</td></tr>
+    <tr><td>National Bank Lounge YUL</td><td>No fixed window; 2-hour stay limit (3 hours for Private Banking 1859)</td><td>Stay limit enforced, not entry window</td></tr>
+    <tr><td>SkyTeam Lounge YVR</td><td>Aligned with international departure times (3-hour standard)</td><td>Yes</td></tr>
+  </tbody>
+</table>
+
+<h2>Plaza Premium: no formal window, but capacity matters</h2>
+
+<p>Plaza Premium is the exception to the "3-hour window" rule. Officially the operator does not enforce a pre-departure window — you can enter 5 hours before your flight if space allows. In practice, during busy evening international banks at YYZ T3 (3:00–9:00 p.m.) or afternoon Asian departures at YVR Pier D, Plaza Premium is at capacity and Priority Pass members are the first turned away.</p>
+
+<p>A reserved seat via Priority Pass pre-book (available at the T3 Landmark YYZ, Aspire American Express YUL, Aspire YOW, Aspire YTZ, and the National Bank YUL temp lounge) is one a full lounge cannot refuse. For evening international departures, pre-booking is worth the small fee.</p>
+
+<h2>Priority Pass: no window, but still subject to capacity</h2>
+
+<p>Priority Pass itself does not impose a pre-departure window — your digital Priority Pass card in the app works from the moment you clear security. Lounge-side rules may still apply (Aspire's 3-hour window) but the Priority Pass program itself is open.</p>
+
+<p>What Priority Pass DOES enforce is a stay limit — typically 3 hours per visit — and the lounge reserves the right to refuse entry when at capacity.</p>
+
+<h2>The Air France – KLM Lounge YUL exception</h2>
+
+<p>The AF-KLM Lounge at Montreal operates a split-eligibility model. Outside the 3:30 p.m. – 6:30 p.m. daily window, Priority Pass is accepted with the standard 3-hour stay limit. Inside that window, the lounge is reserved for Air France and KLM Business Class and SkyTeam Elite Plus customers only. If you have Priority Pass and your YUL flight departs between 3:30 p.m. and 6:30 p.m., head to the Aspire International Lounge next door (Gates 52–53) instead. Full detail in our <a href="/blog/air-france-klm-lounge-montreal-yul-access">AF-KLM Lounge Montreal YUL access guide</a>.</p>
+
+<h2>The 24-hour Plaza Premium at YVR</h2>
+
+<p>The Plaza Premium International Lounge at Vancouver (Pier D) is the only Canadian airport lounge open 24 hours a day, every day. For overnight transpacific arrivals waiting for a morning onward flight, this is the only functional overnight lounge option in the country. Priority Pass members get a 2-hour stay limit — but you can re-enter later if space permits.</p>
+
+<p>Combined with the shower suites and dimmed quiet zones, Plaza Premium YVR 24-hour is the de facto Canadian "sleep lounge" alternative on Priority Pass. See our <a href="/blog/canadian-airport-lounges-sleep-pods">Canadian Airport Lounges with Sleep Pods guide</a> for the full rest-focused analysis.</p>
+
+<h2>How long can you stay inside?</h2>
+
+<p>Entry window and stay limit are two different things. Here's what each lounge type enforces once you're inside:</p>
+
+<ul>
+  <li><strong>Priority Pass:</strong> 3-hour stay limit at most Canadian lounges; 2 hours at Plaza Premium Vancouver Pier D and Pier E.</li>
+  <li><strong>DragonPass (Visa Airport Companion / Mastercard Travel Pass):</strong> matches Priority Pass stay limits per lounge.</li>
+  <li><strong>Amex Platinum direct entry:</strong> typically 3-hour stay; longer than Priority Pass at some Plaza Premium locations.</li>
+  <li><strong>National Bank Lounge YUL:</strong> 2 hours (3 hours for Private Banking 1859 clients) during the temporary space period (October 2026 – June 2028).</li>
+  <li><strong>Air Canada Maple Leaf Lounge (ticket or status):</strong> no fixed limit — stay until your flight boards.</li>
+  <li><strong>Air Canada Signature Suite:</strong> 3-hour pre-departure window; stay until board.</li>
+  <li><strong>Walk-in paid entry:</strong> explicit duration tied to the fare — 2 or 3 hours.</li>
+</ul>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>How early can I enter an airport lounge in Canada?</h3>
+<p>Most Canadian airport lounges — including Air Canada Maple Leaf Lounges, Aspire lounges, the Air Canada Signature Suite, Cathay Pacific and SkyTeam — admit you 3 hours before your departure. Plaza Premium lounges have no formal window and admit any time space permits. Priority Pass has no fixed window; your card works from the moment you clear security. The National Bank Lounge at YUL and the 24-hour Plaza Premium at YVR Pier D have no entry window at all.</p>
+
+<h3>Can I enter the Air Canada Maple Leaf Lounge more than 3 hours before my flight?</h3>
+<p>No. Air Canada's Maple Leaf Lounge entry policy is a 3-hour pre-departure window, enforced by boarding pass scan at the door. A 4-hour-ahead attempt is typically refused with a request to come back closer to your departure. The same rule applies to the Air Canada Signature Suite at Toronto Pearson Terminal 1.</p>
+
+<h3>Does Priority Pass have a time window?</h3>
+<p>No. Priority Pass does not impose a pre-departure window — your digital Priority Pass card in the app works from the moment you clear security. However, the specific lounge may apply its own window: Aspire lounges enforce 3 hours, Plaza Premium does not. Full comparison in our <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada guide</a>.</p>
+
+<h3>How long can I stay inside a Canadian airport lounge?</h3>
+<p>Priority Pass members get a 3-hour stay at most Canadian lounges, 2 hours at Plaza Premium Vancouver Pier D and Pier E. Air Canada Maple Leaf Lounge access (via Aeroplan premium cards or status) has no fixed stay limit — stay until boarding. Walk-in paid entry carries an explicit duration tied to the fare (2 or 3 hours). The National Bank Lounge at Montreal YUL in its temporary space enforces a 2-hour stay (3 hours for Private Banking 1859 clients).</p>
+
+<h3>Does the Air France lounge at Montreal admit Priority Pass members all day?</h3>
+<p>No. The Air France – KLM Lounge at Montreal YUL reserves 3:30 p.m. to 6:30 p.m. daily for AF/KL Business Class and SkyTeam Elite Plus customers only. Priority Pass is accepted the rest of the day with the standard 3-hour stay. Our <a href="/blog/air-france-klm-lounge-montreal-yul-access">dedicated AF-KLM guide</a> covers it in detail.</p>
+
+<h3>Are there 24-hour airport lounges in Canada?</h3>
+<p>One. The Plaza Premium International Lounge at Vancouver (YVR) Pier D is the only 24-hour Canadian airport lounge, open every day. Priority Pass members get a 2-hour stay but can re-enter later if space permits. The AC Maple Leaf Lounges at YYZ T1 International (overnight bank) are open late but not 24 hours.</p>
+
+<h3>Can I pre-book a seat so a full lounge can't turn me away?</h3>
+<p>Yes, at select Canadian lounges. Priority Pass pre-book is currently available at Plaza Premium T3 Landmark YYZ, Aspire American Express Domestic YUL, Aspire Salon YOW, Aspire YTZ, and the National Bank Lounge temporary space. Pre-booking carries a small fee but guarantees a seat.</p>
+
+<h2>Sources</h2>
+<ul>
+  <li>Priority Pass — Canadian directory with per-lounge entry window and stay limits.</li>
+  <li>Air Canada — Maple Leaf Lounge access policy including the 3-hour window.</li>
+  <li>Plaza Premium Group — operator pages for YYZ, YVR, YEG, YUL, YWG locations.</li>
+  <li>Aspire Lounges — airport-specific pages for YYC, YUL, YOW, YHZ, YTZ.</li>
+  <li>National Bank of Canada — National Bank Lounge access and stay policy.</li>
+  <li>AirportLounges.ca — <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a>, <a href="/blog/air-france-klm-lounge-montreal-yul-access">AF-KLM Lounge Montreal YUL access</a>, <a href="/blog/canadian-airport-lounges-sleep-pods">Canadian airport lounges with sleep pods</a>, <a href="/blog/best-credit-card-toronto-pearson-yyz-airport-lounge-access">YYZ card guide</a>.</li>
+</ul>
+
+<p><em>All lounge entry windows and stay limits reflect information current as of October 14, 2026. Rules change without notice — always confirm with the lounge operator before travelling.</em></p>
+`
+
 const yyzLoungeAccessContent = `
 <p data-speakable="intro"><strong>Toronto Pearson (YYZ) is Canada's largest and most lounge-rich airport — nine distinct spaces across Terminal 1 and Terminal 3. For a Toronto-based international flyer, the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a> ($799) is the single strongest card: it opens 5 Plaza Premium lounges plus the T3 Aspire via Priority Pass. For Air Canada loyalists the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a> or <a href="https://www.finlywealth.com/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">CIBC Aeroplan VIP</a> ($599) unlock the three Maple Leaf Lounges in T1 — the Signature Suite requires an invitation that no credit card provides. For the cheapest access, the <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Passport Visa Infinite</a> ($150) gives six DragonPass visits that work at the same Plaza Premium locations. Verified October 14, 2026.</strong></p>
 
@@ -2876,6 +3095,104 @@ const yvrDomesticClosureContent = `
 `
 
 export const blogPosts: BlogPost[] = [
+  {
+    slug: 'airport-lounge-cost-canada',
+    title: 'How Much Does an Airport Lounge Cost in Canada? (2026 Walk-in and Card Pricing)',
+    excerpt: 'Walk-in day passes at Canadian airport lounges run C$55–75 for 2–3 hours. Plaza Premium First at YVR costs C$110. Air Canada Maple Leaf Lounges don\'t sell walk-ins but offer C$25–79 pre-booked lounge add-ons. The cheapest sustainable route is a C$150 credit card with DragonPass or Priority Pass.',
+    coverImage: '/blog/guest-fees-canada-hero.png',
+    publishedAt: '2026-10-14',
+    lastReviewed: '2026-10-14',
+    category: 'Lounge Guides',
+    readingTime: '7 min read',
+    metaTitle: 'How Much Does an Airport Lounge Cost in Canada (2026)',
+    metaDescription: 'Walk-in day passes at Canadian airport lounges typically cost C$55–75 for 2–3 hours. Plaza Premium, Aspire, National Bank Lounge, Air Canada Maple Leaf Lounge pre-book access, and the cheapest credit-card routes to lounge access in Canada. Verified October 2026.',
+    content: loungeCostCanadaContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: 'Lounge walk-in rates and card alternatives verified against operator rate cards and Canadian issuer benefit guides.',
+    primaryCta: {
+      heading: 'The C$150 card that beats walk-in rates',
+      subheading: 'The Scotiabank Passport Visa Infinite (C$150, often first-year waived) includes 6 DragonPass visits per year — breakeven at 2–3 Canadian lounge visits.',
+      ctaLabel: 'Compare Lounge-Access Cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
+    faqs: [
+      {
+        question: 'How much does an airport lounge cost in Canada?',
+        answer: 'Walk-in day passes at Canadian airport lounges typically cost between C$55 and C$75 for 2–3 hours. Plaza Premium charges C$59–75 for 2 hours; Aspire lounges charge C$55–65 for 3 hours; the premium Plaza Premium First at Vancouver costs C$110 for 2 hours. The National Bank Lounge at Montreal charges non-cardholders C$63.24 per adult.',
+      },
+      {
+        question: 'What is the cheapest way to get lounge access in Canada?',
+        answer: 'A C$150 credit card is the cheapest sustainable route. The Scotiabank Passport Visa Infinite (C$150, often first-year waived) includes 6 DragonPass visits per year. For Montreal residents, the National Bank World Elite Mastercard (C$150) with unlimited National Bank Lounge access + 1 guest + 2 kids is unmatched.',
+      },
+      {
+        question: 'Does Priority Pass have an overage charge in Canada?',
+        answer: 'Yes. Once you exhaust your included visits, each additional visit costs US$35 per person — about C$48. Guests always cost US$35 each regardless of your card.',
+      },
+      {
+        question: 'Can I buy an Air Canada Maple Leaf Lounge day pass?',
+        answer: 'Not at the door. Air Canada does not sell walk-in day passes. However, you can purchase a pre-booked lounge add-on at ticket purchase or up to 24 hours before departure for C$25 (Latitude fare) up to C$79 (Flex fare).',
+      },
+      {
+        question: 'Does Air Canada Signature Suite at YYZ sell day passes?',
+        answer: 'No. The Air Canada Signature Suite at Toronto Pearson Terminal 1 is invitation-only. Access requires a same-day Air Canada Signature Class international ticket or Aeroplan Super Elite 100K travelling on a Signature Class routing.',
+      },
+      {
+        question: 'How does Canadian lounge pricing compare to the US and UK?',
+        answer: 'Similar to US airport lounges — US walk-in rates run US$45–75 (C$60–100 CAD). UK pricing is slightly higher (£35–55 ≈ C$60–95). Premium tiers like Plaza Premium First at YVR are more expensive per hour but include substantially better food and amenities.',
+      },
+    ],
+  },
+  {
+    slug: 'airport-lounge-entry-time-canada',
+    title: 'How Early Can I Enter an Airport Lounge in Canada? (2026 Entry Windows and Stay Limits)',
+    excerpt: 'Most Canadian lounges admit you 3 hours before departure. Plaza Premium has no formal window — enter any time space permits. Priority Pass has no window either. The 24-hour Plaza Premium at YVR is the only overnight option. Full entry and stay rules by lounge type.',
+    coverImage: '/blog/sleep-pods-canada-hero.png',
+    publishedAt: '2026-10-14',
+    lastReviewed: '2026-10-14',
+    category: 'Lounge Guides',
+    readingTime: '6 min read',
+    metaTitle: 'How Early Can I Enter an Airport Lounge in Canada? (2026)',
+    metaDescription: 'Most Canadian lounges admit you 3 hours before departure. Plaza Premium has no formal window; Priority Pass has no window either; the 24-hour Plaza Premium at YVR is the only overnight option. Full entry windows and stay limits by lounge type. Verified October 2026.',
+    content: loungeEntryTimingCanadaContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: 'Lounge entry windows and stay limits verified against operator pages and Priority Pass\'s Canadian directory.',
+    primaryCta: {
+      heading: 'Pre-book a seat so a full lounge can\'t turn you away',
+      subheading: 'The three Canadian cards that include Priority Pass visits also unlock pre-book access at the busiest Canadian lounges.',
+      ctaLabel: 'Compare Priority Pass Cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
+    faqs: [
+      {
+        question: 'How early can I enter an airport lounge in Canada?',
+        answer: 'Most Canadian airport lounges — Air Canada Maple Leaf Lounges, Aspire lounges, the Air Canada Signature Suite, Cathay Pacific and SkyTeam — admit you 3 hours before departure. Plaza Premium lounges have no formal window and admit any time space permits. Priority Pass has no fixed window.',
+      },
+      {
+        question: 'Can I enter the Air Canada Maple Leaf Lounge more than 3 hours before my flight?',
+        answer: 'No. Air Canada\'s Maple Leaf Lounge entry policy is a 3-hour pre-departure window, enforced by boarding pass scan at the door. The same rule applies to the Air Canada Signature Suite at Toronto Pearson Terminal 1.',
+      },
+      {
+        question: 'Does Priority Pass have a time window?',
+        answer: 'No. Priority Pass does not impose a pre-departure window — your digital Priority Pass card works from the moment you clear security. However, the specific lounge may apply its own window (Aspire enforces 3 hours; Plaza Premium does not).',
+      },
+      {
+        question: 'How long can I stay inside a Canadian airport lounge?',
+        answer: 'Priority Pass members get a 3-hour stay at most Canadian lounges, 2 hours at Plaza Premium Vancouver Pier D and Pier E. Air Canada Maple Leaf Lounge access (via Aeroplan premium cards or status) has no fixed stay limit — stay until boarding.',
+      },
+      {
+        question: 'Does the Air France lounge at Montreal admit Priority Pass members all day?',
+        answer: 'No. The Air France – KLM Lounge at Montreal YUL reserves 3:30 p.m. to 6:30 p.m. daily for AF/KL Business Class and SkyTeam Elite Plus customers only. Priority Pass is accepted the rest of the day with the standard 3-hour stay.',
+      },
+      {
+        question: 'Are there 24-hour airport lounges in Canada?',
+        answer: 'One. The Plaza Premium International Lounge at Vancouver (YVR) Pier D is the only 24-hour Canadian airport lounge, open every day. Priority Pass members get a 2-hour stay but can re-enter later if space permits.',
+      },
+      {
+        question: 'Can I pre-book a seat so a full lounge can\'t turn me away?',
+        answer: 'Yes, at select Canadian lounges. Priority Pass pre-book is currently available at Plaza Premium T3 Landmark YYZ, Aspire American Express Domestic YUL, Aspire Salon YOW, Aspire YTZ, and the National Bank Lounge temporary space.',
+      },
+    ],
+  },
   {
     slug: 'best-credit-card-toronto-pearson-yyz-airport-lounge-access',
     title: 'Best Credit Card for Toronto Pearson (YYZ) Airport Lounge Access (2026)',

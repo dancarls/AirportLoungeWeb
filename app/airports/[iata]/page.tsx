@@ -137,7 +137,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Airport-hub FR translations we have shipped — add codes here as new FR
   // hub pages go live. Keeps hreflang alternates honest (never points Google
   // at a non-existent FR page).
-  const HAS_FR_HUB = new Set(['YUL'])
+  const HAS_FR_HUB = new Set(['YUL', 'YYZ', 'YVR'])
 
   return {
     title,
@@ -273,7 +273,7 @@ export default async function AirportPage({ params }: Props) {
                 <span className="inline-block font-label-caps text-label-caps text-primary-fixed tracking-widest bg-primary-container/40 backdrop-blur-sm px-3 py-1">
                   {province.toUpperCase()}, CANADA
                 </span>
-                {code === 'YUL' && (
+                {(code === 'YUL' || code === 'YYZ' || code === 'YVR') && (
                   <Link
                     href={`/fr/airports/${code}`}
                     hrefLang="fr-CA"

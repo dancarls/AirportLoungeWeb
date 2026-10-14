@@ -41,6 +41,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const blogPagesFr: MetadataRoute.Sitemap = [
     { url: `${BASE}/fr/blog`, priority: 0.7, changeFrequency: 'weekly' as const, lastModified: NOW },
     { url: `${BASE}/fr/airports/YUL`, priority: 0.8, changeFrequency: 'weekly' as const, lastModified: NOW },
+    { url: `${BASE}/fr/airports/YYZ`, priority: 0.8, changeFrequency: 'weekly' as const, lastModified: NOW },
+    { url: `${BASE}/fr/airports/YVR`, priority: 0.8, changeFrequency: 'weekly' as const, lastModified: NOW },
     ...getAllPostsFr().map(post => ({
       url: `${BASE}/fr/blog/${post.slug}`,
       priority: 0.85,
