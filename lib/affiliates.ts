@@ -32,6 +32,14 @@ type AffiliateKey =
   | 'airalo-esim'
   | 'monos-luggage'
   | 'tugo-travel-insurance'
+  // TuGo product-specific deeplinks — each has its own Impact.com deeplink
+  // for per-product attribution in the Impact dashboard. Each falls back to
+  // the specific TuGo product URL when its env var is not set, so links
+  // never break and users still land on the correct product page.
+  | 'tugo-emergency-medical'
+  | 'tugo-all-inclusive'
+  | 'tugo-visitors-to-canada'
+  | 'tugo-trip-cancellation'
   // Ratehub via Impact.com — legacy fallback + backup for cards FinlyWealth doesn't monetize.
   | 'ratehub-amex-platinum'
   | 'ratehub-amex-aeroplan-reserve'
@@ -300,6 +308,36 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
     envVar: 'NEXT_PUBLIC_AFF_TUGO',
     paramKey: '__full_url__',
     extraParams: { utm_source: 'airportlounges_ca', utm_medium: 'editorial' },
+  },
+  // TuGo product-specific deeplinks. Create a product-targeted deeplink in
+  // the Impact.com dashboard for each (same affiliate code, different `url`
+  // param pointing at the specific TuGo product page). Set the full tracked
+  // URL in the matching env var. If the env var is unset, the entry falls
+  // back to the direct TuGo product URL so the link always works and still
+  // sends users to the right product page.
+  'tugo-emergency-medical': {
+    url: 'https://www.tugo.com/en/travel-insurance/emergency-medical/',
+    envVar: 'NEXT_PUBLIC_AFF_TUGO_EMERGENCY_MEDICAL',
+    paramKey: '__full_url__',
+    extraParams: { utm_source: 'airportlounges_ca', utm_medium: 'editorial', utm_content: 'emergency_medical' },
+  },
+  'tugo-all-inclusive': {
+    url: 'https://www.tugo.com/en/travel-insurance/canadians/all-inclusive/',
+    envVar: 'NEXT_PUBLIC_AFF_TUGO_ALL_INCLUSIVE',
+    paramKey: '__full_url__',
+    extraParams: { utm_source: 'airportlounges_ca', utm_medium: 'editorial', utm_content: 'all_inclusive' },
+  },
+  'tugo-visitors-to-canada': {
+    url: 'https://www.tugo.com/en/travel-insurance/visitors-to-canada/emergency-medical/',
+    envVar: 'NEXT_PUBLIC_AFF_TUGO_VISITORS',
+    paramKey: '__full_url__',
+    extraParams: { utm_source: 'airportlounges_ca', utm_medium: 'editorial', utm_content: 'visitors_to_canada' },
+  },
+  'tugo-trip-cancellation': {
+    url: 'https://www.tugo.com/en/travel-insurance/trip-cancellation-insurance/',
+    envVar: 'NEXT_PUBLIC_AFF_TUGO_TRIP_CANCELLATION',
+    paramKey: '__full_url__',
+    extraParams: { utm_source: 'airportlounges_ca', utm_medium: 'editorial', utm_content: 'trip_cancellation' },
   },
   // Day-pass booking — commission-eligible programs. Fallback URLs go to the
   // operator's main booking page even without an affiliate ID.

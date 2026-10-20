@@ -26,8 +26,11 @@ import AudienceSelector from './AudienceSelector'
 const BASE = 'https://www.airportlounges.ca'
 const CANONICAL = `${BASE}/travel-insurance`
 const HERO_IMAGE = '/blog/yyz-toronto-lounge-hero.png'
-const TUGO_PHONE_HREF = 'tel:18555050869'
-const TUGO_PHONE_DISPLAY = '1-855-505-0869'
+// TuGo customer-service lines from tugo.com (verified Oct 20 2026).
+const TUGO_INFO_HREF = 'tel:18559298846'
+const TUGO_INFO_DISPLAY = '1-855-929-8846'
+const TUGO_CLAIMS_HREF = 'tel:18006630399'
+const TUGO_CLAIMS_DISPLAY = '1-800-663-0399'
 
 // Mandatory verbatim sub-caption required after every "Get a Quote" CTA on
 // an affiliate marketing page. Kept as a shared constant to guarantee the
@@ -59,11 +62,17 @@ export const revalidate = 86400 // Daily revalidate; content rarely changes
  * central affiliate() dispatcher so the Impact.com-tracked URL is applied
  * once the NEXT_PUBLIC_AFF_TUGO env var is set.
  */
-function GetAQuoteButton({ label = 'Get a Quote' }: { label?: string }) {
+function GetAQuoteButton({
+  label = 'Get a Quote',
+  affiliateKey = 'tugo-travel-insurance' as Parameters<typeof affiliate>[0],
+}: {
+  label?: string
+  affiliateKey?: Parameters<typeof affiliate>[0]
+}) {
   return (
     <>
       <a
-        href={affiliate('tugo-travel-insurance')}
+        href={affiliate(affiliateKey)}
         target="_blank"
         rel={AFFILIATE_REL}
         className="w-full py-3 px-4 bg-[#e11d48] hover:bg-[#be123c] text-white font-semibold text-sm rounded flex items-center justify-center gap-2 transition-colors shadow"
@@ -274,7 +283,7 @@ export default function TravelInsurancePage() {
               </div>
             </div>
             <div className="pt-4 mt-2">
-              <GetAQuoteButton />
+              <GetAQuoteButton affiliateKey="tugo-emergency-medical" />
             </div>
           </div>
 
@@ -311,7 +320,7 @@ export default function TravelInsurancePage() {
               </div>
             </div>
             <div className="pt-4 mt-2">
-              <GetAQuoteButton />
+              <GetAQuoteButton affiliateKey="tugo-all-inclusive" />
             </div>
           </div>
 
@@ -345,7 +354,7 @@ export default function TravelInsurancePage() {
               </div>
             </div>
             <div className="pt-4 mt-2">
-              <GetAQuoteButton />
+              <GetAQuoteButton affiliateKey="tugo-visitors-to-canada" />
             </div>
           </div>
 
@@ -379,7 +388,7 @@ export default function TravelInsurancePage() {
               </div>
             </div>
             <div className="pt-4 mt-2">
-              <GetAQuoteButton />
+              <GetAQuoteButton affiliateKey="tugo-trip-cancellation" />
             </div>
           </div>
         </div>
@@ -394,29 +403,41 @@ export default function TravelInsurancePage() {
               <span className="text-[11px] font-bold uppercase tracking-wider">Licensed Canadian Assistance</span>
             </div>
             <h3 className="text-2xl md:text-[26px] font-bold tracking-[-0.015em]">
-              Questions about coverage, eligibility, or policy wording? Contact TuGo's licensed Canadian Customer Service team directly at {TUGO_PHONE_DISPLAY}.
+              Questions about coverage, eligibility, or policy wording? Contact TuGo's licensed Canadian Customer Service team directly at {TUGO_INFO_DISPLAY}.
             </h3>
             <p className="text-[15px] text-[#dce9ff]">
-              Trained insurance representatives are ready to assist with pre-existing stability inquiries, family endorsements, and plan recommendations before your flight departs.
+              Trained insurance representatives are ready to assist with pre-existing stability inquiries, family endorsements, and plan recommendations before your flight departs. Already have a claim? Call the claims line directly at {TUGO_CLAIMS_DISPLAY}.
             </p>
-            <div className="flex flex-wrap gap-4 pt-1 text-[13px] text-[#eff4ff]">
+            <div className="flex flex-wrap gap-x-4 gap-y-1 pt-1 text-[13px] text-[#eff4ff]">
               <span className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-[#ffdcc3] text-[16px]">schedule</span>
-                Mon–Fri 8:00 am – 8:00 pm EST / Sat 9:00 am – 5:00 pm EST
+                Mon–Fri 9:00 am – 8:00 pm EST (6 am – 5 pm PST)
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="material-symbols-outlined text-[#ffdcc3] text-[16px]">schedule</span>
+                Sat 10:00 am – 7:00 pm EST (7 am – 4 pm PST)
               </span>
               <span className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-[#ffdcc3] text-[16px]">translate</span>
-                English, French, Spanish, Cantonese, Mandarin
+                English &amp; French service
               </span>
             </div>
           </div>
           <div className="flex flex-col sm:flex-row lg:flex-col gap-2 w-full lg:w-auto shrink-0">
             <a
-              href={TUGO_PHONE_HREF}
-              className="px-10 py-4 bg-[#fe932c] hover:bg-[#904d00] text-white font-bold text-xl rounded-lg flex items-center justify-center gap-1 transition-colors shadow-lg"
+              href={TUGO_INFO_HREF}
+              className="px-6 py-4 bg-[#fe932c] hover:bg-[#904d00] text-white font-bold text-lg rounded-lg flex items-center justify-center gap-1 transition-colors shadow-lg"
             >
-              <span className="material-symbols-outlined text-[24px]">call</span>
-              <span>{TUGO_PHONE_DISPLAY}</span>
+              <span className="material-symbols-outlined text-[22px]">call</span>
+              <span>{TUGO_INFO_DISPLAY}</span>
+              <span className="text-[11px] font-normal opacity-80 ml-1">· Info</span>
+            </a>
+            <a
+              href={TUGO_CLAIMS_HREF}
+              className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm rounded flex items-center justify-center gap-1 transition-colors border border-white/20"
+            >
+              <span className="material-symbols-outlined text-[18px]">support_agent</span>
+              <span>{TUGO_CLAIMS_DISPLAY} · Claims</span>
             </a>
             <a
               href="https://www.tugo.com/en/claims/"
@@ -424,7 +445,7 @@ export default function TravelInsurancePage() {
               rel="noopener noreferrer"
               className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm rounded text-center transition-colors"
             >
-              Access TuGo Claims Support Portal
+              Claims Support Portal
             </a>
           </div>
         </div>
@@ -559,12 +580,14 @@ export default function TravelInsurancePage() {
 
             <div className="flex flex-col gap-1">
               <h4 className="text-sm text-[#0b1c30] font-bold uppercase tracking-wider mb-1">Assistance &amp; Support</h4>
-              <p className="text-[13px] text-[#45464d]">Toll-Free Customer Service:</p>
-              <a href={TUGO_PHONE_HREF} className="text-sm font-semibold text-[#904d00] hover:underline flex items-center gap-1">
-                <span className="material-symbols-outlined text-[16px]">support_agent</span>{TUGO_PHONE_DISPLAY}
+              <p className="text-[13px] text-[#45464d]">Travel Insurance Info:</p>
+              <a href={TUGO_INFO_HREF} className="text-sm font-semibold text-[#904d00] hover:underline flex items-center gap-1">
+                <span className="material-symbols-outlined text-[16px]">support_agent</span>{TUGO_INFO_DISPLAY}
               </a>
-              <p className="text-[13px] text-[#45464d] pt-1">Worldwide Emergency (24/7):</p>
-              <span className="text-sm font-semibold text-[#0b1c30]">+1-604-278-4108 (Collect)</span>
+              <p className="text-[13px] text-[#45464d] pt-1">Claims Line:</p>
+              <a href={TUGO_CLAIMS_HREF} className="text-sm font-semibold text-[#904d00] hover:underline flex items-center gap-1">
+                <span className="material-symbols-outlined text-[16px]">headset_mic</span>{TUGO_CLAIMS_DISPLAY}
+              </a>
               <a href="https://www.tugo.com/en/claims/" target="_blank" rel="noopener noreferrer" className="text-[13px] text-[#45464d] hover:text-[#0b1c30] pt-1">Claims Submission Portal</a>
             </div>
           </div>
