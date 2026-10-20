@@ -8,6 +8,7 @@ import FlightStatusWidget from '@/components/FlightStatusWidget'
 import WeatherWidget from '@/components/WeatherWidget'
 import NewsletterCTA from '@/components/NewsletterCTA'
 import SidebarAffiliate from '@/components/SidebarAffiliate'
+import TugoBannerAd from '@/components/TugoBannerAd'
 import { getWeather } from '@/lib/weather'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 
@@ -439,6 +440,12 @@ export default async function BlogPostPage({ params }: Props) {
                 is set in Vercel. Travel-adjacent fit; natural pitch for
                 anyone reading a lounge guide ahead of an international trip. */}
             <SidebarAffiliate brand="airalo" />
+
+            {/* TuGo "All-Inclusive" 300×250 banner — travel-insurance affiliate.
+                Appears once NEXT_PUBLIC_AFF_TUGO (or the specific all-inclusive
+                deeplink env var) is set. Natural fit on blog detail pages
+                because readers are planning upcoming international travel. */}
+            <TugoBannerAd locale="en" />
 
             {/* CTA */}
             <div className="bg-primary p-6 text-white">

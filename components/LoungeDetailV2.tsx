@@ -20,6 +20,7 @@ import LoungeMapClient from '@/components/LoungeMapClient'
 import GalleryLightbox from '@/components/GalleryLightbox'
 import WeatherWidget from '@/components/WeatherWidget'
 import SidebarAffiliate from '@/components/SidebarAffiliate'
+import TugoBannerAd from '@/components/TugoBannerAd'
 import LoungePlaceholder from '@/components/LoungePlaceholder'
 import NewsletterCTA from '@/components/NewsletterCTA'
 import GooglePlacesEnrichment from '@/components/GooglePlacesEnrichment'
@@ -1034,6 +1035,9 @@ export default function LoungeDetailV2({
 
             {/* Airalo eSIM — renders only once NEXT_PUBLIC_AFF_AIRALO is set. */}
             <SidebarAffiliate brand="airalo" />
+
+            {/* TuGo All-Inclusive 300×250 banner — travel-insurance affiliate. */}
+            <TugoBannerAd locale="en" />
           </aside>
         </div>
       </div>
