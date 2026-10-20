@@ -31,6 +31,7 @@ type AffiliateKey =
   // each env var is set from the respective affiliate dashboard.
   | 'airalo-esim'
   | 'monos-luggage'
+  | 'tugo-travel-insurance'
   // Ratehub via Impact.com — legacy fallback + backup for cards FinlyWealth doesn't monetize.
   | 'ratehub-amex-platinum'
   | 'ratehub-amex-aeroplan-reserve'
@@ -288,6 +289,17 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
     envVar: 'NEXT_PUBLIC_AFF_MONOS',
     paramKey: '__full_url__',
     extraParams: { utm_source: 'airportlounges_ca', utm_medium: 'sidebar' },
+  },
+  // TuGo travel insurance — Impact.com partner program (Canadian brand).
+  // Approved affiliates get a tracked deeplink of the form
+  //   https://tugo.sjv.io/<xxxxx>   or   https://tugo.pxf.io/<xxxxx>
+  // Store the FULL tracked URL in NEXT_PUBLIC_AFF_TUGO; link falls back to
+  // the plain tugo.ca brand URL until the env var is set so it never breaks.
+  'tugo-travel-insurance': {
+    url: 'https://www.tugo.com/',
+    envVar: 'NEXT_PUBLIC_AFF_TUGO',
+    paramKey: '__full_url__',
+    extraParams: { utm_source: 'airportlounges_ca', utm_medium: 'editorial' },
   },
   // Day-pass booking — commission-eligible programs. Fallback URLs go to the
   // operator's main booking page even without an affiliate ID.
