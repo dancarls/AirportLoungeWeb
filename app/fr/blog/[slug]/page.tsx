@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getPostFr, getAllPostsFr } from '@/lib/blog-fr'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
-import TugoBannerAd from '@/components/TugoBannerAd'
 
 /**
  * Rewrite inline finlywealth.com links in the French post content to route
@@ -212,9 +211,6 @@ export default async function BlogPostPageFr({ params }: Props) {
           </article>
 
           <aside className="space-y-6">
-            {/* TuGo French banner — renders when NEXT_PUBLIC_AFF_TUGO is set. */}
-            <TugoBannerAd locale="fr" />
-
             <div className="bg-white fine-border p-5">
               <h3 className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-4">
                 Lire également

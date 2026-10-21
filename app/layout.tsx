@@ -40,19 +40,10 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'MqIm81wvmdy1xQCa-LvcLU2-G55iu3uAAxBrpBGwv4k',
-    // Impact.com affiliate-network domain verification. Emitted as
-    //   <meta name="impact-site-verification" value="…">
-    // via Next.js's Metadata API `other` bag (site-specific verifier keys).
-    other: {
-      // Multiple Impact.com publisher-brand relationships each require their
-      // own site verification. Passing an array emits one <meta> tag per value.
-      // - ead76e9...: original general Impact.com publisher application (2026).
-      // - 2949c39...: TuGo travel insurance affiliate relationship (Oct 2026).
-      'impact-site-verification': [
-        'ead76e99-a37c-4586-ad88-09e3af0c3c5e',
-        '2949c399-8c34-45b4-b4b4-65fce29d4eb4',
-      ],
-    },
+    // Impact.com verifications removed — AirportLounges.ca does not meet
+    // Impact's publisher traffic threshold, so no Impact brand relationships
+    // (TuGo, Monos, Priority Pass direct) apply. If a future application is
+    // approved, add the publisher code via `other: { 'impact-site-verification': '...' }`.
   },
   icons: {
     icon: [
