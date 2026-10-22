@@ -3,6 +3,7 @@ import Image from 'next/image'
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import SidebarAffiliate from '@/components/SidebarAffiliate'
+import TugoBannerAd from '@/components/TugoBannerAd'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 
 /**
@@ -374,6 +375,9 @@ export default async function YulAirportHubFr() {
 
             {/* Airalo — rendu une fois NEXT_PUBLIC_AFF_AIRALO configuré */}
             <SidebarAffiliate brand="airalo" />
+
+            {/* TuGo — bannière française pour l'assurance voyage */}
+            <TugoBannerAd locale="fr" />
 
             {/* Lectures recommandées */}
             <div className="bg-white fine-border p-5">

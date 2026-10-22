@@ -9,6 +9,7 @@ import type { Metadata } from 'next'
 import AirportLoungeGridFiltered, { type LoungeSummary } from '@/components/AirportLoungeGridFiltered'
 import WeatherWidget from '@/components/WeatherWidget'
 import SidebarAffiliate from '@/components/SidebarAffiliate'
+import TugoBannerAd from '@/components/TugoBannerAd'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 import AirQualityWidget from '@/components/AirQualityWidget'
 import DepartureBoard from '@/components/DepartureBoard'
@@ -560,6 +561,9 @@ export default async function AirportPage({ params }: Props) {
           {/* Airalo eSIM — rendered only once NEXT_PUBLIC_AFF_AIRALO is set,
               so the layout stays stable before vs. after affiliate activation. */}
           <SidebarAffiliate brand="airalo" />
+
+          {/* TuGo All-Inclusive 300×250 banner — travel-insurance affiliate. */}
+          <TugoBannerAd locale="en" />
 
           {/* Back to all airports */}
           <Link

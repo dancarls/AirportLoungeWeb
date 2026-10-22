@@ -1,6 +1,6 @@
 import { affiliate, AFFILIATE_REL, isAffiliated } from '@/lib/affiliates'
 
-type Brand = 'airalo'
+type Brand = 'airalo' | 'monos'
 
 interface Props {
   /**
@@ -29,6 +29,14 @@ const COPY: Record<Brand, BrandCopy> = {
     body:
       'Install a destination data plan on your phone before you board. Works alongside your Canadian SIM; no roaming surprises, no searching for an airport SIM counter.',
     ctaLabel: 'Browse eSIM Plans',
+  },
+  monos: {
+    affiliateKey: 'monos-luggage',
+    label: 'Partner · Monos',
+    heading: 'Monos — Canadian carry-on, lifetime warranty',
+    body:
+      'Vancouver-designed carry-on and luggage. Fits every Canadian airline overhead bin, in champagne, navy and bone. Quiet premium, no logo noise.',
+    ctaLabel: 'See the Collection',
   },
 }
 
