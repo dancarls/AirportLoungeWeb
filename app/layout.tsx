@@ -44,14 +44,11 @@ export const metadata: Metadata = {
     //   <meta name="impact-site-verification" value="…">
     // via Next.js's Metadata API `other` bag (site-specific verifier keys).
     other: {
-      // Multiple Impact.com publisher-brand relationships each require their
-      // own site verification. Passing an array emits one <meta> tag per value.
-      // - ead76e9...: original general Impact.com publisher application (2026).
-      // - 2949c39...: TuGo travel insurance affiliate relationship (Oct 2026).
-      'impact-site-verification': [
-        'ead76e99-a37c-4586-ad88-09e3af0c3c5e',
-        '2949c399-8c34-45b4-b4b4-65fce29d4eb4',
-      ],
+      // Impact.com publisher site verification for the original general
+      // publisher application. The TuGo-labeled tag (2949c39...) was removed
+      // 2026-10-27 — TuGo's affiliate program runs on PartnerStack, not
+      // Impact, so that verification was never doing attribution for TuGo.
+      'impact-site-verification': 'ead76e99-a37c-4586-ad88-09e3af0c3c5e',
     },
   },
   icons: {
