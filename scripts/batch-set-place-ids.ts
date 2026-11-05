@@ -45,7 +45,7 @@ const ASSIGNMENTS: { slug: string; placeId: string; label: string }[] = [
 async function main() {
   const commit = process.argv.includes('--commit')
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const serviceKey  = process.env.SUPABASE_SERVICE_KEY
+  const serviceKey  = process.env.SUPABASE_SECRET_KEY
   if (!supabaseUrl || !serviceKey) { console.error('Missing env'); process.exit(1) }
   const supabase = createClient(supabaseUrl, serviceKey)
 

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 // Rudimentary in-memory rate limit — one submission per IP hash per 60 seconds.
 // The 'idle when no traffic' Vercel function lifecycle means this resets
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
 
   const userAgent = req.headers.get('user-agent')?.slice(0, 512) ?? null
 
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { error } = await supabase.from('newsletter_subscribers').insert({
     email,
     source,

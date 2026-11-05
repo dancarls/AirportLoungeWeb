@@ -2,7 +2,7 @@
  * Usage: node --env-file=.env.local scripts/upload-hero-image.mjs <IATA> "<image-path>"
  * Example: node --env-file=.env.local scripts/upload-hero-image.mjs YHZ "C:\Users\danca\Downloads\HalifaxAirport.jpg"
  *
- * Requires SUPABASE_SERVICE_KEY in .env.local (already set).
+ * Requires SUPABASE_SECRET_KEY in .env.local (already set).
  * Uploads the image to Supabase storage at airports/<iata-lower>/hero.jpg
  * and automatically patches HERO_IMAGE in app/airports/[iata]/page.tsx.
  */
@@ -16,9 +16,9 @@ const __dir = dirname(fileURLToPath(import.meta.url));
 const PAGE_TSX = join(__dir, '..', 'app', 'airports', '[iata]', 'page.tsx');
 
 const SUPABASE_URL = 'https://ixgbdmrembkrpbkjhtfi.supabase.co';
-const SERVICE_KEY  = process.env.SUPABASE_SERVICE_KEY;
+const SERVICE_KEY  = process.env.SUPABASE_SECRET_KEY;
 if (!SERVICE_KEY) {
-  console.error('Missing SUPABASE_SERVICE_KEY. Run with: node --env-file=.env.local scripts/upload-hero-image.mjs ...');
+  console.error('Missing SUPABASE_SECRET_KEY. Run with: node --env-file=.env.local scripts/upload-hero-image.mjs ...');
   process.exit(1);
 }
 

@@ -1,4 +1,6 @@
+import 'server-only'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 /**
  * Google Air Quality API client with Supabase-backed 60-minute cache.
@@ -89,8 +91,11 @@ export async function getAirportAirQuality(airportId: string, lat: number, lng: 
       dominantPollutant: primary.dominantPollutant ?? null,
     }
 
-    // Fire-and-forget cache write — the read path doesn't wait on this.
-    await supabase.from('airport_air_quality').upsert({
+    // Cache write uses the server-only admin client — the public anon key
+    // does not have insert/upsert rights on airport_air_quality. The read
+    // above stays on the anon-cookie client since RLS allows SELECT.
+    const admin = createAdminClient()
+    await admin.from('airport_air_quality').upsert({
       airport_id: airportId,
       aqi: reading.aqi,
       category: reading.category,

@@ -14,7 +14,7 @@ import { createClient } from '@supabase/supabase-js'
 
 const sb = createClient(
   'https://ixgbdmrembkrpbkjhtfi.supabase.co',
-  process.env.SUPABASE_SERVICE_KEY
+  process.env.SUPABASE_SECRET_KEY
 )
 
 const CAFE_DESCRIPTION = `<p>Whether you're short on time and want a quick and healthy pre-flight snack and coffee or want to sit back and relax with a glass of wine or beer, the Air Canada Café is the perfect pit stop for travelers on the go.</p>`

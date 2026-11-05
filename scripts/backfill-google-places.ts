@@ -9,7 +9,7 @@
  * these are missing, the script tells you exactly which one:
  *   NEXT_PUBLIC_GOOGLE_MAPS_KEY   — Places API (New) enabled, no HTTP-referrer restriction
  *   NEXT_PUBLIC_SUPABASE_URL
- *   SUPABASE_SERVICE_KEY          — admin write access to lounges + airports
+ *   SUPABASE_SECRET_KEY          — admin write access to lounges + airports
  *
  * Cost: about $2 total (one Text Search + one Place Details per lounge across
  * 53 lounges = ~106 requests × ~$0.017/request average = ~$1.80).
@@ -60,7 +60,7 @@ const MAX_KM_FROM_AIRPORT = 8 // reject any Place candidate further than 8 km fr
 
 async function main() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const serviceKey  = process.env.SUPABASE_SERVICE_KEY
+  const serviceKey  = process.env.SUPABASE_SECRET_KEY
   const googleKey   = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY
 
   // Detect BOTH missing and empty-string values — Vercel returns empty strings
@@ -73,7 +73,7 @@ async function main() {
     else if (val === '') empty.push(name)
   }
   check('NEXT_PUBLIC_SUPABASE_URL',    supabaseUrl)
-  check('SUPABASE_SERVICE_KEY',         serviceKey)
+  check('SUPABASE_SECRET_KEY',         serviceKey)
   check('NEXT_PUBLIC_GOOGLE_MAPS_KEY',  googleKey)
 
   if (missing.length + empty.length > 0 || !supabaseUrl || !serviceKey || !googleKey) {

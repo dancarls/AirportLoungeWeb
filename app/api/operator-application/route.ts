@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 const RATE_LIMIT_MS = 30_000
 const seen = new Map<string, number>()
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
   }
   seen.set(ipHash, now)
 
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const { error } = await supabase.from('operator_applications').insert({
     lounge_name: loungeName,
     airport_iata: airportIata,

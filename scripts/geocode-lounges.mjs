@@ -10,7 +10,7 @@ const env = Object.fromEntries(
     .map(l => { const i = l.indexOf('='); return [l.slice(0, i).trim(), l.slice(i + 1).trim().replace(/^"|"$/g, '')] })
 )
 const TOKEN = env.NEXT_PUBLIC_MAPBOX_TOKEN
-const SUPABASE_KEY = env.SUPABASE_SERVICE_KEY
+const SUPABASE_KEY = env.SUPABASE_SECRET_KEY
 
 const AIRPORTS = {
   YYZ: { id: '840161ae-1301-45f8-ad92-10d7834bef72', center: [-79.6248, 43.6780], city: 'Toronto Pearson' },

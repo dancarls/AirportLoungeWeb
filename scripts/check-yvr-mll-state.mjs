@@ -6,7 +6,7 @@ import { createClient } from '@supabase/supabase-js'
 
 const sb = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY ?? process.env.SUPABASE_SERVICE_ROLE_KEY,
+  process.env.SUPABASE_SECRET_KEY,
 )
 
 const yvrId = '3f2645da-2c60-4e3e-ad78-3bd268bee576'

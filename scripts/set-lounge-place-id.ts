@@ -59,7 +59,7 @@ async function main() {
   }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const serviceKey  = process.env.SUPABASE_SERVICE_KEY
+  const serviceKey  = process.env.SUPABASE_SECRET_KEY
   if (!supabaseUrl || !serviceKey) {
     console.error('Missing Supabase env vars — run `vercel env pull .env.local --environment=production` first.')
     process.exit(1)

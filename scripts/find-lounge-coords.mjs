@@ -20,7 +20,7 @@ const AIRPORTS = {
 const code = (process.argv[2]||'YYZ').toUpperCase()
 const A = AIRPORTS[code]; if (!A) { console.error('unknown'); process.exit(1) }
 
-const sb = createClient('https://ixgbdmrembkrpbkjhtfi.supabase.co', env.SUPABASE_SERVICE_KEY)
+const sb = createClient('https://ixgbdmrembkrpbkjhtfi.supabase.co', env.SUPABASE_SECRET_KEY)
 const { data: lounges } = await sb.from('lounges')
   .select('id, name, slug, terminal, location_detail')
   .eq('airport_id', A.id).eq('is_active', true).order('terminal').order('name')

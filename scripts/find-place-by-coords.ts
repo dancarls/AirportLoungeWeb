@@ -107,7 +107,7 @@ async function main() {
     : 0
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const serviceKey  = process.env.SUPABASE_SERVICE_KEY
+  const serviceKey  = process.env.SUPABASE_SECRET_KEY
   const googleKey   = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY
   if (!supabaseUrl || !serviceKey || !googleKey) {
     console.error('Missing env vars. Run: vercel env pull .env.local --environment=production')
