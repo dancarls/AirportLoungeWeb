@@ -10,9 +10,10 @@ import AirportLoungeGridFiltered, { type LoungeSummary } from '@/components/Airp
 import WeatherWidget from '@/components/WeatherWidget'
 import SidebarAffiliate from '@/components/SidebarAffiliate'
 import TugoBannerAd from '@/components/TugoBannerAd'
-import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 import AirQualityWidget from '@/components/AirQualityWidget'
 import DepartureBoard from '@/components/DepartureBoard'
+import LoungeAccessCTA from '@/components/LoungeAccessCTA'
+import AffiliateDisclosure from '@/components/AffiliateDisclosure'
 import { INDOOR_COVERED } from '@/lib/mapbox/indoor'
 
 interface Props { params: Promise<{ iata: string }> }
@@ -363,6 +364,10 @@ export default async function AirportPage({ params }: Props) {
 
         {/* ── Left: Lounge grid (client component) ───────── */}
         <div className="lg:col-span-8">
+          {/* Affiliate disclosure — required by FinlyWealth agreement §11
+              to appear BEFORE the first affiliate link on the page. */}
+          <AffiliateDisclosure variant="inline" />
+
           {lounges.length === 0 ? (
             <div>
               <h2 className="font-headline-lg text-headline-lg text-primary mb-8">
@@ -377,7 +382,14 @@ export default async function AirportPage({ params }: Props) {
               </div>
             </div>
           ) : (
-            <AirportLoungeGridFiltered lounges={lounges} iata={code} />
+            <>
+              <AirportLoungeGridFiltered lounges={lounges} iata={code} />
+
+              {/* Hero-band CTA below the lounge grid — highest-intent moment:
+                  user has just scanned the lounges and is thinking "which one
+                  can I get into?" */}
+              <LoungeAccessCTA variant="hero" iataCode={code} destination="lounge-access" />
+            </>
           )}
         </div>
 
@@ -530,33 +542,11 @@ export default async function AirportPage({ params }: Props) {
             )}
           </div>
 
-          {/* Cards that unlock lounges at this airport — single understated
-              FinlyWealth CTA. Hub pages drive the bulk of traffic (YUL alone
-              was 389 views in a 7-day window) and had zero affiliate CTA
-              before this. Specifically pitched to the "which card gets me in"
-              question that the surrounding content answers. */}
-          <div className="bg-white border border-outline-variant/30 p-6 text-center">
-            <span className="font-label-caps text-[9px] text-sand-dark uppercase tracking-widest block mb-3">
-              Sponsored · FinlyWealth
-            </span>
-            <h5 className="font-bold text-primary mb-2 leading-snug">
-              Cards that unlock lounges at {code}
-            </h5>
-            <p className="text-sm text-secondary mb-4 leading-relaxed">
-              Compare the Canadian credit cards with Priority Pass, Plaza Premium or Maple Leaf Lounge access — current terms, fees and welcome offers.
-            </p>
-            <a
-              href={affiliate('finlywealth-lounge-access-cards')}
-              target="_blank"
-              rel={AFFILIATE_REL}
-              className="inline-block bg-primary text-white px-6 py-3 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-opacity"
-            >
-              Compare Lounge Cards
-            </a>
-            <p className="text-[9px] text-secondary/50 mt-3">
-              Sponsored — we may earn a commission.
-            </p>
-          </div>
+          {/* High-conversion lounge access CTA — replaces the earlier
+              understated card. Dark-mode treatment with 3 benefit bullets,
+              gold CTA button, specific to the airport's code. See
+              components/LoungeAccessCTA.tsx for the 3 variants. */}
+          <LoungeAccessCTA variant="sidebar" iataCode={code} destination="lounge-access" />
 
           {/* Airalo eSIM — rendered only once NEXT_PUBLIC_AFF_AIRALO is set,
               so the layout stays stable before vs. after affiliate activation. */}

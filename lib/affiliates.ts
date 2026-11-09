@@ -63,6 +63,22 @@ type AffiliateKey =
   | 'finlywealth-cibc-aeroplan-vip'
   | 'finlywealth-rbc-avion-vip'
   | 'finlywealth-scotia-passport'
+  // FinlyWealth REBATE pages — higher-converting than review pages because
+  // the cash-rebate amount is shown upfront. Pattern: /rebates/credit-cards/<slug>.
+  // Confirmed live by copying directly from the affiliate hub offer table
+  // 2026-11-09. Pick the per-card rebate path over the per-card review path
+  // (finlywealth-amex-platinum etc.) wherever the user is already decided on
+  // a specific card.
+  | 'finlywealth-rebate-amex-cobalt'
+  | 'finlywealth-rebate-amex-platinum'
+  | 'finlywealth-rebate-amex-aeroplan-reserve'
+  | 'finlywealth-rebate-amex-gold-rewards'
+  | 'finlywealth-rebate-td-aeroplan-vip'
+  | 'finlywealth-rebate-cibc-aeroplan-vip'
+  | 'finlywealth-rebate-rbc-avion-vip'
+  | 'finlywealth-rebate-scotia-passport'
+  | 'finlywealth-rebate-bmo-eclipse-infinite-privilege'
+  | 'finlywealth-rebate-bmo-eclipse-infinite'
   // FinlyWealth interactive tools (destination pages, not embeds).
   | 'finlywealth-quiz'
   | 'finlywealth-combos-calculator'
@@ -252,6 +268,51 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
   'finlywealth-scotia-passport': {
     url: '/credit-cards/reviews/scotia-passport-visa-infinite',
     finlywealthRedirect: { placement: 'scotia-passport' },
+  },
+  // ─── Rebate-page deeplinks ────────────────────────────────────────────────
+  // Paths copied from the affiliate hub offer table 2026-11-09. Each goes to
+  // finlywealth.com/rebates/credit-cards/<slug> which shows the active cash
+  // rebate for that card up front — higher conversion than the /credit-cards/
+  // reviews/ pages for already-decided visitors.
+  'finlywealth-rebate-amex-cobalt': {
+    url: '/rebates/credit-cards/amex-cobalt',
+    finlywealthRedirect: { placement: 'rebate-amex-cobalt' },
+  },
+  'finlywealth-rebate-amex-platinum': {
+    url: '/rebates/credit-cards/amex-platinum',
+    finlywealthRedirect: { placement: 'rebate-amex-platinum' },
+  },
+  'finlywealth-rebate-amex-aeroplan-reserve': {
+    url: '/rebates/credit-cards/amex-aeroplan-reserve',
+    finlywealthRedirect: { placement: 'rebate-amex-aeroplan-reserve' },
+  },
+  'finlywealth-rebate-amex-gold-rewards': {
+    url: '/rebates/credit-cards/amex-gold-rewards',
+    finlywealthRedirect: { placement: 'rebate-amex-gold-rewards' },
+  },
+  'finlywealth-rebate-td-aeroplan-vip': {
+    url: '/rebates/credit-cards/td-aeroplan-visa-infinite-privilege',
+    finlywealthRedirect: { placement: 'rebate-td-aeroplan-vip' },
+  },
+  'finlywealth-rebate-cibc-aeroplan-vip': {
+    url: '/rebates/credit-cards/cibc-aeroplan-visa-infinite-privilege',
+    finlywealthRedirect: { placement: 'rebate-cibc-aeroplan-vip' },
+  },
+  'finlywealth-rebate-rbc-avion-vip': {
+    url: '/rebates/credit-cards/rbc-avion-visa-infinite-privilege',
+    finlywealthRedirect: { placement: 'rebate-rbc-avion-vip' },
+  },
+  'finlywealth-rebate-scotia-passport': {
+    url: '/rebates/credit-cards/scotia-passport-visa-infinite',
+    finlywealthRedirect: { placement: 'rebate-scotia-passport' },
+  },
+  'finlywealth-rebate-bmo-eclipse-infinite-privilege': {
+    url: '/rebates/credit-cards/bmo-eclipse-visa-infinite-privilege',
+    finlywealthRedirect: { placement: 'rebate-bmo-eclipse-infinite-privilege' },
+  },
+  'finlywealth-rebate-bmo-eclipse-infinite': {
+    url: '/rebates/credit-cards/bmo-eclipse-visa-infinite',
+    finlywealthRedirect: { placement: 'rebate-bmo-eclipse-infinite' },
   },
   // Amazon Associates.ca — travel-gear posts. The `tag` parameter is the official
   // Amazon Associates identifier; use the .ca product URLs.

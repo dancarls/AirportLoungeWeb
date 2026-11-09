@@ -21,6 +21,8 @@ import GalleryLightbox from '@/components/GalleryLightbox'
 import WeatherWidget from '@/components/WeatherWidget'
 import SidebarAffiliate from '@/components/SidebarAffiliate'
 import TugoBannerAd from '@/components/TugoBannerAd'
+import LoungeAccessCTA from '@/components/LoungeAccessCTA'
+import AffiliateDisclosure from '@/components/AffiliateDisclosure'
 import LoungePlaceholder from '@/components/LoungePlaceholder'
 import NewsletterCTA from '@/components/NewsletterCTA'
 import GooglePlacesEnrichment from '@/components/GooglePlacesEnrichment'
@@ -369,6 +371,10 @@ export default function LoungeDetailV2({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* ─── LEFT COLUMN ─────────────────────────────────────────── */}
           <div className="lg:col-span-8 space-y-8">
+            {/* FinlyWealth §11 disclosure — appears above all affiliate links
+                on this page (sidebar CTA, bottom day-pass CTA, inline cards). */}
+            <AffiliateDisclosure variant="inline" />
+
             {/* Closure banner takes precedence when applicable */}
             {isClosed && (
               <LoungeClosureBanner
@@ -1007,31 +1013,10 @@ export default function LoungeDetailV2({
               subheading={`Monthly briefing on access-rule changes at ${l.name} and other Canadian lounges.`}
             />
 
-            {/* Cards that unlock THIS lounge — contextual FinlyWealth CTA for
-                a visitor already decided on which lounge. Highest-intent spot
-                in the funnel. */}
-            <div className="bg-white border border-outline-variant/30 p-6 text-center">
-              <span className="font-label-caps text-[9px] text-sand-dark uppercase tracking-widest block mb-3">
-                Sponsored · FinlyWealth
-              </span>
-              <h5 className="font-bold text-primary mb-2 leading-snug">
-                The Canadian cards that get you in
-              </h5>
-              <p className="text-sm text-secondary mb-4 leading-relaxed">
-                Compare the Priority Pass, Plaza Premium and Maple Leaf Lounge cards against each other — current fees, welcome offers, and 2027 cap changes.
-              </p>
-              <a
-                href={affiliate('finlywealth-lounge-access-cards')}
-                target="_blank"
-                rel={AFFILIATE_REL}
-                className="inline-block bg-primary text-white px-6 py-3 font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-opacity"
-              >
-                Compare Lounge Cards
-              </a>
-              <p className="text-[9px] text-secondary/50 mt-3">
-                Sponsored — we may earn a commission.
-              </p>
-            </div>
+            {/* Cards that unlock THIS lounge — contextual high-conversion
+                CTA. Visitor is already deep in the funnel, decided on a
+                specific lounge, and asking "how do I get in?". */}
+            <LoungeAccessCTA variant="sidebar" destination="lounge-access" />
 
             {/* Airalo eSIM — renders only once NEXT_PUBLIC_AFF_AIRALO is set. */}
             <SidebarAffiliate brand="airalo" />
