@@ -53,6 +53,15 @@ function loungeAccessCardsAffiliate(loungeName: string): {
   heading: string
 } {
   const n = loungeName.toLowerCase()
+  // WestJet Elevation Lounge — the only WestJet Lounge in Canada (YYC).
+  // Routes to the WestJet RBC World Elite rebate (companion voucher + fast-track status).
+  if (n.includes('westjet')) {
+    return {
+      href: affiliate('finlywealth-rebate-westjet-rbc-world-elite'),
+      ctaLabel: 'See the WestJet RBC World Elite',
+      heading: 'The WestJet card that gets you into this lounge',
+    }
+  }
   if (n.includes('maple leaf') || n.includes('air canada') || n.includes('signature suite')) {
     return {
       href: affiliate('finlywealth-aeroplan-cards'),

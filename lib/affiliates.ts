@@ -22,7 +22,7 @@
  *   NEXT_PUBLIC_AFF_BOOKING            — Booking.com aid parameter
  */
 
-type AffiliateKey =
+export type AffiliateKey =
   | 'priority-pass'
   | 'priority-pass-membership'
   | 'dragonpass'
@@ -79,6 +79,8 @@ type AffiliateKey =
   | 'finlywealth-rebate-scotia-passport'
   | 'finlywealth-rebate-bmo-eclipse-infinite-privilege'
   | 'finlywealth-rebate-bmo-eclipse-infinite'
+  | 'finlywealth-rebate-westjet-rbc-world-elite'
+  | 'finlywealth-rebate-westjet-rbc-mastercard'
   // FinlyWealth interactive tools (destination pages, not embeds).
   | 'finlywealth-quiz'
   | 'finlywealth-combos-calculator'
@@ -313,6 +315,16 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
   'finlywealth-rebate-bmo-eclipse-infinite': {
     url: '/rebates/credit-cards/bmo-eclipse-visa-infinite',
     finlywealthRedirect: { placement: 'rebate-bmo-eclipse-infinite' },
+  },
+  // WestJet co-brand — unique relevance to YYC (only WestJet Elevation Lounge in Canada).
+  // Rebate paths assumed; if Finlywealth hub shows different slugs, update them here.
+  'finlywealth-rebate-westjet-rbc-world-elite': {
+    url: '/rebates/credit-cards/westjet-rbc-world-elite-mastercard',
+    finlywealthRedirect: { placement: 'rebate-westjet-rbc-world-elite' },
+  },
+  'finlywealth-rebate-westjet-rbc-mastercard': {
+    url: '/rebates/credit-cards/westjet-rbc-mastercard',
+    finlywealthRedirect: { placement: 'rebate-westjet-rbc-mastercard' },
   },
   // Amazon Associates.ca — travel-gear posts. The `tag` parameter is the official
   // Amazon Associates identifier; use the .ca product URLs.
