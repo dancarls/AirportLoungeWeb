@@ -1,11 +1,7 @@
-'use client'
-
-import Script from 'next/script'
-
 /**
  * Travelpayouts AI Drive — third-party JavaScript that auto-injects contextual
- * travel-affiliate placements (hotels via Booking.com, flights via Skyscanner,
- * activities via GetYourGuide, etc) into the page based on content.
+ * travel-affiliate placements (Booking.com, Skyscanner, GetYourGuide, VRBO,
+ * etc) into the page based on content.
  *
  * ────────────────────────────────────────────────────────────────────────────
  * SECURITY / TRUST NOTES (read before touching):
@@ -25,9 +21,14 @@ import Script from 'next/script'
  *   Unset NEXT_PUBLIC_TRAVELPAYOUTS_DRIVE_ID in Vercel env and redeploy.
  *   The component renders nothing without the env var.
  *
- * STRATEGY:
- *   `afterInteractive` — loads after the page is interactive so it doesn't
- *   block LCP or TTI on content pages.
+ * WHY IT'S INLINE IN <head> (not next/script):
+ *   Travelpayouts' install verifier scans the server-rendered HTML in
+ *   <head> for their script tag. Using Next.js's <Script> component with
+ *   "afterInteractive" strategy would inject it client-side at the end of
+ *   <body>, which fails their check. This implementation exactly matches
+ *   the IIFE snippet from their install page, embedded via Server Component
+ *   render into <head>. The IIFE sets async=1 on the dynamically-created
+ *   script element, so there's no performance penalty for loading in <head>.
  */
 export default function TravelpayoutsDrive() {
   const driveId = process.env.NEXT_PUBLIC_TRAVELPAYOUTS_DRIVE_ID
@@ -36,16 +37,21 @@ export default function TravelpayoutsDrive() {
   // Travelpayouts encodes the site ID as base64 in the script filename.
   // The ?t= query param mirrors the raw ID.
   const encoded = Buffer.from(driveId).toString('base64').replace(/=+$/, '')
-  const src = `https://emrldtp.cc/${encoded}.js?t=${driveId}`
+
+  // Mirrors the exact snippet from Travelpayouts' install page — the IIFE
+  // pattern they verify against. Keeping the markup identical to their
+  // instructions (including the inline attributes) maximises the chance
+  // their checker passes on the first try.
+  const inline = `(function(){var s=document.createElement("script");s.async=1;s.setAttribute("data-cmp-ab","2");s.src='https://emrldtp.cc/${encoded}.js?t=${driveId}';document.head.appendChild(s);})();`
 
   return (
-    <Script
-      src={src}
-      strategy="afterInteractive"
+    <script
       data-cmp-ab="2"
       data-noptimize="1"
       data-cfasync="false"
+      data-wpfc-render="false"
       data-no-defer="1"
+      dangerouslySetInnerHTML={{ __html: inline }}
     />
   )
 }

@@ -129,6 +129,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
+        {/* Travelpayouts AI Drive — gated by NEXT_PUBLIC_TRAVELPAYOUTS_DRIVE_ID.
+            In <head> so their install verifier finds it on server-rendered HTML.
+            Kill switch: remove the env var in Vercel. */}
+        <TravelpayoutsDrive />
       </head>
       <body className="bg-bone-white text-on-surface font-body-md transition-colors duration-300">
         <Header />
@@ -143,9 +147,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           gtag('js', new Date());
           gtag('config', 'G-FM95J545RS');
         `}</Script>
-        {/* Travelpayouts AI Drive — gated by NEXT_PUBLIC_TRAVELPAYOUTS_DRIVE_ID.
-            Renders nothing if env var is unset. Kill switch: remove the var. */}
-        <TravelpayoutsDrive />
       </body>
     </html>
   )
