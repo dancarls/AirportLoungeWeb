@@ -3826,6 +3826,352 @@ export const blogPosts: BlogPost[] = [
       },
     ],
   },
+
+  // ──────────────────────────────────────────────────────────────────────────
+  // "Day pass at [airport]" series — commercial-intent long-tail SEO.
+  // Each post answers the direct question with real lounge data from our DB,
+  // lists the walk-in options with price bands, and converts via two CTAs:
+  //   1. Pre-book via DragonPass/Priority Pass/operator link (day-pass affiliate)
+  //   2. "The cheaper way: the right credit card" (Finlywealth rebate)
+  // ──────────────────────────────────────────────────────────────────────────
+  {
+    slug: 'yul-airport-lounge-day-pass',
+    title: 'Can You Buy a Day Pass at Montréal (YUL)? Every Lounge, Every Price',
+    excerpt:
+      'Yes — five Montréal-Trudeau lounges sell walk-in day passes. Current prices, how to pre-book, and the cheaper way in with the right credit card.',
+    coverImage:
+      'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yul/hero.jpg',
+    publishedAt: '2026-11-09',
+    lastReviewed: '2026-11-09',
+    category: 'Day Pass Guides',
+    readingTime: '7 min read',
+    metaTitle: 'YUL Day Pass: Montréal Airport Lounge Walk-In Access (2026)',
+    metaDescription:
+      'Can you buy a day pass at a YUL lounge? Yes — at 5 lounges. Full 2026 price list, how to pre-book, and the credit card that makes paid passes pointless.',
+    primaryCta: {
+      heading: 'The Cheaper Way In — Compare Lounge Cards',
+      subheading:
+        'A $150/yr credit card unlocks 6 free Priority Pass visits — four visits saves you more than the annual fee at YUL day-pass prices.',
+      ctaLabel: 'See lounge-access cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
+    content: `
+<p data-speakable="intro"><strong>Yes — you can buy a walk-in day pass at five lounges at Montréal-Trudeau (YUL). The cheapest is the Desjardins Odyssey Lounge at $42 CAD. The National Bank Lounge is the priciest at around $60. Air Canada Maple Leaf Lounges do not sell day passes at any price. This guide lists every YUL lounge that sells walk-in access right now (verified November 2026), what each costs, where it is in the terminal, and the one credit card that makes most of these payments unnecessary.</strong></p>
+
+<h2 id="yul-day-pass-lounges">YUL lounges that sell walk-in day passes</h2>
+
+<p>Five of YUL's lounges accept paid day-pass guests. All are in the Main Terminal — YUL has only one terminal, which simplifies things compared to YYZ or YVR. Prices below are current as of November 2026 and are for adult walk-in rates; children's rates and reduced "work day" options exist at some lounges.</p>
+
+<h3>1. Aspire International Lounge — ~$45 CAD</h3>
+<p>Near Gate 52, international concourse. Open to any traveller with an international boarding pass. Takes <strong>Priority Pass</strong> and <strong>DragonPass</strong> for free — if you don't have either, it's one of the cheaper paid options at YUL. Food is a small buffet; drinks included. Best for budget-conscious international travellers before a long-haul flight.</p>
+
+<h3>2. Aspire Amex Lounge (Domestic) — ~$45 CAD</h3>
+<p>The domestic equivalent, between Gates 1 and 2. Opened July 2025 as a replacement for earlier domestic walk-in options. Same price range, same Priority Pass / DragonPass acceptance. Best for anyone flying Porter, Air Canada rouge, or domestic Air Canada without status.</p>
+
+<h3>3. Desjardins Odyssey Lounge (International) — $42 CAD adults / $26 CAD ages 12–17</h3>
+<p>Near Gate 63 in the international departures concourse. The cheapest sit-down option at YUL, run by Desjardins (the Québec credit union). Hot food, local wine, quiet work zones. Accepts Priority Pass and DragonPass, plus any Desjardins Odyssey card gets in free.</p>
+
+<h3>4. Desjardins Odyssey Lounge (Transborder) — $42 CAD</h3>
+<p>Past US pre-clearance, near Gates 76/77. Smaller than the international branch but same food and drink. If you're flying to the US via YUL, this is the only non-Maple-Leaf option in the transborder zone — worth the $42 if you have a longer connection.</p>
+
+<h3>5. National Bank Lounge — ~$60 CAD</h3>
+<p><strong>Note: currently operating at reduced capacity</strong> due to renovation work through late 2026. Near Gate 53, international. The most expensive YUL day pass, but the highest-rated — proper hot food, premium bar, excellent views of the apron. Accepts Priority Pass, DragonPass, and the National Bank World Elite Mastercard (free).</p>
+
+<h2 id="pre-book-yul">How to pre-book a YUL day pass</h2>
+
+<p>Three of these lounges accept pre-booking, which guarantees entry on busy days (useful during March Break, Christmas, or when the Maple Leaf Lounges overflow and Priority Pass holders redirect):</p>
+
+<ul>
+<li><strong>Via Priority Pass app</strong> — the Aspire lounges and National Bank Lounge show up with real-time availability. Priority Pass members can pre-book starting 7 days out.</li>
+<li><strong>Via DragonPass app</strong> — similar, with sometimes-different lounge availability than Priority Pass.</li>
+<li><strong>Walk-up</strong> — all five accept credit card payment at the door, subject to capacity.</li>
+</ul>
+
+<p>There is <strong>no central YUL day-pass booking page</strong>. Each operator (Aspire, Desjardins, National Bank) runs their own entry system. Priority Pass and DragonPass are the two closest things to a universal pre-book platform.</p>
+
+<h2 id="lounges-with-no-day-pass">Which YUL lounges do NOT sell day passes?</h2>
+
+<p>Six lounges are access-only — no amount of money gets you through the door without the right ticket, status, or card:</p>
+
+<ul>
+<li>Air Canada Maple Leaf Lounge (Domestic)</li>
+<li>Air Canada Maple Leaf Lounge (International)</li>
+<li>Air Canada Maple Leaf Lounge (Transborder)</li>
+<li>Air Canada Café (Domestic + Transborder)</li>
+<li>Air France / KLM Lounge (SkyPriority only, plus Priority Pass guests — no paid walk-in)</li>
+</ul>
+
+<p>For Maple Leaf access at YUL you need a same-day Air Canada business class ticket, Star Alliance Gold status (Aeroplan 25K+), Maple Leaf Club membership, or a card like the Amex Aeroplan Reserve or TD/CIBC Aeroplan Visa Infinite Privilege.</p>
+
+<h2 id="cheaper-way">The cheaper way: a credit card instead of day passes</h2>
+
+<p>If you fly through YUL more than twice a year, a credit card beats day passes on math. The <strong>Scotiabank Passport Visa Infinite</strong> costs $150/yr and includes 6 free Priority Pass visits — four of those at YUL's Aspire or Desjardins lounges saves you around $170 vs. the annual fee. The <strong>Amex Platinum</strong> is pricier at $799/yr but gives unlimited Priority Pass visits and includes guests at YUL's Aspire Amex Lounge directly (no PP visit consumed).</p>
+
+<p>Current welcome bonuses on both cards are substantial enough to cover the annual fee in year one. Check the current offers before deciding — welcome bonuses change monthly.</p>
+
+<h2 id="yul-closure-notes">YUL lounge closures and 2026 updates</h2>
+
+<p>The <strong>National Bank Lounge</strong> is in a reduced-capacity temporary space through Q4 2026. Priority Pass acceptance at the temp lounge is intermittent — call ahead or check the Priority Pass app before counting on it. The <strong>original National Bank Lounge</strong> is being fully renovated with reopening scheduled for June 2028.</p>
+
+<p>All other YUL walk-in options listed above are fully operational.</p>
+`,
+    faqs: [
+      {
+        question: 'How much is a day pass at YUL?',
+        answer:
+          'YUL day-pass prices range from $42 CAD (Desjardins Odyssey Lounge) to approximately $60 CAD (National Bank Lounge). The Aspire lounges (domestic and international) are typically $45 CAD. Children and reduced "work day" rates are available at some lounges.',
+      },
+      {
+        question: 'Can I buy a day pass to the Maple Leaf Lounge at YUL?',
+        answer:
+          'No. Air Canada does not sell walk-in day passes to any Maple Leaf Lounge, including the three at YUL. Access requires a same-day Air Canada business class ticket, Aeroplan Elite 50K/75K/Super Elite status, Star Alliance Gold status, Maple Leaf Club membership, or an eligible Aeroplan credit card like the Amex Aeroplan Reserve or TD/CIBC Aeroplan Visa Infinite Privilege.',
+      },
+      {
+        question: 'Can I pre-book a YUL lounge day pass?',
+        answer:
+          'Yes, at three of the five paid-access lounges. The Aspire lounges (domestic and international) and the National Bank Lounge show up in the Priority Pass and DragonPass apps with pre-booking available 7 days out. Walk-up entry is always possible subject to capacity.',
+      },
+      {
+        question: 'Does Priority Pass work at YUL?',
+        answer:
+          'Yes. Priority Pass is accepted at the Aspire International Lounge, Aspire Amex Lounge (Domestic), both Desjardins Odyssey Lounges (International and Transborder), and the National Bank Lounge. It is not accepted at Air Canada Maple Leaf Lounges or the Air France / KLM Lounge (except for SkyTeam elite guests).',
+      },
+      {
+        question: 'Is a credit card cheaper than buying day passes at YUL?',
+        answer:
+          'For anyone flying through YUL more than twice a year, yes. The Scotiabank Passport Visa Infinite ($150/yr, 6 free Priority Pass visits) breaks even at 3-4 YUL visits. The Amex Platinum ($799/yr) is only worth it if you travel internationally frequently, but it includes unlimited Priority Pass plus direct Amex Platinum access at the Aspire Amex Lounge.',
+      },
+    ],
+    authorBio:
+      'Reviews, access-rule tracking, and price verification for every lounge at Montréal-Trudeau — updated monthly.',
+  },
+  {
+    slug: 'yyz-airport-lounge-day-pass',
+    title: 'Can You Buy a Day Pass at Toronto Pearson (YYZ)? Terminal-by-Terminal Guide',
+    excerpt:
+      'Yes — five Plaza Premium lounges + the Air France/KLM Crown Lounge sell walk-in day passes at YYZ. Terminal 1 vs Terminal 3, prices, and the credit card alternative.',
+    coverImage:
+      'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yyz/hero.jpg',
+    publishedAt: '2026-11-09',
+    lastReviewed: '2026-11-09',
+    category: 'Day Pass Guides',
+    readingTime: '8 min read',
+    metaTitle: 'YYZ Day Pass: Toronto Pearson Lounge Walk-In Access (2026)',
+    metaDescription:
+      'Walk-in day pass at YYZ? Yes — 6 lounges sell them. T1 vs T3 breakdown, $50–$96 CAD price range, how to pre-book, and the cheaper credit-card route.',
+    primaryCta: {
+      heading: 'Skip the Day-Pass Fee — Compare Lounge Cards',
+      subheading:
+        'Priority Pass is included on cards from $150/yr. Four YYZ visits a year and the card pays for itself twice over.',
+      ctaLabel: 'See lounge-access cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
+    content: `
+<p data-speakable="intro"><strong>Yes — Toronto Pearson (YYZ) has walk-in day passes at six lounges: four Plaza Premium Lounges (two in Terminal 1, two in Terminal 3), plus the Plaza Premium Lounge in each US Transborder zone, and the Air France / KLM Crown Lounge in Terminal 3. Prices range from $50 to $96 CAD depending on lounge and time of day. Air Canada Maple Leaf Lounges, the Signature Suite, and the Admirals Club do not sell walk-in day passes at any price. This guide covers which lounge is where, what it costs, and the credit cards that make day passes pointless. Verified November 2026.</strong></p>
+
+<h2 id="yyz-day-pass-by-terminal">YYZ day-pass lounges by terminal</h2>
+
+<p>YYZ is split across two terminals: Terminal 1 (Star Alliance, Air Canada, most international, and some US transborder) and Terminal 3 (Delta, WestJet, Oneworld, SkyTeam, plus some US transborder). You cannot walk between the two post-security — pick based on your boarding pass.</p>
+
+<h3>Terminal 1 — Three paid-access lounges</h3>
+
+<p><strong>Plaza Premium Lounge (Domestic) — $59–$75 CAD</strong><br>
+Level 3 immediately after security. Open 4am to 1am. Hot breakfast, full bar, showers, nap chairs. The busiest Plaza Premium in Canada, which is both a quality signal and a caution — book ahead for peak departure windows (6–9am, 4–7pm).</p>
+
+<p><strong>Plaza Premium Lounge (US Transborder) — $59–$96 CAD</strong><br>
+Past US pre-clearance, near Gates F53/F55. Smaller than the domestic lounge but newer. Price swings by time of day — mornings before business flights to major US hubs are peak.</p>
+
+<p><strong>Air Canada Maple Leaf Lounge (various) — NO walk-in</strong><br>
+Four Maple Leaf Lounges in T1 (Domestic, International, Transborder, Express). None sell walk-in day passes under any circumstances.</p>
+
+<h3>Terminal 3 — Three paid-access lounges plus AF/KLM</h3>
+
+<p><strong>Plaza Premium Lounge (Domestic) — $59–$75 CAD</strong><br>
+Level 3, near Gates B22/B24. The best-value sit-down option for WestJet domestic travellers without status.</p>
+
+<p><strong>Plaza Premium Lounge (International) — $59–$75 CAD</strong><br>
+Level 2, near Gate C32. Excellent for Oneworld or SkyTeam travellers with longer connections, or anyone on an international route not covered by their airline's own lounge.</p>
+
+<p><strong>Plaza Premium Lounge (US Transborder) — $59–$96 CAD</strong><br>
+Past US pre-clearance, Level 2, near Gate A10. Compact but comfortable.</p>
+
+<p><strong>Air France / KLM Crown Lounge — $50 CAD</strong><br>
+Level 2, near Gate C33 in international departures. Open to any traveller with an international boarding pass departing T3 — lowest sticker price for a day pass at YYZ. Accepts Priority Pass and DragonPass too.</p>
+
+<h2 id="yyz-pre-book">How to pre-book a YYZ day pass</h2>
+
+<p>Three ways:</p>
+
+<ul>
+<li><strong>Plaza Premium website</strong> (plazapremiumlounge.com) — direct booking, usually $5–$10 cheaper than walk-up, confirms a seat on the busiest days.</li>
+<li><strong>Priority Pass app</strong> — pre-book opens 7 days out, and about half the YYZ Plaza Premium slots are bookable this way.</li>
+<li><strong>DragonPass app</strong> — similar to Priority Pass with different per-lounge availability.</li>
+</ul>
+
+<p>Walk-up is always possible. During major delays (common at Pearson in winter), lounges hit capacity fast and walk-ins are turned away — pre-book if your margins are tight.</p>
+
+<h2 id="yyz-no-day-pass">YYZ lounges that do NOT sell day passes</h2>
+
+<ul>
+<li>All four Air Canada Maple Leaf Lounges (T1)</li>
+<li>Air Canada Signature Suite (T1) — Super Elite 100K or international business class only</li>
+<li>Air Canada Café (T1)</li>
+<li>American Airlines Admirals Club (T3) — requires Admirals Club membership, Oneworld Emerald/Sapphire, or a same-day AA business/first class ticket</li>
+</ul>
+
+<h2 id="yyz-card-value">Is a credit card cheaper than YYZ day passes?</h2>
+
+<p>At YYZ the math is especially compelling because Plaza Premium lounges are the widest-available walk-in network and nearly every mid-tier lounge-access card includes them via Priority Pass, DragonPass, LoungeKey, or Mastercard Travel Pass.</p>
+
+<p><strong>Scotiabank Passport Visa Infinite</strong> — $150/yr, 6 Priority Pass visits included. Two YYZ Plaza Premium visits ($59 x 2 = $118) effectively pays the fee; four visits puts you ahead by $100+.</p>
+
+<p><strong>Amex Platinum</strong> — $799/yr, unlimited Priority Pass + guests, plus direct Centurion Lounge network access abroad. Only worth it if you travel heavily internationally.</p>
+
+<p><strong>BMO eclipse Visa Infinite Privilege</strong> — $499/yr, 4 free Priority Pass visits + DragonPass. Mid-tier option with a strong earn rate on dining and travel.</p>
+
+<h2 id="yyz-signature-suite">The YYZ Signature Suite — the one YYZ lounge money can't buy</h2>
+
+<p>Air Canada's Signature Suite in T1 is the best lounge in Canada by a wide margin — à la carte sit-down dining, premium champagne, dedicated concierge. It's not for sale at any price. Entry requires same-day Air Canada international business class on select routes (not all) or Super Elite 100K status. If it matters to you, that status is an Aeroplan credit card and 100,000 qualifying miles away — see our Aeroplan status guide.</p>
+`,
+    faqs: [
+      {
+        question: 'How much is a day pass at YYZ?',
+        answer:
+          'YYZ day-pass prices range from $50 CAD (Air France / KLM Crown Lounge in T3) to $96 CAD (US Transborder Plaza Premium during peak times). The standard Plaza Premium walk-in rate is $59–$75 CAD, with US Transborder lounges priced higher during morning business-travel peaks.',
+      },
+      {
+        question: 'Can I buy a day pass to the Maple Leaf Lounge at YYZ?',
+        answer:
+          'No. None of the four Air Canada Maple Leaf Lounges at YYZ (Domestic, International, Transborder, Express) sell walk-in day passes. Access requires a same-day Air Canada international business class ticket, Aeroplan Elite 50K/75K/Super Elite status, Star Alliance Gold status, Maple Leaf Club membership, or an eligible Aeroplan credit card like the TD or CIBC Aeroplan Visa Infinite Privilege.',
+      },
+      {
+        question: 'Which is better — Plaza Premium Domestic T1 or T3?',
+        answer:
+          'For typical travellers the T1 Domestic Plaza Premium has more space, more seating, a larger food selection, and longer opening hours (4am–1am). T3 Domestic is smaller and newer; it suits WestJet travellers and is close to B gates. Price is the same.',
+      },
+      {
+        question: 'Does Priority Pass work at all YYZ Plaza Premium lounges?',
+        answer:
+          'Yes. Every Plaza Premium Lounge at YYZ — Terminal 1 Domestic, Terminal 1 US Transborder, Terminal 3 Domestic, Terminal 3 International, and Terminal 3 US Transborder — accepts Priority Pass as of November 2026. The Air France / KLM Crown Lounge in T3 also accepts Priority Pass.',
+      },
+      {
+        question: 'Can I pre-book a Plaza Premium Lounge at YYZ?',
+        answer:
+          'Yes, three ways: via plazapremiumlounge.com directly (usually $5–$10 cheaper than walk-up), via the Priority Pass app (opens 7 days out), or via the DragonPass app. Pre-booking is strongly recommended during winter delay seasons and around major holiday periods when walk-up capacity fills quickly.',
+      },
+    ],
+    authorBio:
+      'Toronto Pearson lounge coverage, verified monthly against operator pricing and Priority Pass availability.',
+  },
+  {
+    slug: 'yvr-airport-lounge-day-pass',
+    title: 'Can You Buy a Day Pass at Vancouver (YVR)? 2026 Price List + Alternatives',
+    excerpt:
+      'Yes — Plaza Premium runs multiple walk-in lounges at YVR. Prices, locations, and why one credit card beats paying four day passes a year.',
+    coverImage:
+      'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yvr/hero.jpg',
+    publishedAt: '2026-11-09',
+    lastReviewed: '2026-11-09',
+    category: 'Day Pass Guides',
+    readingTime: '7 min read',
+    metaTitle: 'YVR Day Pass: Vancouver Airport Lounge Walk-In Access (2026)',
+    metaDescription:
+      'Day pass at YVR? Yes — Plaza Premium Domestic, International, US, and Plaza Premium First all take walk-ins. 2026 prices, pre-book info, closures, and the credit-card shortcut.',
+    primaryCta: {
+      heading: 'Four YVR Visits a Year = Card Pays for Itself',
+      subheading:
+        'Priority Pass is bundled with Canadian cards from $150/yr. Four YVR Plaza Premium visits make the card the obvious choice.',
+      ctaLabel: 'See lounge-access cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
+    content: `
+<p data-speakable="intro"><strong>Yes — Vancouver International (YVR) has walk-in day passes at the Plaza Premium Lounge network, spread across Domestic, International, US Transborder, and the premium "Plaza Premium First" lounge. Prices range roughly $55–$75 CAD per adult. The Air Canada Maple Leaf Lounge network does not sell day passes. The Air Canada Signature Suite is not for sale. One important 2026 closure: the Domestic Maple Leaf Lounge is closed October 2026 through early 2028 for renovation — this guide covers alternatives. Verified November 2026.</strong></p>
+
+<h2 id="yvr-day-pass-lounges">YVR lounges that sell walk-in day passes</h2>
+
+<p>YVR operates out of one main terminal split into three concourses: Domestic (Pier C), International (Pier D), and US Transborder (Pier E). Plaza Premium runs a walk-in lounge in each zone, plus a premium "Plaza Premium First" lounge in the main international concourse.</p>
+
+<h3>1. Plaza Premium Lounge (Domestic) — ~$59 CAD</h3>
+<p>Pier C, Gates C29–C30 area. The best option for Air Canada / WestJet domestic departures without Maple Leaf access — especially with the Maple Leaf Lounge Domestic closed through 2028. Hot food, full bar, showers, nap chairs. Accepts Priority Pass, DragonPass, LoungeKey, and most lounge-access credit cards for free.</p>
+
+<h3>2. Plaza Premium Lounge (International) — ~$65 CAD</h3>
+<p>Pier D in the international concourse, past customs and security. Open to any international departure. Larger than the domestic lounge with a stronger food selection and a quiet work zone. Priority Pass accepted.</p>
+
+<h3>3. Plaza Premium First (International) — ~$75 CAD</h3>
+<p>The premium upgrade on the standard International Plaza Premium. Table service dining, à la carte menu, private suites bookable by the hour, better champagne. Priority Pass sometimes accepted depending on availability; walk-in always possible. Worth the extra $10–$15 for long-haul flights (10+ hours to Asia or Europe) where the sit-down meal matters.</p>
+
+<h3>4. Plaza Premium Lounge (US Transborder) — ~$65 CAD</h3>
+<p>Pier E, past US pre-clearance. Essential for US-bound travellers without Maple Leaf access (Air Canada Maple Leaf Lounge US Departures requires Maple Leaf Club or business class). Similar menu to other Plaza Premium locations.</p>
+
+<h2 id="yvr-closure-2026">Important 2026: Domestic Maple Leaf Lounge closure</h2>
+
+<p>As of <strong>October 14, 2026</strong>, the Air Canada Maple Leaf Lounge (Domestic) at YVR is closed for a full renovation through early 2028. Eligible travellers (Business class, Star Alliance Gold, Maple Leaf Club) can use the two Air Canada Cafés at Gates C50 and C46 as alternatives.</p>
+
+<p><strong>For paid day-pass travellers this doesn't change much</strong> — the Maple Leaf Lounge never sold day passes. But if you were counting on Priority Pass redirect traffic going to Plaza Premium Domestic during this period, expect peak-hour capacity issues. Pre-book if your margins are tight.</p>
+
+<h2 id="yvr-pre-book">How to pre-book a YVR day pass</h2>
+
+<ul>
+<li><strong>plazapremiumlounge.com</strong> — direct booking, usually $5–$10 cheaper than walk-up.</li>
+<li><strong>Priority Pass app</strong> — real-time availability, pre-book 7 days out.</li>
+<li><strong>DragonPass app</strong> — similar, sometimes different per-lounge availability.</li>
+<li><strong>Plaza Premium First</strong> also takes private-suite bookings separately (hour-by-hour).</li>
+</ul>
+
+<h2 id="yvr-no-day-pass">YVR lounges that do NOT sell day passes</h2>
+
+<ul>
+<li>Air Canada Maple Leaf Lounge (Domestic) — closed until 2028 regardless</li>
+<li>Air Canada Maple Leaf Lounge (International)</li>
+<li>Air Canada Maple Leaf Lounge (US Departures)</li>
+<li>Air Canada Signature Suite — Super Elite 100K or international business only</li>
+<li>Cathay Pacific Lounge — Oneworld Sapphire/Emerald or Cathay business/first class</li>
+<li>SkyTeam Lounge — SkyTeam Elite Plus or business class</li>
+<li>Air Canada Café / Petit Café — same requirements as Maple Leaf Lounges (no walk-in)</li>
+</ul>
+
+<h2 id="yvr-card-math">Is a credit card cheaper than paying for YVR day passes?</h2>
+
+<p>Three visits a year to YVR Plaza Premium lounges = $180+. That's more than the annual fee on the Scotiabank Passport Visa Infinite ($150/yr, 6 free Priority Pass visits). For Vancouver residents who fly through YVR regularly, a Priority Pass-bundled credit card is almost always the right financial call.</p>
+
+<p>If you also travel internationally frequently and want the Air Canada Maple Leaf Lounge (once it reopens in 2028) plus Plaza Premium coverage, the <strong>Amex Aeroplan Reserve</strong> ($599/yr) bundles both — Maple Leaf access on same-day Air Canada flights plus unlimited Priority Pass.</p>
+
+<p>The <strong>Amex Platinum</strong> at $799/yr is the ceiling option — unlimited Priority Pass with guests, Plaza Premium network, Centurion Lounges globally, and the Amex Fine Hotels & Resorts program on top.</p>
+
+<h2 id="yvr-plaza-premium-first">Plaza Premium First — the one YVR paid lounge worth the extra money</h2>
+
+<p>If you're starting a long-haul flight (10+ hours to Asia, Europe, or Australia) and you don't have Maple Leaf or Air Canada Signature Suite access, Plaza Premium First at $75 is the best sit-down meal and rest option at YVR. The à la carte menu beats the buffet at every other YVR lounge, and the private suites (bookable separately) let you actually sleep for an hour before boarding.</p>
+`,
+    faqs: [
+      {
+        question: 'How much is a day pass at YVR?',
+        answer:
+          'YVR day-pass prices range from approximately $59 CAD (Plaza Premium Domestic) to $75 CAD (Plaza Premium First in the International concourse). Standard Plaza Premium walk-in rates are around $59–$65; Plaza Premium First is the premium tier with table-service dining and private suites available for additional hourly fees.',
+      },
+      {
+        question: 'Is the YVR Maple Leaf Lounge still closed?',
+        answer:
+          'The Air Canada Maple Leaf Lounge (Domestic) at YVR closed October 14, 2026 for a full renovation and will reopen in early 2028. The International and US Departures Maple Leaf Lounges remain open. Eligible travellers during the Domestic closure can use the Air Canada Cafés at Gates C50 and C46.',
+      },
+      {
+        question: 'Can I buy a day pass to the YVR Maple Leaf Lounge or Signature Suite?',
+        answer:
+          'No. Air Canada does not sell walk-in day passes at any Maple Leaf Lounge, including the two still-open YVR Maple Leaf Lounges (International and US Departures). The YVR Signature Suite is restricted to Super Elite 100K members and select Air Canada international business class travellers only — no public walk-in.',
+      },
+      {
+        question: 'Does Priority Pass work at YVR?',
+        answer:
+          'Yes. Priority Pass is accepted at Plaza Premium Lounge (Domestic), Plaza Premium Lounge (International), Plaza Premium Lounge (US Transborder), and sometimes Plaza Premium First depending on availability. It is not accepted at Air Canada Maple Leaf Lounges, the Signature Suite, Cathay Pacific Lounge, or the SkyTeam Lounge.',
+      },
+      {
+        question: 'How do I pre-book a YVR Plaza Premium lounge?',
+        answer:
+          'Three options: directly on plazapremiumlounge.com (typically $5–$10 cheaper than walk-up), via the Priority Pass app (opens 7 days before travel), or via the DragonPass app. Pre-booking is recommended during the Domestic Maple Leaf Lounge closure period (Oct 2026 – early 2028) when Priority Pass traffic to Plaza Premium Domestic will be higher than normal.',
+      },
+    ],
+    authorBio:
+      'Vancouver International Airport lounge coverage, verified monthly against operator pricing and closure status.',
+  },
 ]
 
 export function getPost(slug: string): BlogPost | undefined {

@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server'
 import SearchModule from '@/components/SearchModule'
 import FeaturedLoungeSection from '@/components/FeaturedLoungeSection'
 import AirportMapsSection from '@/components/AirportMapsSection'
+import ToolsPromoSection from '@/components/ToolsPromoSection'
 import TerminalMapVisual from '@/components/TerminalMapVisual'
 import { getWeather } from '@/lib/weather'
 import { getAllPosts } from '@/lib/blog'
@@ -240,6 +241,9 @@ export default async function HomePage() {
       {fl && (
         <FeaturedLoungeSection lounge={fl} primaryImageUrl={flImgUrl} />
       )}
+
+      {/* ── INTERACTIVE TOOLS PROMO ─────────────────────────────── */}
+      <ToolsPromoSection />
 
       {/* ── POPULAR LOUNGES GRID ────────────────────────────────── */}
       <section className="py-section-gap bg-bone-white">
