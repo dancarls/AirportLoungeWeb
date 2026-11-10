@@ -4,6 +4,7 @@ import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import OutboundClickTracker from '@/components/OutboundClickTracker'
+import TravelpayoutsDrive from '@/components/TravelpayoutsDrive'
 
 const BASE = 'https://www.airportlounges.ca'
 
@@ -142,6 +143,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           gtag('js', new Date());
           gtag('config', 'G-FM95J545RS');
         `}</Script>
+        {/* Travelpayouts AI Drive — gated by NEXT_PUBLIC_TRAVELPAYOUTS_DRIVE_ID.
+            Renders nothing if env var is unset. Kill switch: remove the var. */}
+        <TravelpayoutsDrive />
       </body>
     </html>
   )
