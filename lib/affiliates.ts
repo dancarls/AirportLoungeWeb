@@ -81,6 +81,10 @@ export type AffiliateKey =
   | 'finlywealth-rebate-bmo-eclipse-infinite'
   | 'finlywealth-rebate-westjet-rbc-world-elite'
   | 'finlywealth-rebate-westjet-rbc-mastercard'
+  // Booking.com via Travelpayouts — airport hotel CTAs on hub pages.
+  // The short link has the affiliate marker baked in; appending ?utm_* breaks
+  // the redirect so we use the url as-is.
+  | 'booking-airport-hotels'
   // FinlyWealth interactive tools (destination pages, not embeds).
   | 'finlywealth-quiz'
   | 'finlywealth-combos-calculator'
@@ -325,6 +329,12 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
   'finlywealth-rebate-westjet-rbc-mastercard': {
     url: '/rebates/credit-cards/westjet-rbc-mastercard',
     finlywealthRedirect: { placement: 'rebate-westjet-rbc-mastercard' },
+  },
+  // Booking.com — Travelpayouts short link, affiliate marker baked in.
+  // Short links do not accept appended UTM params (redirect breaks), so this
+  // entry declares no envVar / paramKey — returned verbatim.
+  'booking-airport-hotels': {
+    url: 'https://booking.tpo.lu/B8Pzxkm7',
   },
   // Amazon Associates.ca — travel-gear posts. The `tag` parameter is the official
   // Amazon Associates identifier; use the .ca product URLs.

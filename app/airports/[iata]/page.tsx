@@ -14,6 +14,7 @@ import AirQualityWidget from '@/components/AirQualityWidget'
 import DepartureBoard from '@/components/DepartureBoard'
 import LoungeAccessCTA from '@/components/LoungeAccessCTA'
 import AffiliateDisclosure from '@/components/AffiliateDisclosure'
+import AirportHotelsSection from '@/components/AirportHotelsSection'
 import { INDOOR_COVERED } from '@/lib/mapbox/indoor'
 
 interface Props { params: Promise<{ iata: string }> }
@@ -389,6 +390,10 @@ export default async function AirportPage({ params }: Props) {
                   user has just scanned the lounges and is thinking "which one
                   can I get into?" */}
               <LoungeAccessCTA variant="hero" iataCode={code} destination="lounge-access" />
+
+              {/* Where to stay at {IATA} — Booking.com via Travelpayouts.
+                  Renders only when we have curated hotel data for this airport. */}
+              <AirportHotelsSection iata={code} airportName={airport.name} city={airport.city} />
             </>
           )}
         </div>
