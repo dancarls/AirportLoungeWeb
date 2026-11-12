@@ -359,16 +359,12 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
     paramKey: 'aid',
     extraParams: { utm_source: 'airportlounges_ca' },
   },
-  // Airalo eSIM — Partnerize affiliate program (partners.airalo.com).
-  // Once approved the dashboard emits a deeplink like
-  //   https://airalo.pxf.io/<xxxxx>/<campaign>/
-  // Store the FULL deeplink in NEXT_PUBLIC_AFF_AIRALO; this entry falls back
-  // to the plain brand URL until it is set so the link never breaks.
+  // Airalo eSIM — Travelpayouts short link (12% commission vs ~10% direct
+  // Partnerize). Short link has the marker baked in; appending UTM params
+  // breaks the redirect so we use it verbatim. If the direct Partnerize
+  // program becomes more lucrative at volume, swap the URL here.
   'airalo-esim': {
-    url: 'https://www.airalo.com/',
-    envVar: 'NEXT_PUBLIC_AFF_AIRALO',
-    paramKey: '__full_url__',
-    extraParams: { utm_source: 'airportlounges_ca', utm_medium: 'sidebar' },
+    url: 'https://airalo.tpo.lu/OX51SHxl',
   },
   // Monos luggage — Impact.com partner program. Approved affiliates get a
   // tracked deeplink of the form
@@ -548,7 +544,10 @@ export function isAffiliated(key: AffiliateKey): boolean {
   const entry = REGISTRY[key]
   if (!entry) return false
   if (entry.finlywealthRedirect) return !!process.env.NEXT_PUBLIC_AFF_FINLYWEALTH
-  return !!(entry.envVar && process.env[entry.envVar])
+  // Entries with a hardcoded URL and no envVar are always active (the URL
+  // itself carries the affiliate marker — e.g. Travelpayouts short links).
+  if (!entry.envVar) return true
+  return !!process.env[entry.envVar]
 }
 
 /**
