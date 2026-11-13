@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
 import type { Metadata } from 'next'
 import LoungeMatcherClient from '@/components/LoungeMatcherClient'
 import type { MatchableLounge } from '@/lib/card-access'
@@ -21,26 +21,17 @@ export const metadata: Metadata = {
 }
 
 export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 export default async function Page() {
-  const supabase = await createClient()
-  const { data: lounges } = await supabase
-    .from('lounges')
-    .select('id, name, slug, terminal, access_types, airports(iata_code, name, city)')
-    .eq('is_active', true)
-    .order('name')
-
-  const rows: MatchableLounge[] = (lounges ?? []).map((l) => {
-    const airport = Array.isArray(l.airports) ? l.airports[0] : l.airports
-    return {
-      id: l.id,
-      name: l.name,
-      slug: l.slug,
-      terminal: l.terminal,
-      iata: airport?.iata_code ?? '???',
-      access_types: l.access_types as MatchableLounge['access_types'],
-    }
-  })
+  const rows = await db<MatchableLounge[]>`
+    SELECT l.id, l.name, l.slug, l.terminal, l.access_types,
+      a.iata_code AS iata
+    FROM lounges l
+    JOIN airports a ON a.id = l.airport_id
+    WHERE l.is_active = true
+    ORDER BY l.name
+  `
 
   return (
     <div className="bg-bone-white min-h-screen">

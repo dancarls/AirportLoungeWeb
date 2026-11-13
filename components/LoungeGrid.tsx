@@ -5,6 +5,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import type { Lounge, Airport, Amenity } from '@/lib/types'
 import LoungePlaceholder from './LoungePlaceholder'
+import { imageUrl } from '@/lib/image-url'
 
 type FullLounge = Lounge & { airport?: Airport; amenities?: Amenity[]; images?: { storage_path: string; is_primary: boolean }[] }
 
@@ -45,7 +46,7 @@ const AMENITY_OPTIONS = [
 ]
 
 function getImg(path: string) {
-  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${path}`
+  return imageUrl(path)
 }
 
 // Reads the current Date — must NEVER run during SSR/hydration or it triggers a

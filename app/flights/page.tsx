@@ -1,5 +1,5 @@
 import FlightStatusWidget from '@/components/FlightStatusWidget'
-import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
 import Link from 'next/link'
 import { Plane } from 'lucide-react'
 import type { Metadata } from 'next'
@@ -16,10 +16,13 @@ export const metadata: Metadata = {
   },
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function FlightsPage() {
-  const supabase = await createClient()
-  const { data: airports } = await supabase
-    .from('airports').select('iata_code, name, city').eq('is_active', true).order('name')
+  const airports = await db<{ iata_code: string; name: string; city: string }[]>`
+    SELECT iata_code, name, city FROM airports
+    WHERE is_active = true ORDER BY name
+  `
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">

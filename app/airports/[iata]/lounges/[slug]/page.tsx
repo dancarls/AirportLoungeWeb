@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
 import Link from 'next/link'
 import ReviewCard from '@/components/ReviewCard'
 import ReviewForm from '@/components/ReviewForm'
@@ -13,9 +14,10 @@ import LoungeClosureBanner from '@/components/LoungeClosureBanner'
 import LoungeDetailV2 from '@/components/LoungeDetailV2'
 import { getWeather } from '@/lib/weather'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
+import { imageUrl } from '@/lib/image-url'
 import AdSlot from '@/components/AdSlot'
 import type { Metadata } from 'next'
-import type { Lounge, Review, AccessType } from '@/lib/types'
+import type { Lounge, Review, AccessType, Airport, Amenity } from '@/lib/types'
 import type { GooglePlace } from '@/lib/google-places'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -84,21 +86,33 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { iata, slug } = await params
   const code = iata.toUpperCase()
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('lounges')
-    .select('name, description, airport:airports(name, city), images:lounge_images(storage_path, is_primary)')
-    .eq('slug', slug)
-    .single()
 
+  interface MetaRow {
+    name: string
+    description: string | null
+    airport: { name: string; city: string } | null
+    images: Array<{ storage_path: string; is_primary: boolean }>
+  }
+  const rows = await db<MetaRow[]>`
+    SELECT l.name, l.description,
+      json_build_object('name', a.name, 'city', a.city) AS airport,
+      COALESCE(
+        (SELECT json_agg(json_build_object('storage_path', i.storage_path, 'is_primary', i.is_primary))
+         FROM lounge_images i WHERE i.lounge_id = l.id),
+        '[]'::json
+      ) AS images
+    FROM lounges l
+    JOIN airports a ON a.id = l.airport_id
+    WHERE l.slug = ${slug}
+    LIMIT 1
+  `
+  const data = rows[0]
   if (!data) return { title: 'Lounge Not Found' }
 
-  const airport = data.airport as unknown as { name: string; city: string } | null
-  const imgs = (data.images ?? []) as Array<{ storage_path: string; is_primary: boolean }>
+  const airport = data.airport
+  const imgs = data.images ?? []
   const primaryImg = imgs.find(i => i.is_primary) ?? imgs[0]
-  const ogImg = primaryImg
-    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${primaryImg.storage_path}`
-    : null
+  const ogImg = primaryImg ? imageUrl(primaryImg.storage_path) : null
 
   const rawDesc = data.description
     ? data.description.replace(/<[^>]*>/g, '').trim().slice(0, 160)
@@ -124,7 +138,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export const revalidate = 60
 
 function getImageUrl(path: string) {
-  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${path}`
+  return imageUrl(path)
 }
 
 // Reliable Material Symbols icon names for airport lounge amenities.
@@ -192,12 +206,26 @@ export default async function LoungeDetailPage({ params, searchParams }: Props) 
   const code = iata.toUpperCase()
   const supabase = await createClient()
 
-  const { data: lounge } = await supabase
-    .from('lounges')
-    .select('*, airport:airports(*), amenities(*), images:lounge_images(*), google_place_data, closure_status, closure_reason, closure_started_on, closure_reopen_estimate, closure_alternatives, closure_source_url')
-    .eq('slug', slug)
-    .single()
-
+  const loungeRows = await db<Array<Lounge & { airport: Airport | null; amenities: Amenity[]; google_place_data: GooglePlace | null; images: Array<{ storage_path: string; is_primary: boolean; sort_order: number; alt_text?: string | null; is_ai_generated?: boolean }> }>>`
+    SELECT l.*,
+      row_to_json(a) AS airport,
+      COALESCE(
+        (SELECT json_agg(am.*)
+         FROM lounge_amenities la JOIN amenities am ON am.id = la.amenity_id
+         WHERE la.lounge_id = l.id),
+        '[]'::json
+      ) AS amenities,
+      COALESCE(
+        (SELECT json_agg(i.* ORDER BY i.sort_order NULLS LAST)
+         FROM lounge_images i WHERE i.lounge_id = l.id),
+        '[]'::json
+      ) AS images
+    FROM lounges l
+    JOIN airports a ON a.id = l.airport_id
+    WHERE l.slug = ${slug}
+    LIMIT 1
+  `
+  const lounge = loungeRows[0]
   if (!lounge) notFound()
 
   const googlePlace = (lounge.google_place_data as GooglePlace | null) ?? null
@@ -210,15 +238,16 @@ export default async function LoungeDetailPage({ params, searchParams }: Props) 
     const closedAccessNames = new Set(
       ((lounge.access_types ?? []) as AccessType[]).map(a => a.name.toLowerCase())
     )
-    const { data: alts } = await supabase
-      .from('lounges')
-      .select('slug, name, terminal, access_types')
-      .eq('airport_id', lounge.airport.id)
-      .eq('is_active', true)
-      .eq('closure_status', 'open')
-      .neq('id', lounge.id)
-      .limit(8)
-    alternativeLounges = ((alts ?? []) as Array<{ slug: string; name: string; terminal: string | null; access_types: unknown }>)
+    const alts = await db<Array<{ slug: string; name: string; terminal: string | null; access_types: unknown }>>`
+      SELECT slug, name, terminal, access_types
+      FROM lounges
+      WHERE airport_id = ${lounge.airport.id}
+        AND is_active = true
+        AND closure_status = 'open'
+        AND id <> ${lounge.id}
+      LIMIT 8
+    `
+    alternativeLounges = alts
       .map(alt => {
         const accessNames = new Set(
           ((alt.access_types ?? []) as AccessType[]).map(a => a.name.toLowerCase())

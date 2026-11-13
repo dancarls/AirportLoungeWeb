@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
 import CanadaMap, { type AirportMapItem } from '@/components/CanadaMap'
+import { imageUrl } from '@/lib/image-url'
 
 export const metadata: Metadata = {
   title: 'Canadian Airport Lounges by Airport',
@@ -49,22 +50,20 @@ const DESCRIPTION: Record<string, string> = {
   YQB: 'Jean Lesage International — Québec City\'s gateway with growing lounge offerings including an Air Canada Café.',
 }
 
-const SB = 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports'
-
 const AIRPORT_IMAGE: Record<string, string> = {
-  YVR: `${SB}/yvr/hero.jpg`,
-  YYZ: `${SB}/yyz/hero.jpg`,
-  YTZ: `${SB}/ytz/hero.jpg`,
-  YUL: `${SB}/yul/hero.jpg`,
-  YEG: `${SB}/yeg/hero.jpg`,
-  YYC: `${SB}/yyc/hero.jpg`,
-  YOW: `${SB}/yow/hero.jpg`,
-  YYT: `${SB}/yyt/hero.jpg`,
-  YWG: `${SB}/ywg/hero.jpg`,
-  YHZ: `${SB}/yhz/hero.jpg`,
-  YXE: `${SB}/yxe/hero.jpg`,
-  YQR: `${SB}/yqr/hero.jpg`,
-  YQB: `${SB}/yqb/hero.jpg`,
+  YVR: imageUrl('airports/yvr/hero.jpg'),
+  YYZ: imageUrl('airports/yyz/hero.jpg'),
+  YTZ: imageUrl('airports/ytz/hero.jpg'),
+  YUL: imageUrl('airports/yul/hero.jpg'),
+  YEG: imageUrl('airports/yeg/hero.jpg'),
+  YYC: imageUrl('airports/yyc/hero.jpg'),
+  YOW: imageUrl('airports/yow/hero.jpg'),
+  YYT: imageUrl('airports/yyt/hero.jpg'),
+  YWG: imageUrl('airports/ywg/hero.jpg'),
+  YHZ: imageUrl('airports/yhz/hero.jpg'),
+  YXE: imageUrl('airports/yxe/hero.jpg'),
+  YQR: imageUrl('airports/yqr/hero.jpg'),
+  YQB: imageUrl('airports/yqb/hero.jpg'),
 }
 
 const FALLBACK_IMAGE = AIRPORT_IMAGE.YYZ
@@ -88,6 +87,8 @@ interface RawAirport {
   lounges: RawLounge[]
 }
 
+export const dynamic = 'force-dynamic'
+
 interface Props {
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }
@@ -97,15 +98,22 @@ export default async function AirportsPage({ searchParams }: Props) {
   const search  = (typeof sp.search  === 'string' ? sp.search  : '').toLowerCase().trim()
   const pFilter = (typeof sp.province === 'string' ? sp.province : '').trim()
 
-  const supabase = await createClient()
-  const { data: raw } = await supabase
-    .from('airports')
-    .select('id, iata_code, name, city, latitude, longitude, lounges:lounges(id, name, slug, rating, is_active)')
-    .eq('is_active', true)
-    .order('name') as { data: RawAirport[] | null }
+  const raw = await db<RawAirport[]>`
+    SELECT a.id, a.iata_code, a.name, a.city, a.latitude, a.longitude,
+      COALESCE(
+        (SELECT json_agg(json_build_object(
+           'id', l.id, 'name', l.name, 'slug', l.slug,
+           'rating', l.rating, 'is_active', l.is_active))
+         FROM lounges l WHERE l.airport_id = a.id),
+        '[]'::json
+      ) AS lounges
+    FROM airports a
+    WHERE a.is_active = true
+    ORDER BY a.name
+  `
 
   // Build enriched airport list
-  const allAirports: AirportMapItem[] = (raw ?? [])
+  const allAirports: AirportMapItem[] = raw
     .filter(a => a.latitude && a.longitude)
     .map(a => {
       const activeLounges = (a.lounges ?? []).filter(l => l.is_active)

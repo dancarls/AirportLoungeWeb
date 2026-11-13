@@ -5,8 +5,10 @@
  * flipping the layout flag per slug.
  */
 
+import { imageUrl } from '@/lib/image-url'
+
 export function getImageUrl(path: string) {
-  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${path}`
+  return imageUrl(path)
 }
 
 // Reliable Material Symbols icon names for airport lounge amenities.

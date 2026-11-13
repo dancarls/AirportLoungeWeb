@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { createPortal } from 'react-dom'
+import { imageUrl } from '@/lib/image-url'
 
 interface GalleryImage {
   id: string
@@ -9,9 +10,8 @@ interface GalleryImage {
   alt_text?: string | null
 }
 
-const BASE = process.env.NEXT_PUBLIC_SUPABASE_URL
 function imgUrl(path: string) {
-  return `${BASE}/storage/v1/object/public/lounge-images/${path}`
+  return imageUrl(path)
 }
 
 export default function GalleryLightbox({

@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
         pathname: '/storage/v1/object/public/**',
       },
       {
+        // MinIO CDN for airportlounges-images bucket — same object keys as
+        // Supabase, served via Caddy at cdn.airportlounges.ca.
+        protocol: 'https',
+        hostname: 'cdn.airportlounges.ca',
+      },
+      {
         protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
       },

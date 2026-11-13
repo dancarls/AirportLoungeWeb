@@ -1,8 +1,10 @@
-import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
 import type { Metadata } from 'next'
 import LoungeFinderQuiz from '@/components/LoungeFinderQuiz'
 import type { MatchableLounge } from '@/lib/card-access'
 import AffiliateDisclosure from '@/components/AffiliateDisclosure'
+
+type QuizRow = MatchableLounge & { rating: number | null; reviewCount: number | null }
 
 export const metadata: Metadata = {
   title: 'Lounge Finder — Find Your Perfect Canadian Airport Lounge in 30 Seconds',
@@ -20,37 +22,24 @@ export const metadata: Metadata = {
 }
 
 export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 export default async function Page() {
-  const supabase = await createClient()
-  const [{ data: lounges }, { data: airports }] = await Promise.all([
-    supabase
-      .from('lounges')
-      .select('id, name, slug, terminal, rating, review_count, access_types, airports(iata_code, name, city)')
-      .eq('is_active', true)
-      .order('rating', { ascending: false, nullsFirst: false }),
-    supabase
-      .from('airports')
-      .select('iata_code, name, city')
-      .eq('is_active', true)
-      .order('iata_code'),
+  const [rows, airports] = await Promise.all([
+    db<QuizRow[]>`
+      SELECT l.id, l.name, l.slug, l.terminal, l.access_types,
+        a.iata_code AS iata,
+        l.rating, l.review_count AS "reviewCount"
+      FROM lounges l
+      JOIN airports a ON a.id = l.airport_id
+      WHERE l.is_active = true
+      ORDER BY l.rating DESC NULLS LAST
+    `,
+    db<{ iata_code: string; name: string; city: string }[]>`
+      SELECT iata_code, name, city FROM airports
+      WHERE is_active = true ORDER BY iata_code
+    `,
   ])
-
-  const rows = (lounges ?? []).map((l) => {
-    const airport = Array.isArray(l.airports) ? l.airports[0] : l.airports
-    return {
-      ...({
-        id: l.id,
-        name: l.name,
-        slug: l.slug,
-        terminal: l.terminal,
-        iata: airport?.iata_code ?? '???',
-        access_types: l.access_types as MatchableLounge['access_types'],
-      } as MatchableLounge),
-      rating: l.rating as number | null,
-      reviewCount: l.review_count as number | null,
-    }
-  })
 
   return (
     <div className="bg-bone-white min-h-screen">
@@ -73,10 +62,10 @@ export default async function Page() {
         <AffiliateDisclosure variant="inline" />
         <LoungeFinderQuiz
           lounges={rows}
-          airports={(airports ?? []).map((a) => ({
-            iata: a.iata_code as string,
-            name: a.name as string,
-            city: a.city as string,
+          airports={airports.map((a) => ({
+            iata: a.iata_code,
+            name: a.name,
+            city: a.city,
           }))}
         />
       </main>

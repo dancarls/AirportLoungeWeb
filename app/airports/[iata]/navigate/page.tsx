@@ -1,13 +1,12 @@
 import { notFound } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import type { NavigatorLounge } from '@/components/IndoorNavigator'
 import IndoorNavigator from '@/components/IndoorNavigatorLoader'
+import { imageUrl } from '@/lib/image-url'
 
 interface Props { params: Promise<{ iata: string }> }
-
-const SUPABASE_URL = 'https://ixgbdmrembkrpbkjhtfi.supabase.co'
 
 function getPrimaryImageUrl(
   images: { storage_path: string; is_primary: boolean; sort_order: number }[]
@@ -15,21 +14,16 @@ function getPrimaryImageUrl(
   if (!images?.length) return null
   const primary = images.find(i => i.is_primary)
     ?? [...images].sort((a, b) => (a.sort_order ?? 99) - (b.sort_order ?? 99))[0]
-  return primary
-    ? `${SUPABASE_URL}/storage/v1/object/public/lounge-images/${primary.storage_path}`
-    : null
+  return primary ? imageUrl(primary.storage_path) : null
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { iata } = await params
   const code = iata.toUpperCase()
-  const supabase = await createClient()
-  const { data: airport } = await supabase
-    .from('airports')
-    .select('name, city')
-    .eq('iata_code', code)
-    .single()
-
+  const rows = await db<{ name: string; city: string }[]>`
+    SELECT name, city FROM airports WHERE iata_code = ${code} LIMIT 1
+  `
+  const airport = rows[0] ?? null
   const name = airport?.name ?? `${code} Airport`
 
   return {
@@ -47,29 +41,67 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export const revalidate = 300
 
+interface NavAirport {
+  id: string
+  name: string
+  city: string
+  country: string | null
+  iata_code: string
+  latitude: number | null
+  longitude: number | null
+  terminal_map_url: string | null
+  website: string | null
+}
+
+interface NavRawLounge {
+  id: string
+  name: string
+  slug: string
+  terminal: string | null
+  location_detail: string | null
+  description: string | null
+  rating: number | null
+  review_count: number
+  access_types: unknown
+  updated_at: Date | null
+  website: string | null
+  phone: string | null
+  opening_hours: unknown
+  latitude: number | null
+  longitude: number | null
+  images: Array<{ storage_path: string; is_primary: boolean; sort_order: number }>
+}
+
 export default async function NavigatePage({ params }: Props) {
   const { iata } = await params
   const code = iata.toUpperCase()
-  const supabase = await createClient()
 
-  const { data: airport } = await supabase
-    .from('airports')
-    .select('*')
-    .eq('iata_code', code)
-    .single()
-
+  const airportRows = await db<NavAirport[]>`
+    SELECT id, name, city, country, iata_code, latitude, longitude,
+           terminal_map_url, website
+    FROM airports WHERE iata_code = ${code} LIMIT 1
+  `
+  const airport = airportRows[0]
   if (!airport || !airport.latitude || !airport.longitude) notFound()
 
-  const { data: rawLounges } = await supabase
-    .from('lounges')
-    .select(
-      'id, name, slug, terminal, location_detail, description, rating, review_count, access_types, updated_at, website, phone, opening_hours, latitude, longitude, images:lounge_images(storage_path, is_primary, sort_order)'
-    )
-    .eq('airport_id', airport.id)
-    .eq('is_active', true)
-    .order('rating', { ascending: false, nullsFirst: false })
+  const rawLounges = await db<NavRawLounge[]>`
+    SELECT l.id, l.name, l.slug, l.terminal, l.location_detail, l.description,
+      l.rating, l.review_count, l.access_types, l.updated_at, l.website, l.phone,
+      l.opening_hours, l.latitude, l.longitude,
+      COALESCE(
+        (SELECT json_agg(json_build_object(
+           'storage_path', i.storage_path,
+           'is_primary', i.is_primary,
+           'sort_order', i.sort_order))
+         FROM lounge_images i WHERE i.lounge_id = l.id),
+        '[]'::json
+      ) AS images
+    FROM lounges l
+    WHERE l.airport_id = ${airport.id} AND l.is_active = true
+    ORDER BY l.rating DESC NULLS LAST
+  `
 
-  const lounges: NavigatorLounge[] = (rawLounges ?? []).map(l => ({
+  const lounges: NavigatorLounge[] = rawLounges.map(l => ({
     id:             l.id,
     name:           l.name,
     slug:           l.slug,
@@ -79,7 +111,7 @@ export default async function NavigatePage({ params }: Props) {
     rating:         l.rating,
     review_count:   l.review_count,
     access_types:   l.access_types as NavigatorLounge['access_types'],
-    updated_at:     l.updated_at ?? null,
+    updated_at:     l.updated_at ? new Date(l.updated_at).toISOString() : null,
     primaryImage:   getPrimaryImageUrl(l.images ?? []),
     website:        l.website ?? null,
     phone:          l.phone   ?? null,

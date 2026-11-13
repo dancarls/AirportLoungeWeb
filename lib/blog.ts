@@ -1,3 +1,5 @@
+import { imageUrl } from '@/lib/image-url'
+
 export interface BlogPostFAQ {
   question: string
   answer: string
@@ -3840,7 +3842,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       'Yes — five Montréal-Trudeau lounges sell walk-in day passes. Current prices, how to pre-book, and the cheaper way in with the right credit card.',
     coverImage:
-      'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yul/hero.jpg',
+      imageUrl('airports/yul/hero.jpg'),
     publishedAt: '2026-11-09',
     lastReviewed: '2026-11-09',
     category: 'Day Pass Guides',
@@ -3951,7 +3953,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       'Yes — five Plaza Premium lounges + the Air France/KLM Crown Lounge sell walk-in day passes at YYZ. Terminal 1 vs Terminal 3, prices, and the credit card alternative.',
     coverImage:
-      'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yyz/hero.jpg',
+      imageUrl('airports/yyz/hero.jpg'),
     publishedAt: '2026-11-09',
     lastReviewed: '2026-11-09',
     category: 'Day Pass Guides',
@@ -4069,7 +4071,7 @@ Level 2, near Gate C33 in international departures. Open to any traveller with a
     excerpt:
       'Yes — Plaza Premium runs multiple walk-in lounges at YVR. Prices, locations, and why one credit card beats paying four day passes a year.',
     coverImage:
-      'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yvr/hero.jpg',
+      imageUrl('airports/yvr/hero.jpg'),
     publishedAt: '2026-11-09',
     lastReviewed: '2026-11-09',
     category: 'Day Pass Guides',

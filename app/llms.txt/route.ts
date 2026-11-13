@@ -1,26 +1,29 @@
 // /llms.txt — guide for AI search crawlers (ChatGPT, Claude, Perplexity).
 // Serves a curated index of the site so LLMs can answer questions without
 // crawling every page. See https://llmstxt.org/ for the emerging convention.
-import { createClient } from '@supabase/supabase-js'
+import { db } from '@/lib/db'
 
 const BASE = 'https://www.airportlounges.ca'
 
 export async function GET() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
   let airportLines = ''
   let loungeCount = 0
-  if (url && key) {
-    const sb = createClient(url, key)
-    const [{ data: airports }, { count }] = await Promise.all([
-      sb.from('airports').select('iata_code, name, city').eq('is_active', true).order('name'),
-      sb.from('lounges').select('*', { count: 'exact', head: true }).eq('is_active', true),
+  try {
+    const [airports, countRow] = await Promise.all([
+      db<{ iata_code: string; name: string; city: string }[]>`
+        SELECT iata_code, name, city FROM airports
+        WHERE is_active = true ORDER BY name
+      `,
+      db<{ count: string }[]>`
+        SELECT COUNT(*)::text AS count FROM lounges WHERE is_active = true
+      `,
     ])
-    loungeCount = count ?? 0
-    airportLines = (airports ?? []).map(a =>
+    loungeCount = Number(countRow[0]?.count ?? 0)
+    airportLines = airports.map(a =>
       `- [${a.iata_code} — ${a.city} (${a.name})](${BASE}/airports/${a.iata_code}): All lounges at ${a.city} airport with access requirements, amenities, and reviews.`
     ).join('\n')
+  } catch (err) {
+    console.error('llms.txt fetch failed', err)
   }
 
   const body = `# AirportLounges.ca
