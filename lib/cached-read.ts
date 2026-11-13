@@ -1,4 +1,5 @@
 import { unstable_cache } from 'next/cache'
+import { bindPoolToRequest, endPoolIfIdle } from '@/lib/db'
 
 const inflight = new Map<string, Promise<unknown>>()
 
@@ -20,11 +21,22 @@ export function cachedRead<T>(
   revalidateSeconds: number,
   loader: () => Promise<T>,
 ): Promise<T> {
+  // Outer request scope. Background refresh inside `unstable_cache` cannot
+  // register `after()` itself; this callback still runs before the isolate
+  // freezes and no-ops while a query is in flight.
+  bindPoolToRequest()
+
   const pending = inflight.get(key) as Promise<T> | undefined
   if (pending) return pending
 
   let run!: Promise<T>
-  run = unstable_cache(loader, [key], { revalidate: revalidateSeconds })().finally(() => {
+  run = unstable_cache(async () => {
+    try {
+      return await loader()
+    } finally {
+      await endPoolIfIdle()
+    }
+  }, [key], { revalidate: revalidateSeconds })().finally(() => {
     if (inflight.get(key) === run) inflight.delete(key)
   })
   inflight.set(key, run)

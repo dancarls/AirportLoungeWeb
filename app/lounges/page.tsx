@@ -30,7 +30,7 @@ export default async function LoungesPage() {
       SELECT l.*,
         json_build_object('name', a.name, 'iata_code', a.iata_code, 'city', a.city) AS airport,
         COALESCE(
-          (SELECT json_agg(am.* ORDER BY la.ctid)
+          (SELECT json_agg(am.* ORDER BY am.id ASC)
              FROM lounge_amenities la
              JOIN amenities am ON am.id = la.amenity_id
             WHERE la.lounge_id = l.id),

@@ -242,9 +242,8 @@ export async function renderLoungeDetail(
     SELECT l.*,
       row_to_json(a) AS airport,
       COALESCE(
-        -- la.ctid is the join-table insertion order. Sorting by am.name
-        -- put Bar / Business Centre first instead of Free WiFi / Coffee / Hot Food.
-        (SELECT json_agg(am.* ORDER BY la.ctid)
+        -- Live Supabase returns this embed ordered by amenities.id.
+        (SELECT json_agg(am.* ORDER BY am.id ASC)
          FROM lounge_amenities la JOIN amenities am ON am.id = la.amenity_id
          WHERE la.lounge_id = l.id),
         '[]'::json

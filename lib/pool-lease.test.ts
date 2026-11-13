@@ -8,30 +8,25 @@ test('pool stays inside the 30-connection app role under a 20-way burst', () => 
   assert.ok(PG_POOL.idleTimeoutSeconds > 0)
   assert.ok(PG_POOL.idleTimeoutSeconds <= 5)
   assert.ok(20 * PG_POOL.max < 30)
+  assert.equal('idleCloseDelayMs' in PG_POOL, false)
 })
 
-function manualScheduler() {
-  let pending: (() => void) | null = null
+/** Models `after()`: callbacks are queued and cannot be cancelled. */
+function queueScheduler() {
+  const queue: Array<() => void | Promise<void>> = []
   return {
-    schedule(run: () => void) {
-      pending = run
-      return () => {
-        if (pending === run) pending = null
-      }
+    schedule(run: () => void | Promise<void>) {
+      queue.push(run)
     },
     flush() {
-      const run = pending
-      pending = null
-      run?.()
-    },
-    get armed() {
-      return pending !== null
+      const batch = queue.splice(0, queue.length)
+      for (const run of batch) run()
     },
   }
 }
 
-test('the client is not closed while another query is still in flight', () => {
-  const clock = manualScheduler()
+test('a queued close does not end the client while another query is in flight', () => {
+  const clock = queueScheduler()
   const closed: number[] = []
   const gate = createIdleCloser(() => closed.push(gate.size), clock.schedule)
   const background = gate.begin()
@@ -46,24 +41,23 @@ test('the client is not closed while another query is still in flight', () => {
   assert.deepEqual(closed, [0])
 })
 
-test('a new query cancels a pending close', () => {
-  const clock = manualScheduler()
+test('a close queued before the next query still sees that query', () => {
+  const clock = queueScheduler()
   let closes = 0
   const gate = createIdleCloser(() => { closes += 1 }, clock.schedule)
   const first = gate.begin()
   first()
-  assert.equal(clock.armed, true)
   const second = gate.begin()
-  assert.equal(clock.armed, false)
   clock.flush()
   assert.equal(closes, 0)
+  assert.equal(gate.size, 1)
   second()
   clock.flush()
   assert.equal(closes, 1)
 })
 
-test('settling a query twice does not close twice', () => {
-  const clock = manualScheduler()
+test('settling a query twice queues one close', () => {
+  const clock = queueScheduler()
   let closes = 0
   const gate = createIdleCloser(() => { closes += 1 }, clock.schedule)
   const done = gate.begin()

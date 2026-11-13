@@ -2,35 +2,22 @@
  * Tracks in-flight queries on one shared Postgres client.
  *
  * `begin()` increments the count and returns a function that must run when
- * that query settles. The idle callback is armed only when the count hits
- * zero, and a new `begin()` cancels a pending close. A query that is still
- * running therefore keeps the client open even if another request finishes
- * and tries to clean up.
+ * that query settles. The idle callback is only invoked from `schedule`, and
+ * only when the count is still zero at that moment. A query that is still
+ * running therefore keeps the client open even if an earlier request already
+ * queued a close.
  */
 export function createIdleCloser(
-  onIdle: () => void,
-  schedule: (run: () => void) => () => void,
+  onIdle: () => void | Promise<void>,
+  schedule: (run: () => void | Promise<void>) => void | Promise<void>,
 ) {
   let active = 0
-  let cancelPending: (() => void) | null = null
-
-  function arm() {
-    if (cancelPending) return
-    cancelPending = schedule(() => {
-      cancelPending = null
-      if (active === 0) onIdle()
-    })
-  }
 
   return {
     get size() {
       return active
     },
     begin() {
-      if (cancelPending) {
-        cancelPending()
-        cancelPending = null
-      }
       active += 1
       let settled = false
       return () => {
@@ -38,7 +25,11 @@ export function createIdleCloser(
         settled = true
         active -= 1
         if (active < 0) active = 0
-        if (active === 0) arm()
+        if (active === 0) {
+          return schedule(() => {
+            if (active === 0) return onIdle()
+          })
+        }
       }
     },
   }

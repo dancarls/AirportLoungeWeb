@@ -88,7 +88,7 @@ export default async function HomePage() {
           '[]'::json
         ) AS images,
         COALESCE(
-          (SELECT json_agg(am.* ORDER BY la.ctid)
+          (SELECT json_agg(am.* ORDER BY am.id ASC)
            FROM lounge_amenities la JOIN amenities am ON am.id = la.amenity_id
            WHERE la.lounge_id = l.id),
           '[]'::json

@@ -1,6 +1,7 @@
 import 'server-only'
 import postgres from 'postgres'
 import type { Sql } from 'postgres'
+import { after } from 'next/server'
 import { parsePgNumeric } from '@/lib/pg-numeric'
 import { PG_POOL } from '@/lib/pg-pool'
 import { createIdleCloser } from '@/lib/pool-lease'
@@ -12,27 +13,59 @@ import { createIdleCloser } from '@/lib/pool-lease'
  * as text by default; PostgREST returned JSON numbers, and the pages call
  * `rating.toFixed` and filter coordinates with `typeof === 'number'`.
  *
- * Pool: one connection per isolate. The client is closed only after every
- * query promise has settled and a short idle gap has passed, so a background
- * `unstable_cache` refresh cannot have its socket ended by another request.
- * The app role allows 30 connections; a burst of 20 concurrent renders stays
- * under that. `prepare: false` avoids prepared-statement caches across
- * invocations. TLS: the Contabo cert is self-signed, so Node must not require a CA.
+ * Pool: one connection per isolate. A query holds that client until its
+ * promise settles, and `end()` runs only when nothing is in flight. In a
+ * request the close is awaited from `after()` so it finishes before Vercel
+ * freezes the isolate. A bare timer does not: the isolate is suspended first
+ * and the socket stays open. `prepare: false` avoids prepared-statement
+ * caches across invocations. TLS: the Contabo cert is self-signed, so Node
+ * must not require a CA.
  */
 
 let _sql: Sql | null = null
 
-const queries = createIdleCloser(() => {
+function endIfIdle(): Promise<void> {
+  if (queries.size !== 0) return Promise.resolve()
   const client = _sql
-  if (!client) return
+  if (!client) return Promise.resolve()
   _sql = null
-  void client.end({ timeout: 1 }).catch(() => {
-    // The socket is already unusable if end() fails; the next query opens a new one.
-  })
-}, (run) => {
-  const timer = setTimeout(run, PG_POOL.idleCloseDelayMs)
-  return () => clearTimeout(timer)
+  return client.end({ timeout: 1 }).then(() => undefined, () => undefined)
+}
+
+const queries = createIdleCloser(endIfIdle, (run) => {
+  try {
+    // Awaited after the response is sent and before Vercel freezes the isolate.
+    // A bare timer never runs once the isolate is suspended.
+    after(async () => {
+      await run()
+    })
+  } catch {
+    // `unstable_cache` background refresh has no request `after()` scope.
+    // The query promise awaits this return value, so the socket is closed
+    // before that task finishes. `run` rechecks the in-flight count.
+    return run()
+  }
 })
+
+/**
+ * Register an idle close on the current request. Call this from the request
+ * that starts a cached read, outside the `unstable_cache` callback, so the
+ * close still runs when the loader itself cannot call `after()`.
+ */
+export function bindPoolToRequest(): void {
+  try {
+    after(async () => {
+      await endIfIdle()
+    })
+  } catch {
+    // Already outside a request. Query settlement closes the idle client.
+  }
+}
+
+/** Close the shared client when no query is in flight. */
+export function endPoolIfIdle(): Promise<void> {
+  return endIfIdle()
+}
 
 function createClient(): Sql {
   const connectionString = process.env.DATABASE_URL
@@ -92,9 +125,7 @@ const dbCall = (...args: unknown[]) => {
     // is still above zero.
     // @ts-expect-error — postgres client is callable as a tagged template
     const query = client(...args) as Promise<unknown>
-    return query.finally(() => {
-      release()
-    })
+    return query.finally(() => release())
   } catch (err) {
     release()
     throw err
