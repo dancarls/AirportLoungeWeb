@@ -1,4 +1,5 @@
 import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 import type { Metadata } from 'next'
 import LoungeMatcherClient from '@/components/LoungeMatcherClient'
 import type { MatchableLounge } from '@/lib/card-access'
@@ -24,14 +25,14 @@ export const revalidate = 3600
 export const dynamic = 'force-dynamic'
 
 export default async function Page() {
-  const rows = await db<MatchableLounge[]>`
+  const rows = await cachedRead('lounge-matcher', 3600, () => db<MatchableLounge[]>`
     SELECT l.id, l.name, l.slug, l.terminal, l.access_types,
       a.iata_code AS iata
     FROM lounges l
     JOIN airports a ON a.id = l.airport_id
     WHERE l.is_active = true
-    ORDER BY l.name
-  `
+    ORDER BY l.name ASC, l.slug ASC
+  `)
 
   return (
     <div className="bg-bone-white min-h-screen">

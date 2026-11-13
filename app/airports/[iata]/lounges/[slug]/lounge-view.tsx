@@ -1,0 +1,924 @@
+import { notFound } from 'next/navigation'
+import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+import { db } from '@/lib/db'
+import { compareAlternatives } from '@/lib/lounge-sort'
+import ReviewAuthGate from '@/components/ReviewAuthGate'
+import Link from 'next/link'
+import ReviewCard from '@/components/ReviewCard'
+import LoungeMapClient from '@/components/LoungeMapClient'
+import GalleryLightbox from '@/components/GalleryLightbox'
+import WeatherWidget from '@/components/WeatherWidget'
+import LoungePlaceholder from '@/components/LoungePlaceholder'
+import NewsletterCTA from '@/components/NewsletterCTA'
+import GooglePlacesEnrichment from '@/components/GooglePlacesEnrichment'
+import LoungeClosureBanner from '@/components/LoungeClosureBanner'
+import LoungeDetailV2 from '@/components/LoungeDetailV2'
+import { getWeather } from '@/lib/weather'
+import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
+import { imageUrl } from '@/lib/image-url'
+import AdSlot from '@/components/AdSlot'
+import type { Metadata } from 'next'
+import type { Lounge, Review, AccessType, Airport, Amenity } from '@/lib/types'
+import type { GooglePlace } from '@/lib/google-places'
+
+// ─────────────────────────────────────────────────────────────────────────────
+// V2 editorial layout rollout.
+//   'all'       — every lounge renders V2 (current: production default)
+//   'allowlist' — only slugs in V2_SLUGS render V2
+//   'off'       — every lounge renders the legacy V1 layout
+// Kill switch:
+//   ?v=v1 on any URL → force V1 for that request
+//   ?v=v2 on any URL → force V2 for that request
+// All SEO signals (URL, title, meta, canonical, JSON-LD, H1, data-speakable)
+// are identical across V1 and V2, so flipping this constant is index-safe.
+// ─────────────────────────────────────────────────────────────────────────────
+const V2_ROLLOUT: 'all' | 'allowlist' | 'off' = 'all'
+const V2_SLUGS = new Set<string>([
+  // Kept for reference / rollback to allowlist mode.
+  'skyteam-lounge-yvr',
+])
+
+// Route a walk-in day-pass CTA to the most likely affiliate operator based on
+// the lounge name. Falls back to Priority Pass if no operator brand matches.
+function dayPassAffiliate(loungeName: string) {
+  const n = loungeName.toLowerCase()
+  if (n.includes('plaza premium')) return affiliate('plaza-premium-booking')
+  if (n.includes('aspire'))         return affiliate('aspire-lounge-booking')
+  if (n.includes('westjet'))        return affiliate('westjet-elevation-booking')
+  return affiliate('priority-pass-membership')
+}
+
+// Route the "Best cards for this lounge" CTA to the most relevant FinlyWealth
+// category page based on which network the lounge belongs to.
+function loungeAccessCardsAffiliate(loungeName: string): {
+  href: string
+  ctaLabel: string
+  heading: string
+} {
+  const n = loungeName.toLowerCase()
+  // WestJet Elevation Lounge — the only WestJet Lounge in Canada (YYC).
+  // Routes to the WestJet RBC World Elite rebate (companion voucher + fast-track status).
+  if (n.includes('westjet')) {
+    return {
+      href: affiliate('finlywealth-rebate-westjet-rbc-world-elite'),
+      ctaLabel: 'See the WestJet RBC World Elite',
+      heading: 'The WestJet card that gets you into this lounge',
+    }
+  }
+  if (n.includes('maple leaf') || n.includes('air canada') || n.includes('signature suite')) {
+    return {
+      href: affiliate('finlywealth-aeroplan-cards'),
+      ctaLabel: 'Compare Aeroplan Cards',
+      heading: 'Cards that unlock the Maple Leaf Lounge',
+    }
+  }
+  return {
+    href: affiliate('finlywealth-lounge-access-cards'),
+    ctaLabel: 'Compare Lounge-Access Cards',
+    heading: 'Cards that get you into this lounge',
+  }
+}
+
+interface Props {
+  params: Promise<{ iata: string; slug: string }>
+}
+
+// Request cookies and the layout query string are not read here — either one
+// would disable the page cache. The ?v= override is rewritten to /preview.
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { iata, slug } = await params
+  const code = iata.toUpperCase()
+
+  interface MetaRow {
+    name: string
+    description: string | null
+    airport: { name: string; city: string } | null
+    images: Array<{ storage_path: string; is_primary: boolean }>
+  }
+  const rows = await db<MetaRow[]>`
+    SELECT l.name, l.description,
+      json_build_object('name', a.name, 'city', a.city) AS airport,
+      COALESCE(
+        (SELECT json_agg(json_build_object('storage_path', i.storage_path, 'is_primary', i.is_primary)
+                         ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
+         FROM lounge_images i WHERE i.lounge_id = l.id),
+        '[]'::json
+      ) AS images
+    FROM lounges l
+    JOIN airports a ON a.id = l.airport_id
+    WHERE l.slug = ${slug}
+    ORDER BY l.id ASC
+    LIMIT 1
+  `
+  const data = rows[0]
+  if (!data) return { title: 'Lounge Not Found' }
+
+  const airport = data.airport
+  const imgs = data.images ?? []
+  const primaryImg = imgs.find(i => i.is_primary) ?? imgs[0]
+  const ogImg = primaryImg ? imageUrl(primaryImg.storage_path) : null
+
+  const rawDesc = data.description
+    ? data.description.replace(/<[^>]*>/g, '').trim().slice(0, 160)
+    : null
+  const description = rawDesc
+    ?? `${data.name} at ${airport?.name ?? code} — access requirements, amenities, and real traveller reviews.`
+
+  return {
+    title: data.name,
+    description,
+    alternates: {
+      canonical: `https://www.airportlounges.ca/airports/${code}/lounges/${slug}`,
+    },
+    openGraph: {
+      title: `${data.name} | ${code} Airport Lounge`,
+      description,
+      url: `https://www.airportlounges.ca/airports/${code}/lounges/${slug}`,
+      ...(ogImg && { images: [{ url: ogImg, width: 1200, height: 630, alt: data.name }] }),
+    },
+  }
+}
+
+function getImageUrl(path: string) {
+  return imageUrl(path)
+}
+
+// Reliable Material Symbols icon names for airport lounge amenities.
+// We intentionally ignore the DB icon field — many stored values use
+// names that are not valid Material Symbols ligatures (e.g. "wine", "utensils").
+const AMENITY_ICON_MAP: [string[], string][] = [
+  [['wifi', 'wi-fi', 'internet', 'wireless'],                            'wifi'],
+  [['free wifi', 'high-speed'],                                          'wifi'],
+  [['bar', 'cocktail', 'alcohol', 'spirits', 'wine', 'beer', 'drinks'], 'local_bar'],
+  [['hot food', 'buffet', 'hot buffet', 'dining', 'restaurant', 'meal'],'soup_kitchen'],
+  [['snack', 'light bites', 'sandwiches'],                              'bakery_dining'],
+  [['coffee', 'barista', 'espresso', 'latte'],                          'local_cafe'],
+  [['tea'],                                                              'emoji_food_beverage'],
+  [['shower'],                                                           'shower'],
+  [['spa', 'massage', 'wellness', 'relaxation'],                        'spa'],
+  [['gym', 'fitness', 'exercise'],                                       'fitness_center'],
+  [['pool', 'swimming'],                                                 'pool'],
+  [['business center', 'business centre', 'work'],                      'business_center'],
+  [['printing', 'printer', 'print'],                                    'print'],
+  [['conference', 'meeting room'],                                       'meeting_room'],
+  [['phone', 'telephone', 'landline'],                                   'phone'],
+  [['charging', 'power outlet', 'usb'],                                  'electrical_services'],
+  [['tv', 'television'],                                                  'tv'],
+  [['news', 'newspaper', 'magazine', 'press', 'periodical'],            'newspaper'],
+  [['flight info', 'departure', 'arrivals board', 'flight screen'],      'flight'],
+  [['quiet', 'silent', 'rest zone'],                                     'do_not_disturb'],
+  [['sleep', 'nap', 'daybed', 'day bed'],                               'hotel'],
+  [['family', 'kids', 'children'],                                       'family_restroom'],
+  [['accessible', 'wheelchair', 'disability'],                           'accessible'],
+  [['luggage', 'storage', 'bag drop'],                                   'luggage'],
+  [['atm', 'cash machine'],                                              'local_atm'],
+  [['smoking'],                                                          'smoking_rooms'],
+  [['outdoor', 'terrace', 'deck'],                                       'deck'],
+  [['lounge', 'seating'],                                                'chair'],
+]
+
+function amenityIcon(name: string): string {
+  const lower = name.toLowerCase().trim()
+  for (const [keys, sym] of AMENITY_ICON_MAP) {
+    if (keys.some(k => lower.includes(k))) return sym
+  }
+  return 'check_circle'
+}
+
+const ACCESS_ICON_MAP: Record<string, string> = {
+  elite: 'stars', status: 'stars', gold: 'stars', silver: 'stars',
+  credit: 'credit_card', card: 'credit_card', amex: 'credit_card', visa: 'credit_card',
+  class: 'confirmation_number', business: 'confirmation_number', ticket: 'confirmation_number',
+}
+
+function accessIcon(type: string): string {
+  const lower = type.toLowerCase()
+  for (const [key, sym] of Object.entries(ACCESS_ICON_MAP)) {
+    if (lower.includes(key)) return sym
+  }
+  return 'confirmation_number'
+}
+
+const DAY_ORDER = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'] as const
+
+async function loadPublicReviews(loungeId: string): Promise<Review[]> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  if (!url || !key) return []
+  try {
+    const supabase = createSupabaseClient(url, key, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    })
+    const { data, error } = await supabase
+      .from('reviews')
+      .select('*, profile:profiles(display_name, avatar_url)')
+      .eq('lounge_id', loungeId)
+      .order('created_at', { ascending: false })
+      .order('id', { ascending: true })
+      .limit(20)
+    if (error) {
+      console.error('lounge reviews fetch failed', error)
+      return []
+    }
+    return (data ?? []) as Review[]
+  } catch (err) {
+    console.error('lounge reviews fetch failed', err)
+    return []
+  }
+}
+
+export default function LoungeDetailPage({ params }: Props) {
+  return renderLoungeDetail(params)
+}
+
+export async function renderLoungeDetail(
+  params: Promise<{ iata: string; slug: string }>,
+  layoutOverride?: string,
+) {
+  const { iata, slug } = await params
+  const code = iata.toUpperCase()
+
+  const loungeRows = await db<Array<Lounge & { airport: Airport | null; amenities: Amenity[]; google_place_data: GooglePlace | null; images: Array<{ storage_path: string; is_primary: boolean; sort_order: number; alt_text?: string | null; is_ai_generated?: boolean }> }>>`
+    SELECT l.*,
+      row_to_json(a) AS airport,
+      COALESCE(
+        (SELECT json_agg(am.* ORDER BY am.name ASC, am.id ASC)
+         FROM lounge_amenities la JOIN amenities am ON am.id = la.amenity_id
+         WHERE la.lounge_id = l.id),
+        '[]'::json
+      ) AS amenities,
+      COALESCE(
+        (SELECT json_agg(i.* ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
+         FROM lounge_images i WHERE i.lounge_id = l.id),
+        '[]'::json
+      ) AS images
+    FROM lounges l
+    JOIN airports a ON a.id = l.airport_id
+    WHERE l.slug = ${slug}
+    ORDER BY l.id ASC
+    LIMIT 1
+  `
+  const lounge = loungeRows[0]
+  if (!lounge) notFound()
+
+  const googlePlace = (lounge.google_place_data as GooglePlace | null) ?? null
+
+  // If this lounge is closed / reduced-capacity, auto-suggest alternatives at
+  // the same airport, ranked by whether they share access types with the closed
+  // lounge (a Priority Pass user needs a Priority Pass alternative first).
+  let alternativeLounges: { slug: string; name: string; terminal: string | null; airport_iata: string }[] = []
+  if (lounge.closure_status && lounge.closure_status !== 'open' && lounge.airport?.id) {
+    const closedAccessNames = new Set(
+      ((lounge.access_types ?? []) as AccessType[]).map(a => a.name.toLowerCase())
+    )
+    const alts = await db<Array<{ slug: string; name: string; terminal: string | null; access_types: unknown }>>`
+      SELECT slug, name, terminal, access_types
+      FROM lounges
+      WHERE airport_id = ${lounge.airport.id}
+        AND is_active = true
+        AND closure_status = 'open'
+        AND id <> ${lounge.id}
+      ORDER BY name ASC, slug ASC
+    `
+    alternativeLounges = alts
+      .map(alt => {
+        const accessNames = new Set(
+          ((alt.access_types ?? []) as AccessType[]).map(a => a.name.toLowerCase())
+        )
+        // Score = how many access types the alternative shares with the closed lounge
+        const shared = [...accessNames].filter(n => closedAccessNames.has(n)).length
+        return {
+          slug: alt.slug,
+          name: alt.name,
+          terminal: alt.terminal,
+          airport_iata: code,
+          score: shared,
+        }
+      })
+      .sort(compareAlternatives)
+      .slice(0, 3)
+      .map(({ slug, name, terminal, airport_iata }) => ({ slug, name, terminal, airport_iata }))
+  }
+
+  const [reviews, weather] = await Promise.all([
+    loadPublicReviews(lounge.id),
+    lounge.airport?.latitude && lounge.airport?.longitude
+      ? getWeather(lounge.airport.latitude, lounge.airport.longitude)
+      : Promise.resolve(null),
+  ])
+
+  const l = lounge as Lounge
+  const images = l.images ?? []
+  const primaryIdx = images.findIndex(i => i.is_primary)
+  const orderedImages = primaryIdx > 0
+    ? [images[primaryIdx], ...images.filter((_, i) => i !== primaryIdx)]
+    : images
+
+  const heroImg = orderedImages[0]
+  const accessTypes = (l.access_types ?? []) as AccessType[]
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://www.airportlounges.ca' },
+      { '@type': 'ListItem', position: 2, name: 'Airports', item: 'https://www.airportlounges.ca/airports' },
+      { '@type': 'ListItem', position: 3, name: code,       item: `https://www.airportlounges.ca/airports/${code}` },
+      { '@type': 'ListItem', position: 4, name: l.name,     item: `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}` },
+    ],
+  }
+
+  const DAY_TO_SCHEMA: Record<string, string> = {
+    monday: 'Monday', tuesday: 'Tuesday', wednesday: 'Wednesday',
+    thursday: 'Thursday', friday: 'Friday', saturday: 'Saturday', sunday: 'Sunday',
+  }
+
+  function hoursToSchema(): unknown[] | null {
+    if (!l.opening_hours) return null
+    if (l.opening_hours.is_24_7) {
+      return [{
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: Object.values(DAY_TO_SCHEMA),
+        opens: '00:00',
+        closes: '23:59',
+      }]
+    }
+    const spec: unknown[] = []
+    for (const day of DAY_ORDER) {
+      const h = l.opening_hours[day]
+      if (!h || h.toLowerCase() === 'closed') continue
+      const m = h.match(/(\d{1,2}:?\d{0,2})\s*[-–—]\s*(\d{1,2}:?\d{0,2})/)
+      if (!m) continue
+      const fmt = (t: string) => {
+        const clean = t.includes(':') ? t : `${t}:00`
+        return clean.length === 4 ? `0${clean}` : clean
+      }
+      spec.push({
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: DAY_TO_SCHEMA[day],
+        opens: fmt(m[1]),
+        closes: fmt(m[2]),
+      })
+    }
+    return spec.length > 0 ? spec : null
+  }
+
+  const openingHoursSpec = hoursToSchema()
+  const amenityFeatures = (l.amenities ?? []).map(a => ({
+    '@type': 'LocationFeatureSpecification',
+    name: a.name,
+    value: true,
+  }))
+
+  const reviewsTyped = (reviews ?? []) as Review[]
+  const reviewLd = reviewsTyped.slice(0, 10).map(r => ({
+    '@type': 'Review',
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: r.overall_rating,
+      bestRating: '5',
+      worstRating: '1',
+    },
+    author: {
+      '@type': 'Person',
+      name: r.profile?.display_name ?? 'Traveller',
+    },
+    datePublished: r.created_at,
+    ...(r.title && { name: r.title }),
+    reviewBody: r.body,
+  }))
+
+  const speakableLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: l.name,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', '[data-speakable="intro"]', '[data-speakable="access"]'],
+    },
+    url: `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}`,
+  }
+
+  const jsonLd: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}#lounge`,
+    name: l.name,
+    ...(l.updated_at && { dateModified: new Date(l.updated_at).toISOString() }),
+    description: l.description
+      ? l.description.replace(/<[^>]*>/g, '').trim()
+      : `${l.name} — airport lounge at ${l.airport?.name ?? code}`,
+    url: `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}`,
+    ...(heroImg && {
+      image: getImageUrl(heroImg.storage_path),
+    }),
+    ...(l.airport && {
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: l.airport.city,
+        addressCountry: 'CA',
+      },
+      containedInPlace: {
+        '@type': 'Airport',
+        name: l.airport.name,
+        iataCode: code,
+      },
+    }),
+    ...(l.latitude && l.longitude && {
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: l.latitude,
+        longitude: l.longitude,
+      },
+    }),
+    ...(openingHoursSpec && openingHoursSpec.length > 0 && {
+      openingHoursSpecification: openingHoursSpec,
+    }),
+    ...(amenityFeatures.length > 0 && { amenityFeature: amenityFeatures }),
+    ...(l.rating && l.review_count > 0 && {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: l.rating.toFixed(1),
+        reviewCount: l.review_count,
+        bestRating: '5',
+        worstRating: '1',
+      },
+    }),
+    ...(l.guest_fee && {
+      priceRange: `$${l.guest_fee} ${(l as { guest_fee_currency?: string }).guest_fee_currency ?? 'CAD'}`,
+    }),
+    ...(l.website && { sameAs: l.website }),
+    ...(reviewLd.length > 0 && { review: reviewLd }),
+  }
+
+  // ─── V2 editorial layout gate ─────────────────────────────────────────
+  // Slug allowlist controls default rendering; ?v=v1 / ?v=v2 override for A/B.
+  // All JSON-LD blocks below are emitted identically for V1 and V2 so switching
+  // the layout has zero SEO surface-area impact.
+  const useV2 =
+    layoutOverride === 'v2'
+      ? true
+      : layoutOverride === 'v1'
+        ? false
+        : V2_ROLLOUT === 'all'
+          ? true
+          : V2_ROLLOUT === 'off'
+            ? false
+            : V2_SLUGS.has(slug)
+
+  if (useV2) {
+    const cardsCta = loungeAccessCardsAffiliate(l.name)
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableLd) }} />
+        <LoungeDetailV2
+          lounge={l}
+          reviews={reviewsTyped}
+          weather={weather}
+          googlePlace={googlePlace}
+          alternativeLounges={alternativeLounges}
+          code={code}
+          cardsCta={cardsCta}
+        />
+      </>
+    )
+  }
+
+  return (
+    <div className="bg-bone-white min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(speakableLd) }} />
+
+      {/* ── HERO ─────────────────────────────────────────────────── */}
+      <div className="max-w-container-max mx-auto px-margin-desktop pt-8">
+        <section className="relative h-[460px] min-h-[360px] overflow-hidden">
+          {heroImg ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              className="w-full h-full object-cover"
+              src={getImageUrl(heroImg.storage_path)}
+              alt={heroImg.alt_text ?? l.name}
+            />
+          ) : (
+            <LoungePlaceholder name={l.name} variant="hero" />
+          )}
+          <div
+            className="absolute inset-0"
+            style={{ background: 'linear-gradient(to bottom, rgba(26,36,47,0) 55%, rgba(26,36,47,0.85) 100%)' }}
+          />
+          <div className="absolute bottom-0 left-0 w-full px-10 pb-10 text-white">
+            <nav className="flex items-center gap-2 mb-3 opacity-80 text-sm">
+              <Link className="hover:underline" href="/airports">Airports</Link>
+              <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+              <Link className="hover:underline" href={`/airports/${code}`}>{code}</Link>
+              <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+              <span>{l.name}</span>
+            </nav>
+            <h1 className="font-display-lg text-display-lg-mobile md:text-display-lg mb-2">{l.name}</h1>
+            <p className="font-headline-md text-headline-md opacity-90">
+              {l.terminal ? `Terminal ${l.terminal}, ` : ''}{l.airport?.name ?? code}
+            </p>
+          </div>
+        </section>
+      </div>
+
+      {/* ── MAIN CONTENT + SIDEBAR ───────────────────────────────── */}
+      <section className="max-w-container-max mx-auto px-margin-desktop py-section-gap grid grid-cols-1 lg:grid-cols-4 gap-gutter">
+
+        {/* Main content (3/4) */}
+        <div className="lg:col-span-3 space-y-12">
+
+          {/* Closure banner — renders only when the lounge is closed or reduced-capacity.
+              Signature site-wide visual with auto-suggested alternatives. */}
+          {l.closure_status && l.closure_status !== 'open' && (
+            <LoungeClosureBanner
+              status={l.closure_status as 'temporary_closure' | 'reduced_capacity' | 'permanent_closure'}
+              reason={l.closure_reason ?? null}
+              startedOn={l.closure_started_on ?? null}
+              reopenEstimate={l.closure_reopen_estimate ?? null}
+              alternatives={l.closure_alternatives ?? null}
+              alternativeLounges={alternativeLounges}
+              sourceUrl={l.closure_source_url ?? null}
+              verifiedAt={l.updated_at ?? null}
+              loungeName={l.name}
+            />
+          )}
+
+          {/* Editorial intro */}
+          <div className="border-b border-outline-variant/30 pb-12">
+            <div className="flex justify-between items-start mb-8 flex-wrap gap-4">
+              <div>
+                <span className="font-label-caps text-label-caps text-sand-dark mb-2 block uppercase tracking-widest">
+                  {l.location_detail
+                    ? l.location_detail.toUpperCase()
+                    : l.terminal
+                      ? `TERMINAL ${l.terminal}`
+                      : code}
+                </span>
+                <div className="flex items-center gap-4 flex-wrap">
+                  <h2 className="font-headline-lg text-headline-lg">
+                    {l.description ? 'About This Lounge' : 'A Refined Travel Experience'}
+                  </h2>
+                  {l.rating && (
+                    <div className="bg-primary/5 px-3 py-1 flex items-center gap-1 border border-primary/10">
+                      <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1", fontSize: '18px' }}>star</span>
+                      <span className="font-bold text-primary">{l.rating.toFixed(1)}</span>
+                      <span className="text-on-surface-variant text-sm">/ 5</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            {l.description ? (
+              <div
+                data-speakable="intro"
+                className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-3xl [&_h4]:font-semibold [&_h4]:text-primary [&_h4]:text-[17px] [&_h4]:mt-8 [&_h4]:mb-2 [&_h3]:font-semibold [&_h3]:text-primary [&_h3]:text-xl [&_h3]:mt-8 [&_h3]:mb-3 [&_p]:mb-4 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_strong]:text-on-surface"
+                dangerouslySetInnerHTML={{ __html: l.description }}
+              />
+            ) : (
+              <p data-speakable="intro" className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed max-w-3xl">
+                {l.name} offers premium travellers a refined sanctuary from the terminal concourse.
+                {l.airport?.name ? ` Located at ${l.airport.name}` : ''}
+                {l.terminal ? `, Terminal ${l.terminal}` : ''}, this lounge delivers premium amenities
+                and attentive service in a calm environment before departure.
+              </p>
+            )}
+            {l.updated_at && (
+              <p className="text-xs text-secondary mt-6">
+                Last verified{' '}
+                <time dateTime={l.updated_at}>
+                  {new Date(l.updated_at).toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </time>
+                {' · '}
+                <Link href="/about#sourcing" className="underline underline-offset-2 hover:text-primary">
+                  Sourcing methodology
+                </Link>
+              </p>
+            )}
+          </div>
+
+          {/* Amenities */}
+          {l.amenities && l.amenities.length > 0 && (
+            <div>
+              <h3 className="font-headline-md text-headline-md mb-6">Refined Amenities</h3>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                {l.amenities.map(a => (
+                  <div
+                    key={a.id}
+                    className="flex flex-col items-center gap-2 p-3 bg-champagne-glint/30 rounded-lg transition-transform hover:-translate-y-0.5"
+                  >
+                    <span className="material-symbols-outlined text-primary" style={{ fontSize: '24px' }}>
+                      {amenityIcon(a.name)}
+                    </span>
+                    <span className="font-label-caps text-[9px] text-center leading-tight">{a.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Photo gallery */}
+          <GalleryLightbox images={orderedImages} loungeName={l.name} />
+
+          {/* Sponsored slot — routes to FinlyWealth category page best matched
+              to this lounge's network (Aeroplan cards for MLL, general
+              lounge-access cards otherwise). This is the primary in-content
+              conversion path for the lounge pages. */}
+          {(() => {
+            const cta = loungeAccessCardsAffiliate(l.name)
+            return (
+              <div className="bg-primary text-white p-8 rounded-xl flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
+                <div className="relative z-10">
+                  <span className="font-label-caps text-[10px] opacity-70 mb-2 block uppercase tracking-widest">Sponsored</span>
+                  <h4 className="font-headline-md text-headline-md mb-2">{cta.heading}</h4>
+                  <p className="font-body-md text-body-md opacity-80 max-w-md">
+                    Compare current Canadian credit cards with airport-lounge benefits, welcome bonuses, and any active cashback rebates.
+                  </p>
+                </div>
+                <a
+                  href={cta.href}
+                  target="_blank"
+                  rel={AFFILIATE_REL}
+                  className="relative z-10 bg-white text-primary px-8 py-3 rounded font-label-caps text-label-caps uppercase tracking-wider hover:bg-champagne-glint transition-colors shrink-0"
+                >
+                  {cta.ctaLabel}
+                </a>
+                <div className="absolute right-0 top-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20" />
+              </div>
+            )
+          })()}
+
+          {/* Access eligibility */}
+          {accessTypes.length > 0 && (
+            <div data-speakable="access" className="bg-white border border-outline-variant/30 p-10 rounded-xl">
+              <h3 className="font-headline-md text-headline-md mb-8">Access Eligibility</h3>
+              <div className="space-y-6">
+                {accessTypes.map((at, i) => (
+                  <div
+                    key={i}
+                    className={`flex gap-6 pb-6 ${i < accessTypes.length - 1 ? 'border-b border-outline-variant/20' : ''}`}
+                  >
+                    <span className="material-symbols-outlined text-primary text-3xl shrink-0">
+                      {accessIcon(at.type)}
+                    </span>
+                    <div>
+                      <h4 className="font-bold text-lg mb-1">{at.name}</h4>
+                      {at.details && <p className="text-on-surface-variant">{at.details}</p>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Reviews */}
+          <div id="reviews">
+            <h3 className="font-headline-md text-headline-md mb-8">
+              Guest Reviews
+              {l.review_count > 0 && (
+                <span className="text-secondary text-lg font-normal ml-2">({l.review_count})</span>
+              )}
+            </h3>
+
+            <ReviewAuthGate
+              variant="v1"
+              loungeId={l.id}
+              code={code}
+              slug={l.slug}
+            />
+
+            <div className="space-y-4">
+              {(reviews as Review[])?.map(review => (
+                <ReviewCard key={review.id} review={review} />
+              ))}
+              {(!reviews || reviews.length === 0) && (
+                <div className="text-center py-16 text-secondary">
+                  <span className="material-symbols-outlined mb-3 block" style={{ fontSize: '48px' }}>rate_review</span>
+                  <p>No reviews yet — be the first to share your experience.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar (1/4) */}
+        <aside className="space-y-8">
+
+          {/* Quick info card */}
+          <div className="bg-white border border-outline-variant/30 p-8 rounded-xl shadow-sm">
+            {l.guest_fee ? (
+              <div className="mb-6">
+                <span className="font-label-caps text-label-caps text-on-surface-variant block mb-1">SINGLE ENTRY</span>
+                <div className="flex items-baseline gap-1">
+                  <span className="font-display-lg text-headline-lg text-primary">${l.guest_fee}</span>
+                  <span className="text-on-surface-variant">{l.guest_fee_currency ?? 'CAD'}</span>
+                </div>
+              </div>
+            ) : (
+              <div className="mb-6">
+                <span className="font-label-caps text-label-caps text-on-surface-variant block mb-1">ACCESS</span>
+                <span className="font-headline-md text-primary">Member / Status</span>
+              </div>
+            )}
+
+            <div className="space-y-3 mb-8">
+              {l.capacity && (
+                <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                  <span className="text-on-surface-variant">Capacity</span>
+                  <span className="font-medium">{l.capacity} guests</span>
+                </div>
+              )}
+              {l.terminal && (
+                <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                  <span className="text-on-surface-variant">Terminal</span>
+                  <span className="font-medium">{l.terminal}</span>
+                </div>
+              )}
+              {l.review_count > 0 && (
+                <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                  <span className="text-on-surface-variant">Reviews</span>
+                  <span className="font-medium">{l.review_count}</span>
+                </div>
+              )}
+              {l.rating && (
+                <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                  <span className="text-on-surface-variant">Rating</span>
+                  <span className="font-medium flex items-center gap-1">
+                    <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1", fontSize: '14px' }}>star</span>
+                    {l.rating.toFixed(1)}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Book Day Pass CTA — appears when the lounge sells a walk-in day pass
+                (guest_fee set) OR its access_types includes a day_pass entry.
+                Routes to the affiliate booking URL for the operator brand. */}
+            {(l.guest_fee != null || accessTypes.some(at => at.type === 'day_pass' || /day pass|walk[- ]in/i.test(at.name))) && (
+              <a
+                href={dayPassAffiliate(l.name)}
+                target="_blank"
+                rel={AFFILIATE_REL}
+                className="block w-full text-center bg-primary text-white py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:opacity-90 transition-opacity mb-4"
+              >
+                {l.guest_fee ? `Book Day Pass · $${l.guest_fee} ${l.guest_fee_currency ?? 'CAD'}` : 'Book Day Pass'}
+              </a>
+            )}
+            {l.website && !(l.guest_fee != null) && (
+              <a
+                href={l.website}
+                target="_blank"
+                rel="noreferrer"
+                className="block w-full text-center bg-primary text-white py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:opacity-90 transition-opacity mb-4"
+              >
+                Visit Website
+              </a>
+            )}
+            {l.phone && (
+              <a
+                href={`tel:${l.phone.replace(/[^\d+]/g, '')}`}
+                className="flex items-center justify-center gap-2 w-full text-center border border-primary text-primary py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:bg-primary/5 transition-colors mb-4"
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>call</span>
+                Call Lounge
+              </a>
+            )}
+            <Link
+              href={`/airports/${code}`}
+              className="block w-full text-center border border-primary text-primary py-4 rounded font-label-caps text-label-caps uppercase tracking-widest hover:bg-primary/5 transition-colors"
+            >
+              All {code} Lounges
+            </Link>
+          </div>
+
+          {/* Typical busy times */}
+          {l.busy_times && (
+            <div className="bg-white border border-outline-variant/30 p-8 rounded-xl shadow-sm">
+              <h4 className="font-bold text-lg mb-4 flex items-center gap-3">
+                <span className="material-symbols-outlined text-primary">groups</span>
+                Typical Busy Times
+              </h4>
+              {(l.busy_times.busiest || l.busy_times.quietest) && (
+                <div className="space-y-3 mb-4">
+                  {l.busy_times.busiest && (
+                    <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                      <span className="text-on-surface-variant flex items-center gap-2">
+                        <span className="material-symbols-outlined text-red-500" style={{ fontSize: '16px' }}>trending_up</span>
+                        Busiest
+                      </span>
+                      <span className="font-medium text-right">{l.busy_times.busiest}</span>
+                    </div>
+                  )}
+                  {l.busy_times.quietest && (
+                    <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
+                      <span className="text-on-surface-variant flex items-center gap-2">
+                        <span className="material-symbols-outlined text-green-600" style={{ fontSize: '16px' }}>trending_down</span>
+                        Quietest
+                      </span>
+                      <span className="font-medium text-right">{l.busy_times.quietest}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+              <p className="text-sm text-on-surface-variant leading-relaxed">{l.busy_times.note}</p>
+            </div>
+          )}
+
+          {/* Terminal location map — interactive Mapbox */}
+          {l.airport?.latitude && l.airport?.longitude && (
+            <div className="bg-white border border-outline-variant/30 overflow-hidden rounded-xl">
+              <div className="p-6 border-b border-outline-variant/20">
+                <h4 className="font-bold text-lg">Terminal Location</h4>
+              </div>
+              <div className="h-52 overflow-hidden">
+                <LoungeMapClient
+                  latitude={l.airport.latitude}
+                  longitude={l.airport.longitude}
+                  name={l.name}
+                />
+              </div>
+              {l.location_detail && (
+                <div className="p-4 bg-champagne-glint/20">
+                  <p className="text-xs text-on-surface-variant leading-relaxed">{l.location_detail}</p>
+                </div>
+              )}
+              {l.airport?.terminal_map_url && (
+                <div className="p-4">
+                  <a
+                    href={l.airport.terminal_map_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center justify-center gap-2 bg-primary text-white py-3 w-full font-label-caps text-[10px] uppercase tracking-widest hover:opacity-90 transition-all"
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>open_in_new</span>
+                    Official Terminal Map
+                  </a>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Opening hours — sidebar placement so readers see it near the top-of-fold
+              next to the terminal map. Renders as an "Currently closed" state when the
+              lounge closure_status is set, so users don't try to walk over. */}
+          {l.opening_hours && Object.keys(l.opening_hours).length > 0 && (
+            <div className="bg-surface border border-sand-dark/10 p-6 shadow-sm">
+              <h4 className="font-label-caps text-label-caps text-sand-dark mb-4 flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary" style={{ fontSize: '16px' }}>schedule</span>
+                OPENING HOURS
+              </h4>
+              {l.closure_status && l.closure_status !== 'open' ? (
+                <div className="mb-3 p-3 bg-amber-50 border border-amber-200 rounded">
+                  <p className="text-sm font-semibold text-amber-800">Currently closed</p>
+                  {l.closure_reopen_estimate && (
+                    <p className="text-xs text-amber-700 mt-1">Expected return: {l.closure_reopen_estimate}</p>
+                  )}
+                  <p className="text-[10px] text-amber-700 mt-2 italic">Hours below reflect the pre-closure schedule.</p>
+                </div>
+              ) : null}
+              {l.opening_hours.is_24_7 ? (
+                <p className="text-green-600 font-bold text-lg">Open 24 / 7</p>
+              ) : (
+                <div className="space-y-1">
+                  {DAY_ORDER.map(day => {
+                    const hours = l.opening_hours[day]
+                    if (!hours) return null
+                    return (
+                      <div key={day} className="flex justify-between text-xs py-1 border-b border-outline-variant/10 last:border-0">
+                        <span className="capitalize text-on-surface-variant">{day.slice(0, 3)}</span>
+                        <span className="font-medium text-on-surface">{hours}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+              {l.opening_hours.notes && (
+                <p className="text-[10px] text-secondary mt-3 leading-relaxed">{l.opening_hours.notes}</p>
+              )}
+            </div>
+          )}
+
+          {/* Weather */}
+          {weather && l.airport && (
+            <WeatherWidget weather={weather} city={l.airport.city} iata={code} />
+          )}
+
+          {/* Google Places enrichment — rating, photos, verified hours, Maps link.
+              Renders nothing until the lounge is backfilled with google_place_data. */}
+          <GooglePlacesEnrichment place={googlePlace} loungeName={l.name} />
+
+          {/* Newsletter capture in the sidebar — high-intent slot */}
+          <NewsletterCTA
+            source={`lounge:${l.slug}`}
+            variant="light"
+            heading="Get updates for this lounge."
+            subheading={`Monthly briefing on access-rule changes at ${l.name} and other Canadian lounges.`}
+          />
+        </aside>
+      </section>
+    </div>
+  )
+}

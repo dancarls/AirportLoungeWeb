@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 import SearchModule from '@/components/SearchModule'
 import FeaturedLoungeSection from '@/components/FeaturedLoungeSection'
 import AirportMapsSection from '@/components/AirportMapsSection'
@@ -29,8 +30,10 @@ type MapAirport = {
 }
 
 export const revalidate = 300
-// SSR on first hit, then cache per revalidate — skips build-time prerender
-// that would otherwise require DB connectivity during the Vercel build.
+// This route has no dynamic segment, so an empty generateStaticParams is not
+// available. force-dynamic skips the build-time prerender (no live database
+// required). The Postgres read is cached for `revalidate` seconds so repeat
+// hits do not open a connection. Airport and lounge URLs use on-demand ISR.
 export const dynamic = 'force-dynamic'
 
 function getImg(path: string) {
@@ -55,16 +58,16 @@ export default async function HomePage() {
     mapAirports,
     loungeCountRow,
     airportCountRow,
-  ] = await Promise.all([
+  ] = await cachedRead('home-public', 300, () => Promise.all([
     db<{ id: string; name: string; iata_code: string; city: string }[]>`
       SELECT id, name, iata_code, city FROM airports
-      WHERE is_active = true ORDER BY name
+      WHERE is_active = true ORDER BY name ASC, iata_code ASC
     `,
     db<HomeLounge[]>`
       SELECT l.*,
         json_build_object('name', a.name, 'iata_code', a.iata_code, 'city', a.city) AS airport,
         COALESCE(
-          (SELECT json_agg(i.* ORDER BY i.sort_order NULLS LAST)
+          (SELECT json_agg(i.* ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
            FROM lounge_images i WHERE i.lounge_id = l.id),
           '[]'::json
         ) AS images
@@ -73,19 +76,19 @@ export default async function HomePage() {
       WHERE l.is_active = true
         AND l.airport_id = ANY(${flagshipIds})
         AND l.rating IS NOT NULL
-      ORDER BY l.rating DESC
+      ORDER BY l.rating DESC NULLS LAST, l.name ASC, l.slug ASC
       LIMIT 4
     `,
     db<HomeLounge[]>`
       SELECT l.*,
         row_to_json(a) AS airport,
         COALESCE(
-          (SELECT json_agg(i.* ORDER BY i.sort_order NULLS LAST)
+          (SELECT json_agg(i.* ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
            FROM lounge_images i WHERE i.lounge_id = l.id),
           '[]'::json
         ) AS images,
         COALESCE(
-          (SELECT json_agg(am.*)
+          (SELECT json_agg(am.* ORDER BY am.name ASC, am.id ASC)
            FROM lounge_amenities la JOIN amenities am ON am.id = la.amenity_id
            WHERE la.lounge_id = l.id),
           '[]'::json
@@ -95,24 +98,25 @@ export default async function HomePage() {
       WHERE l.is_active = true
         AND l.airport_id = ANY(${flagshipIds})
         AND l.rating IS NOT NULL
-      ORDER BY l.rating DESC NULLS LAST
+      ORDER BY l.rating DESC NULLS LAST, l.name ASC, l.slug ASC
       LIMIT 1
     `,
     db<MapAirport[]>`
       SELECT a.iata_code, a.name, a.city, a.latitude, a.longitude, a.terminal_map_url,
         COALESCE(
           (SELECT json_agg(json_build_object(
-             'id', l.id, 'name', l.name, 'slug', l.slug, 'terminal', l.terminal))
+             'id', l.id, 'name', l.name, 'slug', l.slug, 'terminal', l.terminal)
+             ORDER BY l.name ASC, l.slug ASC)
            FROM lounges l WHERE l.airport_id = a.id AND l.is_active = true),
           '[]'::json
         ) AS lounges
       FROM airports a
       WHERE a.is_active = true AND a.latitude IS NOT NULL
-      ORDER BY a.name
+      ORDER BY a.name ASC, a.iata_code ASC
     `,
     db<{ count: string }[]>`SELECT COUNT(*)::text AS count FROM lounges WHERE is_active = true`,
     db<{ count: string }[]>`SELECT COUNT(*)::text AS count FROM airports WHERE is_active = true`,
-  ])
+  ]))
 
   const featuredLounge = featuredLoungeRows[0] ?? null
   const loungeCount = Number(loungeCountRow[0]?.count ?? 0)

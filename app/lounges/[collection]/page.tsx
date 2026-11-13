@@ -10,8 +10,11 @@ import LoungePlaceholder from '@/components/LoungePlaceholder'
 
 interface Props { params: Promise<{ collection: string }> }
 
+// Slugs are known without the database, but rendering each page queries it.
+// Returning [] skips that work at build time. Unknown slugs still render
+// (dynamicParams) and 404 when the slug is not a collection.
 export function generateStaticParams() {
-  return allCollectionSlugs().map(collection => ({ collection }))
+  return []
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -32,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export const revalidate = 3600
-export const dynamic = 'force-dynamic'
+export const dynamicParams = true
 
 function getImg(path: string) {
   return imageUrl(path)
@@ -51,24 +54,26 @@ export default async function CollectionPage({ params }: Props) {
       SELECT l.*,
         json_build_object('id', a.id, 'name', a.name, 'iata_code', a.iata_code, 'city', a.city) AS airport,
         COALESCE(
-          (SELECT json_agg(json_build_object('id', am.id, 'name', am.name) ORDER BY am.name)
+          (SELECT json_agg(json_build_object('id', am.id, 'name', am.name) ORDER BY am.name ASC, am.id ASC)
            FROM lounge_amenities la JOIN amenities am ON am.id = la.amenity_id
            WHERE la.lounge_id = l.id),
           '[]'::json
         ) AS amenities,
         COALESCE(
-          (SELECT json_agg(json_build_object('storage_path', i.storage_path, 'is_primary', i.is_primary))
+          (SELECT json_agg(json_build_object('storage_path', i.storage_path, 'is_primary', i.is_primary)
+                           ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
            FROM lounge_images i WHERE i.lounge_id = l.id),
           '[]'::json
         ) AS images
       FROM lounges l
       JOIN airports a ON a.id = l.airport_id
       WHERE l.is_active = true
-      ORDER BY l.rating DESC NULLS LAST
+      ORDER BY l.rating DESC NULLS LAST, l.name ASC, l.slug ASC
     `
   } catch (err) {
     console.error('collection page DB fetch failed', err)
-    // fall through to empty list — the layout still renders with "no lounges"
+    // Do not render an empty 200. ISR would cache that as the page.
+    throw err
   }
 
   const lounges = rawLounges.filter(c.filter)

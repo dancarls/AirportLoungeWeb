@@ -1,5 +1,6 @@
 import FlightStatusWidget from '@/components/FlightStatusWidget'
 import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 import Link from 'next/link'
 import { Plane } from 'lucide-react'
 import type { Metadata } from 'next'
@@ -16,13 +17,15 @@ export const metadata: Metadata = {
   },
 }
 
+export const revalidate = 600
+// Airport list is cached. Live flight status is loaded in the client widget.
 export const dynamic = 'force-dynamic'
 
 export default async function FlightsPage() {
-  const airports = await db<{ iata_code: string; name: string; city: string }[]>`
+  const airports = await cachedRead('flights-airports', 600, () => db<{ iata_code: string; name: string; city: string }[]>`
     SELECT iata_code, name, city FROM airports
-    WHERE is_active = true ORDER BY name
-  `
+    WHERE is_active = true ORDER BY name ASC, iata_code ASC
+  `)
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-12">

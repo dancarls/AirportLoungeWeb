@@ -28,7 +28,7 @@ import NewsletterCTA from '@/components/NewsletterCTA'
 import GooglePlacesEnrichment from '@/components/GooglePlacesEnrichment'
 import LoungeClosureBanner from '@/components/LoungeClosureBanner'
 import ReviewCard from '@/components/ReviewCard'
-import ReviewForm from '@/components/ReviewForm'
+import ReviewAuthGate from '@/components/ReviewAuthGate'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 import {
   getImageUrl,
@@ -66,7 +66,6 @@ interface Props {
    * is set (see lib/affiliates.ts).
    */
   cardsCta: { href: string; ctaLabel: string; heading: string }
-  isSignedIn: boolean
 }
 
 // Day-abbreviation for the compact 7-day toggle in the sticky rail.
@@ -83,7 +82,6 @@ export default function LoungeDetailV2({
   alternativeLounges,
   code,
   cardsCta,
-  isSignedIn,
 }: Props) {
   const images   = l.images ?? []
   const primaryIdx = images.findIndex(i => i.is_primary)
@@ -707,22 +705,13 @@ export default function LoungeDetailV2({
                 )}
               </div>
 
-              {isSignedIn ? (
-                <div className="bg-[#f4f3f0] p-5 rounded-xl">
-                  <h4 className="font-semibold text-[#0e2a38] mb-4">Share your experience</h4>
-                  <ReviewForm loungeId={l.id} />
-                </div>
-              ) : (
-                <div className="bg-[#f4f3f0] p-5 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <p className="text-[#42474b]">Been to {l.name}? Sign in to share your experience.</p>
-                  <Link
-                    href={`/auth/login?redirectTo=/airports/${code}/lounges/${l.slug}`}
-                    className="inline-flex items-center gap-2 bg-[#0e2a38] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#0e2a38]/90 transition-colors shrink-0"
-                  >
-                    Sign in to review
-                  </Link>
-                </div>
-              )}
+              <ReviewAuthGate
+                variant="v2"
+                loungeId={l.id}
+                code={code}
+                slug={l.slug}
+                loungeName={l.name}
+              />
 
               {reviews.length > 0 ? (
                 <div className="space-y-3 pt-2">
