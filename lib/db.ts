@@ -1,10 +1,9 @@
 import 'server-only'
 import postgres from 'postgres'
 import type { Sql } from 'postgres'
-import { after } from 'next/server'
 import { parsePgNumeric } from '@/lib/pg-numeric'
 import { PG_POOL } from '@/lib/pg-pool'
-import { createLeaseCounter } from '@/lib/pool-lease'
+import { createIdleCloser } from '@/lib/pool-lease'
 
 /**
  * Postgres client for AirportLounges — Contabo VPS (port 5501).
@@ -13,22 +12,26 @@ import { createLeaseCounter } from '@/lib/pool-lease'
  * as text by default; PostgREST returned JSON numbers, and the pages call
  * `rating.toFixed` and filter coordinates with `typeof === 'number'`.
  *
- * Pool: one connection per isolate, closed in `after()` once the response
- * finishes so a frozen serverless isolate does not hold the socket. The app
- * role allows 30 connections; a burst of 20 concurrent renders stays under
- * that. `prepare: false` avoids prepared-statement caches across invocations.
- * TLS: the Contabo cert is self-signed, so Node must not require a CA.
+ * Pool: one connection per isolate. The client is closed only after every
+ * query promise has settled and a short idle gap has passed, so a background
+ * `unstable_cache` refresh cannot have its socket ended by another request.
+ * The app role allows 30 connections; a burst of 20 concurrent renders stays
+ * under that. `prepare: false` avoids prepared-statement caches across
+ * invocations. TLS: the Contabo cert is self-signed, so Node must not require a CA.
  */
 
 let _sql: Sql | null = null
 
-const leases = createLeaseCounter(() => {
+const queries = createIdleCloser(() => {
   const client = _sql
   if (!client) return
   _sql = null
   void client.end({ timeout: 1 }).catch(() => {
     // The socket is already unusable if end() fails; the next query opens a new one.
   })
+}, (run) => {
+  const timer = setTimeout(run, PG_POOL.idleCloseDelayMs)
+  return () => clearTimeout(timer)
 })
 
 function createClient(): Sql {
@@ -65,19 +68,6 @@ export function sql(): Sql {
   return _sql
 }
 
-function trackQuery() {
-  const lease = leases.acquire()
-  try {
-    after(() => {
-      lease.release()
-    })
-  } catch {
-    // No request scope (a script, or a prerender that cannot defer work).
-    // Leave the socket to idle_timeout instead of closing it mid-query.
-    lease.cancel()
-  }
-}
-
 function callClient(name: 'json' | 'unsafe' | 'array') {
   return (...args: unknown[]) => {
     const client = sql() as unknown as Record<string, (...a: unknown[]) => unknown>
@@ -94,9 +84,21 @@ function callClient(name: 'json' | 'unsafe' | 'array') {
  */
 const dbCall = (...args: unknown[]) => {
   const client = sql()
-  trackQuery()
-  // @ts-expect-error — postgres client is callable as a tagged template
-  return client(...args)
+  const release = queries.begin()
+  try {
+    // The query promise is what holds the client. Releasing in finally covers
+    // both a normal request and a background revalidation where `after()` is
+    // not available. The closer will not end the socket while `queries.size`
+    // is still above zero.
+    // @ts-expect-error — postgres client is callable as a tagged template
+    const query = client(...args) as Promise<unknown>
+    return query.finally(() => {
+      release()
+    })
+  } catch (err) {
+    release()
+    throw err
+  }
 }
 
 export const db = Object.assign(dbCall, {

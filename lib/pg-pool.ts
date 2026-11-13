@@ -13,4 +13,7 @@ export const PG_POOL = {
   idleTimeoutSeconds: 5,
   maxLifetimeSeconds: 60 * 5,
   connectTimeoutSeconds: 10,
+  // Long enough for the next awaited query in the same render to reuse the
+  // client, short enough that an idle isolate does not sit on a socket.
+  idleCloseDelayMs: 50,
 } as const

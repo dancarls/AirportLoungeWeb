@@ -30,6 +30,18 @@ test('rating sorts name-and-slug tie-break', () => {
   assert.deepEqual(misses, [])
 })
 
+test('amenity aggregates follow join-table order, not amenity name', () => {
+  const misses: string[] = []
+  for (const file of sources) {
+    const text = readFileSync(file, 'utf8')
+    if (text.includes('ORDER BY am.name')) misses.push(path.relative(ROOT, file))
+    if (!text.includes('lounge_amenities')) continue
+    if (!text.includes('json_agg(')) continue
+    if (!text.includes('ORDER BY la.ctid')) misses.push(`${path.relative(ROOT, file)} missing la.ctid`)
+  }
+  assert.deepEqual(misses, [])
+})
+
 test('json aggregates declare an order', () => {
   const misses: string[] = []
   for (const file of sources) {

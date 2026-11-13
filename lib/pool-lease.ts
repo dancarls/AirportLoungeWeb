@@ -1,31 +1,44 @@
 /**
- * Counts in-flight uses of a shared pool inside one isolate.
- * `release` drops the count and runs `onIdle` when the last user finishes.
- * `cancel` drops the count without closing — used when there is no request
- * scope in which to defer the close (build scripts, `after()` unavailable).
+ * Tracks in-flight queries on one shared Postgres client.
+ *
+ * `begin()` increments the count and returns a function that must run when
+ * that query settles. The idle callback is armed only when the count hits
+ * zero, and a new `begin()` cancels a pending close. A query that is still
+ * running therefore keeps the client open even if another request finishes
+ * and tries to clean up.
  */
-export function createLeaseCounter(onIdle: () => void) {
-  let users = 0
+export function createIdleCloser(
+  onIdle: () => void,
+  schedule: (run: () => void) => () => void,
+) {
+  let active = 0
+  let cancelPending: (() => void) | null = null
+
+  function arm() {
+    if (cancelPending) return
+    cancelPending = schedule(() => {
+      cancelPending = null
+      if (active === 0) onIdle()
+    })
+  }
 
   return {
     get size() {
-      return users
+      return active
     },
-    acquire() {
-      users += 1
+    begin() {
+      if (cancelPending) {
+        cancelPending()
+        cancelPending = null
+      }
+      active += 1
       let settled = false
-      const finish = (close: boolean) => {
+      return () => {
         if (settled) return
         settled = true
-        users -= 1
-        if (close && users <= 0) {
-          users = 0
-          onIdle()
-        }
-      }
-      return {
-        release: () => finish(true),
-        cancel: () => finish(false),
+        active -= 1
+        if (active < 0) active = 0
+        if (active === 0) arm()
       }
     },
   }
