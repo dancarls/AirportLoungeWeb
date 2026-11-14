@@ -23,6 +23,22 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
+  // Lounge layout kill-switch (?v=v1 / ?v=v2) is rewritten to a dynamic
+  // preview route so the public lounge URL can stay ISR-cached.
+  const layout = request.nextUrl.searchParams.get('v')
+  if (
+    (layout === 'v1' || layout === 'v2') &&
+    /^\/airports\/[^/]+\/lounges\/[^/]+$/.test(request.nextUrl.pathname)
+  ) {
+    const url = request.nextUrl.clone()
+    url.pathname = `${request.nextUrl.pathname}/preview`
+    const rewritten = NextResponse.rewrite(url)
+    supabaseResponse.cookies.getAll().forEach(cookie => {
+      rewritten.cookies.set(cookie)
+    })
+    return rewritten
+  }
+
   // Protect /account routes
   if (!user && request.nextUrl.pathname.startsWith('/account')) {
     const url = request.nextUrl.clone()

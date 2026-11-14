@@ -1,4 +1,5 @@
 import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 import type { Metadata } from 'next'
 import LoungeFinderQuiz from '@/components/LoungeFinderQuiz'
 import type { MatchableLounge } from '@/lib/card-access'
@@ -25,7 +26,7 @@ export const revalidate = 3600
 export const dynamic = 'force-dynamic'
 
 export default async function Page() {
-  const [rows, airports] = await Promise.all([
+  const [rows, airports] = await cachedRead('lounge-finder', 3600, () => Promise.all([
     db<QuizRow[]>`
       SELECT l.id, l.name, l.slug, l.terminal, l.access_types,
         a.iata_code AS iata,
@@ -33,13 +34,13 @@ export default async function Page() {
       FROM lounges l
       JOIN airports a ON a.id = l.airport_id
       WHERE l.is_active = true
-      ORDER BY l.rating DESC NULLS LAST
+      ORDER BY l.rating DESC NULLS LAST, l.name ASC, l.slug ASC
     `,
     db<{ iata_code: string; name: string; city: string }[]>`
       SELECT iata_code, name, city FROM airports
-      WHERE is_active = true ORDER BY iata_code
+      WHERE is_active = true ORDER BY iata_code ASC
     `,
-  ])
+  ]))
 
   return (
     <div className="bg-bone-white min-h-screen">

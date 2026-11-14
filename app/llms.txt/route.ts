@@ -2,6 +2,7 @@
 // Serves a curated index of the site so LLMs can answer questions without
 // crawling every page. See https://llmstxt.org/ for the emerging convention.
 import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 
 const BASE = 'https://www.airportlounges.ca'
 
@@ -9,15 +10,15 @@ export async function GET() {
   let airportLines = ''
   let loungeCount = 0
   try {
-    const [airports, countRow] = await Promise.all([
+    const [airports, countRow] = await cachedRead('llms-index', 3600, () => Promise.all([
       db<{ iata_code: string; name: string; city: string }[]>`
         SELECT iata_code, name, city FROM airports
-        WHERE is_active = true ORDER BY name
+        WHERE is_active = true ORDER BY name ASC, iata_code ASC
       `,
       db<{ count: string }[]>`
         SELECT COUNT(*)::text AS count FROM lounges WHERE is_active = true
       `,
-    ])
+    ]))
     loungeCount = Number(countRow[0]?.count ?? 0)
     airportLines = airports.map(a =>
       `- [${a.iata_code} — ${a.city} (${a.name})](${BASE}/airports/${a.iata_code}): All lounges at ${a.city} airport with access requirements, amenities, and reviews.`

@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
 import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 import LoungeGrid from '@/components/LoungeGrid'
 import { COLLECTIONS } from '@/lib/collections'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
@@ -19,35 +20,37 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.airportlounges.ca/lounges' },
 }
 export const revalidate = 300
+// No dynamic segment, so this stays dynamic at the route level to skip the
+// build-time database prerender. The query itself is cached (see cachedRead).
 export const dynamic = 'force-dynamic'
 
 export default async function LoungesPage() {
-  const [lounges, airports] = await Promise.all([
+  const [lounges, airports] = await cachedRead('lounges-index', 300, () => Promise.all([
     db<LoungeWithJoins[]>`
       SELECT l.*,
         json_build_object('name', a.name, 'iata_code', a.iata_code, 'city', a.city) AS airport,
         COALESCE(
-          (SELECT json_agg(am.* ORDER BY am.name)
+          (SELECT json_agg(am.* ORDER BY am.id ASC)
              FROM lounge_amenities la
              JOIN amenities am ON am.id = la.amenity_id
             WHERE la.lounge_id = l.id),
           '[]'::json
         ) AS amenities,
         COALESCE(
-          (SELECT json_agg(i.* ORDER BY i.sort_order NULLS LAST)
+          (SELECT json_agg(i.* ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
              FROM lounge_images i WHERE i.lounge_id = l.id),
           '[]'::json
         ) AS images
       FROM lounges l
       JOIN airports a ON a.id = l.airport_id
       WHERE l.is_active = true
-      ORDER BY l.name
+      ORDER BY l.name ASC, l.slug ASC
     `,
     db<{ iata_code: string; name: string }[]>`
       SELECT iata_code, name FROM airports
-      WHERE is_active = true ORDER BY name
+      WHERE is_active = true ORDER BY name ASC, iata_code ASC
     `,
-  ])
+  ]))
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',

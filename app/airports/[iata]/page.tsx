@@ -129,7 +129,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { iata } = await params
   const code = iata.toUpperCase()
   const rows = await db<{ name: string; city: string }[]>`
-    SELECT name, city FROM airports WHERE iata_code = ${code} LIMIT 1
+    SELECT name, city FROM airports WHERE iata_code = ${code}
+    ORDER BY iata_code ASC
+    LIMIT 1
   `
   const airport = rows[0] ?? null
 
@@ -165,7 +167,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+// On-demand ISR: no paths are built, so `next build` does not need Postgres.
+// The first request for an airport renders and is cached for `revalidate` seconds.
 export const revalidate = 300
+export const dynamicParams = true
+
+export function generateStaticParams() {
+  return []
+}
 
 // ── Page ──────────────────────────────────────────────────
 interface AirportRow {
@@ -199,7 +208,9 @@ export default async function AirportPage({ params }: Props) {
   const code = iata.toUpperCase()
 
   const airportRows = await db<AirportRow[]>`
-    SELECT * FROM airports WHERE iata_code = ${code} LIMIT 1
+    SELECT * FROM airports WHERE iata_code = ${code}
+    ORDER BY iata_code ASC
+    LIMIT 1
   `
   const airport = airportRows[0]
   if (!airport) notFound()
@@ -213,13 +224,14 @@ export default async function AirportPage({ params }: Props) {
              'storage_path', i.storage_path,
              'is_primary', i.is_primary,
              'sort_order', i.sort_order,
-             'is_ai_generated', i.is_ai_generated))
+             'is_ai_generated', i.is_ai_generated)
+             ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
            FROM lounge_images i WHERE i.lounge_id = l.id),
           '[]'::json
         ) AS images
       FROM lounges l
       WHERE l.airport_id = ${airport.id} AND l.is_active = true
-      ORDER BY l.rating DESC NULLS LAST
+      ORDER BY l.rating DESC NULLS LAST, l.name ASC, l.slug ASC
     `,
     airport.latitude && airport.longitude
       ? getWeather(airport.latitude, airport.longitude)

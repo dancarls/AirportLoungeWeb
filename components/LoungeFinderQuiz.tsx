@@ -55,9 +55,16 @@ export default function LoungeFinderQuiz({ lounges, airports }: Props) {
       if (via) accessible.push({ lounge: l, via })
       else locked.push(l)
     }
-    // Sort accessible by rating
-    accessible.sort((a, b) => (b.lounge.rating ?? 0) - (a.lounge.rating ?? 0))
-    locked.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
+    accessible.sort((a, b) =>
+      (b.lounge.rating ?? 0) - (a.lounge.rating ?? 0) ||
+      a.lounge.name.localeCompare(b.lounge.name) ||
+      a.lounge.slug.localeCompare(b.lounge.slug)
+    )
+    locked.sort((a, b) =>
+      (b.rating ?? 0) - (a.rating ?? 0) ||
+      a.name.localeCompare(b.name) ||
+      a.slug.localeCompare(b.slug)
+    )
     return { accessible, locked }
   }, [airport, airportLounges, userKeys])
 

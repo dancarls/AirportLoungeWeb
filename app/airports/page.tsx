@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
+import { compareRatingThenName } from '@/lib/lounge-sort'
 import CanadaMap, { type AirportMapItem } from '@/components/CanadaMap'
 import { imageUrl } from '@/lib/image-url'
 
@@ -87,6 +89,8 @@ interface RawAirport {
   lounges: RawLounge[]
 }
 
+// searchParams makes this route dynamic (build does not prerender it, so the
+// database is not required at build time). The directory query is cached.
 export const dynamic = 'force-dynamic'
 
 interface Props {
@@ -98,19 +102,20 @@ export default async function AirportsPage({ searchParams }: Props) {
   const search  = (typeof sp.search  === 'string' ? sp.search  : '').toLowerCase().trim()
   const pFilter = (typeof sp.province === 'string' ? sp.province : '').trim()
 
-  const raw = await db<RawAirport[]>`
+  const raw = await cachedRead('airports-directory', 600, () => db<RawAirport[]>`
     SELECT a.id, a.iata_code, a.name, a.city, a.latitude, a.longitude,
       COALESCE(
         (SELECT json_agg(json_build_object(
            'id', l.id, 'name', l.name, 'slug', l.slug,
-           'rating', l.rating, 'is_active', l.is_active))
+           'rating', l.rating, 'is_active', l.is_active)
+           ORDER BY l.rating DESC NULLS LAST, l.name ASC, l.slug ASC)
          FROM lounges l WHERE l.airport_id = a.id),
         '[]'::json
       ) AS lounges
     FROM airports a
     WHERE a.is_active = true
-    ORDER BY a.name
-  `
+    ORDER BY a.name ASC, a.iata_code ASC
+  `)
 
   // Build enriched airport list
   const allAirports: AirportMapItem[] = raw
@@ -118,7 +123,7 @@ export default async function AirportsPage({ searchParams }: Props) {
     .map(a => {
       const activeLounges = (a.lounges ?? []).filter(l => l.is_active)
       const topLounges = [...activeLounges]
-        .sort((x, y) => (y.rating ?? 0) - (x.rating ?? 0))
+        .sort(compareRatingThenName)
         .slice(0, 2)
         .map(l => ({ name: l.name, rating: l.rating, slug: l.slug }))
 

@@ -21,7 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { iata } = await params
   const code = iata.toUpperCase()
   const rows = await db<{ name: string; city: string }[]>`
-    SELECT name, city FROM airports WHERE iata_code = ${code} LIMIT 1
+    SELECT name, city FROM airports WHERE iata_code = ${code}
+    ORDER BY iata_code ASC
+    LIMIT 1
   `
   const airport = rows[0] ?? null
   const name = airport?.name ?? `${code} Airport`
@@ -40,6 +42,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export const revalidate = 300
+export const dynamicParams = true
+
+export function generateStaticParams() {
+  return []
+}
 
 interface NavAirport {
   id: string
@@ -79,7 +86,9 @@ export default async function NavigatePage({ params }: Props) {
   const airportRows = await db<NavAirport[]>`
     SELECT id, name, city, country, iata_code, latitude, longitude,
            terminal_map_url, website
-    FROM airports WHERE iata_code = ${code} LIMIT 1
+    FROM airports WHERE iata_code = ${code}
+    ORDER BY iata_code ASC
+    LIMIT 1
   `
   const airport = airportRows[0]
   if (!airport || !airport.latitude || !airport.longitude) notFound()
@@ -92,13 +101,14 @@ export default async function NavigatePage({ params }: Props) {
         (SELECT json_agg(json_build_object(
            'storage_path', i.storage_path,
            'is_primary', i.is_primary,
-           'sort_order', i.sort_order))
+           'sort_order', i.sort_order)
+           ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
          FROM lounge_images i WHERE i.lounge_id = l.id),
         '[]'::json
       ) AS images
     FROM lounges l
     WHERE l.airport_id = ${airport.id} AND l.is_active = true
-    ORDER BY l.rating DESC NULLS LAST
+    ORDER BY l.rating DESC NULLS LAST, l.name ASC, l.slug ASC
   `
 
   const lounges: NavigatorLounge[] = rawLounges.map(l => ({

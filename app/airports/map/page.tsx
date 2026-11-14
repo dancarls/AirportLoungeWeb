@@ -1,4 +1,5 @@
 import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import AirportMapExplorer from '@/components/AirportMapExplorer'
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
 }
 
 export const revalidate = 600
+// No dynamic segment. Stay dynamic so the build does not need Postgres, and
+// cache the read so crawler bursts do not each open a connection.
 export const dynamic = 'force-dynamic'
 
 interface AirportWithLounges {
@@ -27,17 +30,17 @@ interface AirportWithLounges {
 export default async function AirportMapPage() {
   let rows: AirportWithLounges[] = []
   try {
-    rows = await db<AirportWithLounges[]>`
+    rows = await cachedRead('airport-map', 600, () => db<AirportWithLounges[]>`
       SELECT a.iata_code, a.name, a.city, a.latitude, a.longitude, a.terminal_map_url,
         COALESCE(
-          (SELECT json_agg(json_build_object('id', l.id))
+          (SELECT json_agg(json_build_object('id', l.id) ORDER BY l.name ASC, l.slug ASC)
            FROM lounges l WHERE l.airport_id = a.id AND l.is_active = true),
           '[]'::json
         ) AS lounges
       FROM airports a
       WHERE a.is_active = true AND a.latitude IS NOT NULL
-      ORDER BY a.name
-    `
+      ORDER BY a.name ASC, a.iata_code ASC
+    `)
   } catch (err) {
     console.error('airport map DB fetch failed', err)
   }

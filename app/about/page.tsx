@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 
 export const metadata: Metadata = {
   title: 'About AirportLounges.ca — Who We Are & How We Verify Lounge Data',
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 }
 
 export const revalidate = 3600
+// No dynamic segment. Skip build-time prerender; cache the two counts.
 export const dynamic = 'force-dynamic'
 
 const organizationLd = {
@@ -45,10 +47,10 @@ const organizationLd = {
 }
 
 export default async function AboutPage() {
-  const [loungeRow, airportRow] = await Promise.all([
+  const [loungeRow, airportRow] = await cachedRead('about-counts', 3600, () => Promise.all([
     db<{ count: string }[]>`SELECT COUNT(*)::text AS count FROM lounges WHERE is_active = true`,
     db<{ count: string }[]>`SELECT COUNT(*)::text AS count FROM airports WHERE is_active = true`,
-  ])
+  ]))
   const loungeCount = Number(loungeRow[0]?.count ?? 0)
   const airportCount = Number(airportRow[0]?.count ?? 0)
 

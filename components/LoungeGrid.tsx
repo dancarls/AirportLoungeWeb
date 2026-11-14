@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import type { Lounge, Airport, Amenity } from '@/lib/types'
+import { compareRatingThenName } from '@/lib/lounge-sort'
 import LoungePlaceholder from './LoungePlaceholder'
 import { imageUrl } from '@/lib/image-url'
 
@@ -141,9 +142,9 @@ export default function LoungeGrid({ lounges, airports }: Props) {
 
     if (openNow && mounted) result = result.filter(l => isOpenNow(l.opening_hours) === true)
 
-    if (sort === 'rating')  result.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))
-    else if (sort === 'reviews') result.sort((a, b) => b.review_count - a.review_count)
-    else result.sort((a, b) => a.name.localeCompare(b.name))
+    if (sort === 'rating') result.sort(compareRatingThenName)
+    else if (sort === 'reviews') result.sort((a, b) => b.review_count - a.review_count || a.name.localeCompare(b.name) || a.slug.localeCompare(b.slug))
+    else result.sort((a, b) => a.name.localeCompare(b.name) || a.slug.localeCompare(b.slug))
 
     return result
   }, [lounges, airport, access, amenity, openNow, sort, mounted])

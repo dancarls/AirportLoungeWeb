@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 import SidebarAffiliate from '@/components/SidebarAffiliate'
 import TugoBannerAd from '@/components/TugoBannerAd'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
@@ -105,7 +106,7 @@ export const dynamic = 'force-dynamic'
 export default async function YyzAirportHubFr() {
   const yyzId = '840161ae-1301-45f8-ad92-10d7834bef72'
 
-  const lounges = await db<Array<{
+  const lounges = await cachedRead('fr-yyz-lounges', 3600, () => db<Array<{
     id: string
     name: string
     slug: string
@@ -117,8 +118,8 @@ export default async function YyzAirportHubFr() {
     SELECT id, name, slug, terminal, is_active, closure_status, closure_reopen_estimate
     FROM lounges
     WHERE airport_id = ${yyzId} AND is_active = true
-    ORDER BY terminal NULLS LAST, name
-  `
+    ORDER BY terminal NULLS LAST, name ASC, slug ASC
+  `)
 
   return (
     <div className="bg-bone-white min-h-screen">

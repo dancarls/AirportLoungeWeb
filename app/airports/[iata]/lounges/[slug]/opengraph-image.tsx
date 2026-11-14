@@ -35,6 +35,7 @@ export default async function OG({ params }: Props) {
       FROM lounges l
       LEFT JOIN airports a ON a.id = l.airport_id
       WHERE l.slug = ${slug}
+      ORDER BY l.id ASC
       LIMIT 1
     `
     const data = rows[0]
