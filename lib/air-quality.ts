@@ -1,9 +1,8 @@
 import 'server-only'
-import { createClient } from '@/lib/supabase/server'
-import { createAdminClient } from '@/lib/supabase/admin'
+import { db } from '@/lib/db'
 
 /**
- * Google Air Quality API client with Supabase-backed 60-minute cache.
+ * Google Air Quality API client with VPS-backed 60-minute cache.
  *
  * The API costs ~$5 per 1000 requests; caching per airport per hour keeps
  * cost negligible (13 airports × 24 hourly refreshes × 30 days = ~9,360
@@ -37,6 +36,13 @@ interface GoogleAirQualityResponse {
   }>
 }
 
+interface CachedRow {
+  aqi: number | null
+  category: string | null
+  dominant_pollutant: string | null
+  updated_at: Date | null
+}
+
 /**
  * Read the current air quality reading for an airport, using DB cache when
  * fresh and falling back to a live Google API call when stale or missing.
@@ -44,15 +50,15 @@ interface GoogleAirQualityResponse {
  * should treat null as "widget hidden".
  */
 export async function getAirportAirQuality(airportId: string, lat: number, lng: number): Promise<AirQualityReading | null> {
-  const supabase = await createClient()
-
   // Try cache first
-  const { data: cached } = await supabase
-    .from('airport_air_quality')
-    .select('aqi, category, dominant_pollutant, updated_at')
-    .eq('airport_id', airportId)
-    .maybeSingle()
+  const cachedRows = await db<CachedRow[]>`
+    SELECT aqi, category, dominant_pollutant, updated_at
+    FROM airport_air_quality
+    WHERE airport_id = ${airportId}
+    LIMIT 1
+  `
 
+  const cached = cachedRows[0]
   if (cached?.updated_at) {
     const ageMs = Date.now() - new Date(cached.updated_at).getTime()
     if (ageMs < CACHE_TTL_MS) {
@@ -73,15 +79,12 @@ export async function getAirportAirQuality(airportId: string, lat: number, lng: 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         location: { latitude: lat, longitude: lng },
-        // Request the Canadian AQI when the airport is in Canada; Google auto-
-        // selects the local index by default. Universal AQI is always returned.
         extraComputations: ['DOMINANT_POLLUTANT_CONCENTRATION'],
       }),
     })
     if (!res.ok) return null
     const data = (await res.json()) as GoogleAirQualityResponse
 
-    // Prefer Universal AQI (uaqi) if present, else fall back to the first index.
     const primary = data.indexes?.find(i => i.code === 'uaqi') ?? data.indexes?.[0]
     if (!primary) return null
 
@@ -91,18 +94,20 @@ export async function getAirportAirQuality(airportId: string, lat: number, lng: 
       dominantPollutant: primary.dominantPollutant ?? null,
     }
 
-    // Cache write uses the server-only admin client — the public anon key
-    // does not have insert/upsert rights on airport_air_quality. The read
-    // above stays on the anon-cookie client since RLS allows SELECT.
-    const admin = createAdminClient()
-    await admin.from('airport_air_quality').upsert({
-      airport_id: airportId,
-      aqi: reading.aqi,
-      category: reading.category,
-      dominant_pollutant: reading.dominantPollutant,
-      data,
-      updated_at: new Date().toISOString(),
-    })
+    // Upsert cache row — airport_id is the PK or unique index on this table.
+    await db`
+      INSERT INTO airport_air_quality
+        (airport_id, aqi, category, dominant_pollutant, data, updated_at)
+      VALUES
+        (${airportId}, ${reading.aqi}, ${reading.category},
+         ${reading.dominantPollutant}, ${db.json(data)}, NOW())
+      ON CONFLICT (airport_id) DO UPDATE SET
+        aqi = EXCLUDED.aqi,
+        category = EXCLUDED.category,
+        dominant_pollutant = EXCLUDED.dominant_pollutant,
+        data = EXCLUDED.data,
+        updated_at = EXCLUDED.updated_at
+    `
 
     return reading
   } catch {

@@ -1,10 +1,18 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 import LoungeGrid from '@/components/LoungeGrid'
 import { COLLECTIONS } from '@/lib/collections'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 import type { Metadata } from 'next'
+import type { Lounge, Airport, Amenity } from '@/lib/types'
+
+type LoungeWithJoins = Lounge & {
+  airport?: Pick<Airport, 'name' | 'iata_code' | 'city'>
+  amenities?: Amenity[]
+  images?: Array<{ id: string; storage_path: string; is_primary: boolean; sort_order: number; alt_text?: string | null }>
+}
 
 export const metadata: Metadata = {
   title: 'Canadian Airport Lounges — All Access Passes, Cards & Amenities',
@@ -12,22 +20,37 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.airportlounges.ca/lounges' },
 }
 export const revalidate = 300
+// No dynamic segment, so this stays dynamic at the route level to skip the
+// build-time database prerender. The query itself is cached (see cachedRead).
+export const dynamic = 'force-dynamic'
 
 export default async function LoungesPage() {
-  const supabase = await createClient()
-
-  const [{ data: lounges }, { data: airports }] = await Promise.all([
-    supabase
-      .from('lounges')
-      .select('*, airport:airports(name, iata_code, city), amenities(*), images:lounge_images(*)')
-      .eq('is_active', true)
-      .order('name'),
-    supabase
-      .from('airports')
-      .select('iata_code, name')
-      .eq('is_active', true)
-      .order('name'),
-  ])
+  const [lounges, airports] = await cachedRead('lounges-index', 300, () => Promise.all([
+    db<LoungeWithJoins[]>`
+      SELECT l.*,
+        json_build_object('name', a.name, 'iata_code', a.iata_code, 'city', a.city) AS airport,
+        COALESCE(
+          (SELECT json_agg(am.* ORDER BY am.id ASC)
+             FROM lounge_amenities la
+             JOIN amenities am ON am.id = la.amenity_id
+            WHERE la.lounge_id = l.id),
+          '[]'::json
+        ) AS amenities,
+        COALESCE(
+          (SELECT json_agg(i.* ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
+             FROM lounge_images i WHERE i.lounge_id = l.id),
+          '[]'::json
+        ) AS images
+      FROM lounges l
+      JOIN airports a ON a.id = l.airport_id
+      WHERE l.is_active = true
+      ORDER BY l.name ASC, l.slug ASC
+    `,
+    db<{ iata_code: string; name: string }[]>`
+      SELECT iata_code, name FROM airports
+      WHERE is_active = true ORDER BY name ASC, iata_code ASC
+    `,
+  ]))
 
   const breadcrumbLd = {
     '@context': 'https://schema.org',

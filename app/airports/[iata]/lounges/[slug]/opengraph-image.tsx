@@ -1,42 +1,55 @@
 import { ImageResponse } from 'next/og'
-import { createClient } from '@supabase/supabase-js'
+import { db } from '@/lib/db'
 
-export const runtime = 'edge'
+// nodejs runtime required — the postgres driver uses native TCP+TLS which
+// isn't available on the Edge runtime. OG image generation is crawler-only
+// and not latency-critical, so nodejs is fine here.
+export const runtime = 'nodejs'
 export const alt = 'Airport lounge details — AirportLounges.ca'
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
 interface Props { params: { iata: string; slug: string } }
 
+interface OGRow {
+  name: string
+  terminal: string | null
+  rating: number | null
+  review_count: number | null
+  airport_name: string | null
+  airport_city: string | null
+}
+
 export default async function OG({ params }: Props) {
   const { iata, slug } = params
   const code = iata.toUpperCase()
-
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   let title  = 'Airport Lounge'
   let sub    = `${code} • AirportLounges.ca`
   let rating = ''
 
-  if (url && key) {
-    const sb = createClient(url, key)
-    const { data } = await sb
-      .from('lounges')
-      .select('name, terminal, rating, review_count, airport:airports(name, city)')
-      .eq('slug', slug)
-      .single()
-
+  try {
+    const rows = await db<OGRow[]>`
+      SELECT l.name, l.terminal, l.rating, l.review_count,
+        a.name AS airport_name, a.city AS airport_city
+      FROM lounges l
+      LEFT JOIN airports a ON a.id = l.airport_id
+      WHERE l.slug = ${slug}
+      ORDER BY l.id ASC
+      LIMIT 1
+    `
+    const data = rows[0]
     if (data) {
-      const airport = data.airport as unknown as { name: string; city: string } | null
       title = data.name
-      sub = airport
-        ? `${code} • ${airport.city}${data.terminal ? ` • Terminal ${data.terminal}` : ''}`
+      sub = data.airport_city
+        ? `${code} • ${data.airport_city}${data.terminal ? ` • Terminal ${data.terminal}` : ''}`
         : `${code} ${data.terminal ? `• Terminal ${data.terminal}` : ''}`
       if (data.rating) {
         rating = `★ ${Number(data.rating).toFixed(1)}${data.review_count ? ` · ${data.review_count} review${data.review_count !== 1 ? 's' : ''}` : ''}`
       }
     }
+  } catch (err) {
+    console.error('OG lookup failed', err)
   }
 
   return new ImageResponse(

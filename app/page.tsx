@@ -1,7 +1,8 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 import SearchModule from '@/components/SearchModule'
 import FeaturedLoungeSection from '@/components/FeaturedLoungeSection'
 import AirportMapsSection from '@/components/AirportMapsSection'
@@ -9,12 +10,34 @@ import ToolsPromoSection from '@/components/ToolsPromoSection'
 import TerminalMapVisual from '@/components/TerminalMapVisual'
 import { getWeather } from '@/lib/weather'
 import { getAllPosts } from '@/lib/blog'
+import { imageUrl } from '@/lib/image-url'
 import type { Lounge, Airport } from '@/lib/types'
 
+type HomeLounge = Lounge & {
+  airport?: Airport
+  images?: Array<{ id: string; storage_path: string; is_primary: boolean; sort_order: number; alt_text?: string | null }>
+  amenities?: Array<{ id: string; name: string; icon?: string | null }>
+}
+
+type MapAirport = {
+  iata_code: string
+  name: string
+  city: string
+  latitude: number | null
+  longitude: number | null
+  terminal_map_url: string | null
+  lounges: { id: string; name: string; slug: string; terminal: string | null }[]
+}
+
 export const revalidate = 300
+// This route has no dynamic segment, so an empty generateStaticParams is not
+// available. force-dynamic skips the build-time prerender (no live database
+// required). The Postgres read is cached for `revalidate` seconds so repeat
+// hits do not open a connection. Airport and lounge URLs use on-demand ISR.
+export const dynamic = 'force-dynamic'
 
 function getImg(path: string) {
-  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${path}`
+  return imageUrl(path)
 }
 
 // Flagship airport IDs — featured content always comes from these
@@ -26,42 +49,80 @@ const FLAGSHIP_AIRPORT_IDS = [
 ]
 
 export default async function HomePage() {
-  const supabase = await createClient()
+  const flagshipIds = FLAGSHIP_AIRPORT_IDS
 
   const [
-    { data: airports },
-    { data: topLounges },
-    { data: featuredLounge },
-    { data: mapAirports },
-    { count: loungeCount },
-    { count: airportCount },
-  ] = await Promise.all([
-    supabase.from('airports').select('id, name, iata_code, city').eq('is_active', true).order('name'),
-    supabase.from('lounges')
-      .select('*, airport:airports(name, iata_code, city), images:lounge_images(*)')
-      .eq('is_active', true)
-      .in('airport_id', FLAGSHIP_AIRPORT_IDS)
-      .not('rating', 'is', null)
-      .order('rating', { ascending: false })
-      .limit(4),
-    supabase.from('lounges')
-      .select('*, airport:airports(*), images:lounge_images(*), amenities(*)')
-      .eq('is_active', true)
-      .in('airport_id', FLAGSHIP_AIRPORT_IDS)
-      .not('rating', 'is', null)
-      .order('rating', { ascending: false, nullsFirst: false })
-      .limit(1)
-      .maybeSingle(),
-    supabase.from('airports')
-      .select('iata_code, name, city, latitude, longitude, terminal_map_url, lounges(id, name, slug, terminal)')
-      .eq('is_active', true)
-      .not('latitude', 'is', null)
-      .order('name'),
-    supabase.from('lounges').select('*', { count: 'exact', head: true }).eq('is_active', true),
-    supabase.from('airports').select('*', { count: 'exact', head: true }).eq('is_active', true),
-  ])
+    airports,
+    topLounges,
+    featuredLoungeRows,
+    mapAirports,
+    loungeCountRow,
+    airportCountRow,
+  ] = await cachedRead('home-public', 300, () => Promise.all([
+    db<{ id: string; name: string; iata_code: string; city: string }[]>`
+      SELECT id, name, iata_code, city FROM airports
+      WHERE is_active = true ORDER BY name ASC, iata_code ASC
+    `,
+    db<HomeLounge[]>`
+      SELECT l.*,
+        json_build_object('name', a.name, 'iata_code', a.iata_code, 'city', a.city) AS airport,
+        COALESCE(
+          (SELECT json_agg(i.* ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
+           FROM lounge_images i WHERE i.lounge_id = l.id),
+          '[]'::json
+        ) AS images
+      FROM lounges l
+      JOIN airports a ON a.id = l.airport_id
+      WHERE l.is_active = true
+        AND l.airport_id = ANY(${flagshipIds})
+        AND l.rating IS NOT NULL
+      ORDER BY l.rating DESC NULLS LAST, l.name ASC, l.slug ASC
+      LIMIT 4
+    `,
+    db<HomeLounge[]>`
+      SELECT l.*,
+        row_to_json(a) AS airport,
+        COALESCE(
+          (SELECT json_agg(i.* ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
+           FROM lounge_images i WHERE i.lounge_id = l.id),
+          '[]'::json
+        ) AS images,
+        COALESCE(
+          (SELECT json_agg(am.* ORDER BY am.id ASC)
+           FROM lounge_amenities la JOIN amenities am ON am.id = la.amenity_id
+           WHERE la.lounge_id = l.id),
+          '[]'::json
+        ) AS amenities
+      FROM lounges l
+      JOIN airports a ON a.id = l.airport_id
+      WHERE l.is_active = true
+        AND l.airport_id = ANY(${flagshipIds})
+        AND l.rating IS NOT NULL
+      ORDER BY l.rating DESC NULLS LAST, l.name ASC, l.slug ASC
+      LIMIT 1
+    `,
+    db<MapAirport[]>`
+      SELECT a.iata_code, a.name, a.city, a.latitude, a.longitude, a.terminal_map_url,
+        COALESCE(
+          (SELECT json_agg(json_build_object(
+             'id', l.id, 'name', l.name, 'slug', l.slug, 'terminal', l.terminal)
+             ORDER BY l.name ASC, l.slug ASC)
+           FROM lounges l WHERE l.airport_id = a.id AND l.is_active = true),
+          '[]'::json
+        ) AS lounges
+      FROM airports a
+      WHERE a.is_active = true AND a.latitude IS NOT NULL
+      ORDER BY a.name ASC, a.iata_code ASC
+    `,
+    db<{ count: string }[]>`SELECT COUNT(*)::text AS count FROM lounges WHERE is_active = true`,
+    db<{ count: string }[]>`SELECT COUNT(*)::text AS count FROM airports WHERE is_active = true`,
+  ]))
 
-  const fl = featuredLounge as (Lounge & { airport?: Airport }) | null
+  const featuredLounge = featuredLoungeRows[0] ?? null
+  const loungeCount = Number(loungeCountRow[0]?.count ?? 0)
+  const airportCount = Number(airportCountRow[0]?.count ?? 0)
+
+  const fl = featuredLounge as HomeLounge | null
   const flPrimaryImg = fl?.images?.find((i: { is_primary: boolean }) => i.is_primary) ?? fl?.images?.[0]
   const flImgUrl = flPrimaryImg ? getImg(flPrimaryImg.storage_path) : null
 
@@ -155,7 +216,7 @@ export default async function HomePage() {
           <img
             alt="Luxury Airport Lounge Interior"
             className="w-full h-full object-cover"
-            src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/airports/yyz/hero.jpg`}
+            src={imageUrl('airports/yyz/hero.jpg')}
           />
           <div className="absolute inset-0 bg-aviation-navy/60" />
           <div className="absolute inset-0 bg-gradient-to-r from-aviation-navy/40 to-transparent" />
@@ -170,7 +231,7 @@ export default async function HomePage() {
               Search by airport, terminal, access card, or amenity. Verified data for a seamless transit experience.
             </p>
             <Suspense fallback={<div className="h-20 bg-bone-white/10 animate-pulse" />}>
-              <SearchModule airports={(airports as Airport[]) ?? []} />
+              <SearchModule airports={(airports as unknown as Airport[]) ?? []} />
             </Suspense>
             <div className="mt-8 flex flex-wrap gap-4 items-center">
               <span className="font-label-caps text-label-caps text-bone-white/60">Quick Search:</span>

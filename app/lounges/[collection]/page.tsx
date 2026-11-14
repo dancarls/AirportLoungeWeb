@@ -1,16 +1,20 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
 import { getCollection, allCollectionSlugs, type Collection } from '@/lib/collections'
+import { imageUrl } from '@/lib/image-url'
 import type { Lounge, Airport, Amenity } from '@/lib/types'
 import NewsletterCTA from '@/components/NewsletterCTA'
 import LoungePlaceholder from '@/components/LoungePlaceholder'
 
 interface Props { params: Promise<{ collection: string }> }
 
+// Slugs are known without the database, but rendering each page queries it.
+// Returning [] skips that work at build time. Unknown slugs still render
+// (dynamicParams) and 404 when the slug is not a collection.
 export function generateStaticParams() {
-  return allCollectionSlugs().map(collection => ({ collection }))
+  return []
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -31,9 +35,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export const revalidate = 3600
+export const dynamicParams = true
 
 function getImg(path: string) {
-  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${path}`
+  return imageUrl(path)
 }
 
 type Row = Lounge & { airport?: Airport; amenities?: Amenity[]; images?: { storage_path: string; is_primary: boolean }[] }
@@ -43,14 +48,35 @@ export default async function CollectionPage({ params }: Props) {
   const c: Collection | undefined = getCollection(slug)
   if (!c) notFound()
 
-  const supabase = await createClient()
-  const { data: rawLounges } = await supabase
-    .from('lounges')
-    .select('*, airport:airports(id, name, iata_code, city), amenities(id, name), images:lounge_images(storage_path, is_primary)')
-    .eq('is_active', true)
-    .order('rating', { ascending: false, nullsFirst: false })
+  let rawLounges: Row[] = []
+  try {
+    rawLounges = await db<Row[]>`
+      SELECT l.*,
+        json_build_object('id', a.id, 'name', a.name, 'iata_code', a.iata_code, 'city', a.city) AS airport,
+        COALESCE(
+          (SELECT json_agg(json_build_object('id', am.id, 'name', am.name) ORDER BY am.id ASC)
+           FROM lounge_amenities la JOIN amenities am ON am.id = la.amenity_id
+           WHERE la.lounge_id = l.id),
+          '[]'::json
+        ) AS amenities,
+        COALESCE(
+          (SELECT json_agg(json_build_object('storage_path', i.storage_path, 'is_primary', i.is_primary)
+                           ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
+           FROM lounge_images i WHERE i.lounge_id = l.id),
+          '[]'::json
+        ) AS images
+      FROM lounges l
+      JOIN airports a ON a.id = l.airport_id
+      WHERE l.is_active = true
+      ORDER BY l.rating DESC NULLS LAST, l.name ASC, l.slug ASC
+    `
+  } catch (err) {
+    console.error('collection page DB fetch failed', err)
+    // Do not render an empty 200. ISR would cache that as the page.
+    throw err
+  }
 
-  const lounges = ((rawLounges ?? []) as Row[]).filter(c.filter)
+  const lounges = rawLounges.filter(c.filter)
 
   // Group by airport for nested display — matches how travellers search
   const byAirport = new Map<string, { airport: Airport; lounges: Row[] }>()

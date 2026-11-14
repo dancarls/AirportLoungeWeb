@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import AirportMapExplorer from '@/components/AirportMapExplorer'
@@ -12,28 +13,40 @@ export const metadata: Metadata = {
 }
 
 export const revalidate = 600
+// No dynamic segment. Stay dynamic so the build does not need Postgres, and
+// cache the read so crawler bursts do not each open a connection.
+export const dynamic = 'force-dynamic'
+
+interface AirportWithLounges {
+  iata_code: string
+  name: string
+  city: string
+  latitude: number
+  longitude: number
+  terminal_map_url: string | null
+  lounges: { id: string }[]
+}
 
 export default async function AirportMapPage() {
-  const supabase = await createClient()
-
-  const { data: airports } = await supabase
-    .from('airports')
-    .select('iata_code, name, city, latitude, longitude, terminal_map_url, lounges(id)')
-    .eq('is_active', true)
-    .not('latitude', 'is', null)
-    .order('name')
-
-  const valid = (airports ?? []).filter(
+  let rows: AirportWithLounges[] = []
+  try {
+    rows = await cachedRead('airport-map', 600, () => db<AirportWithLounges[]>`
+      SELECT a.iata_code, a.name, a.city, a.latitude, a.longitude, a.terminal_map_url,
+        COALESCE(
+          (SELECT json_agg(json_build_object('id', l.id) ORDER BY l.name ASC, l.slug ASC)
+           FROM lounges l WHERE l.airport_id = a.id AND l.is_active = true),
+          '[]'::json
+        ) AS lounges
+      FROM airports a
+      WHERE a.is_active = true AND a.latitude IS NOT NULL
+      ORDER BY a.name ASC, a.iata_code ASC
+    `)
+  } catch (err) {
+    console.error('airport map DB fetch failed', err)
+  }
+  const valid = rows.filter(
     a => typeof a.latitude === 'number' && typeof a.longitude === 'number'
-  ) as {
-    iata_code: string
-    name: string
-    city: string
-    latitude: number
-    longitude: number
-    terminal_map_url: string | null
-    lounges: { id: string }[]
-  }[]
+  )
 
   return (
     <div className="flex flex-col" style={{ height: 'calc(100vh - 80px)' }}>

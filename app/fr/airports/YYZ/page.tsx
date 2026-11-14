@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
-import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
+import { cachedRead } from '@/lib/cached-read'
 import SidebarAffiliate from '@/components/SidebarAffiliate'
 import TugoBannerAd from '@/components/TugoBannerAd'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
+import { imageUrl } from '@/lib/image-url'
 
 /**
  * French-locale (fr-CA) hub page for Toronto Pearson (YYZ). Mirrors the
@@ -18,7 +20,7 @@ const BASE = 'https://www.airportlounges.ca'
 const CANONICAL = `${BASE}/fr/airports/${CODE}`
 const EN_URL = `${BASE}/airports/${CODE}`
 const HERO_IMAGE =
-  'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yyz/hero.jpg'
+  imageUrl('airports/yyz/hero.jpg')
 
 export const metadata: Metadata = {
   title:
@@ -99,17 +101,25 @@ const faqSchema = {
   ],
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function YyzAirportHubFr() {
-  const supabase = await createClient()
   const yyzId = '840161ae-1301-45f8-ad92-10d7834bef72'
 
-  const { data: lounges } = await supabase
-    .from('lounges')
-    .select('id, name, slug, terminal, is_active, closure_status, closure_reopen_estimate')
-    .eq('airport_id', yyzId)
-    .eq('is_active', true)
-    .order('terminal', { ascending: true, nullsFirst: false })
-    .order('name')
+  const lounges = await cachedRead('fr-yyz-lounges', 3600, () => db<Array<{
+    id: string
+    name: string
+    slug: string
+    terminal: string | null
+    is_active: boolean
+    closure_status: string | null
+    closure_reopen_estimate: string | null
+  }>>`
+    SELECT id, name, slug, terminal, is_active, closure_status, closure_reopen_estimate
+    FROM lounges
+    WHERE airport_id = ${yyzId} AND is_active = true
+    ORDER BY terminal NULLS LAST, name ASC, slug ASC
+  `)
 
   return (
     <div className="bg-bone-white min-h-screen">

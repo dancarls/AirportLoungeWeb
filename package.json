@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "node --experimental-strip-types --test lib/*.test.ts"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.57.0",
@@ -16,6 +17,7 @@
     "lucide-react": "^0.475.0",
     "mapbox-gl": "^3.10.0",
     "next": "^15.2.4",
+    "postgres": "^4.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-map-gl": "^7.1.9",

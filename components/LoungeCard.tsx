@@ -3,6 +3,7 @@ import Image from 'next/image'
 import type { Lounge } from '@/lib/types'
 import LoungePlaceholder from './LoungePlaceholder'
 import { photoUrl as googlePhotoUrl, type GooglePlace } from '@/lib/google-places'
+import { imageUrl } from '@/lib/image-url'
 
 interface Props {
   lounge: Lounge
@@ -10,7 +11,7 @@ interface Props {
 }
 
 function getImageUrl(path: string): string {
-  return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/lounge-images/${path}`
+  return imageUrl(path)
 }
 
 /**

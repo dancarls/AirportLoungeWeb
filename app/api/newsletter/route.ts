@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
-import { createAdminClient } from '@/lib/supabase/admin'
+import { db } from '@/lib/db'
+
+interface PgError extends Error {
+  code?: string
+}
 
 // Rudimentary in-memory rate limit — one submission per IP hash per 60 seconds.
 // The 'idle when no traffic' Vercel function lifecycle means this resets
@@ -55,21 +59,20 @@ export async function POST(req: NextRequest) {
 
   const userAgent = req.headers.get('user-agent')?.slice(0, 512) ?? null
 
-  const supabase = createAdminClient()
-  const { error } = await supabase.from('newsletter_subscribers').insert({
-    email,
-    source,
-    referrer_url: referrerUrl,
-    user_agent: userAgent,
-    ip_hash: ipHash,
-  })
-
-  if (error) {
+  try {
+    await db`
+      INSERT INTO newsletter_subscribers
+        (email, source, referrer_url, user_agent, ip_hash)
+      VALUES
+        (${email}, ${source}, ${referrerUrl}, ${userAgent}, ${ipHash})
+    `
+  } catch (err) {
+    const pgErr = err as PgError
     // Postgres unique_violation code 23505 → email is already on the list.
-    if (error.code === '23505') {
+    if (pgErr.code === '23505') {
       return NextResponse.json({ error: 'Already subscribed' }, { status: 409 })
     }
-    console.error('newsletter subscribe failed', { code: error.code, message: error.message })
+    console.error('newsletter subscribe failed', { code: pgErr.code, message: pgErr.message })
     return NextResponse.json({ error: 'Could not save that — please try again.' }, { status: 500 })
   }
 

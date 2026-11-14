@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
 import { getWeather } from '@/lib/weather'
 import { getAirportAirQuality } from '@/lib/air-quality'
 import { getAirportDepartures } from '@/lib/flights'
@@ -15,6 +15,7 @@ import DepartureBoard from '@/components/DepartureBoard'
 import LoungeAccessCTA from '@/components/LoungeAccessCTA'
 import AffiliateDisclosure from '@/components/AffiliateDisclosure'
 import AirportHotelsSection from '@/components/AirportHotelsSection'
+import { imageUrl } from '@/lib/image-url'
 import { INDOOR_COVERED } from '@/lib/mapbox/indoor'
 
 interface Props { params: Promise<{ iata: string }> }
@@ -62,19 +63,19 @@ const AIRPORT_SECURITY_URL: Record<string, string> = {
 }
 
 const HERO_IMAGE: Record<string, string> = {
-  YVR: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yvr/hero.jpg',
-  YYZ: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yyz/hero.jpg',
-  YTZ: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/ytz/hero.jpg',
-  YUL: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yul/hero.jpg',
-  YYC: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yyc/hero.jpg',
-  YEG: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yeg/hero.jpg',
-  YOW: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yow/hero.jpg',
-  YWG: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/ywg/hero.jpg',
-  YHZ: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yhz/hero.jpg',
-  YYT: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yyt/hero.jpg',
-  YXE: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yxe/hero.jpg',
-  YQR: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yqr/hero.jpg',
-  YQB: 'https://ixgbdmrembkrpbkjhtfi.supabase.co/storage/v1/object/public/lounge-images/airports/yqb/hero.jpg',
+  YVR: imageUrl('airports/yvr/hero.jpg'),
+  YYZ: imageUrl('airports/yyz/hero.jpg'),
+  YTZ: imageUrl('airports/ytz/hero.jpg'),
+  YUL: imageUrl('airports/yul/hero.jpg'),
+  YYC: imageUrl('airports/yyc/hero.jpg'),
+  YEG: imageUrl('airports/yeg/hero.jpg'),
+  YOW: imageUrl('airports/yow/hero.jpg'),
+  YWG: imageUrl('airports/ywg/hero.jpg'),
+  YHZ: imageUrl('airports/yhz/hero.jpg'),
+  YYT: imageUrl('airports/yyt/hero.jpg'),
+  YXE: imageUrl('airports/yxe/hero.jpg'),
+  YQR: imageUrl('airports/yqr/hero.jpg'),
+  YQB: imageUrl('airports/yqb/hero.jpg'),
 }
 
 const ACCESS_GUIDE: Record<string, string> = {
@@ -93,7 +94,6 @@ const ACCESS_GUIDE: Record<string, string> = {
   YQB: "Québec City's lounge landscape is in transition. The V.I.P. Lounge by Club Med (closed Aug 2025 for renovation) is being replaced by a new independent lounge and Air Canada Café opening Summer 2026.",
 }
 
-const SUPABASE_URL = 'https://ixgbdmrembkrpbkjhtfi.supabase.co'
 
 /**
  * Resolve the best image for a lounge card. Prefers a locally-uploaded
@@ -111,7 +111,7 @@ function getPrimaryImage(
       ?? [...images].sort((a, b) => (a.sort_order ?? 99) - (b.sort_order ?? 99))[0]
     if (primary) {
       return {
-        url: `${SUPABASE_URL}/storage/v1/object/public/lounge-images/${primary.storage_path}`,
+        url: imageUrl(primary.storage_path),
         isAi: !!primary.is_ai_generated,
         isGoogle: false,
       }
@@ -127,13 +127,16 @@ function getPrimaryImage(
 // ── Metadata ──────────────────────────────────────────────
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { iata } = await params
-  const code      = iata.toUpperCase()
-  const supabase  = await createClient()
-  const { data: airport } = await supabase
-    .from('airports').select('name, city').eq('iata_code', code).single()
+  const code = iata.toUpperCase()
+  const rows = await db<{ name: string; city: string }[]>`
+    SELECT name, city FROM airports WHERE iata_code = ${code}
+    ORDER BY iata_code ASC
+    LIMIT 1
+  `
+  const airport = rows[0] ?? null
 
-  const name  = airport?.name ?? `${code} Airport`
-  const city  = airport?.city ?? code
+  const name = airport?.name ?? `${code} Airport`
+  const city = airport?.city ?? code
   const title = `${city} Airport Lounges (${code})`
   const desc  = `Find every premium lounge at ${name} (${code}). Access requirements, amenities, opening hours, and traveller reviews for all ${city} airport lounges.`
 
@@ -164,29 +167,72 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+// On-demand ISR: no paths are built, so `next build` does not need Postgres.
+// The first request for an airport renders and is cached for `revalidate` seconds.
 export const revalidate = 300
+export const dynamicParams = true
+
+export function generateStaticParams() {
+  return []
+}
 
 // ── Page ──────────────────────────────────────────────────
+interface AirportRow {
+  id: string
+  name: string
+  city: string
+  country: string | null
+  latitude: number | null
+  longitude: number | null
+  website: string | null
+  terminal_map_url: string | null
+}
+
+interface RawLoungeRow {
+  id: string
+  name: string
+  slug: string
+  terminal: string | null
+  location_detail: string | null
+  description: string | null
+  rating: number | null
+  review_count: number
+  access_types: unknown
+  updated_at: Date | null
+  google_place_data: GooglePlace | null
+  images: Array<{ storage_path: string; is_primary: boolean; sort_order: number; is_ai_generated?: boolean }>
+}
+
 export default async function AirportPage({ params }: Props) {
   const { iata } = await params
-  const code      = iata.toUpperCase()
-  const supabase  = await createClient()
+  const code = iata.toUpperCase()
 
-  const { data: airport } = await supabase
-    .from('airports')
-    .select('*')
-    .eq('iata_code', code)
-    .single()
-
+  const airportRows = await db<AirportRow[]>`
+    SELECT * FROM airports WHERE iata_code = ${code}
+    ORDER BY iata_code ASC
+    LIMIT 1
+  `
+  const airport = airportRows[0]
   if (!airport) notFound()
 
-  const [{ data: rawLounges }, weather, airQuality, departures] = await Promise.all([
-    supabase
-      .from('lounges')
-      .select('id, name, slug, terminal, location_detail, description, rating, review_count, access_types, updated_at, google_place_data, images:lounge_images(storage_path, is_primary, sort_order, is_ai_generated)')
-      .eq('airport_id', airport.id)
-      .eq('is_active', true)
-      .order('rating', { ascending: false, nullsFirst: false }),
+  const [rawLounges, weather, airQuality, departures] = await Promise.all([
+    db<RawLoungeRow[]>`
+      SELECT l.id, l.name, l.slug, l.terminal, l.location_detail, l.description,
+        l.rating, l.review_count, l.access_types, l.updated_at, l.google_place_data,
+        COALESCE(
+          (SELECT json_agg(json_build_object(
+             'storage_path', i.storage_path,
+             'is_primary', i.is_primary,
+             'sort_order', i.sort_order,
+             'is_ai_generated', i.is_ai_generated)
+             ORDER BY i.is_primary DESC, i.sort_order ASC NULLS LAST, i.id ASC)
+           FROM lounge_images i WHERE i.lounge_id = l.id),
+          '[]'::json
+        ) AS images
+      FROM lounges l
+      WHERE l.airport_id = ${airport.id} AND l.is_active = true
+      ORDER BY l.rating DESC NULLS LAST, l.name ASC, l.slug ASC
+    `,
     airport.latitude && airport.longitude
       ? getWeather(airport.latitude, airport.longitude)
       : Promise.resolve(null),
@@ -196,7 +242,7 @@ export default async function AirportPage({ params }: Props) {
     getAirportDepartures(code).catch(() => []),
   ])
 
-  const lounges: LoungeSummary[] = (rawLounges ?? []).map(l => {
+  const lounges: LoungeSummary[] = rawLounges.map(l => {
     const img = getPrimaryImage(l.images ?? [], (l.google_place_data as GooglePlace | null) ?? null)
     return {
       id:                l.id,
@@ -208,7 +254,7 @@ export default async function AirportPage({ params }: Props) {
       rating:            l.rating,
       review_count:      l.review_count,
       access_types:      l.access_types as LoungeSummary['access_types'],
-      updated_at:        l.updated_at ?? null,
+      updated_at:        l.updated_at ? new Date(l.updated_at).toISOString() : null,
       primaryImage:      img?.url ?? null,
       primaryImageIsAi:  img?.isAi ?? false,
     }

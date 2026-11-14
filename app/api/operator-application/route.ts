@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
-import { createAdminClient } from '@/lib/supabase/admin'
+import { db } from '@/lib/db'
+
+interface PgError extends Error {
+  code?: string
+}
 
 const RATE_LIMIT_MS = 30_000
 const seen = new Map<string, number>()
@@ -59,21 +63,18 @@ export async function POST(req: NextRequest) {
   }
   seen.set(ipHash, now)
 
-  const supabase = createAdminClient()
-  const { error } = await supabase.from('operator_applications').insert({
-    lounge_name: loungeName,
-    airport_iata: airportIata,
-    operator_company: operatorCompany,
-    contact_name: contactName,
-    contact_email: contactEmail,
-    contact_phone: contactPhone,
-    tier_requested: tierRequested,
-    message,
-    referrer_url: referrerUrl,
-  })
-
-  if (error) {
-    console.error('operator application failed', { code: error.code, message: error.message })
+  try {
+    await db`
+      INSERT INTO operator_applications
+        (lounge_name, airport_iata, operator_company, contact_name,
+         contact_email, contact_phone, tier_requested, message, referrer_url)
+      VALUES
+        (${loungeName}, ${airportIata}, ${operatorCompany}, ${contactName},
+         ${contactEmail}, ${contactPhone}, ${tierRequested}, ${message}, ${referrerUrl})
+    `
+  } catch (err) {
+    const pgErr = err as PgError
+    console.error('operator application failed', { code: pgErr.code, message: pgErr.message })
     return NextResponse.json({ error: 'Could not save that — please try again.' }, { status: 500 })
   }
 
