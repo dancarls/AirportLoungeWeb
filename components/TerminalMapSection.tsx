@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react'
 import Link from 'next/link'
+import { formatRating } from '@/lib/format-rating'
 
 interface LoungePin {
   id: string
@@ -147,8 +148,8 @@ export default function TerminalMapSection({ airports }: Props) {
           <div style="padding:12px 14px;font-family:Inter,sans-serif;">
             <p style="font-weight:700;color:#003434;font-size:13px;margin:0 0 4px;">${lounge.name}</p>
             ${lounge.terminal ? `<p style="font-size:11px;color:#675d4f;margin:0 0 4px;">📍 Terminal ${lounge.terminal}</p>` : ''}
-            ${lounge.rating
-              ? `<p style="font-size:11px;color:#A68D74;margin:0 0 4px;">★ ${lounge.rating.toFixed(1)} &nbsp;·&nbsp; ${lounge.review_count} review${lounge.review_count !== 1 ? 's' : ''}</p>`
+            ${lounge.rating && formatRating(lounge.rating)
+              ? `<p style="font-size:11px;color:#A68D74;margin:0 0 4px;">★ ${formatRating(lounge.rating)} &nbsp;·&nbsp; ${lounge.review_count} review${lounge.review_count !== 1 ? 's' : ''}</p>`
               : `<p style="font-size:11px;color:#A68D74;margin:0 0 4px;">No reviews yet — be first</p>`}
             ${lounge.guest_fee ? `<p style="font-size:11px;color:#675d4f;margin:0 0 8px;">Day pass $${lounge.guest_fee} ${lounge.guest_fee_currency}</p>` : ''}
             <a href="/airports/${airport.iata_code}/lounges/${lounge.slug}"

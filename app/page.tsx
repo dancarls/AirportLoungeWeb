@@ -12,6 +12,7 @@ import { getWeather } from '@/lib/weather'
 import { getAllPosts } from '@/lib/blog'
 import { imageUrl } from '@/lib/image-url'
 import type { Lounge, Airport } from '@/lib/types'
+import { formatRating } from '@/lib/format-rating'
 
 type HomeLounge = Lounge & {
   airport?: Airport
@@ -338,10 +339,10 @@ export default async function HomePage() {
                     <div className="p-8">
                       <div className="flex justify-between items-start mb-4">
                         <h3 className="font-headline-md text-primary">{lounge.name}</h3>
-                        {lounge.rating && (
+                        {lounge.rating && formatRating(lounge.rating) && (
                           <div className="flex items-center gap-1">
                             <span className="material-symbols-outlined text-primary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                            <span className="font-bold">{lounge.rating.toFixed(1)}</span>
+                            <span className="font-bold">{formatRating(lounge.rating)}</span>
                           </div>
                         )}
                       </div>
@@ -421,7 +422,7 @@ export default async function HomePage() {
                       <h4 className="font-bold text-lg group-hover:text-primary-fixed transition-colors">{lounge.name}</h4>
                       <p className="text-sm text-bone-white/50">
                         {iata && `${iata} · `}
-                        {lounge.rating ? `${lounge.rating.toFixed(1)}★ · ` : ''}
+                        {lounge.rating && formatRating(lounge.rating) ? `${formatRating(lounge.rating)}★ · ` : ''}
                         {lounge.review_count > 0 ? `${lounge.review_count} review${lounge.review_count !== 1 ? 's' : ''}` : 'Be the first to review'}
                       </p>
                     </div>

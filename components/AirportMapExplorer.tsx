@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import mapboxgl from 'mapbox-gl'
 import { INDOOR_COVERED } from '@/lib/mapbox/indoor'
+import MapUnavailable from '@/components/MapUnavailable'
 
 interface AirportPin {
   iata_code: string
@@ -22,6 +23,7 @@ interface Props {
 export default function AirportMapExplorer({ airports }: Props) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [panelOpen, setPanelOpen] = useState(true)
+  const [mapFailed, setMapFailed] = useState(false)
 
   const indoorAirports = airports.filter(a => INDOOR_COVERED.has(a.iata_code))
   const otherAirports  = airports.filter(a => !INDOOR_COVERED.has(a.iata_code))
@@ -31,7 +33,9 @@ export default function AirportMapExplorer({ airports }: Props) {
 
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!
 
-    const map = new mapboxgl.Map({
+    let map: mapboxgl.Map | null = null
+    try {
+    const created = new mapboxgl.Map({
       container: containerRef.current,
       style: 'mapbox://styles/mapbox/standard',
       center: [-96, 60],
@@ -40,12 +44,13 @@ export default function AirportMapExplorer({ airports }: Props) {
       projection: 'mercator',
       attributionControl: false,
     })
+    map = created
 
-    map.addControl(new mapboxgl.NavigationControl(), 'top-left')
-    map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
+    created.addControl(new mapboxgl.NavigationControl(), 'top-left')
+    created.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
-    map.on('load', () => {
-      requestAnimationFrame(() => map.resize())
+    created.on('load', () => {
+      requestAnimationFrame(() => created.resize())
       airports.forEach(airport => {
         const isIndoor = INDOOR_COVERED.has(airport.iata_code)
         const loungeCount = airport.lounges.length
@@ -112,11 +117,25 @@ export default function AirportMapExplorer({ airports }: Props) {
         new mapboxgl.Marker({ element: el })
           .setLngLat([airport.longitude, airport.latitude])
           .setPopup(popup)
-          .addTo(map)
+          .addTo(created)
       })
     })
+    } catch {
+      // Device has no WebGL. Not an application bug — do not report it.
+      setMapFailed(true)
+      if (map) {
+        try { map.remove() } catch { /* ignore */ }
+        map = null
+      } else if (containerRef.current) {
+        containerRef.current.replaceChildren()
+      }
+    }
 
-    return () => { try { map.remove() } catch { /* ignore */ } }
+    return () => {
+      if (map) {
+        try { map.remove() } catch { /* ignore */ }
+      }
+    }
   }, [airports])
 
   return (
@@ -124,6 +143,7 @@ export default function AirportMapExplorer({ airports }: Props) {
 
       {/* ── Map ─────────────────────────────────────────────── */}
       <div ref={containerRef} className="flex-1 absolute inset-0" />
+      {mapFailed && <MapUnavailable className="absolute inset-0 z-10" />}
 
       {/* ── Toggle panel button (mobile / collapse) ──────────── */}
       <button

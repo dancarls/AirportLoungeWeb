@@ -4,6 +4,7 @@ import type { Lounge } from '@/lib/types'
 import LoungePlaceholder from './LoungePlaceholder'
 import { photoUrl as googlePhotoUrl, type GooglePlace } from '@/lib/google-places'
 import { imageUrl } from '@/lib/image-url'
+import { formatRating } from '@/lib/format-rating'
 
 interface Props {
   lounge: Lounge
@@ -53,12 +54,13 @@ function isOpenNow(hours: Lounge['opening_hours']): boolean | null {
 }
 
 function StarRow({ rating, count }: { rating: number; count: number }) {
+  const formatted = formatRating(rating)
   const full  = Math.floor(rating)
   const half  = rating - full >= 0.5
   const empty = 5 - full - (half ? 1 : 0)
   return (
     <div className="flex items-center gap-1.5">
-      <span className="font-bold text-sm" style={{ color: '#F59E0B' }}>{rating.toFixed(1)}</span>
+      {formatted && <span className="font-bold text-sm" style={{ color: '#F59E0B' }}>{formatted}</span>}
       <div className="flex items-center">
         {Array.from({ length: full }).map((_, i) => (
           <span key={`f${i}`} className="material-symbols-outlined" style={{ fontSize: '15px', color: '#FBBF24', fontVariationSettings: "'FILL' 1" }}>star</span>
