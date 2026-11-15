@@ -1,5 +1,6 @@
 import type { GooglePlace } from '@/lib/google-places'
 import { photoUrl } from '@/lib/google-places'
+import { formatRating } from '@/lib/format-rating'
 
 interface Props {
   place: GooglePlace | null | undefined
@@ -20,6 +21,7 @@ export default function GooglePlacesEnrichment({ place, loungeName }: Props) {
   if (!place) return null
 
   const rating = place.rating
+  const formattedRating = formatRating(rating)
   const reviewCount = place.userRatingCount ?? 0
   const photos = (place.photos ?? []).slice(0, 6)
   const openingHours = place.regularOpeningHours?.weekdayDescriptions
@@ -31,11 +33,11 @@ export default function GooglePlacesEnrichment({ place, loungeName }: Props) {
         <span className="font-label-caps text-[10px] uppercase tracking-widest text-secondary">Verified on Google</span>
       </div>
 
-      {rating != null && (
+      {rating != null && formattedRating && (
         <div className="flex items-baseline gap-3 mb-4">
           <div className="flex items-center gap-1">
             <span className="material-symbols-outlined text-yellow-500" style={{ fontVariationSettings: "'FILL' 1", fontSize: '20px' }}>star</span>
-            <span className="font-bold text-2xl text-primary">{rating.toFixed(1)}</span>
+            <span className="font-bold text-2xl text-primary">{formattedRating}</span>
           </div>
           <span className="text-sm text-secondary">from {reviewCount.toLocaleString('en-CA')} Google reviews</span>
         </div>

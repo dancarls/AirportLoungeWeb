@@ -43,6 +43,7 @@ import {
 import { photoUrl as googlePhotoUrl } from '@/lib/google-places'
 import type { Lounge, Review, AccessType } from '@/lib/types'
 import type { GooglePlace } from '@/lib/google-places'
+import { formatRating } from '@/lib/format-rating'
 
 // Editorial display font, loaded once at build time. Applied via className scope
 // to avoid leaking Plus Jakarta Sans into V1 pages while we're still testing.
@@ -106,6 +107,7 @@ export default function LoungeDetailV2({
   // Prefer aggregated Google rating when local reviews are absent — this
   // matches what the V1 sidebar already shows and keeps parity in AggregateRating.
   const displayRating = l.rating ?? googlePlace?.rating ?? null
+  const formattedDisplayRating = formatRating(displayRating)
   const displayReviewCount = (l.review_count && l.review_count > 0)
     ? l.review_count
     : (googlePlace?.userRatingCount ?? 0)
@@ -207,12 +209,12 @@ export default function LoungeDetailV2({
 
             {/* Rating badge — right-aligned on desktop */}
             <div className="lg:col-span-4 flex lg:justify-end">
-              {displayRating && (
+              {displayRating && formattedDisplayRating && (
                 <div className="bg-[#0e2a38]/70 backdrop-blur border border-white/10 px-4 py-3 rounded-xl flex items-center gap-4">
                   <div className="text-right">
                     <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#68dba9]">Overall Score</div>
                     <div className="text-2xl font-bold text-white flex items-center justify-end gap-1">
-                      {displayRating.toFixed(1)}
+                      {formattedDisplayRating}
                       <span
                         className="material-symbols-outlined text-amber-400 text-lg"
                         style={{ fontVariationSettings: "'FILL' 1" }}
@@ -695,9 +697,9 @@ export default function LoungeDetailV2({
                     Reviews &amp; Ratings
                   </h2>
                 </div>
-                {displayRating && displayReviewCount > 0 && (
+                {displayRating && formattedDisplayRating && displayReviewCount > 0 && (
                   <div className="text-right">
-                    <div className="text-3xl font-bold text-[#0e2a38]">{displayRating.toFixed(1)}</div>
+                    <div className="text-3xl font-bold text-[#0e2a38]">{formattedDisplayRating}</div>
                     <div className="text-[11px] text-[#42474b]">
                       {displayReviewCount.toLocaleString('en-CA')} verified reviews
                     </div>

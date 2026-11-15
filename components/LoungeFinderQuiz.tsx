@@ -10,6 +10,7 @@ import {
   type MatchableLounge,
 } from '@/lib/card-access'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
+import { formatRating } from '@/lib/format-rating'
 
 type QuizLounge = MatchableLounge & {
   rating: number | null
@@ -252,9 +253,9 @@ export default function LoungeFinderQuiz({ lounges, airports }: Props) {
                   {lounge.terminal && (
                     <p className="text-sm text-white/70 mb-2">Terminal {lounge.terminal}</p>
                   )}
-                  {lounge.rating && (
+                  {lounge.rating && formatRating(lounge.rating) && (
                     <p className="text-sm text-gold-400 mb-3">
-                      ★ {lounge.rating.toFixed(1)}{' '}
+                      ★ {formatRating(lounge.rating)}{' '}
                       {lounge.reviewCount && (
                         <span className="text-white/60">({lounge.reviewCount.toLocaleString()} reviews)</span>
                       )}

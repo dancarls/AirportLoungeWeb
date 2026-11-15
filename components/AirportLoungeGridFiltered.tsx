@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import LoungePlaceholder from './LoungePlaceholder'
+import { formatRating } from '@/lib/format-rating'
 
 export interface LoungeSummary {
   id: string
@@ -291,10 +292,10 @@ export default function AirportLoungeGridFiltered({ lounges, iata }: Props) {
               <div className="p-5 flex-grow flex flex-col gap-2">
                 <div className="flex justify-between items-start gap-2">
                   <h3 className="font-headline-md text-headline-md text-primary leading-tight">{lounge.name}</h3>
-                  {lounge.rating && (
+                  {lounge.rating && formatRating(lounge.rating) && (
                     <div className="flex items-center text-sand-dark shrink-0">
                       <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1", fontSize: '14px' }}>star</span>
-                      <span className="font-label-caps text-label-caps ml-1">{lounge.rating.toFixed(1)}</span>
+                      <span className="font-label-caps text-label-caps ml-1">{formatRating(lounge.rating)}</span>
                     </div>
                   )}
                 </div>

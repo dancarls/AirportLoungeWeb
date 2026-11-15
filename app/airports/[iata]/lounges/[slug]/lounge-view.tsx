@@ -20,6 +20,7 @@ import AdSlot from '@/components/AdSlot'
 import type { Metadata } from 'next'
 import type { Lounge, Review, AccessType, Airport, Amenity } from '@/lib/types'
 import type { GooglePlace } from '@/lib/google-places'
+import { formatRating } from '@/lib/format-rating'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // V2 editorial layout rollout.
@@ -400,6 +401,8 @@ export async function renderLoungeDetail(
     url: `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}`,
   }
 
+  const ratingLabel = formatRating(l.rating)
+
   const jsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -436,10 +439,10 @@ export async function renderLoungeDetail(
       openingHoursSpecification: openingHoursSpec,
     }),
     ...(amenityFeatures.length > 0 && { amenityFeature: amenityFeatures }),
-    ...(l.rating && l.review_count > 0 && {
+    ...(l.rating && ratingLabel && l.review_count > 0 && {
       aggregateRating: {
         '@type': 'AggregateRating',
-        ratingValue: l.rating.toFixed(1),
+        ratingValue: ratingLabel,
         reviewCount: l.review_count,
         bestRating: '5',
         worstRating: '1',
@@ -563,10 +566,10 @@ export async function renderLoungeDetail(
                   <h2 className="font-headline-lg text-headline-lg">
                     {l.description ? 'About This Lounge' : 'A Refined Travel Experience'}
                   </h2>
-                  {l.rating && (
+                  {l.rating && ratingLabel && (
                     <div className="bg-primary/5 px-3 py-1 flex items-center gap-1 border border-primary/10">
                       <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1", fontSize: '18px' }}>star</span>
-                      <span className="font-bold text-primary">{l.rating.toFixed(1)}</span>
+                      <span className="font-bold text-primary">{ratingLabel}</span>
                       <span className="text-on-surface-variant text-sm">/ 5</span>
                     </div>
                   )}
@@ -744,12 +747,12 @@ export async function renderLoungeDetail(
                   <span className="font-medium">{l.review_count}</span>
                 </div>
               )}
-              {l.rating && (
+              {l.rating && ratingLabel && (
                 <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
                   <span className="text-on-surface-variant">Rating</span>
                   <span className="font-medium flex items-center gap-1">
                     <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1", fontSize: '14px' }}>star</span>
-                    {l.rating.toFixed(1)}
+                    {ratingLabel}
                   </span>
                 </div>
               )}
