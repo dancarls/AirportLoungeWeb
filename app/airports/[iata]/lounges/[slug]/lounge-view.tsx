@@ -21,6 +21,7 @@ import type { Metadata } from 'next'
 import type { Lounge, Review, AccessType, Airport, Amenity } from '@/lib/types'
 import type { GooglePlace } from '@/lib/google-places'
 import { formatRating } from '@/lib/format-rating'
+import { closureStatusCopy } from '@/lib/lounge-helpers'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // V2 editorial layout rollout.
@@ -866,23 +867,27 @@ export async function renderLoungeDetail(
           )}
 
           {/* Opening hours — sidebar placement so readers see it near the top-of-fold
-              next to the terminal map. Renders as an "Currently closed" state when the
-              lounge closure_status is set, so users don't try to walk over. */}
+              next to the terminal map. The notice follows closure_status: only a
+              literal "closed" status says Closed. */}
           {l.opening_hours && Object.keys(l.opening_hours).length > 0 && (
             <div className="bg-surface border border-sand-dark/10 p-6 shadow-sm">
               <h4 className="font-label-caps text-label-caps text-sand-dark mb-4 flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary" style={{ fontSize: '16px' }}>schedule</span>
                 OPENING HOURS
               </h4>
-              {l.closure_status && l.closure_status !== 'open' ? (
-                <div className="mb-3 p-3 bg-amber-50 border border-amber-200 rounded">
-                  <p className="text-sm font-semibold text-amber-800">Currently closed</p>
-                  {l.closure_reopen_estimate && (
-                    <p className="text-xs text-amber-700 mt-1">Expected return: {l.closure_reopen_estimate}</p>
-                  )}
-                  <p className="text-[10px] text-amber-700 mt-2 italic">Hours below reflect the pre-closure schedule.</p>
-                </div>
-              ) : null}
+              {(() => {
+                const hoursClosure = closureStatusCopy(l.closure_status, l.closure_reopen_estimate ?? null)
+                if (!hoursClosure) return null
+                return (
+                  <div className="mb-3 p-3 bg-amber-50 border border-amber-200 rounded">
+                    <p className="text-sm font-semibold text-amber-800">{hoursClosure.badge}</p>
+                    <p className="text-xs text-amber-700 mt-1">{hoursClosure.label}</p>
+                    {!hoursClosure.scheduleApplies && (
+                      <p className="text-[10px] text-amber-700 mt-2 italic">Hours below reflect the pre-closure schedule.</p>
+                    )}
+                  </div>
+                )
+              })()}
               {l.opening_hours.is_24_7 ? (
                 <p className="text-green-600 font-bold text-lg">Open 24 / 7</p>
               ) : (

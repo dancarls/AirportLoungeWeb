@@ -72,6 +72,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/credit-cards/aeroplan-cards-compared`,        priority: 0.9, changeFrequency: 'weekly', lastModified: NOW },
     { url: `${BASE}/credit-cards/rebates`,                        priority: 0.85, changeFrequency: 'weekly', lastModified: NOW },
     { url: `${BASE}/travel-insurance`,                            priority: 0.9,  changeFrequency: 'weekly', lastModified: NOW },
+    { url: `${BASE}/tools/which-lounges-can-i-use`,               priority: 0.8,  changeFrequency: 'weekly', lastModified: NOW },
+    { url: `${BASE}/tools/lounge-finder`,                         priority: 0.8,  changeFrequency: 'weekly', lastModified: NOW },
     { url: `${BASE}/privacy`,       priority: 0.2, changeFrequency: 'yearly',  lastModified: NOW },
     { url: `${BASE}/terms`,         priority: 0.2, changeFrequency: 'yearly',  lastModified: NOW },
   ]
