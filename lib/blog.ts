@@ -46,6 +46,15 @@ export interface BlogPost {
   content: string
   /** Structured Q&A rendered as an FAQPage schema block + optional visible FAQ section. Feeds Google's PAA and AI Overview citations. */
   faqs?: BlogPostFAQ[]
+  /**
+   * When the visible FAQ is already embedded in `content` (e.g. the shower
+   * post's inline H3 Q&A), set this to true so `faqs` emits ONLY the
+   * FAQPage JSON-LD and the page does NOT render a second visible FAQ
+   * section below the article. Google requires the schema's Q&A text to
+   * be present in the visible page — these inline-content FAQs satisfy
+   * that without duplication.
+   */
+  faqsInContent?: boolean
   /** Optional word count for schema.org Article.wordCount; auto-calculated from content if omitted. */
   wordCount?: number
   /** Byline shown to readers; defaults to "AirportLounges.ca Editorial Team". */
@@ -384,10 +393,10 @@ const priorityPassContent = `
     <tr><th>Airport</th><th>Lounges listed by Priority Pass</th><th>Notes</th></tr>
   </thead>
   <tbody>
-    <tr><td>Toronto Pearson (YYZ)</td><td>5</td><td>+ Be Relax spa; T1 international closed</td></tr>
-    <tr><td>Vancouver (YVR)</td><td>5</td><td>Plaza Premium First excluded</td></tr>
-    <tr><td>Montréal-Trudeau (YUL)</td><td>5</td><td>National Bank in temporary space</td></tr>
-    <tr><td>Calgary (YYC)</td><td>3</td><td>Elevation: no US flights</td></tr>
+    <tr><td><a href="/airports/YYZ">Toronto Pearson (YYZ)</a></td><td>5</td><td>+ Be Relax spa; T1 international closed</td></tr>
+    <tr><td><a href="/airports/YVR">Vancouver (YVR)</a></td><td>5</td><td>Plaza Premium First excluded</td></tr>
+    <tr><td><a href="/airports/YUL">Montréal-Trudeau (YUL)</a></td><td>5</td><td>National Bank in temporary space</td></tr>
+    <tr><td><a href="/airports/YYC">Calgary (YYC)</a></td><td>3</td><td>Elevation: no US flights</td></tr>
     <tr><td>Edmonton (YEG)</td><td>2</td><td>US lounge closes 4:30 p.m.</td></tr>
     <tr><td>Ottawa (YOW)</td><td>1</td><td>No US transborder</td></tr>
     <tr><td>Winnipeg (YWG)</td><td>1</td><td>—</td></tr>
@@ -844,15 +853,15 @@ const remoteWorkContent = `
   <li><a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum airport lounge access in Canada</a> — cross-reference for card-based access to the work-friendly lounges</li>
 </ul>
 
-<p><em>All data in this guide was compiled as of June 2026. Lounge access policies, hours, Priority Pass eligibility, and physical facilities are subject to change — always verify with the lounge operator or your card issuer before travel.</em></p>
+<p><em>All data in this guide was compiled as of October 2026. Lounge access policies, hours, Priority Pass eligibility, and physical facilities are subject to change — always verify with the lounge operator or your card issuer before travel.</em></p>
 `
 
 const showerAccessContent = `
-<p><em>Every lounge in Canada with a shower reviewed — facilities, bath products, who gets in free, and how to avoid a long wait. Updated June 2026.</em></p>
+<p><em>Every lounge in Canada with a shower reviewed — facilities, bath products, who gets in free, and how to avoid a long wait. Updated October 2026.</em></p>
 
 <p>A hot shower before boarding changes everything. After a red-eye from Toronto, a transatlantic connection through Vancouver, or a long drive to the airport, freshening up in a proper shower can completely reset how you feel before a flight.</p>
 
-<p>Not every airport lounge in Canada has shower access, and the quality varies enormously — from the limestone-clad, Aesop-stocked suites at the Cathay Pacific Lounge at YVR to a single functional stall with wall-mounted dispensers. A few lounges charge extra for shower access on top of lounge entry. Some require you to book a slot at the desk. And some major lounges — including the Air Canada Maple Leaf in Calgary — have no shower at all.</p>
+<p>Not every airport lounge in Canada has shower access, and the quality varies enormously — from the limestone-clad, Aesop-stocked suites at the <a href="/airports/YVR/lounges/cathay-pacific-lounge-yvr">Cathay Pacific Lounge at YVR</a> to a single functional stall with wall-mounted dispensers. A few lounges charge extra for shower access on top of lounge entry. Some require you to book a slot at the desk. And some major lounges — including the <a href="/airports/YYC">Air Canada Maple Leaf in Calgary</a> — have no shower at all.</p>
 
 <p>This guide covers every Canadian airport lounge that currently offers shower access, what to expect when you get there, who qualifies for free access, and how to avoid waiting.</p>
 
@@ -981,7 +990,7 @@ const showerAccessContent = `
   </tbody>
 </table>
 
-<p><em>PP upcharge = Priority Pass covers lounge entry but the shower requires an additional payment. Data as of June 2026 — amenities subject to change.</em></p>
+<p><em>PP upcharge = Priority Pass covers lounge entry but the shower requires an additional payment. Data as of October 2026 — amenities subject to change.</em></p>
 
 <figure>
   <img src="/blog/premium-shower-lounge-hero.png" alt="Premium airport lounge shower suite with limestone tiles, rain shower, and Aesop bath products" loading="lazy" />
@@ -1248,7 +1257,7 @@ ${yvrDomesticClosureAddendum}
 <h3>Can I shower at an airport lounge if I am only flying domestically in Canada?</h3>
 <p>Yes, at certain locations. WestJet Elevation YYC, Plaza Premium Pier B at YVR (with shower surcharge), the AC Maple Leaf Lounge domestics at YYZ and YVR, and multiple Plaza Premium locations at YYZ all serve domestic passengers and have shower access. The SkyTeam Lounge and the Air France Lounge at YUL are international-only and not available for domestic or US transborder flights.</p>
 
-<p><em>All amenity details in this guide are accurate as of June 2026. Lounge facilities, access policies, and shower availability are subject to change — always confirm with the lounge directly or check the Priority Pass app before travelling.</em></p>
+<p><em>All amenity details in this guide are accurate as of October 2026. Lounge facilities, access policies, and shower availability are subject to change — always confirm with the lounge directly or check the Priority Pass app before travelling.</em></p>
 `
 
 const guestFeesContent = `
@@ -1295,7 +1304,7 @@ const guestFeesContent = `
 
 <h2>Before you count on a guest fee: where Priority Pass actually works in Canada</h2>
 
-<p>A guest fee only matters if there is a lounge to enter. Priority Pass lounges operate at nine Canadian airports: Toronto Pearson (YYZ), Toronto Billy Bishop (YTZ), Vancouver (YVR), Calgary (YYC), Montréal (YUL), Ottawa (YOW), Edmonton (YEG), Winnipeg (YWG) and Québec City (YQB — pending). Montréal is the catch — its full Priority Pass lounges sit in the international wing. A domestic or US-bound traveller may find nothing in their zone. See our Priority Pass lounges in Canada guide for the airport-by-airport list before you promise a companion a seat.</p>
+<p>A guest fee only matters if there is a lounge to enter. Priority Pass lounges operate at nine Canadian airports: <a href="/airports/YYZ">Toronto Pearson (YYZ)</a>, <a href="/airports/YTZ">Toronto Billy Bishop (YTZ)</a>, <a href="/airports/YVR">Vancouver (YVR)</a>, <a href="/airports/YYC">Calgary (YYC)</a>, <a href="/airports/YUL">Montréal (YUL)</a>, <a href="/airports/YOW">Ottawa (YOW)</a>, <a href="/airports/YEG">Edmonton (YEG)</a>, <a href="/airports/YWG">Winnipeg (YWG)</a> and <a href="/airports/YQB">Québec City (YQB — pending)</a>. Montréal is the catch — its full Priority Pass lounges sit in the international wing. A domestic or US-bound traveller may find nothing in their zone. See our <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada guide</a> for the airport-by-airport list before you promise a companion a seat.</p>
 
 <h2>Priority Pass guest fees in Canada</h2>
 
@@ -1595,7 +1604,7 @@ const amexPlatinumContent = `
 
 <ul>
   <li><strong>YUL Domestic:</strong> the Aspire American Express Lounge near Gates 1 and 2, 5 am to 9 pm, entry within 3 hours of departure.</li>
-  <li><strong>YUL International:</strong> the Aspire International Lounge between Gates 52 and 53 (3-hour window), and the National Bank Lounge near Gate 53, which is in a temporary reduced-capacity space from October 5, 2026 until about June 2028 with a 2-hour stay (3 hours for Private Banking 1859 clients). The Air France–KLM Lounge by Plaza Premium is also in the international zone, reserved for Air France and KLM passengers in the late afternoon (closed to others 3:30–6:30 p.m.).</li>
+  <li><strong><a href="/airports/YUL">YUL</a> International:</strong> the <a href="/airports/YUL/lounges/aspire-international-lounge-yul">Aspire International Lounge</a> between Gates 52 and 53 (3-hour window), and the <a href="/airports/YUL/lounges/national-bank-lounge-yul">National Bank Lounge</a> near Gate 53, which is in a temporary reduced-capacity space from October 5, 2026 until about June 2028 with a 2-hour stay (3 hours for Private Banking 1859 clients). The <a href="/airports/YUL/lounges/air-france-klm-lounge-yul">Air France–KLM Lounge</a> by Plaza Premium is also in the international zone, reserved for Air France and KLM passengers in the late afternoon (closed to others 3:30–6:30 p.m.).</li>
   <li><strong>YOW:</strong> Aspire Salon on Level 2 by Gate 18. Primary cardholder plus one travelling companion. Not available for US-bound departures after pre-clearance.</li>
 </ul>
 
@@ -3106,8 +3115,8 @@ export const blogPosts: BlogPost[] = [
     lastReviewed: '2026-10-14',
     category: 'Lounge Guides',
     readingTime: '7 min read',
-    metaTitle: 'How Much Does an Airport Lounge Cost in Canada (2026)',
-    metaDescription: 'Walk-in day passes at Canadian airport lounges typically cost C$55–75 for 2–3 hours. Plaza Premium, Aspire, National Bank Lounge, Air Canada Maple Leaf Lounge pre-book access, and the cheapest credit-card routes to lounge access in Canada. Verified October 2026.',
+    metaTitle: 'Airport Lounge Cost in Canada (2026 Prices)',
+    metaDescription: 'What a Canadian airport lounge costs in 2026: walk-in day passes are typically C$55–75 for 2–3 hours. Maple Leaf, Aspire, and cheaper card options.',
     content: loungeCostCanadaContent,
     authorName: 'AirportLounges.ca Editorial Team',
     authorBio: 'Lounge walk-in rates and card alternatives verified against operator rate cards and Canadian issuer benefit guides.',
@@ -3153,8 +3162,8 @@ export const blogPosts: BlogPost[] = [
     lastReviewed: '2026-10-14',
     category: 'Lounge Guides',
     readingTime: '6 min read',
-    metaTitle: 'How Early Can I Enter an Airport Lounge in Canada? (2026)',
-    metaDescription: 'Most Canadian lounges admit you 3 hours before departure. Plaza Premium has no formal window; Priority Pass has no window either; the 24-hour Plaza Premium at YVR is the only overnight option. Full entry windows and stay limits by lounge type. Verified October 2026.',
+    metaTitle: 'How Early Can You Enter a Canada Lounge?',
+    metaDescription: 'Most Canadian lounges let you in 3 hours before departure. Stay limits, Priority Pass and Plaza Premium rules, and the 24-hour YVR option. Updated 2026.',
     content: loungeEntryTimingCanadaContent,
     authorName: 'AirportLounges.ca Editorial Team',
     authorBio: 'Lounge entry windows and stay limits verified against operator pages and Priority Pass\'s Canadian directory.',
@@ -3517,8 +3526,8 @@ export const blogPosts: BlogPost[] = [
     lastReviewed: '2026-09-11',
     category: 'Credit Cards',
     readingTime: '12 min read',
-    metaTitle: 'Best Aeroplan Credit Card for Airport Lounge Access in Canada (2026)',
-    metaDescription: 'CIBC Aeroplan VIP vs TD Aeroplan VIP vs Amex Aeroplan Reserve — the three Canadian $599 cards that open the Maple Leaf Lounge, compared with 2027 guest deadlines, insurance, and break-even math. September 2026.',
+    metaTitle: 'Best Aeroplan Card for Lounge Access 2026',
+    metaDescription: 'Which $599 Aeroplan card opens the Maple Leaf Lounge? TD VIP vs CIBC VIP vs Amex Reserve — 2026 guest rules, insurance, and break-even math.',
     content: aeroplanCardsContent,
     authorName: 'AirportLounges.ca Editorial Team',
     authorBio: 'Canadian airport lounge access rules are verified against issuer T&C pages, Air Canada Aeroplan benefits and the issuers\' insurance summaries. Facts dated on every guide; next review December 2026.',
@@ -3595,8 +3604,8 @@ export const blogPosts: BlogPost[] = [
     lastReviewed: '2026-09-11',
     category: 'Credit Cards',
     readingTime: '12 min read',
-    metaTitle: 'Amex Platinum Airport Lounge Access in Canada (2026): Lounges, Guests and 2027 Changes',
-    metaDescription: 'See which airport lounges the Canadian Amex Platinum accesses in 2026, guest rules, the $799 fee, and the confirmed Plaza Premium and Priority Pass limits coming in 2027.',
+    metaTitle: 'Amex Platinum Canada Lounge Access 2026',
+    metaDescription: 'Canadian Amex Platinum lounge access in 2026: which lounges you can enter, guest rules, the $799 fee, and Priority Pass limits coming in 2027.',
     content: amexPlatinumContent,
     authorName: 'AirportLounges.ca Editorial Team',
     authorBio: 'Canadian airport lounge access rules are verified against operator sources, cardholder benefit terms, and in-person visits — reviewed continuously and dated on every guide.',
@@ -3642,8 +3651,8 @@ export const blogPosts: BlogPost[] = [
     lastReviewed: '2026-09-11',
     category: 'Access Guides',
     readingTime: '14 min read',
-    metaTitle: "Airport Lounge Guest Fees in Canada (2026): What You'll Actually Pay",
-    metaDescription: 'Every airport lounge guest fee in Canada — Priority Pass US$35, Maple Leaf Lounge $59 local, WestJet Elevation $59–$65 + GST, Desjardins Odyssey rules and the National Bank card that includes a guest. Verified September 11, 2026.',
+    metaTitle: 'Maple Leaf Lounge Cost & Guest Fees 2026',
+    metaDescription: "What you'll pay in 2026: Maple Leaf guest fee $59 local, Priority Pass guests US$35, WestJet Elevation $59–$65 + GST. Who gets in free vs pays at the door.",
     content: guestFeesContent,
     authorName: 'AirportLounges.ca Editorial Team',
     authorBio: 'Every guest fee on this page comes from an operator page or issuer benefits guide, cross-referenced with Milesopedia, Prince of Travel and Frugal Flyer. Re-verified September 11, 2026; next scheduled review December 2026.',
@@ -3693,8 +3702,8 @@ export const blogPosts: BlogPost[] = [
     lastReviewed: '2026-09-12',
     category: 'Lounge Guides',
     readingTime: '10 min read',
-    metaTitle: 'Canadian Airport Lounges with Sleep Pods and Rest Facilities (2026)',
-    metaDescription: 'Only five Canadian airport lounges have real rest facilities — Cathay Pacific YVR Solus pods, Plaza Premium First YVR spa suites, the 24-hour Plaza Premium YVR, Plaza Premium YWG, and AC Signature Suite YYZ. Which cards unlock each. September 2026.',
+    metaTitle: 'Airport Sleep Pods in Canada (YVR & YYZ)',
+    metaDescription: 'Where to find airport sleep pods in Canada in 2026 — including YVR (Cathay Solus pods, Plaza Premium) and Toronto Pearson. Which cards get you in.',
     content: sleepPodsContent,
     authorName: 'AirportLounges.ca Editorial Team',
     authorBio: 'Rest-facility descriptions verified against operator pages, our own on-file lounge data, and traveller reports. Reviewed September 12, 2026; next check December 2026.',
@@ -3748,9 +3757,43 @@ export const blogPosts: BlogPost[] = [
     lastReviewed: '2026-10-08',
     category: 'Lounge Guides',
     readingTime: '11 min read',
-    metaTitle: 'Canadian Airport Lounges with Showers (2026): Every Location Reviewed',
-    metaDescription: 'Every Canadian airport lounge with shower access reviewed — facilities, bath products, who gets in free, and how to avoid a long wait. June 2026.',
+    metaTitle: 'Canadian Airport Lounges With Showers 2026',
+    metaDescription: 'Every Canadian airport lounge with a shower in 2026 — including YYZ, YVR, YUL, and YYC. Facilities, who gets in free, and how to avoid a wait.',
     content: showerAccessContent,
+    // Visible FAQ lives inline in `content` (H3/P) so `faqsInContent` suppresses
+    // the auto-rendered FAQ details section. FAQPage schema still emits —
+    // text is identical to the visible Q&A at the bottom of the article.
+    faqsInContent: true,
+    faqs: [
+      {
+        question: 'Which Canadian airport lounge has the best shower?',
+        answer: 'The Cathay Pacific Lounge at Vancouver International Airport (YVR) has the finest shower experience in Canada — two private limestone-clad suites with Aesop bath products, rain showers, and brass fixtures. Access requires a Cathay Pacific or oneworld Business/First class ticket or elite status. For Priority Pass holders, the SkyTeam Lounge at YVR is the best free option with two full oversized suites at no extra charge.',
+      },
+      {
+        question: 'Can I use a Priority Pass lounge shower for free in Canada?',
+        answer: 'Yes, at several locations. The SkyTeam Lounge at YVR, the Air France Lounge by Plaza Premium at YUL, the WestJet Elevation Lounge at YYC, and multiple Plaza Premium locations at YYZ all include shower access at no additional charge for Priority Pass members. Plaza Premium Pier B at YVR charges a $25 CAD shower surcharge on top of free lounge entry.',
+      },
+      {
+        question: 'Does the Air Canada Maple Leaf Lounge in Calgary have a shower?',
+        answer: 'No. The Air Canada Maple Leaf Lounge at Calgary International Airport (YYC) does not have shower facilities. The only lounge with showers in Calgary is the WestJet Elevation Lounge, which accepts Priority Pass, DragonPass, and WestJet status members. Showers there are by appointment — register at the front desk as soon as you arrive.',
+      },
+      {
+        question: 'Do I need to bring my own towel to an airport lounge shower in Canada?',
+        answer: 'No. Every Canadian airport lounge with shower access provides at least a bath towel and floor mat. Most also provide a hand towel. You do not need to bring your own. If product quality matters to you, bring your own toiletry kit — most lounges use unbranded wall-mounted dispensers, with the Cathay Pacific Lounge (Aesop) and WestJet Elevation YYC (Rocky Mountain Soap Company) as the notable exceptions.',
+      },
+      {
+        question: 'How long is the wait for a shower at a Canadian airport lounge?',
+        answer: 'It depends on the lounge and time of day. Early morning before 7 AM is consistently low-wait at all reviewed locations. Mid-morning at the WestJet Elevation YYC and the AC MLL YYZ International can involve a 90-minute wait. At the SkyTeam Lounge at YVR, the peak window of 10 AM to 2 PM sees the highest shower demand. Arriving early and registering at the desk immediately is the most reliable strategy across all locations.',
+      },
+      {
+        question: 'Is the Plaza Premium shower at YVR free for Priority Pass members?',
+        answer: 'Partially. Priority Pass covers lounge entry at standard Plaza Premium locations at YVR at no charge. However, the shower is an additional $25 CAD on top of that free entry at Plaza Premium Pier B. Plaza Premium First (PPF) at Gate D67–D68 is the premium-tier lounge where showers are included — but PPF requires a separate entry fee from approximately $110 CAD, which Priority Pass does not cover.',
+      },
+      {
+        question: 'Can I shower at an airport lounge if I am only flying domestically in Canada?',
+        answer: 'Yes, at certain locations. WestJet Elevation YYC, Plaza Premium Pier B at YVR (with shower surcharge), the AC Maple Leaf Lounge domestics at YYZ and YVR, and multiple Plaza Premium locations at YYZ all serve domestic passengers and have shower access. The SkyTeam Lounge and the Air France Lounge at YUL are international-only and not available for domestic or US transborder flights.',
+      },
+    ],
     primaryCta: {
       heading: 'Which cards get you free access?',
       subheading: 'Compare the Canadian credit cards that unlock the shower-equipped lounges above.',
@@ -3786,8 +3829,8 @@ export const blogPosts: BlogPost[] = [
     lastReviewed: '2026-09-11',
     category: 'Lounge Guides',
     readingTime: '16 min read',
-    metaTitle: 'Priority Pass Lounges in Canada: Every Airport and Every Card (2026)',
-    metaDescription: 'Priority Pass in Canada is Amex-only — the Amex Platinum, Business Platinum and Scotiabank Platinum Amex are the three cards that include visits. 23 lounges at 8 confirmed airports. Verified September 11, 2026.',
+    metaTitle: 'Priority Pass Lounges in Canada (2026)',
+    metaDescription: 'Priority Pass in Canada, 2026: 23 lounges at 8 airports. Only three cards include it — Amex Platinum, Business Platinum, and Scotiabank Platinum Amex.',
     content: priorityPassContent,
     authorName: 'AirportLounges.ca Editorial Team',
     authorBio: 'Card and lounge facts verified against issuer pages and Priority Pass\'s Canadian directory. Re-verified September 11, 2026; next scheduled review December 2026 when the Amex Platinum cap takes effect on January 1, 2027.',

@@ -23,10 +23,11 @@ const HERO_IMAGE =
   imageUrl('airports/yyz/hero.jpg')
 
 export const metadata: Metadata = {
-  title:
-    'Salons de l\'aéroport Toronto Pearson (YYZ) — Accès, cartes et horaires 2026 | AirportLounges.ca',
+  // `absolute` bypasses the root layout's `%s | AirportLounges.ca` template.
+  // Count (9 spaces) counted from the body tables on this very page.
+  title: { absolute: 'Salons de Toronto Pearson (YYZ) : guide 2026' },
   description:
-    'Guide des salons de l\'aéroport Toronto Pearson (YYZ) en français. Neuf espaces lounge à travers les Terminaux 1 et 2. Règles d\'accès par carte de crédit, horaires et fermeture du Plaza Premium T1 International. Vérifié le 14 octobre 2026.',
+    'Les 9 salons de Toronto Pearson (YYZ) en 2026 — Suite Signature Air Canada, Feuille d\'érable, Plaza Premium, Aspire. Plaza Premium T1 International fermé.',
   alternates: {
     canonical: CANONICAL,
     languages: {
@@ -36,9 +37,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Salons de l\'aéroport Toronto Pearson (YYZ) en 2026',
+    title: 'Salons de Toronto Pearson (YYZ) : guide 2026',
     description:
-      'Neuf salons à YYZ — Suite Signature Air Canada, trois Salons Feuille d\'érable, cinq Plaza Premium, Aspire T3, AF-KLM, Admirals Club. Règles d\'accès par carte et fermeture du Plaza Premium T1 International.',
+      'Les 9 salons de Toronto Pearson (YYZ) en 2026 — Suite Signature Air Canada, Feuille d\'érable, Plaza Premium, Aspire. Plaza Premium T1 International fermé.',
     url: CANONICAL,
     locale: 'fr_CA',
     images: [{ url: HERO_IMAGE, width: 1200, height: 630, alt: 'Salons de l\'aéroport Toronto Pearson' }],
@@ -51,9 +52,9 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Accueil', item: BASE },
-    { '@type': 'ListItem', position: 2, name: 'Guides français', item: `${BASE}/fr/blog` },
-    { '@type': 'ListItem', position: 3, name: 'YYZ — Toronto Pearson', item: CANONICAL },
+    { '@type': 'ListItem', position: 1, name: 'Accueil',          item: { '@id': BASE, name: 'Accueil' } },
+    { '@type': 'ListItem', position: 2, name: 'Guides français',  item: { '@id': `${BASE}/fr/blog`, name: 'Guides français' } },
+    { '@type': 'ListItem', position: 3, name: 'Salons de Toronto Pearson (YYZ)', item: { '@id': CANONICAL, name: 'Salons de Toronto Pearson (YYZ)' } },
   ],
 }
 

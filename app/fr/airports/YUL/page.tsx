@@ -26,10 +26,12 @@ const EN_URL = `${BASE}/airports/${YUL_IATA}`
 const HERO_IMAGE = imageUrl('airports/yul/hero.jpg')
 
 export const metadata: Metadata = {
-  title:
-    'Salons de l\'aéroport Montréal-Trudeau (YUL) — Accès, cartes et horaires 2026 | AirportLounges.ca',
+  // `absolute` bypasses the root layout's `%s | AirportLounges.ca` template
+  // so the SERP title is exactly this short, CTR-tuned string — no doubled
+  // site suffix.
+  title: { absolute: 'Salons de Montréal (YUL) : guide 2026' },
   description:
-    'Guide des salons de l\'aéroport de Montréal (YUL) en français. Sept espaces lounge à travers les zones domestique, internationale et transfrontalière. Règles d\'accès par carte de crédit, horaires et mise à jour sur la rénovation du Salon Banque Nationale. Vérifié le 13 octobre 2026.',
+    'Les 11 salons de l\'aéroport Montréal-Trudeau (YUL) en 2026 — Feuille d\'érable, Banque Nationale, Desjardins Odyssée et Aspire. Accès, horaires et prix.',
   alternates: {
     canonical: CANONICAL,
     languages: {
@@ -39,9 +41,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Salons de l\'aéroport Montréal-Trudeau (YUL) en 2026',
+    title: 'Salons de Montréal (YUL) : guide 2026',
     description:
-      'Sept salons à YUL — National Bank, Aspire International, Aspire Amex, Air France-KLM, Desjardins Odyssey, trois Salons Feuille d\'érable Air Canada. Règles d\'accès par carte, horaires et rénovation du Salon Banque Nationale.',
+      'Les 11 salons de l\'aéroport Montréal-Trudeau (YUL) en 2026 — Feuille d\'érable, Banque Nationale, Desjardins Odyssée et Aspire. Accès, horaires et prix.',
     url: CANONICAL,
     locale: 'fr_CA',
     images: [{ url: HERO_IMAGE, width: 1200, height: 630, alt: 'Salons de l\'aéroport Montréal-Trudeau' }],
@@ -54,9 +56,9 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Accueil', item: BASE },
-    { '@type': 'ListItem', position: 2, name: 'Guides français', item: `${BASE}/fr/blog` },
-    { '@type': 'ListItem', position: 3, name: 'YUL — Montréal-Trudeau', item: CANONICAL },
+    { '@type': 'ListItem', position: 1, name: 'Accueil',          item: { '@id': BASE, name: 'Accueil' } },
+    { '@type': 'ListItem', position: 2, name: 'Guides français',  item: { '@id': `${BASE}/fr/blog`, name: 'Guides français' } },
+    { '@type': 'ListItem', position: 3, name: 'Salons de Montréal (YUL)', item: { '@id': CANONICAL, name: 'Salons de Montréal (YUL)' } },
   ],
 }
 
@@ -71,7 +73,7 @@ const faqSchema = {
       acceptedAnswer: {
         '@type': 'Answer',
         text:
-          'Sept espaces distincts à travers trois zones : le Salon Banque Nationale (international, espace temporaire), le Salon International Aspire, le Salon American Express Aspire (domestique, ouvert en juillet 2025), le Salon Air France-KLM par Plaza Premium, le Salon Odyssée Desjardins (transfrontalier), les trois Salons Feuille d\'érable Air Canada, et les deux Cafés Air Canada.',
+          'Onze salons à travers trois zones : le Salon Banque Nationale (international, espace temporaire), le Salon International Aspire, le Salon American Express Aspire (domestique, ouvert en juillet 2025), le Salon Air France-KLM par Plaza Premium, le Salon Odyssée Desjardins (transfrontalier), les trois Salons Feuille d\'érable Air Canada, et les deux Cafés Air Canada.',
       },
     },
     {
@@ -151,7 +153,7 @@ export default async function YulAirportHubFr() {
             Salons de l'aéroport Montréal-Trudeau (YUL)
           </h1>
           <p className="mt-3 text-bone-white/85 max-w-2xl text-sm leading-relaxed">
-            Sept espaces salon à travers trois zones terminal. Règles d'accès par carte de crédit, horaires, et toutes les mises à jour opérationnelles — vérifié le 13 octobre 2026.
+            Onze salons à travers trois zones terminal. Règles d'accès par carte de crédit, horaires, et toutes les mises à jour opérationnelles — vérifié le 13 octobre 2026.
           </p>
         </div>
       </div>
@@ -183,7 +185,7 @@ export default async function YulAirportHubFr() {
                 Les salons de YUL en un coup d'œil
               </h2>
               <p className="text-secondary leading-relaxed mb-6">
-                YUL (Aéroport international Pierre-Elliott-Trudeau) compte sept espaces salon exploités par cinq opérateurs différents, répartis sur les zones Domestique, Internationale et Transfrontalière (États-Unis). Chacun a ses propres règles d'accès — carte de crédit, statut aérien, abonnement ou laissez-passer d'un jour.
+                YUL (Aéroport international Pierre-Elliott-Trudeau) compte onze salons exploités par cinq opérateurs différents, répartis sur les zones Domestique, Internationale et Transfrontalière (États-Unis). Chacun a ses propres règles d'accès — carte de crédit, statut aérien, abonnement ou laissez-passer d'un jour.
               </p>
 
               <div className="overflow-x-auto">
@@ -317,7 +319,7 @@ export default async function YulAirportHubFr() {
                     <span className="material-symbols-outlined text-sand-dark shrink-0 group-open:rotate-180 transition-transform" style={{ fontSize: '20px' }}>expand_more</span>
                   </summary>
                   <div className="px-5 pb-5 text-on-surface-variant text-sm leading-relaxed border-t border-outline-variant/20 pt-4">
-                    Sept espaces distincts à travers trois zones : le Salon Banque Nationale (international, espace temporaire), le Salon International Aspire, le Salon American Express Aspire (domestique, ouvert en juillet 2025), le Salon Air France-KLM par Plaza Premium, le Salon Odyssée Desjardins (transfrontalier), les trois Salons Feuille d'érable Air Canada, et les deux Cafés Air Canada.
+                    Onze salons à travers trois zones : le Salon Banque Nationale (international, espace temporaire), le Salon International Aspire, le Salon American Express Aspire (domestique, ouvert en juillet 2025), le Salon Air France-KLM par Plaza Premium, le Salon Odyssée Desjardins (transfrontalier), les trois Salons Feuille d'érable Air Canada, et les deux Cafés Air Canada.
                   </div>
                 </details>
 

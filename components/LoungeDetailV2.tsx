@@ -59,6 +59,13 @@ interface Props {
   weather: Awaited<ReturnType<typeof import('@/lib/weather').getWeather>> | null
   googlePlace: GooglePlace | null
   alternativeLounges: { slug: string; name: string; terminal: string | null; airport_iata: string }[]
+  /**
+   * Up to 5 other active lounges at the same airport, same-terminal first.
+   * Rendered as a chip row in the bottom callout so every lounge page has
+   * direct links to a handful of siblings for the internal crawl graph.
+   * Empty when the airport has no other active lounges listed yet.
+   */
+  relatedLounges: { slug: string; name: string; terminal: string | null }[]
   code: string
   /**
    * Card-affiliate CTA for this lounge. Always safe to render since it points
@@ -76,6 +83,7 @@ const DAY_ABBR: Record<string, string> = {
 
 export default function LoungeDetailV2({
   lounge: l,
+  relatedLounges,
   reviews,
   weather,
   googlePlace,
@@ -1018,33 +1026,57 @@ export default function LoungeDetailV2({
 
       {/* ══════════════════════════════════════════════════════════════════ */}
       {/* BOTTOM CALLOUT — Compare other lounges at this airport             */}
+      {/*                                                                    */}
+      {/* Includes a direct-link chip row for up to 5 sibling lounges at the */}
+      {/* same airport (same terminal first). Gives every lounge page direct */}
+      {/* internal links to related pages for Google's crawl graph; before   */}
+      {/* this only the aggregate `/airports/{code}` link was present.       */}
       {/* ══════════════════════════════════════════════════════════════════ */}
       <section className="w-full bg-[#0e2a38] text-white py-12 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-2">
-            <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#68dba9]">Airport Network</div>
-            <h2 className="font-[family-name:var(--font-display)] text-[24px] lg:text-[28px] font-bold text-white leading-tight">
-              Compare other lounges at {l.airport?.city ?? code} Airport
-            </h2>
-            <p className="text-white/70 max-w-xl text-sm">
-              Evaluate every catalogued lounge at {code} side-by-side — access rules, amenities, and traveller ratings.
-            </p>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 flex flex-col gap-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div className="space-y-2">
+              <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#68dba9]">Airport Network</div>
+              <h2 className="font-[family-name:var(--font-display)] text-[24px] lg:text-[28px] font-bold text-white leading-tight">
+                Compare other lounges at {l.airport?.city ?? code} Airport
+              </h2>
+              <p className="text-white/70 max-w-xl text-sm">
+                Evaluate every catalogued lounge at {code} side-by-side — access rules, amenities, and traveller ratings.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <Link
+                href={`/airports/${code}`}
+                className="bg-white/10 hover:bg-white/20 text-white px-5 py-3 rounded-lg font-semibold text-sm transition-colors"
+              >
+                All {code} lounges
+              </Link>
+              <Link
+                href="/airports"
+                className="bg-[#059669] text-white px-5 py-3 rounded-lg font-semibold text-sm hover:bg-[#047857] transition-colors flex items-center gap-1.5 shadow-sm"
+              >
+                <span>All Canadian hubs</span>
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </Link>
+            </div>
           </div>
-          <div className="flex items-center gap-3 shrink-0">
-            <Link
-              href={`/airports/${code}`}
-              className="bg-white/10 hover:bg-white/20 text-white px-5 py-3 rounded-lg font-semibold text-sm transition-colors"
-            >
-              All {code} lounges
-            </Link>
-            <Link
-              href="/airports"
-              className="bg-[#059669] text-white px-5 py-3 rounded-lg font-semibold text-sm hover:bg-[#047857] transition-colors flex items-center gap-1.5 shadow-sm"
-            >
-              <span>All Canadian hubs</span>
-              <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-            </Link>
-          </div>
+
+          {relatedLounges.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {relatedLounges.map(sibling => (
+                <Link
+                  key={sibling.slug}
+                  href={`/airports/${code}/lounges/${sibling.slug}`}
+                  className="inline-flex items-center gap-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white/90 hover:text-white px-3 py-1.5 rounded-full text-xs font-medium transition-colors"
+                >
+                  <span className="truncate max-w-[220px]">{sibling.name}</span>
+                  {sibling.terminal && (
+                    <span className="text-white/50 font-mono text-[10px]">T{sibling.terminal}</span>
+                  )}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>

@@ -53,10 +53,15 @@ export const metadata: Metadata = {
     },
   },
   icons: {
+    // Small-size PNG is listed FIRST so browsers that honour order pick it
+    // for the SERP/tab slot at 16–48px — the thin strokes of the wordmark
+    // collapsed to a gold smudge at those sizes before the simplified mark
+    // was introduced.
     icon: [
+      { url: '/favicon-48x48.png',    type: 'image/png',     sizes: '48x48' },
+      { url: '/favicon-96x96.png',    type: 'image/png',     sizes: '96x96' },
       { url: '/favicon.ico',          sizes: 'any' },
       { url: '/favicon.svg',          type: 'image/svg+xml' },
-      { url: '/favicon-96x96.png',    type: 'image/png', sizes: '96x96' },
     ],
     apple: '/apple-touch-icon.png',
   },
@@ -67,7 +72,11 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'AirportLounges.ca',
   url: BASE,
-  logo: `${BASE}/favicon.ico`,
+  // Google wants the publisher logo at a minimum of 112×112 and prefers a
+  // PNG/JPG. The ICO's largest frame is only 48×48 and the SVG ships as
+  // a multi-megabyte asset; the 512 PNG is the right primary logo. Keep
+  // the URL stable — do not rename the file.
+  logo: `${BASE}/icon-512.png`,
   description: 'Canada\'s airport lounge directory — verified lounge data, access requirements, amenities, and traveller reviews for all major Canadian airports.',
   sameAs: [
     'https://twitter.com/AirportLoungeca',

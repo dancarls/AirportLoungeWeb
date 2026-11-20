@@ -12,6 +12,8 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: 'portrait',
     categories: ['travel', 'lifestyle'],
     icons: [
+      // Small-size simplified mark for the SERP/tab slot.
+      { src: '/favicon-48x48.png',     sizes: '48x48',   type: 'image/png',     purpose: 'any' },
       { src: '/favicon-96x96.png',     sizes: '96x96',   type: 'image/png',     purpose: 'any' },
       { src: '/icon-192.png',          sizes: '192x192', type: 'image/png',     purpose: 'any' },
       { src: '/icon-192.png',          sizes: '192x192', type: 'image/png',     purpose: 'maskable' },

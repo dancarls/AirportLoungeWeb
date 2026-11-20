@@ -16,10 +16,10 @@ const HERO_IMAGE =
   imageUrl('airports/yvr/hero.jpg')
 
 export const metadata: Metadata = {
-  title:
-    'Salons de l\'aéroport Vancouver (YVR) — Accès, cartes et horaires 2026 | AirportLounges.ca',
+  // `absolute` bypasses the root layout's `%s | AirportLounges.ca` template.
+  title: { absolute: 'Salons de Vancouver (YVR) : guide 2026' },
   description:
-    'Guide des salons de l\'aéroport de Vancouver (YVR) en français. Dix salons incluant Plaza Premium First, Cathay Pacific et le Salon SkyTeam. Fermeture du Salon Feuille d\'érable Domestique AC du 14 octobre 2026 à début 2028. Vérifié octobre 2026.',
+    'Salons de Vancouver (YVR) en 2026 — Cathay Pacific, Plaza Premium First et SkyTeam. Le Salon Feuille d\'érable domestique est fermé depuis le 14 oct. 2026.',
   alternates: {
     canonical: CANONICAL,
     languages: {
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Salons de l\'aéroport Vancouver (YVR) en 2026',
+    title: 'Salons de Vancouver (YVR) : guide 2026',
     description:
-      'Dix salons à YVR — Plaza Premium (5 emplacements), Salons Feuille d\'érable Air Canada, SkyTeam, Cathay Pacific. Mise à jour sur la fermeture du Salon Feuille d\'érable Domestique YVR pour rénovation.',
+      'Salons de Vancouver (YVR) en 2026 — Cathay Pacific, Plaza Premium First et SkyTeam. Le Salon Feuille d\'érable domestique est fermé depuis le 14 oct. 2026.',
     url: CANONICAL,
     locale: 'fr_CA',
     images: [{ url: HERO_IMAGE, width: 1200, height: 630, alt: 'Salons de l\'aéroport Vancouver' }],
@@ -44,9 +44,9 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Accueil', item: BASE },
-    { '@type': 'ListItem', position: 2, name: 'Guides français', item: `${BASE}/fr/blog` },
-    { '@type': 'ListItem', position: 3, name: 'YVR — Vancouver', item: CANONICAL },
+    { '@type': 'ListItem', position: 1, name: 'Accueil',          item: { '@id': BASE, name: 'Accueil' } },
+    { '@type': 'ListItem', position: 2, name: 'Guides français',  item: { '@id': `${BASE}/fr/blog`, name: 'Guides français' } },
+    { '@type': 'ListItem', position: 3, name: 'Salons de Vancouver (YVR)', item: { '@id': CANONICAL, name: 'Salons de Vancouver (YVR)' } },
   ],
 }
 

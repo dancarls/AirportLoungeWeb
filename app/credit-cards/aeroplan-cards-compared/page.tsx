@@ -4,8 +4,9 @@ import { affiliate, AFFILIATE_REL, sideBySide, pointsCalculator } from '@/lib/af
 import NewsletterCTA from '@/components/NewsletterCTA'
 
 export const metadata: Metadata = {
-  title: 'Best Aeroplan Credit Card in Canada (2026): TD vs CIBC vs Amex Compared',
-  description: 'The three Canadian Aeroplan premium cards compared side by side — TD Aeroplan Visa Infinite Privilege, CIBC Aeroplan Visa Infinite Privilege, and Amex Aeroplan Reserve. Earn rates, lounge access, guest rules, and how to choose.',
+  // `absolute` bypasses the root layout's `%s | AirportLounges.ca` template.
+  title: { absolute: 'TD vs CIBC vs Amex Aeroplan Cards (2026)' },
+  description: 'TD vs CIBC Aeroplan Visa Infinite Privilege vs Amex Aeroplan Reserve in 2026. Earn rates, Maple Leaf access, guest rules, and which card wins.',
   keywords: [
     'best aeroplan credit card',
     'aeroplan credit card comparison',
@@ -15,8 +16,8 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: 'https://www.airportlounges.ca/credit-cards/aeroplan-cards-compared' },
   openGraph: {
-    title: 'Best Aeroplan Credit Card in Canada (2026): TD vs CIBC vs Amex Compared',
-    description: 'The three Canadian Aeroplan premium cards compared side by side.',
+    title: 'TD vs CIBC vs Amex Aeroplan Cards (2026)',
+    description: 'TD vs CIBC Aeroplan Visa Infinite Privilege vs Amex Aeroplan Reserve in 2026. Earn rates, Maple Leaf access, guest rules, and which card wins.',
     url: 'https://www.airportlounges.ca/credit-cards/aeroplan-cards-compared',
   },
 }

@@ -5,8 +5,10 @@ import NewsletterCTA from '@/components/NewsletterCTA'
 import FinlyEmbed from '@/components/FinlyEmbed'
 
 export const metadata: Metadata = {
-  title: 'Best Credit Cards for Airport Lounge Access in Canada (2026)',
-  description: 'The six Canadian credit cards that unlock airport lounge access — Amex Platinum, Amex Aeroplan Reserve, TD/CIBC Aeroplan VIP, RBC Avion VIP, Scotia Passport — compared side by side with fees, guest rules, and current rebates.',
+  // `absolute` bypasses the root layout's `%s | AirportLounges.ca` template
+  // so the SERP title is exactly this short, CTR-tuned string.
+  title: { absolute: 'Best Canada Lounge Access Credit Cards 2026' },
+  description: 'The 6 Canadian cards that include airport lounge access in 2026, compared by fee, guests, and Priority Pass vs Maple Leaf. Includes lower-fee options.',
   keywords: [
     'best credit card for airport lounge access canada',
     'credit card lounge access canada',
@@ -15,8 +17,8 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: 'https://www.airportlounges.ca/credit-cards/best-for-airport-lounge-access' },
   openGraph: {
-    title: 'Best Credit Cards for Airport Lounge Access in Canada (2026)',
-    description: 'The six Canadian credit cards that unlock airport lounge access, compared side by side.',
+    title: 'Best Canada Lounge Access Credit Cards 2026',
+    description: 'The 6 Canadian cards that include airport lounge access in 2026, compared by fee, guests, and Priority Pass vs Maple Leaf. Includes lower-fee options.',
     url: 'https://www.airportlounges.ca/credit-cards/best-for-airport-lounge-access',
   },
 }
@@ -458,6 +460,7 @@ export default function BestCreditCardsForLoungeAccessPage() {
           <div className="bg-white border border-outline-variant/30 p-5">
             <h3 className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-4">Related Guides</h3>
             <ul className="space-y-2">
+              <li><Link href="/credit-cards/aeroplan-cards-compared" className="text-sm text-secondary hover:text-primary transition-colors underline underline-offset-2">TD vs CIBC vs Amex Aeroplan — side by side</Link></li>
               <li><Link href="/blog/amex-platinum-airport-lounge-access-canada" className="text-sm text-secondary hover:text-primary transition-colors underline underline-offset-2">Amex Platinum lounge access — deep dive</Link></li>
               <li><Link href="/blog/best-aeroplan-credit-card-airport-lounge-access" className="text-sm text-secondary hover:text-primary transition-colors underline underline-offset-2">Aeroplan cards compared</Link></li>
               <li><Link href="/blog/priority-pass-lounges-canada" className="text-sm text-secondary hover:text-primary transition-colors underline underline-offset-2">Every Priority Pass lounge in Canada</Link></li>
