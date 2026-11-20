@@ -12,6 +12,16 @@ interface Props {
  * Renders a 3-card grid (budget / mid / premium) linking to Booking.com via
  * Travelpayouts. Returns null if we have no curated data for the airport —
  * layout stays stable; no empty section appears.
+ *
+ * ⚠ 2026-11-19 outbound-link audit: the current short link
+ * `booking.tpo.lu/B8Pzxkm7` lands on the Booking.com HOMEPAGE because it
+ * carries no `dest_id`. Attribution (`aid=818288` + CJ label) IS cookied
+ * mid-redirect, so a click still earns, but the user doesn't land on a
+ * {city}-airport hotel list. Until Travelpayouts per-airport deep links
+ * are created, the sub-CTA copy here is softened to not promise
+ * airport-specific search results. Per-card "Check prices" still points
+ * to the generic landing — fine at the search-intent step (user has
+ * already seen the hotel name above the button) but not ideal.
  */
 export default function AirportHotelsSection({ iata, airportName, city }: Props) {
   const hotels = AIRPORT_HOTELS[iata]
@@ -89,7 +99,7 @@ export default function AirportHotelsSection({ iata, airportName, city }: Props)
             rel={AFFILIATE_REL}
             className="shrink-0 inline-flex items-center gap-2 text-primary font-label-caps text-[10px] uppercase tracking-[0.15em] font-semibold hover:text-primary-container"
           >
-            See more {iata} hotels →
+            Open Booking.com →
           </a>
         </div>
       </div>
