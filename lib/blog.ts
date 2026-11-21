@@ -72,13 +72,6 @@ export interface BlogPost {
   /** Comparison-card module rendered near the top of the article (below byline). */
   comparisonCards?: BlogPostComparisonCard[]
   /**
-   * Visible FAQ already lives inside `content` (inline H3/P). Set true so
-   * the FAQPage JSON-LD still fires from `faqs` but the auto-rendered
-   * details section at the bottom of the blog template is suppressed —
-   * prevents a second visible Q&A block below the article.
-   */
-  faqsInContent?: boolean
-  /**
    * When true, this post is eligible for the home-page "Featured Story"
    * band. The band picks the newest post with `featured: true`; exactly
    * one post should carry the flag at a time. Set back to `false` (or
