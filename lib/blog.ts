@@ -71,6 +71,20 @@ export interface BlogPost {
   primaryCta?: BlogPostCta
   /** Comparison-card module rendered near the top of the article (below byline). */
   comparisonCards?: BlogPostComparisonCard[]
+  /**
+   * Visible FAQ already lives inside `content` (inline H3/P). Set true so
+   * the FAQPage JSON-LD still fires from `faqs` but the auto-rendered
+   * details section at the bottom of the blog template is suppressed —
+   * prevents a second visible Q&A block below the article.
+   */
+  faqsInContent?: boolean
+  /**
+   * When true, this post is eligible for the home-page "Featured Story"
+   * band. The band picks the newest post with `featured: true`; exactly
+   * one post should carry the flag at a time. Set back to `false` (or
+   * delete the key) when the post stops being the lead story.
+   */
+  featured?: boolean
 }
 
 /**
@@ -90,6 +104,10 @@ const yvrDomesticClosureAddendum = `
 
 const sleepPodsContent = `
 <p data-speakable="intro"><strong>Canada does not have Napcabs, GoSleep pods or dedicated per-hour nap suites like Munich, Helsinki or Singapore Changi. What we have are five lounges with real rest facilities: individual reclining pods, spa-style rest suites, day-bed corners, or an all-night operating schedule that lets you actually stretch out between flights. Only one of them accepts Priority Pass. Only one is open 24 hours a day. Full breakdown below, with the card that unlocks each. Verified September 12, 2026.</strong></p>
+
+<aside style="margin:1.5em 0;padding:1em 1.25em;border-left:4px solid #c8a96e;background:#faf7f2;">
+  <p style="margin:0;font-size:0.95em;line-height:1.55;color:#3d3d3d;"><strong>November 21, 2026 update:</strong> That first line now has an exception. Wait N' Rest has opened five private sleep rooms past security at Toronto Pearson Terminal 3 — the first dedicated per-hour sleep facility at a Canadian airport. They are private rooms with a real bed and a door, not capsule pods, and a booking is a paid room rather than any kind of lounge pass. See our <a href="/blog/wait-n-rest-toronto-pearson">Wait N' Rest Toronto Pearson guide</a> for prices, booking rules, and who can use it.</p>
+</aside>
 
 <blockquote>
 <p><strong>Editorial disclosure:</strong> AirportLounges.ca may receive compensation if you apply for a card through links on this page. This does not affect the issuer's terms or the price you pay. Rest-facility descriptions were verified against operator pages and our own on-file lounge data on September 12, 2026.</p>
@@ -3111,6 +3129,305 @@ const yvrDomesticClosureContent = `
 <p><em>All facts on this page reflect information current as of October 8, 2026. Access rules, hours, and remediation offers change without notice — always confirm with Air Canada and the lounge operator before travelling. Next scheduled review: December 2027 (confirming the exact reopening date in Q1 2028).</em></p>
 `
 
+// ─────────────────────────────────────────────────────────────────────────
+// Wait N' Rest at Toronto Pearson — inaugural sleep-rooms feature piece.
+// First Canadian location for the operator; opens the "sleep rooms" vertical
+// on airportlounges.ca, which the YYZ listing in Phase 2 will formalise.
+// Prices, flow and rules checked Nov 20–21, 2026. Images (booking-flow
+// screenshots + room renderings) live at /blog/wait-n-rest-toronto/.
+// ─────────────────────────────────────────────────────────────────────────
+const waitNRestTorontoContent = `
+<blockquote>
+  <p><strong>How we checked this:</strong> We have not stayed at Wait N' Rest. Prices come from the operator's Toronto booking system, checked on November 20, 2026, for a sample check-in on November 24 at 10 a.m. On November 21, we also walked through the full booking flow for two guests, up to the room selection step, and saved screenshots of each screen. We did not place or pay for a booking. Room, access and shower details were checked against the operator's Toronto page and terms and against Toronto Pearson's official listing. Where those sources leave a question open, we say so. Next review: December 2026.</p>
+</blockquote>
+
+<p data-speakable="intro"><strong>Toronto Pearson now has private rooms with a real bed and a door that shuts, bookable by the hour, without leaving the secure side of the airport. Wait N' Rest runs five of them in Terminal 3, past security near Gate B26, and it's open 24 hours. Four are solo rooms for one guest each. One step-free room takes up to four. Base rates started at CAD $55 an hour for one guest when we checked, with a three-hour minimum. The big catch: you need a same-day flight out of Terminal 3.</strong></p>
+
+<p>This is Wait N' Rest's first Canadian location. Before it opened, resting at Pearson meant a lounge recliner, a quiet corner by the gate, or a hotel room on the other side of security. This guide covers what you get, what it cost on the day we checked, the booking rules that trip people up, and who can't use it.</p>
+
+<h2>Quick facts</h2>
+<table>
+  <thead>
+    <tr><th>Detail</th><th>Answer</th><th>Good to know</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Location</strong></td><td>Terminal 3, after security, near Gate B26</td><td>Canadian and international departures side</td></tr>
+    <tr><td><strong>Hours</strong></td><td>Open 24/7</td><td>Bookings run 3 to 12 hours</td></tr>
+    <tr><td><strong>Rooms</strong></td><td>4 solo rooms (listed as "Dual") for 1 guest each</td><td>"Dual" is a label, not a two-person booking</td></tr>
+    <tr><td><strong>Group room</strong></td><td>1 step-free group room (listed as "Barrier Free") for up to 4</td><td>The only choice for two or more. Infants under 3 don't count toward the 4.</td></tr>
+    <tr><td><strong>Price</strong></td><td>From CAD $55/hour base for 1 guest</td><td>Sample checked Nov. 20, 2026; taxes and fees extra</td></tr>
+    <tr><td><strong>Who can use it</strong></td><td>Same-day Terminal 3 departures, 18+</td><td>Check first if you're flying to the U.S.</td></tr>
+    <tr><td><strong>Lounge pass or card access</strong></td><td>Not confirmed</td><td>Plan to pay the posted rate</td></tr>
+  </tbody>
+</table>
+<p><em>Sources: <a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Wait N' Rest Toronto booking conditions</a> and <a href="https://www.torontopearson.com/en/at-the-airport/toronto-airport-services/wait-n-rest-t3-post-security" rel="noopener" target="_blank">Pearson's listing</a>.</em></p>
+
+<h2>What Wait N' Rest is (and what it isn't)</h2>
+<p>People are calling these "sleep pods," and that's how most travellers search for them. But they aren't pods. A pod is usually a capsule or a reclining shell in an open room. These are small private rooms. The operator says every room has a real bed, a door that closes, Wi-Fi and a TV (<a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Wait N' Rest Toronto</a>).</p>
+<p>The welcome screen in the Toronto booking system lists more: smart climate control, a charging station, a workspace, a premium bed and bed linen, soundproofing, TV streaming, sleeping essentials, a snack selection, and a private shower with fresh towels. Those are the operator's own descriptions. We haven't been inside to test claims like soundproofing.</p>
+<p>It also isn't a lounge, and a booking isn't a lounge pass or a meal. You're paying for a private room for a set number of hours. That said, the operator's terms say suites may let you order from airport food vendors through the in-room touchscreen, and snacks may be for sale in the suite. Vendor availability and delivery times aren't up to Wait N' Rest (<a href="https://www.waitnrest.com/en/toronto/terms/" rel="nofollow noopener" target="_blank">Toronto terms</a>). The Toronto welcome screen lists a "snack selection," but we couldn't confirm whether snacks are included or extra, or whether food ordering is running in Toronto yet.</p>
+<p>Toronto is the company's first Canadian location. It also runs sleep rooms at airports outside Canada, including Miami (<a href="https://www.waitnrest.com/en/our-locations/" rel="nofollow noopener" target="_blank">Wait N' Rest locations</a>).</p>
+<p>For the full picture of rest options across the country, including lounges with nap areas, see our guide to <a href="/blog/canadian-airport-lounges-sleep-pods">Canadian airport lounges with sleep pods and rest facilities</a>.</p>
+
+<h2>Where to find it</h2>
+<p>Head to Terminal 3 and clear security. The rooms are near Gate B26, in the part of the terminal for flights within Canada and international flights. Pearson's listing has a gate map you can pull up on your phone (<a href="https://www.torontopearson.com/en/at-the-airport/toronto-airport-services/wait-n-rest-t3-post-security" rel="noopener" target="_blank">Pearson's listing</a>).</p>
+<p><em>The rule that matters most:</em> Wait N' Rest says you need a same-day flight departing from Terminal 3 (<a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Toronto booking conditions</a>). If your flight leaves from Terminal 1, you can't use it, even with hours to kill.</p>
+<p>Need help getting around? Our <a href="/airports/YYZ/navigate">Toronto Pearson terminal navigation</a> page covers walking routes and the train between terminals.</p>
+
+<h2>The rooms</h2>
+<p>There are only five rooms, which matters on busy travel days. The operator lists two types (<a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Wait N' Rest Toronto</a>).</p>
+<table>
+  <thead>
+    <tr><th>Room type</th><th>How many / who</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Solo room (listed as "Dual")</strong></td><td>4 rooms, 1 guest each</td><td>"Dual" is the operator's label. It is not a two-person booking.</td></tr>
+    <tr><td><strong>Step-free group room (listed as "Barrier Free")</strong></td><td>1 room, up to 4 guests</td><td>Labelled ADA accessible. Listed with full beds, a wardrobe and room for 2 large bags plus a carry-on. The only option for couples, families and groups.</td></tr>
+  </tbody>
+</table>
+<p><em>What's in every room:</em> a real bed, a door that closes, Wi-Fi and a TV, says the operator. Your carry-on stays in the room with you (<a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Wait N' Rest Toronto</a>). Pearson's listing adds on-site washrooms, showers, premium linens and a dedicated workspace.</p>
+<p><em>The group room in the booking system:</em> when we searched for two guests, the step-free group room came up labelled "ADA Accessible." It was listed for up to four guests, with full beds, Wi-Fi, TV streaming, air conditioning, a workspace and a wardrobe, and room for two large bags plus one carry-on.</p>
+<p><em>Who counts as a guest:</em> the booking system books anyone 12 and up as an adult, and children aged 3 to 12 count as guests too. Infants under 3 don't count toward the four-guest limit. There's also a checkbox to say you're travelling with someone who needs an accessible room.</p>
+<p><em>Travelling as a pair?</em> This is the part most people miss. Two adults who want to share a room must book the step-free group room (listed as "Barrier Free"), subject to availability. A solo room (listed as "Dual") is for one guest only. Since there's just one group room, couples and families all compete for the same booking. Book early, and have a backup plan if it's taken.</p>
+<p><em>Need accessibility details?</em> The group room has step-free access. Beyond that, we couldn't confirm room measurements, the bed layout, the shower setup or any specific equipment. Call or email the Toronto team before you book if those details matter to you.</p>
+
+<!-- Operator renderings: used with the understanding that permission is being
+     secured through the partnership outreach noted in the handoff. Captions
+     make clear these are renderings, not photographs of the Toronto rooms. -->
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin:2rem 0;">
+  <figure style="flex:1 1 220px;margin:0;">
+    <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-solo-room-rendering.webp" width="900" height="1164" loading="lazy" alt="Rendering of a Wait N' Rest Toronto solo room, listed as Dual, with a bed, wall TV and touchscreen">
+    <figcaption>Solo room (listed as "Dual"). Rendering: Wait N' Rest.</figcaption>
+  </figure>
+  <figure style="flex:1 1 220px;margin:0;">
+    <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-group-room-rendering-angle.webp" width="900" height="1160" loading="lazy" alt="Rendering of the Wait N' Rest Toronto step-free group room, listed as Barrier Free, with beds and a desk">
+    <figcaption>Step-free group room (listed as "Barrier Free"). Rendering: Wait N' Rest.</figcaption>
+  </figure>
+  <figure style="flex:1 1 220px;margin:0;">
+    <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-group-room-rendering-front.webp" width="900" height="1162" loading="lazy" alt="Front view rendering of the Wait N' Rest Toronto group room with a workspace between beds">
+    <figcaption>Group room, front view. Rendering: Wait N' Rest.</figcaption>
+  </figure>
+</div>
+<p><em>These are the operator's computer renderings, not photos of the finished Toronto rooms. The real rooms may look different.</em></p>
+
+<h2>How much it costs</h2>
+<p>You pay per room, and the hourly price goes up with each extra guest. One guest books a solo room (listed as "Dual"). Two to four guests book the step-free group room (listed as "Barrier Free"). The minimum stay is three hours.</p>
+<p>These are the base rates the Toronto booking system showed on November 20, 2026, for a November 24 check-in at 10 a.m. They're in Canadian dollars, before taxes and fees. Treat them as a dated sample, not a guaranteed price. We didn't place a booking.</p>
+<table>
+  <thead>
+    <tr><th>Guests and room</th><th>Hourly base (3-hour minimum)</th><th>8-hour base</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>1 guest, solo room (listed as "Dual")</strong></td><td>$55 ($165 for 3 hours)</td><td>$300</td></tr>
+    <tr><td><strong>2 guests, group room (listed as "Barrier Free")</strong></td><td>$70 ($210 for 3 hours)</td><td>$315</td></tr>
+    <tr><td><strong>3 guests, group room (listed as "Barrier Free")</strong></td><td>$85 ($255 for 3 hours)</td><td>$330</td></tr>
+    <tr><td><strong>4 guests, group room (listed as "Barrier Free")</strong></td><td>$100 ($300 for 3 hours)</td><td>$345</td></tr>
+  </tbody>
+</table>
+<p><em>Base rates from the operator's booking system, checked November 20, 2026. Three-hour figures are the hourly rate times three. Prices can change by date, demand and number of guests, so check the <a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Wait N' Rest Toronto booking page</a> for your dates.</em></p>
+<p><em>A note on eight-hour prices:</em> launch coverage reported different eight-hour package prices than the ones above. <a href="https://www.travelmarketreport.com/canada/air/articles/get-a-room-toronto-pearson-welcomes-sleeping-suites-for-long-layovers" rel="noopener" target="_blank">Travel Market Report</a>, for example, gave a range of $300 to $545. Our figures are what the booking system itself showed for our sample date. If eight hours is what you need, price it in the booking system rather than relying on any published number, including ours.</p>
+<p><em>What you'll actually pay:</em> the operator says Canadian taxes and fees are added at checkout, with the total shown before you pay (<a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Toronto booking conditions</a>). Here are two totals the booking system displayed for our sample date:</p>
+<ul>
+  <li><strong>One guest, 3 hours, solo room (listed as "Dual"):</strong> $165 base, $197.64 displayed total.</li>
+  <li><strong>Four guests, 8 hours, step-free group room (listed as "Barrier Free"):</strong> $345 base, $413.24 displayed total.</li>
+</ul>
+<p>Both totals come out about 20% above the base price, and so did our two-guest sample below. That's more than Ontario's 13% HST on its own, so other fees are included too. We didn't see an itemized breakdown, so we can't tell you how much of the difference is tax and how much is fees.</p>
+<p><em>Where the value is:</em> on our sample date, eight hours for one guest cost $300 base, or $37.50 an hour. That beats $55 an hour on a short stay. If you're facing a long overnight wait, price out the longer block before booking the minimum.</p>
+<p>Groups do better too. Four people sharing the group room for eight hours paid about $103 each, all in, based on the total we saw.</p>
+<p><em>A second sample, for two guests:</em> on November 21 we priced the group room for two adults on Saturday, January 23, 2027, from noon to 4 p.m. The system called this a "Duo Stay." It showed $70 an hour, $280 before taxes, and a total of $335.38. That's the same roughly 20% markup as our other samples. The eight-hour option for two was $315, and the system said that saved $245 compared with paying the hourly rate for eight hours.</p>
+
+<h2>What booking looks like, step by step</h2>
+<p>We walked through the Toronto booking flow on November 21, 2026, for two adults, stopping at the room selection step. We didn't pay. Here's each screen, so you know what to expect before you start. Booking happens on the <a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Wait N' Rest Toronto page</a>.</p>
+
+<h3>Step 1: The welcome screen</h3>
+<p>The first popup lists what's included: Wi-Fi, smart climate, a charging station, a workspace, a premium bed, soundproofing, TV streaming, sleeping essentials, a snack selection, a private shower with fresh towels, and premium bed linen.</p>
+<figure>
+  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-1-welcome-amenities.webp" width="644" height="798" loading="lazy" alt="Wait N' Rest Toronto booking welcome screen listing room amenities including Wi-Fi, premium bed, soundproofing and private shower">
+  <figcaption>Step 1: amenities listed on the Toronto welcome screen. Screenshot taken November 21, 2026.</figcaption>
+</figure>
+
+<h3>Step 2: Pick your times and read the security notice</h3>
+<p>You choose your check-in and check-out times. A notice then reminds you that access depends on security screening and your flight's check-in and boarding times. If you can't get through airport security, you can't get in.</p>
+<figure>
+  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-2-post-security-notice.webp" width="544" height="287" loading="lazy" alt="Wait N' Rest Toronto post-security location notice explaining that guests must clear airport security to enter">
+  <figcaption>Step 2: the post-security notice.</figcaption>
+</figure>
+
+<h3>Step 3: Add your guests</h3>
+<p>You enter adults (12 and up), children (3 to 12) and infants (under 3). Rooms take up to four guests, and infants don't count toward that limit. This is also where you tick the box if someone in your group needs an accessible room.</p>
+<figure>
+  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-3-guest-count.webp" width="544" height="501" loading="lazy" alt="Wait N' Rest Toronto guest selector for adults, children and infants with an accessible room checkbox">
+  <figcaption>Step 3: guest count and the accessible room option.</figcaption>
+</figure>
+
+<h3>Step 4: Confirm your guests</h3>
+<p>A short check screen confirms the head count before the system shows you any rooms.</p>
+<figure>
+  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-4-confirm-guests.webp" width="544" height="443" loading="lazy" alt="Wait N' Rest Toronto confirm guests screen showing two adults">
+  <figcaption>Step 4: guest confirmation.</figcaption>
+</figure>
+
+<h3>Step 5: Choose hourly or extended stay</h3>
+<p>This is the screen to slow down on. You pick between the hourly rate and an eight-hour "Extended stay." For two guests, hourly was $70 an hour and the eight-hour rate was $315. If you'll be there more than four or five hours, check the extended option before you continue.</p>
+<figure>
+  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-5-rate-type.webp" width="744" height="425" loading="lazy" alt="Wait N' Rest Toronto rate type screen comparing a $70 hourly rate with a $315 eight-hour extended stay for two guests">
+  <figcaption>Step 5: hourly vs. eight-hour rates for two guests, base prices before taxes and fees.</figcaption>
+</figure>
+
+<h3>Step 6: Review your selection</h3>
+<p>A summary shows your guests, check-in and check-out times in Toronto time, and the rate. For our four-hour sample, that was $70 an hour and $280 before taxes.</p>
+<figure>
+  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-6-confirm-selection.webp" width="584" height="643" loading="lazy" alt="Wait N' Rest Toronto selection summary showing two adults, a four-hour stay and a $280 base total">
+  <figcaption>Step 6: the selection summary.</figcaption>
+</figure>
+
+<h3>Step 7: See available rooms and the full price</h3>
+<p>Now you see which rooms are free and the total with taxes and fees. For two adults, only the step-free group room (listed as "Barrier Free") came up, with one room available. The total was $335.38. After this, the flow moves on to setting your access code, then your details and payment. We stopped here.</p>
+<figure>
+  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-7-available-rooms.webp" width="1093" height="769" loading="lazy" alt="Wait N' Rest Toronto available rooms screen showing the Barrier Free room for two guests at CAD $335.38 total">
+  <figcaption>Step 7: the group room result for two adults, Saturday, January 23, 2027, noon to 4 p.m.</figcaption>
+</figure>
+
+<p><em>What stood out:</em> the price you see on the first screens is the base rate. The total with taxes and fees only appears at step 7, so budget about 20% more than the base. And if you're two or more, there's just one room you can book, so it can be gone fast.</p>
+
+<h2>Booking rules to know before you pay</h2>
+<p>Most frustration with services like this comes from rules people didn't read. Here's what Wait N' Rest publishes for Toronto.</p>
+<ul>
+  <li><em>Length of stay:</em> 3 to 12 hours.</li>
+  <li><em>Notice:</em> online bookings are normally made at least six hours before check-in (<a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Toronto booking conditions</a>).</li>
+  <li><em>Last-minute requests:</em> inside that six-hour window, you can check availability on <a href="https://wa.me/16476333044" rel="nofollow noopener" target="_blank">WhatsApp at +1 647-633-3044</a>. That's a request, not a guarantee. Don't count on walking up and getting a room.</li>
+  <li><em>Cancellation:</em> free up to 12 hours before check-in. After that, a prepaid booking isn't refundable.</li>
+  <li><em>Your clock starts on time:</em> charges begin at your booked check-in time, even if you show up late. There's a 10-minute grace period at checkout before extra time is charged (<a href="https://www.waitnrest.com/en/toronto/terms/" rel="nofollow noopener" target="_blank">Toronto terms</a>).</li>
+  <li><em>Bags:</em> there's no left-luggage service. Your bags stay with you in the room.</li>
+  <li><em>Age:</em> guests must be 18 or over. Minors can stay only with a parent or legal guardian, and can't be left alone in a suite at any time.</li>
+</ul>
+
+<h3>Stepping out of your room vs. leaving the facility</h3>
+<p>These are two different things, and it's easy to mix them up.</p>
+<p><em>Your room:</em> the operator's terms say you can enter and exit your suite during your booking using your personal passcode. The passcode is tied to your reservation and can't be shared.</p>
+<p><em>The facility:</em> the Toronto booking page is clear that if you leave, your stay ends. You take your luggage with you and book again to come back. The Toronto FAQ answers "Can I step out and come back?" with a flat no, and says a new booking depends on availability (<a href="https://www.waitnrest.com/en/toronto/faq/" rel="nofollow noopener" target="_blank">Toronto FAQ</a>).</p>
+<p>The Toronto-specific pages are the ones to go by. What we couldn't confirm is exactly where your suite ends and "leaving" begins. The terms are written for all Wait N' Rest locations (they even mention U.S. TSA rules), so ask staff at check-in what counts as leaving. Until you know, assume a trip out to the gate area or a food court ends your booking. Grab food before you check in.</p>
+
+<h2>Showers</h2>
+<p>There are showers on site, and the front desk arranges them. You can't add one online, so ask when you arrive. The terms say shower access is limited to guests with an active reservation and depends on availability. One person showers at a time, though a child under 12 can be with an adult.</p>
+<p>The shower itself is private. The Toronto booking system's welcome screen lists a "private shower and fresh towels," and Pearson's listing mentions "private showers." But it's a separate on-site shower that the front desk sets up for you. None of the sources say each room has its own, so don't book expecting a shower inside your room.</p>
+<p>Since showers are for guests with a booking, Wait N' Rest isn't a shower-only option. If a quick rinse is all you want, a lounge may be the better bet. Our guide to <a href="/blog/canadian-airport-lounges-shower-access">Canadian airport lounges with shower access</a> lists the options, or you can <a href="/lounges?amenity=shower">filter all lounges with showers</a>.</p>
+
+<h2>Who can't use it (or should check first)</h2>
+<p>A Terminal 3 boarding pass doesn't automatically get you to Gate B26. It depends on where you're flying and how you got there. Ask Wait N' Rest before you prepay if any of these apply to you.</p>
+<ul>
+  <li><em>You're flying to the United States.</em> U.S.-bound flights go through separate screening and U.S. customs, so the B26 area may not be on your path. Pearson explains the routes on its <a href="https://www.torontopearson.com/en/connections/security" rel="noopener" target="_blank">connections and security</a> and <a href="https://www.torontopearson.com/en/connections/customs-immigration" rel="noopener" target="_blank">customs</a> pages.</li>
+  <li><em>You're switching terminals.</em> If you land at Terminal 1 and leave from Terminal 3, make sure your connection actually puts you past security near B26 with enough time.</li>
+  <li><em>Your flight leaves after midnight.</em> The rule says "same-day" flight. We couldn't confirm how that applies if you check in late at night and fly out the next calendar day. Ask before booking.</li>
+</ul>
+
+<h2>Wait N' Rest vs. your other options at Pearson</h2>
+<p>A private room isn't always the right call. Here's how it compares with the other ways to rest at Toronto Pearson.</p>
+<table>
+  <thead>
+    <tr><th>Option</th><th>Best for</th><th>Trade-off</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Wait N' Rest (T3)</strong></td><td>A bed and a closed door without leaving security</td><td>Same-day T3 departures only; leaving the facility ends your stay; a room, not a lounge pass</td></tr>
+    <tr><td><strong>Airport lounge</strong></td><td>Food, drinks and often a shower on a shorter wait</td><td>Shared space, no bed, time limits at some lounges</td></tr>
+    <tr><td><strong><a href="https://www.torontopearson.com/en/at-the-airport/toronto-airport-services/rogers-passenger-pods-t1" rel="noopener" target="_blank">Rogers Passenger Pods (T1)</a></strong></td><td>A bit of privacy on a T1 departure</td><td>A privacy space, not a bedroom</td></tr>
+    <tr><td><strong><a href="https://www.torontopearson.com/en/at-the-airport/hotels" rel="noopener" target="_blank">Airport hotel</a> (Sheraton Gateway, Alt Hotel)</strong></td><td>Long waits, full hotel rooms, any terminal</td><td>Before security, so you clear screening again</td></tr>
+  </tbody>
+</table>
+<p><em>If you already have lounge access</em> through a card or membership, start with a lounge for waits under about four hours. Our <a href="/airports/YYZ">Toronto Pearson lounge directory</a> lists every lounge by terminal, and the <a href="/tools/which-lounges-can-i-use">card matcher tool</a> shows which ones your cards get you into.</p>
+<p><em>If you don't have access,</em> our guide to <a href="/blog/yyz-airport-lounge-day-pass">buying a lounge day pass at Toronto Pearson</a> covers prices terminal by terminal. Priority Pass members can also check our list of <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a>.</p>
+<p><em>One thing to be clear on:</em> we found no Toronto-specific confirmation that Priority Pass, DragonPass or any credit card gets you into Wait N' Rest. Treat it as a pay-your-own-way service.</p>
+
+<h2>Our take: is it worth it?</h2>
+<p>For the right trip, it looks like a strong option. Say you're stuck at Pearson for six hours or more, flying out of Terminal 3, and you want to actually sleep. This is the only bookable private bedroom we found on the secure side of the airport. On our sample date, $300 base for eight hours solo was steep next to a hotel room. But you'd be paying to stay steps from your gate, with no shuttle and no second trip through screening.</p>
+<p>It's a harder sell on a short layover. Three hours for one guest came to almost $200 in our sample. If you have lounge access, a recliner and a hot meal will do the job for less.</p>
+<p>The biggest risk is the small number of rooms. With five rooms in total, and one group room for anyone travelling together, availability could be tight around holidays and busy flight times. If your plans depend on getting a room, book well ahead and read the cancellation rules first.</p>
+<p>We'll add first-hand notes to this section if we stay in a room.</p>
+
+<h2>Is Wait N' Rest coming to other Canadian airports?</h2>
+<p>Nothing beyond Terminal 3 is confirmed. Here's where things stood on November 20, 2026.</p>
+<ul>
+  <li><em>Toronto Pearson Terminal 1:</em> more Terminal 1 locations have been reported, including one planned before security (<a href="https://www.travelmarketreport.com/canada/air/articles/get-a-room-toronto-pearson-welcomes-sleeping-suites-for-long-layovers" rel="noopener" target="_blank">Travel Market Report</a>). These are reported plans, not open locations, and no opening dates have been confirmed. The operator's location list still shows only Terminal 3 for Toronto.</li>
+  <li><em>Other Canadian airports:</em> in our review of public sources, no comparable standalone sleep-room project was confirmed at any other Canadian airport. That doesn't mean no one is talking about it. It means nothing has been announced publicly.</li>
+</ul>
+<p>We'll update this page when anything is confirmed.</p>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Does Toronto Pearson have sleep pods?</h3>
+<p>Yes, though they're private rooms rather than capsule pods. Wait N' Rest runs five bookable sleep rooms in Terminal 3, after security near Gate B26. They're open 24 hours. When we checked on November 20, 2026, base rates started at CAD $55 an hour for one guest, with a three-hour minimum.</p>
+
+<h3>How much does Wait N' Rest cost at Toronto Pearson?</h3>
+<p>In a sample checked November 20, 2026, for a November 24 check-in, base rates were CAD $55 an hour for one guest, $70 for two, $85 for three and $100 for four, with a three-hour minimum. Eight-hour base rates were $300, $315, $330 and $345. A three-hour stay for one guest showed $197.64 after taxes and fees were added. These are dated samples, not guaranteed prices.</p>
+
+<h3>Where is Wait N' Rest at Pearson Airport?</h3>
+<p>It's in Terminal 3, past security, near Gate B26 in the area for Canadian and international departures. You need a same-day flight departing from Terminal 3 to use it.</p>
+
+<h3>Can two people share a Dual room?</h3>
+<p>No. "Dual" is the operator's label for its four solo rooms, which book for one guest each. Two adults who want to share must book the step-free group room (listed as "Barrier Free"), which takes up to four guests. There's only one, so it depends on availability.</p>
+
+<h3>Can I use Wait N' Rest if I'm flying from Terminal 1?</h3>
+<p>No. The operator requires a same-day departure from Terminal 3. Terminal 1 locations have been reported, but none are open and no opening date has been confirmed.</p>
+
+<h3>Can I leave and come back?</h3>
+<p>No. Wait N' Rest's <a href="https://www.waitnrest.com/en/toronto/faq/" rel="nofollow noopener" target="_blank">Toronto FAQ</a> says that when you leave, your stay ends, so take your luggage and everything you brought with you. To come back, you make a new booking, subject to availability. The operator's general terms mention entering and exiting your suite with a passcode, so ask staff at check-in what counts as leaving.</p>
+
+<h3>Can I walk in without a reservation?</h3>
+<p>Online bookings are normally made at least six hours ahead. Inside that window you can check availability by WhatsApp at +1 647-633-3044, but a room isn't guaranteed.</p>
+
+<h3>Do the rooms have showers?</h3>
+<p>Wait N' Rest lists a private shower with fresh towels. The shower is on site and arranged at the front desk, not inside your room. It's open only to guests with an active reservation and subject to availability.</p>
+
+<h3>Do babies and children count toward the four-guest limit?</h3>
+<p>Children aged 3 to 12 count. Infants under 3 don't count toward the four-guest limit, according to the booking system. Guests 12 and up are booked as adults.</p>
+
+<h3>How old do you have to be?</h3>
+<p>Guests must be 18 or over. Minors can stay only with a parent or legal guardian and can't be left alone in a suite.</p>
+
+<h3>What's included in a booking?</h3>
+<p>A private room with a real bed and a door that locks, plus Wi-Fi, a TV and space for your luggage next to you. A private shower with fresh towels is available on site, arranged at the front desk. A booking doesn't include lounge access or meals (<a href="https://www.waitnrest.com/en/toronto/faq/" rel="nofollow noopener" target="_blank">Toronto FAQ</a>).</p>
+
+<h3>What happens after I book?</h3>
+<p>You get a booking reference. Show it at reception when you arrive at the location in Terminal 3. During booking, you also set up an access code before you enter your details and pay, so keep both handy.</p>
+
+<h3>What if I need more than 12 hours?</h3>
+<p>The longest single booking is 12 hours. If you need more time, Wait N' Rest says to make a second booking. With only five rooms, book both at the same time if you can so you aren't left without a room partway through.</p>
+
+<h3>Can I change my booking?</h3>
+<p>You can cancel for free up to 12 hours before check-in. But changing the time, the length or the room type may change the rate, so check the new price before you confirm a change.</p>
+
+<h3>What currency am I charged in?</h3>
+<p>Canadian dollars. Taxes and fees are added at checkout, and you see the total before you pay.</p>
+
+<h3>Can I get in free with Priority Pass or a credit card?</h3>
+<p>We found no Toronto-specific confirmation that Priority Pass, DragonPass or any credit card covers Wait N' Rest. Plan to pay the posted rate.</p>
+
+<h2>How we researched this</h2>
+<p>We have not stayed at Wait N' Rest. On November 20, 2026, we checked prices directly in the operator's Toronto booking system for a sample check-in on November 24 at 10 a.m., without placing a booking. On November 21, we walked through the booking flow for two adults up to the room selection step and saved screenshots of each screen, again without paying. Room types, booking rules, shower access and re-entry rules were checked against the operator's Toronto page and terms. Location, hours and amenities were checked against Toronto Pearson's official listing. Expansion news was checked against the operator's location list as well as media reports. Read more about <a href="/about#sourcing">how we verify data</a>.</p>
+<p><em>Still open:</em> we've asked, or will ask, Wait N' Rest about the itemized taxes and fees, where "leaving" begins, after-midnight departures, access for U.S.-bound passengers, the accessible room and shower setup, and Terminal 1 details. We'll update this page with what we learn.</p>
+
+<h3>Change log</h3>
+<ul>
+  <li><strong>November 21, 2026:</strong> First published. Prices, room details and booking rules checked November 20, 2026. Booking flow walked through and screenshotted November 21, 2026.</li>
+</ul>
+
+<h3>Sources</h3>
+<ul>
+  <li><a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Wait N' Rest Toronto: rooms, booking conditions and rates</a></li>
+  <li><a href="https://www.waitnrest.com/en/toronto/terms/" rel="nofollow noopener" target="_blank">Wait N' Rest Toronto terms</a></li>
+  <li><a href="https://www.waitnrest.com/en/toronto/faq/" rel="nofollow noopener" target="_blank">Wait N' Rest Toronto FAQ</a></li>
+  <li><a href="https://www.torontopearson.com/en/at-the-airport/toronto-airport-services/wait-n-rest-t3-post-security" rel="noopener" target="_blank">Toronto Pearson: Wait N' Rest T3 facility listing and gate map</a></li>
+  <li><a href="https://www.torontopearson.com/en/connections/security" rel="noopener" target="_blank">Toronto Pearson: connections and security</a></li>
+  <li><a href="https://www.torontopearson.com/en/connections/customs-immigration" rel="noopener" target="_blank">Toronto Pearson: customs and immigration</a></li>
+  <li><a href="https://www.travelmarketreport.com/canada/air/articles/get-a-room-toronto-pearson-welcomes-sleeping-suites-for-long-layovers" rel="noopener" target="_blank">Travel Market Report: Terminal 1 plans and launch pricing</a></li>
+  <li><a href="https://www.torontopearson.com/en/at-the-airport/toronto-airport-services/rogers-passenger-pods-t1" rel="noopener" target="_blank">Toronto Pearson: Rogers Passenger Pods, Terminal 1</a></li>
+  <li><a href="https://www.torontopearson.com/en/at-the-airport/hotels" rel="noopener" target="_blank">Toronto Pearson: airport hotels</a></li>
+  <li><a href="https://www.waitnrest.com/en/our-locations/" rel="nofollow noopener" target="_blank">Wait N' Rest: location directory</a></li>
+</ul>
+
+<p><em>AirportLounges.ca is independent and is not paid by Wait N' Rest. Prices and rules can change without notice. Always confirm with the operator before you book.</em></p>
+`
+
 export const blogPosts: BlogPost[] = [
   {
     slug: 'airport-lounge-cost-canada',
@@ -4226,6 +4543,101 @@ Level 2, near Gate C33 in international departures. Open to any traveller with a
     authorBio:
       'Vancouver International Airport lounge coverage, verified monthly against operator pricing and closure status.',
   },
+  {
+    slug: 'wait-n-rest-toronto-pearson',
+    title: "Wait N' Rest at Toronto Pearson: Private Sleep Rooms in Terminal 3",
+    excerpt:
+      "Toronto Pearson now has private rooms with a real bed and a door that locks, bookable by the hour past security in Terminal 3 near Gate B26. Five rooms, open 24/7, from CAD $55/hour base — and a few booking rules that trip people up.",
+    coverImage: '/blog/wait-n-rest-toronto/wait-n-rest-toronto-group-room-rendering-front.webp',
+    publishedAt: '2026-11-21',
+    lastReviewed: '2026-11-21',
+    category: 'Lounge Guides',
+    readingTime: '12 min read',
+    // CTR-tuned title/description (≤60 / ≤155) matching the pattern in PR #5.
+    // Title keeps "Toronto Pearson" explicit — the live query is "Toronto
+    // Pearson sleep pods" / "Pearson sleep rooms", not just "Toronto".
+    metaTitle: "Wait N' Rest Toronto Pearson T3 Sleep Rooms 2026",
+    metaDescription:
+      "Private sleep rooms at Toronto Pearson T3 near Gate B26. Open 24/7 from CAD $55/hour. Who can book, the booking-rule catches, and alternatives.",
+    content: waitNRestTorontoContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio:
+      "First-hand walkthrough of Wait N' Rest's Toronto booking flow (November 21, 2026) and price check (November 20, 2026). Not a paid booking — we stopped at the room-selection step. We will update once we stay in a room.",
+    // Flags this as the current home-page lead story. Only ONE post should
+    // carry this flag — getFeaturedPost() picks the newest if several do.
+    featured: true,
+    // The 16-question FAQ is rendered inline in `content` (11 from the first
+    // pass plus 5 extras added before the Priority Pass question, per the
+    // handoff note). `faqsInContent: true` fires the FAQPage JSON-LD from
+    // the array below without duplicating the visible section.
+    faqsInContent: true,
+    faqs: [
+      {
+        question: 'Does Toronto Pearson have sleep pods?',
+        answer: "Yes, though they are private rooms rather than capsule pods. Wait N' Rest runs five bookable sleep rooms in Terminal 3, after security near Gate B26. They are open 24 hours. When we checked on November 20, 2026, base rates started at CAD $55 an hour for one guest, with a three-hour minimum.",
+      },
+      {
+        question: "How much does Wait N' Rest cost at Toronto Pearson?",
+        answer: 'In a sample checked November 20, 2026, for a November 24 check-in, base rates were CAD $55 an hour for one guest, $70 for two, $85 for three and $100 for four, with a three-hour minimum. Eight-hour base rates were $300, $315, $330 and $345. A three-hour stay for one guest showed $197.64 after taxes and fees were added. These are dated samples, not guaranteed prices.',
+      },
+      {
+        question: "Where is Wait N' Rest at Pearson Airport?",
+        answer: 'It is in Terminal 3, past security, near Gate B26 in the area for Canadian and international departures. You need a same-day flight departing from Terminal 3 to use it.',
+      },
+      {
+        question: 'Can two people share a Dual room?',
+        answer: 'No. Dual is the operator’s label for its four solo rooms, which book for one guest each. Two adults who want to share must book the step-free group room, listed as Barrier Free, which takes up to four guests. There is only one, so it depends on availability.',
+      },
+      {
+        question: "Can I use Wait N' Rest if I am flying from Terminal 1?",
+        answer: 'No. The operator requires a same-day departure from Terminal 3. Terminal 1 locations have been reported, but none are open and no opening date has been confirmed.',
+      },
+      {
+        question: 'Can I leave and come back?',
+        answer: "No. Wait N' Rest's Toronto FAQ says that when you leave, your stay ends, so take your luggage and everything you brought with you. To come back, you make a new booking, subject to availability. The operator's general terms mention entering and exiting your suite with a passcode, so ask staff at check-in what counts as leaving.",
+      },
+      {
+        question: 'Can I walk in without a reservation?',
+        answer: 'Online bookings are normally made at least six hours ahead. Inside that window you can check availability by WhatsApp at +1 647-633-3044, but a room is not guaranteed.',
+      },
+      {
+        question: 'Do the rooms have showers?',
+        answer: "Wait N' Rest lists a private shower with fresh towels. The shower is on site and arranged at the front desk, not inside your room. It is open only to guests with an active reservation and subject to availability.",
+      },
+      {
+        question: 'Do babies and children count toward the four-guest limit?',
+        answer: 'Children aged 3 to 12 count. Infants under 3 do not count toward the four-guest limit, according to the booking system. Guests 12 and up are booked as adults.',
+      },
+      {
+        question: 'How old do you have to be?',
+        answer: 'Guests must be 18 or over. Minors can stay only with a parent or legal guardian and cannot be left alone in a suite.',
+      },
+      {
+        question: "What's included in a booking?",
+        answer: 'A private room with a real bed and a door that locks, plus Wi-Fi, a TV and space for your luggage next to you. A private shower with fresh towels is available on site, arranged at the front desk. A booking does not include lounge access or meals.',
+      },
+      {
+        question: 'What happens after I book?',
+        answer: 'You get a booking reference. Show it at reception when you arrive at the location in Terminal 3. During booking, you also set up an access code before you enter your details and pay, so keep both handy.',
+      },
+      {
+        question: 'What if I need more than 12 hours?',
+        answer: "The longest single booking is 12 hours. If you need more time, Wait N' Rest says to make a second booking. With only five rooms, book both at the same time if you can so you are not left without a room partway through.",
+      },
+      {
+        question: 'Can I change my booking?',
+        answer: 'You can cancel for free up to 12 hours before check-in. But changing the time, the length or the room type may change the rate, so check the new price before you confirm a change.',
+      },
+      {
+        question: 'What currency am I charged in?',
+        answer: 'Canadian dollars. Taxes and fees are added at checkout, and you see the total before you pay.',
+      },
+      {
+        question: 'Can I get in free with Priority Pass or a credit card?',
+        answer: "We found no Toronto-specific confirmation that Priority Pass, DragonPass or any credit card covers Wait N' Rest. Plan to pay the posted rate.",
+      },
+    ],
+  },
 ]
 
 export function getPost(slug: string): BlogPost | undefined {
@@ -4236,4 +4648,17 @@ export function getAllPosts(): BlogPost[] {
   return [...blogPosts].sort(
     (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
   )
+}
+
+/**
+ * Return the single most recent post flagged `featured: true`, or null when
+ * no post is currently featured. Consumed by the home-page Featured Story
+ * section so the band renders only when there is a lead story to point at.
+ */
+export function getFeaturedPost(): BlogPost | null {
+  const featured = blogPosts.filter(p => p.featured)
+  if (featured.length === 0) return null
+  return featured.sort(
+    (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+  )[0]
 }
