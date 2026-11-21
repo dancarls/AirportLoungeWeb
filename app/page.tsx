@@ -5,11 +5,12 @@ import { db } from '@/lib/db'
 import { cachedRead } from '@/lib/cached-read'
 import SearchModule from '@/components/SearchModule'
 import FeaturedLoungeSection from '@/components/FeaturedLoungeSection'
+import FeaturedStorySection from '@/components/FeaturedStorySection'
 import AirportMapsSection from '@/components/AirportMapsSection'
 import ToolsPromoSection from '@/components/ToolsPromoSection'
 import TerminalMapVisual from '@/components/TerminalMapVisual'
 import { getWeather } from '@/lib/weather'
-import { getAllPosts } from '@/lib/blog'
+import { getAllPosts, getFeaturedPost } from '@/lib/blog'
 import { imageUrl } from '@/lib/image-url'
 import type { Lounge, Airport } from '@/lib/types'
 import { formatRating } from '@/lib/format-rating'
@@ -298,6 +299,17 @@ export default async function HomePage() {
           </div>
         </section>
       )}
+
+      {/* ── FEATURED STORY (lead editorial — news-shaped) ───────── */}
+      {/* Picks up whichever BlogPost is flagged `featured: true`. Renders
+          between the operational alert strip and the Featured Lounge so
+          news-shaped content (new facility openings, closures) gets a
+          surface above the evergreen featured lounge card. Hides
+          automatically when nothing is flagged. */}
+      {(() => {
+        const featuredStory = getFeaturedPost()
+        return featuredStory ? <FeaturedStorySection post={featuredStory} /> : null
+      })()}
 
       {/* ── FEATURED LOUNGE (with working buttons + modals) ─────── */}
       {fl && (
