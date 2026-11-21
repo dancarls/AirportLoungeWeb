@@ -132,33 +132,43 @@ function smartMetaDescription(raw: string, maxLen = 155): string {
  *
  * Keyed by slug (slugs are unique across the lounge directory).
  */
+// Each title starts with the DB lounge name verbatim so Google's title
+// rewriter (which compares meta title vs H1 vs query) doesn't reject ours
+// in favour of the H1. The 2026-11-21 Ahrefs audit showed Google rewriting
+// 6 of these 7 pages — in every case Google chose the H1 (= the DB name).
+// Fix: lead the meta title with that same name, then append the CTR hook
+// after a comma. Keeps the facts (terminal, hours, closure state) visible
+// while winning the H1 token-overlap test.
 const LOUNGE_META_OVERRIDES: Record<string, { title: string; description: string }> = {
   'ac-maple-leaf-lounge-express-yyz': {
-    title: 'Maple Leaf Lounge Express, Pearson T1 (2026)',
+    title: 'Air Canada Maple Leaf Lounge (Express), YYZ T1',
     description: 'Maple Leaf Lounge Express at Toronto Pearson Terminal 1. Open 5:00 AM–8:30 PM daily. The smallest YYZ Maple Leaf — no showers and no walk-up day pass.',
   },
   'ac-maple-leaf-lounge-domestic-yyz': {
-    title: 'Maple Leaf Lounge Domestic, Pearson T1',
+    title: 'Air Canada Maple Leaf Lounge (Domestic), YYZ T1',
     description: 'Maple Leaf Lounge Domestic at Toronto Pearson Terminal 1, Level 2 near gates D51–D57. Open 24 hours, with showers. Who can enter in 2026.',
   },
   'ac-cafe-yyz': {
-    title: 'Air Canada Café, Pearson Terminal 1 (2026)',
+    title: 'Air Canada Café, Toronto Pearson T1 (2026)',
     description: 'Air Canada Café at Toronto Pearson Terminal 1, Level 2 near Gate D20. Open 5:00 AM–9:30 PM. How access and food compare with the Maple Leaf Lounge.',
   },
   'ac-maple-leaf-lounge-international-yvr': {
-    title: 'Maple Leaf Lounge International YVR (2026)',
+    title: 'Air Canada Maple Leaf Lounge (International), YVR',
     description: 'Air Canada Maple Leaf Lounge International at YVR, near Gate D52. Open 5:30 AM–midnight. Access rules and how it differs from the closed Domestic lounge.',
   },
   'plaza-premium-international-t1-yyz': {
+    // Keeping the "Closed" signal in the title is more important here than
+    // H1 alignment — travellers landing on this URL from a stale search
+    // need to see the closure state before they walk to T1.
     title: 'Plaza Premium YYZ T1 International: Closed',
     description: 'Plaza Premium International at Toronto Pearson Terminal 1 is permanently closed as of December 27, 2025. No reopening date yet. See the YYZ alternatives.',
   },
   'ac-maple-leaf-lounge-yyt': {
-    title: "Maple Leaf Lounge St. John's YYT (2026)",
+    title: "Air Canada Maple Leaf Lounge, YYT (Newfoundland)",
     description: "The only airport lounge in Newfoundland: Maple Leaf Lounge at St. John's (YYT). Open 4:00 AM–10:00 PM. Get the access code at check-in. No showers.",
   },
   'cathay-pacific-lounge-yvr': {
-    title: 'Cathay Pacific Lounge YVR: Hours & Access',
+    title: 'Cathay Pacific Lounge, YVR — Hours, Access, Showers',
     description: 'Cathay Pacific Lounge at Vancouver (YVR): hours, access, and showers. Opens about 4 hours before Cathay departures — no walk-in day pass. 2026 guide.',
   },
 }

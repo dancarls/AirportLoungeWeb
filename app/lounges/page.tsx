@@ -15,7 +15,9 @@ type LoungeWithJoins = Lounge & {
 }
 
 export const metadata: Metadata = {
-  title: 'Canadian Airport Lounges — All Access Passes, Cards & Amenities',
+  // Shortened 2026-11-21 — previous 63-char title was being truncated in
+  // SERPs. New: 42 chars, template suffix adds the brand cleanly.
+  title: 'Canadian Airport Lounges Directory',
   description: 'Every airport lounge in Canada in one directory. Filter by Priority Pass, DragonPass, Air Canada Altitude, credit card, amenity, or airport. Verified access rules, hours, and traveller reviews — updated daily.',
   alternates: { canonical: 'https://www.airportlounges.ca/lounges' },
 }

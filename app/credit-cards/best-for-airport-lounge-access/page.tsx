@@ -7,7 +7,9 @@ import FinlyEmbed from '@/components/FinlyEmbed'
 export const metadata: Metadata = {
   // `absolute` bypasses the root layout's `%s | AirportLounges.ca` template
   // so the SERP title is exactly this short, CTR-tuned string.
-  title: { absolute: 'Best Canada Lounge Access Credit Cards 2026' },
+  // Realigned 2026-11-21 to match the H1 after Ahrefs audit showed Google
+  // rewriting the previous title to the H1 anyway. Lead with the H1 form.
+  title: { absolute: 'Best Credit Cards for Airport Lounge Access (2026)' },
   description: 'The 6 Canadian cards that include airport lounge access in 2026, compared by fee, guests, and Priority Pass vs Maple Leaf. Includes lower-fee options.',
   keywords: [
     'best credit card for airport lounge access canada',
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: 'https://www.airportlounges.ca/credit-cards/best-for-airport-lounge-access' },
   openGraph: {
-    title: 'Best Canada Lounge Access Credit Cards 2026',
+    title: 'Best Credit Cards for Airport Lounge Access (2026)',
     description: 'The 6 Canadian cards that include airport lounge access in 2026, compared by fee, guests, and Priority Pass vs Maple Leaf. Includes lower-fee options.',
     url: 'https://www.airportlounges.ca/credit-cards/best-for-airport-lounge-access',
   },
