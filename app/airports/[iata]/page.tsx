@@ -125,6 +125,40 @@ function getPrimaryImage(
 }
 
 // ── Metadata ──────────────────────────────────────────────
+// Per-IATA CTR overrides. Hand-written titles (≤60 chars) and meta
+// descriptions (≤155 chars) for airports where the default formula is
+// generic enough to hurt click-through. Use `title.absolute` so the root
+// layout's `%s | AirportLounges.ca` template suffix does NOT re-append the
+// site name (airport titles already end with the IATA code — the brand lives
+// in the breadcrumb and the sitelink rows below the snippet).
+//
+// Counts, dates, and named lounges must stay verified against the live
+// ItemList / database. Do NOT bake prices, opening-now phrasing, or any
+// time-of-day status into the snippet — those get cached and go stale.
+const AIRPORT_META_OVERRIDES: Record<string, { title: string; description: string }> = {
+  YUL: {
+    title: 'Montreal Airport Lounges (YUL): 11 in 2026',
+    description: 'Compare all 11 Montreal (YUL) lounges for 2026 — Maple Leaf, National Bank, Desjardins Odyssey, and Aspire. Access rules, hours, and day-pass options.',
+  },
+  YYC: {
+    title: 'Calgary Airport Lounges (YYC): 6 in 2026',
+    description: 'All 6 Calgary (YYC) airport lounges in 2026 — WestJet Elevation, Maple Leaf, two Aspire lounges, M Club, and Quiet Space. Hours, cards, and how to get in.',
+  },
+  YVR: {
+    title: 'Vancouver Airport Lounges (YVR) 2026',
+    description: 'Vancouver (YVR) airport lounges in 2026 — Cathay Pacific, Plaza Premium First, SkyTeam, and Maple Leaf. The Domestic Maple Leaf Lounge closed Oct 14, 2026.',
+  },
+  // The live SERP query is "Toronto Pearson Airport Lounges" — the default
+  // formula used "Toronto Airport Lounges (YYZ)" which missed the "Pearson"
+  // token entirely and sat around page 5. Baking Pearson into the title +
+  // description aligns the snippet with how travellers actually search.
+  // Count (9) matches both the YYZ FR hub and the body ItemList.
+  YYZ: {
+    title: 'Toronto Pearson Airport Lounges (YYZ) 2026',
+    description: 'All 9 Toronto Pearson (YYZ) airport lounges in 2026 — Air Canada Signature Suite, Maple Leaf, Plaza Premium, Aspire T3. Plaza Premium T1 Int\'l closed.',
+  },
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { iata } = await params
   const code = iata.toUpperCase()
@@ -137,8 +171,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const name = airport?.name ?? `${code} Airport`
   const city = airport?.city ?? code
-  const title = `${city} Airport Lounges (${code})`
-  const desc  = `Find every premium lounge at ${name} (${code}). Access requirements, amenities, opening hours, and traveller reviews for all ${city} airport lounges.`
+
+  const override = AIRPORT_META_OVERRIDES[code]
+  const title = override?.title ?? `${city} Airport Lounges (${code})`
+  const desc  = override?.description
+    ?? `Find every premium lounge at ${name} (${code}). Access requirements, amenities, opening hours, and traveller reviews for all ${city} airport lounges.`
 
   // Airport-hub FR translations we have shipped — add codes here as new FR
   // hub pages go live. Keeps hreflang alternates honest (never points Google
@@ -146,7 +183,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const HAS_FR_HUB = new Set(['YUL', 'YYZ', 'YVR'])
 
   return {
-    title,
+    // `absolute` bypasses the root template `%s | AirportLounges.ca` so the
+    // final <title> is exactly the override above — not doubled with the site
+    // suffix. Airports without an override still use the default template.
+    title: override ? { absolute: title } : title,
     description: desc,
     alternates: {
       canonical: `https://www.airportlounges.ca/airports/${code}`,
@@ -159,7 +199,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : undefined,
     },
     openGraph: {
-      title: `${code} Lounges — ${city} | AirportLounges.ca`,
+      title: override ? title : `${code} Lounges — ${city} | AirportLounges.ca`,
       description: desc,
       url: `https://www.airportlounges.ca/airports/${code}`,
       images: ['https://www.airportlounges.ca/opengraph-image'],
@@ -270,13 +310,18 @@ export default async function AirportPage({ params }: Props) {
 
   const pageUrl = `https://www.airportlounges.ca/airports/${code}`
 
+  // Google Rich Results prefers each `item` to be an object with both an
+  // `@id` (the URL) and a human `name`, so the Inspection API is less
+  // likely to flag "Unnamed item". The last crumb is a human label
+  // ("Vancouver Airport Lounges") rather than the bare IATA code.
+  const lastCrumbName = `${airport.city} Airport Lounges`
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://www.airportlounges.ca' },
-      { '@type': 'ListItem', position: 2, name: 'Airports', item: 'https://www.airportlounges.ca/airports' },
-      { '@type': 'ListItem', position: 3, name: code,       item: pageUrl },
+      { '@type': 'ListItem', position: 1, name: 'Home',     item: { '@id': 'https://www.airportlounges.ca', name: 'Home' } },
+      { '@type': 'ListItem', position: 2, name: 'Airports', item: { '@id': 'https://www.airportlounges.ca/airports', name: 'Airports' } },
+      { '@type': 'ListItem', position: 3, name: lastCrumbName, item: { '@id': pageUrl, name: lastCrumbName } },
     ],
   }
 

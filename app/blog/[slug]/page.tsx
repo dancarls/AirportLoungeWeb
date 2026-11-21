@@ -51,7 +51,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return {}
   const hasFr = SLUGS_WITH_FR.has(slug)
   return {
-    title: post.metaTitle,
+    // `absolute` bypasses the root layout's `%s | AirportLounges.ca` template.
+    // Blog metaTitles are already written as self-contained snippets (<60 char
+    // CTR targets); doubling the brand onto them pushed them past Google's
+    // truncation point. The brand still shows in the breadcrumb row below the
+    // snippet.
+    title: { absolute: post.metaTitle },
     description: post.metaDescription,
     alternates: {
       canonical: `https://www.airportlounges.ca/blog/${post.slug}`,
@@ -130,7 +135,11 @@ export default async function BlogPostPage({ params }: Props) {
       url: 'https://www.airportlounges.ca',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://www.airportlounges.ca/favicon.ico',
+        // Google requires a publisher logo of at least 112×112 for Article
+        // rich results. The 512 PNG meets that; favicon.ico does not.
+        url: 'https://www.airportlounges.ca/icon-512.png',
+        width: 512,
+        height: 512,
       },
     },
     mainEntityOfPage: {
@@ -144,13 +153,15 @@ export default async function BlogPostPage({ params }: Props) {
     },
   }
 
+  // Google Rich Results prefers each `item` to be an object with `@id`+`name`.
+  const blogPageUrl = `https://www.airportlounges.ca/blog/${post.slug}`
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home',          item: 'https://www.airportlounges.ca' },
-      { '@type': 'ListItem', position: 2, name: 'Lounge Library', item: 'https://www.airportlounges.ca/blog' },
-      { '@type': 'ListItem', position: 3, name: post.title,      item: `https://www.airportlounges.ca/blog/${post.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home',           item: { '@id': 'https://www.airportlounges.ca', name: 'Home' } },
+      { '@type': 'ListItem', position: 2, name: 'Lounge Library', item: { '@id': 'https://www.airportlounges.ca/blog', name: 'Lounge Library' } },
+      { '@type': 'ListItem', position: 3, name: post.title,       item: { '@id': blogPageUrl, name: post.title } },
     ],
   }
 
@@ -352,8 +363,11 @@ export default async function BlogPostPage({ params }: Props) {
               </div>
             )}
 
-            {/* Structured FAQ block — feeds FAQPage schema + gives readers scannable Q&A */}
-            {post.faqs && post.faqs.length > 0 && (
+            {/* Structured FAQ block — feeds FAQPage schema + gives readers scannable Q&A.
+                Suppressed when `faqsInContent` is true: the visible FAQ is already
+                rendered inside `post.content`, so this second block would duplicate
+                questions on the page. The FAQPage JSON-LD above still fires. */}
+            {post.faqs && post.faqs.length > 0 && !post.faqsInContent && (
               <section className="mt-12 pt-10 border-t border-outline-variant/30" aria-label="Frequently Asked Questions">
                 <h2 className="font-headline-md text-headline-md text-primary mb-8">Frequently Asked Questions</h2>
                 <div className="space-y-6">

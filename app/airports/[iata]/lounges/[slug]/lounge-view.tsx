@@ -85,6 +85,80 @@ interface Props {
   params: Promise<{ iata: string; slug: string }>
 }
 
+/**
+ * Build a meta description from arbitrary HTML/text, cut cleanly without
+ * chopping mid-word or mid-sentence. Replaces the original `slice(0, 160)`
+ * that produced truncated snippets like "… it fe". We prefer a sentence
+ * boundary (./!/?); failing that, a word boundary; and only fall back to a
+ * hard character cut as a last resort. Cap at 155 characters so Google's
+ * ~160-char desktop snippet budget still has headroom for ellipses/punct.
+ */
+function smartMetaDescription(raw: string, maxLen = 155): string {
+  const plain = raw.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+  if (plain.length <= maxLen) return plain
+
+  // 1) Prefer a sentence boundary — last ". " / "! " / "? " within the budget.
+  const sentenceCut = Math.max(
+    plain.lastIndexOf('. ', maxLen),
+    plain.lastIndexOf('! ', maxLen),
+    plain.lastIndexOf('? ', maxLen),
+  )
+  if (sentenceCut >= Math.floor(maxLen * 0.6)) {
+    // Keep the terminal punctuation.
+    return plain.slice(0, sentenceCut + 1).trim()
+  }
+
+  // 2) Word boundary — last space within the budget, minus trailing punct.
+  const wordCut = plain.lastIndexOf(' ', maxLen)
+  if (wordCut >= Math.floor(maxLen * 0.5)) {
+    return plain.slice(0, wordCut).replace(/[,;:\-\s]+$/, '').trim() + '…'
+  }
+
+  // 3) Last resort — hard cut, but still never end mid-word if we can help it.
+  return plain.slice(0, maxLen - 1).trim() + '…'
+}
+
+/**
+ * Per-slug meta overrides for lounges we hand-tune for CTR. Titles ≤60
+ * characters, descriptions ≤155 characters, hours/terminal/closure facts
+ * from the lounge's own live page. No time-of-day status ("open now") — the
+ * snippet is cached by Google and would go stale. Add entries here as a
+ * page is tuned; everything else falls back to `smartMetaDescription` on
+ * the DB description.
+ *
+ * Keyed by slug (slugs are unique across the lounge directory).
+ */
+const LOUNGE_META_OVERRIDES: Record<string, { title: string; description: string }> = {
+  'ac-maple-leaf-lounge-express-yyz': {
+    title: 'Maple Leaf Lounge Express, Pearson T1 (2026)',
+    description: 'Maple Leaf Lounge Express at Toronto Pearson Terminal 1. Open 5:00 AM–8:30 PM daily. The smallest YYZ Maple Leaf — no showers and no walk-up day pass.',
+  },
+  'ac-maple-leaf-lounge-domestic-yyz': {
+    title: 'Maple Leaf Lounge Domestic, Pearson T1',
+    description: 'Maple Leaf Lounge Domestic at Toronto Pearson Terminal 1, Level 2 near gates D51–D57. Open 24 hours, with showers. Who can enter in 2026.',
+  },
+  'ac-cafe-yyz': {
+    title: 'Air Canada Café, Pearson Terminal 1 (2026)',
+    description: 'Air Canada Café at Toronto Pearson Terminal 1, Level 2 near Gate D20. Open 5:00 AM–9:30 PM. How access and food compare with the Maple Leaf Lounge.',
+  },
+  'ac-maple-leaf-lounge-international-yvr': {
+    title: 'Maple Leaf Lounge International YVR (2026)',
+    description: 'Air Canada Maple Leaf Lounge International at YVR, near Gate D52. Open 5:30 AM–midnight. Access rules and how it differs from the closed Domestic lounge.',
+  },
+  'plaza-premium-international-t1-yyz': {
+    title: 'Plaza Premium YYZ T1 International: Closed',
+    description: 'Plaza Premium International at Toronto Pearson Terminal 1 is permanently closed as of December 27, 2025. No reopening date yet. See the YYZ alternatives.',
+  },
+  'ac-maple-leaf-lounge-yyt': {
+    title: "Maple Leaf Lounge St. John's YYT (2026)",
+    description: "The only airport lounge in Newfoundland: Maple Leaf Lounge at St. John's (YYT). Open 4:00 AM–10:00 PM. Get the access code at check-in. No showers.",
+  },
+  'cathay-pacific-lounge-yvr': {
+    title: 'Cathay Pacific Lounge YVR: Hours & Access',
+    description: 'Cathay Pacific Lounge at Vancouver (YVR): hours, access, and showers. Opens about 4 hours before Cathay departures — no walk-in day pass. 2026 guide.',
+  },
+}
+
 // Request cookies and the layout query string are not read here — either one
 // would disable the page cache. The ?v= override is rewritten to /preview.
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -120,22 +194,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const primaryImg = imgs.find(i => i.is_primary) ?? imgs[0]
   const ogImg = primaryImg ? imageUrl(primaryImg.storage_path) : null
 
-  const rawDesc = data.description
-    ? data.description.replace(/<[^>]*>/g, '').trim().slice(0, 160)
-    : null
-  const description = rawDesc
+  // Hand-tuned per-slug CTR override wins when present; otherwise the
+  // description falls through to a word-boundary-aware cut of the DB
+  // description, or a neutral synthetic default.
+  const override = LOUNGE_META_OVERRIDES[slug]
+  const description = override?.description
+    ?? (data.description ? smartMetaDescription(data.description, 155) : null)
     ?? `${data.name} at ${airport?.name ?? code} — access requirements, amenities, and real traveller reviews.`
 
+  const canonicalUrl = `https://www.airportlounges.ca/airports/${code}/lounges/${slug}`
+
   return {
-    title: data.name,
+    // Overrides use `absolute` so the root `%s | AirportLounges.ca` template
+    // does not double-append the site name. Non-overridden lounges keep the
+    // existing behaviour (`<lounge name> | AirportLounges.ca`).
+    title: override ? { absolute: override.title } : data.name,
     description,
-    alternates: {
-      canonical: `https://www.airportlounges.ca/airports/${code}/lounges/${slug}`,
-    },
+    alternates: { canonical: canonicalUrl },
     openGraph: {
-      title: `${data.name} | ${code} Airport Lounge`,
+      title: override?.title ?? `${data.name} | ${code} Airport Lounge`,
       description,
-      url: `https://www.airportlounges.ca/airports/${code}/lounges/${slug}`,
+      url: canonicalUrl,
       ...(ogImg && { images: [{ url: ogImg, width: 1200, height: 630, alt: data.name }] }),
     },
   }
@@ -266,29 +345,36 @@ export async function renderLoungeDetail(
 
   const googlePlace = (lounge.google_place_data as GooglePlace | null) ?? null
 
-  // If this lounge is closed / reduced-capacity, auto-suggest alternatives at
-  // the same airport, ranked by whether they share access types with the closed
-  // lounge (a Priority Pass user needs a Priority Pass alternative first).
+  // Load all other active lounges at this airport. Used for two things:
+  //   1. The closure banner "alternatives" block (only when this lounge is
+  //      closed or reduced-capacity).
+  //   2. The bottom "Compare other lounges at this airport" callout chip
+  //      row (always — gives every lounge page 3–5 direct internal links to
+  //      siblings for Google's crawl graph).
+  // Same query serves both; we score & slice differently per destination.
+  const siblingRows = lounge.airport?.id
+    ? await db<Array<{ slug: string; name: string; terminal: string | null; access_types: unknown }>>`
+        SELECT slug, name, terminal, access_types
+        FROM lounges
+        WHERE airport_id = ${lounge.airport.id}
+          AND is_active = true
+          AND closure_status = 'open'
+          AND id <> ${lounge.id}
+        ORDER BY name ASC, slug ASC
+      `
+    : []
+
+  // ── Closure-banner alternatives (only populated for closed lounges) ──
   let alternativeLounges: { slug: string; name: string; terminal: string | null; airport_iata: string }[] = []
-  if (lounge.closure_status && lounge.closure_status !== 'open' && lounge.airport?.id) {
+  if (lounge.closure_status && lounge.closure_status !== 'open') {
     const closedAccessNames = new Set(
       ((lounge.access_types ?? []) as AccessType[]).map(a => a.name.toLowerCase())
     )
-    const alts = await db<Array<{ slug: string; name: string; terminal: string | null; access_types: unknown }>>`
-      SELECT slug, name, terminal, access_types
-      FROM lounges
-      WHERE airport_id = ${lounge.airport.id}
-        AND is_active = true
-        AND closure_status = 'open'
-        AND id <> ${lounge.id}
-      ORDER BY name ASC, slug ASC
-    `
-    alternativeLounges = alts
+    alternativeLounges = siblingRows
       .map(alt => {
         const accessNames = new Set(
           ((alt.access_types ?? []) as AccessType[]).map(a => a.name.toLowerCase())
         )
-        // Score = how many access types the alternative shares with the closed lounge
         const shared = [...accessNames].filter(n => closedAccessNames.has(n)).length
         return {
           slug: alt.slug,
@@ -302,6 +388,20 @@ export async function renderLoungeDetail(
       .slice(0, 3)
       .map(({ slug, name, terminal, airport_iata }) => ({ slug, name, terminal, airport_iata }))
   }
+
+  // ── Related-lounge chips for the bottom callout (always populated) ──
+  // Prefer siblings in the same terminal (co-located is more useful to a
+  // reader standing at this gate), then alphabetical. Cap at 5.
+  const relatedLounges = siblingRows
+    .slice()
+    .sort((a, b) => {
+      const aMatch = a.terminal && lounge.terminal && a.terminal === lounge.terminal ? 0 : 1
+      const bMatch = b.terminal && lounge.terminal && b.terminal === lounge.terminal ? 0 : 1
+      if (aMatch !== bMatch) return aMatch - bMatch
+      return a.name.localeCompare(b.name)
+    })
+    .slice(0, 5)
+    .map(row => ({ slug: row.slug, name: row.name, terminal: row.terminal }))
 
   const [reviews, weather] = await Promise.all([
     loadPublicReviews(lounge.id),
@@ -320,14 +420,19 @@ export async function renderLoungeDetail(
   const heroImg = orderedImages[0]
   const accessTypes = (l.access_types ?? []) as AccessType[]
 
+  // Google Rich Results prefers each `item` to be an object with both an
+  // `@id` and a `name`. The third crumb uses the airport's city label
+  // rather than the bare IATA code so the SERP breadcrumb reads cleanly.
+  const airportCrumbName = l.airport?.city ? `${l.airport.city} Airport Lounges` : code
+  const loungePageUrl = `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}`
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://www.airportlounges.ca' },
-      { '@type': 'ListItem', position: 2, name: 'Airports', item: 'https://www.airportlounges.ca/airports' },
-      { '@type': 'ListItem', position: 3, name: code,       item: `https://www.airportlounges.ca/airports/${code}` },
-      { '@type': 'ListItem', position: 4, name: l.name,     item: `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}` },
+      { '@type': 'ListItem', position: 1, name: 'Home',     item: { '@id': 'https://www.airportlounges.ca', name: 'Home' } },
+      { '@type': 'ListItem', position: 2, name: 'Airports', item: { '@id': 'https://www.airportlounges.ca/airports', name: 'Airports' } },
+      { '@type': 'ListItem', position: 3, name: airportCrumbName, item: { '@id': `https://www.airportlounges.ca/airports/${code}`, name: airportCrumbName } },
+      { '@type': 'ListItem', position: 4, name: l.name,     item: { '@id': loungePageUrl, name: l.name } },
     ],
   }
 
@@ -484,6 +589,7 @@ export async function renderLoungeDetail(
           weather={weather}
           googlePlace={googlePlace}
           alternativeLounges={alternativeLounges}
+          relatedLounges={relatedLounges}
           code={code}
           cardsCta={cardsCta}
         />
