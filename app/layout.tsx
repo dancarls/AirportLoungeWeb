@@ -142,6 +142,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             In <head> so their install verifier finds it on server-rendered HTML.
             Kill switch: remove the env var in Vercel. */}
         <TravelpayoutsDrive />
+        {/* Ahrefs Web Analytics — must live inside <head> for Ahrefs's
+            "Recheck installation" verifier to pick it up (the verifier
+            server-side-fetches the page and scans only the <head> block).
+            Raw <script> here rather than next/script so the server-
+            rendered HTML carries it in <head> on the first byte. Async
+            so it never blocks render. `data-key` is public by design. */}
+        <script
+          async
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="VeqcVcUujHD/yvev7a1oNw"
+        />
       </head>
       <body className="bg-bone-white text-on-surface font-body-md transition-colors duration-300">
         <Header />
@@ -156,15 +167,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           gtag('js', new Date());
           gtag('config', 'G-FM95J545RS');
         `}</Script>
-        {/* Ahrefs Web Analytics — pageview + referrer tracking that feeds the
-            backlink / traffic view in Ahrefs Site Explorer. Loaded async so it
-            never blocks page render. `data-key` is the Ahrefs-issued site
-            identifier (public by design — visible in every page's HTML). */}
-        <Script
-          src="https://analytics.ahrefs.com/analytics.js"
-          data-key="VeqcVcUujHD/yvev7a1oNw"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   )
