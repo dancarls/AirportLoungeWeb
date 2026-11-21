@@ -156,6 +156,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           gtag('js', new Date());
           gtag('config', 'G-FM95J545RS');
         `}</Script>
+        {/* Ahrefs Web Analytics — pageview + referrer tracking that feeds the
+            backlink / traffic view in Ahrefs Site Explorer. Loaded async so it
+            never blocks page render. `data-key` is the Ahrefs-issued site
+            identifier (public by design — visible in every page's HTML). */}
+        <Script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="VeqcVcUujHD/yvev7a1oNw"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   )
