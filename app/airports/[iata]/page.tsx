@@ -50,16 +50,21 @@ const HERO_DESCRIPTION: Record<string, string> = {
  * map fall back to CATSA's current-wait-times page (always working). URLs
  * marked 403 in the curl audit still work in a real browser — they just
  * block plain-User-Agent bots for scraper protection.
+ *
+ * YYZ was removed 2026-11-19: `torontopearson.com/en/security` now 404s
+ * (confirmed in the affiliate / outbound link audit). Dropping the entry
+ * fails the YYZ hub over to the always-working CATSA fallback instead of
+ * sending traffic to a broken page. Add it back once Pearson publishes a
+ * stable replacement URL.
  */
 const AIRPORT_SECURITY_URL: Record<string, string> = {
-  YYZ: 'https://www.torontopearson.com/en/security',
   YVR: 'https://www.yvr.ca/en/passengers/at-the-airport/security-screening', // 403 to bots, 200 in browser
   YUL: 'https://www.admtl.com/en',                                            // 403 to bots, 200 in browser
   YEG: 'https://flyeia.com/security',
   YHZ: 'https://halifaxstanfield.ca/plan/security-screening/',
   YTZ: 'https://www.torontocity.com/security',
   YOW: 'https://yow.ca/en',                                                    // no dedicated stable /security URL
-  // No verified stable URL for YYC, YQB, YQR, YWG, YXE, YYT → CATSA fallback.
+  // No verified stable URL for YYZ, YYC, YQB, YQR, YWG, YXE, YYT → CATSA fallback.
 }
 
 const HERO_IMAGE: Record<string, string> = {

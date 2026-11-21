@@ -316,7 +316,7 @@ export default async function YvrAirportHubFr() {
                     <span className="material-symbols-outlined text-sand-dark shrink-0 group-open:rotate-180 transition-transform" style={{ fontSize: '20px' }}>expand_more</span>
                   </summary>
                   <div className="px-5 pb-5 text-on-surface-variant text-sm leading-relaxed border-t border-outline-variant/20 pt-4">
-                    L'<a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener" className="underline">Amex Platine</a> à 799 $ pour la couverture la plus large — entrée directe aux cinq Plaza Premium et Priority Pass pour SkyTeam et Cathay. Pour les fidèles d'Air Canada, les cartes Aéroplan VIP <a href="https://www.finlywealth.com/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener" className="underline">CIBC</a> ou <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener" className="underline">Amex Aéroplan Réserve</a> ouvrent les Salons Feuille d'érable International et Transfrontalier.
+                    L'<a href={affiliate('finlywealth-amex-platinum')} target="_blank" rel={AFFILIATE_REL} className="underline">Amex Platine</a> à 799 $ pour la couverture la plus large — entrée directe aux cinq Plaza Premium et Priority Pass pour SkyTeam et Cathay. Pour les fidèles d'Air Canada, les cartes Aéroplan VIP <a href={affiliate('finlywealth-cibc-aeroplan-vip')} target="_blank" rel={AFFILIATE_REL} className="underline">CIBC</a> ou <a href={affiliate('finlywealth-amex-aeroplan-reserve')} target="_blank" rel={AFFILIATE_REL} className="underline">Amex Aéroplan Réserve</a> ouvrent les Salons Feuille d'érable International et Transfrontalier.
                   </div>
                 </details>
 
@@ -326,7 +326,7 @@ export default async function YvrAirportHubFr() {
                     <span className="material-symbols-outlined text-sand-dark shrink-0 group-open:rotate-180 transition-transform" style={{ fontSize: '20px' }}>expand_more</span>
                   </summary>
                   <div className="px-5 pb-5 text-on-surface-variant text-sm leading-relaxed border-t border-outline-variant/20 pt-4">
-                    Non — Plaza Premium First à YVR n'accepte PAS Priority Pass. L'entrée directe coûte 110 $ CAD pour un séjour de 2 heures, ou vous pouvez surclasser depuis le Plaza Premium International voisin pour 30 $. L'<a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener" className="underline">Amex Platine</a> donne accès via son avantage de carte direct.
+                    Non — Plaza Premium First à YVR n'accepte PAS Priority Pass. L'entrée directe coûte 110 $ CAD pour un séjour de 2 heures, ou vous pouvez surclasser depuis le Plaza Premium International voisin pour 30 $. L'<a href={affiliate('finlywealth-amex-platinum')} target="_blank" rel={AFFILIATE_REL} className="underline">Amex Platine</a> donne accès via son avantage de carte direct.
                   </div>
                 </details>
               </div>

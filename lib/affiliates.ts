@@ -63,6 +63,7 @@ export type AffiliateKey =
   | 'finlywealth-cibc-aeroplan-vip'
   | 'finlywealth-rbc-avion-vip'
   | 'finlywealth-scotia-passport'
+  | 'finlywealth-national-bank-world-elite'
   // FinlyWealth REBATE pages — higher-converting than review pages because
   // the cash-rebate amount is shown upfront. Pattern: /rebates/credit-cards/<slug>.
   // Confirmed live by copying directly from the affiliate hub offer table
@@ -275,6 +276,13 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
     url: '/credit-cards/reviews/scotia-passport-visa-infinite',
     finlywealthRedirect: { placement: 'scotia-passport' },
   },
+  // National Bank World Elite Mastercard — relevant on the YUL hub (only
+  // Canadian card with built-in National Bank Lounge access + 1 guest + 2
+  // kids). Review URL verified 200 on finlywealth.com 2026-11-19.
+  'finlywealth-national-bank-world-elite': {
+    url: '/credit-cards/reviews/national-bank-world-elite-mastercard',
+    finlywealthRedirect: { placement: 'national-bank-world-elite' },
+  },
   // ─── Rebate-page deeplinks ────────────────────────────────────────────────
   // Paths copied from the affiliate hub offer table 2026-11-09. Each goes to
   // finlywealth.com/rebates/credit-cards/<slug> which shows the active cash
@@ -321,13 +329,20 @@ const REGISTRY: Record<AffiliateKey, AffiliateEntry> = {
     finlywealthRedirect: { placement: 'rebate-bmo-eclipse-infinite' },
   },
   // WestJet co-brand — unique relevance to YYC (only WestJet Elevation Lounge in Canada).
-  // Rebate paths assumed; if Finlywealth hub shows different slugs, update them here.
+  // The `/rebates/credit-cards/westjet-rbc-world-elite-mastercard` path 404s
+  // on finlywealth.com (verified live 2026-11-19 — crawl hit "page not
+  // found"). The `/credit-cards/reviews/...` path for the same card does
+  // resolve 200, and the `/r/` redirect still carries `_fclid` attribution,
+  // so the CTA still earns a cookie even though the landing is the review
+  // instead of the rebate flash. Keep the key name (`-rebate-*`) because
+  // the Elevation lounge view wires through it; change the destination
+  // only until Finly republishes the rebate slug.
   'finlywealth-rebate-westjet-rbc-world-elite': {
-    url: '/rebates/credit-cards/westjet-rbc-world-elite-mastercard',
+    url: '/credit-cards/reviews/westjet-rbc-world-elite-mastercard',
     finlywealthRedirect: { placement: 'rebate-westjet-rbc-world-elite' },
   },
   'finlywealth-rebate-westjet-rbc-mastercard': {
-    url: '/rebates/credit-cards/westjet-rbc-mastercard',
+    url: '/credit-cards/reviews/westjet-rbc-mastercard',
     finlywealthRedirect: { placement: 'rebate-westjet-rbc-mastercard' },
   },
   // Booking.com — Travelpayouts short link, affiliate marker baked in.
