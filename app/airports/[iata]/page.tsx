@@ -148,6 +148,15 @@ const AIRPORT_META_OVERRIDES: Record<string, { title: string; description: strin
     title: 'Vancouver Airport Lounges (YVR) 2026',
     description: 'Vancouver (YVR) airport lounges in 2026 — Cathay Pacific, Plaza Premium First, SkyTeam, and Maple Leaf. The Domestic Maple Leaf Lounge closed Oct 14, 2026.',
   },
+  // The live SERP query is "Toronto Pearson Airport Lounges" — the default
+  // formula used "Toronto Airport Lounges (YYZ)" which missed the "Pearson"
+  // token entirely and sat around page 5. Baking Pearson into the title +
+  // description aligns the snippet with how travellers actually search.
+  // Count (9) matches both the YYZ FR hub and the body ItemList.
+  YYZ: {
+    title: 'Toronto Pearson Airport Lounges (YYZ) 2026',
+    description: 'All 9 Toronto Pearson (YYZ) airport lounges in 2026 — Air Canada Signature Suite, Maple Leaf, Plaza Premium, Aspire T3. Plaza Premium T1 Int\'l closed.',
+  },
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
