@@ -10,6 +10,7 @@ import NewsletterCTA from '@/components/NewsletterCTA'
 import SidebarAffiliate from '@/components/SidebarAffiliate'
 import TugoBannerAd from '@/components/TugoBannerAd'
 import { getWeather } from '@/lib/weather'
+import { resolveBlogAirport } from '@/lib/blog-airport'
 import { affiliate, AFFILIATE_REL } from '@/lib/affiliates'
 
 /**
@@ -82,7 +83,10 @@ export default async function BlogPostPage({ params }: Props) {
 
   const hasFr = SLUGS_WITH_FR.has(slug)
 
-  const weather = await getWeather(49.1947, -123.1792)
+  const articleAirport = resolveBlogAirport(post)
+  const weather = articleAirport
+    ? await getWeather(articleAirport.lat, articleAirport.lng)
+    : null
 
   const authorName = post.authorName ?? 'AirportLounges.ca Editorial Team'
   const authorBio = post.authorBio
@@ -388,13 +392,13 @@ export default async function BlogPostPage({ params }: Props) {
           {/* ── Sidebar ───────────────────────────────────── */}
           <aside className="space-y-6">
 
-            {/* Weather */}
-            {weather && (
+            {/* Weather — only when this article is about one known airport. */}
+            {articleAirport && weather && (
               <div>
                 <h3 className="font-label-caps text-[10px] text-sand-dark uppercase tracking-widest mb-3">
                   Airport Weather
                 </h3>
-                <WeatherWidget weather={weather} city="Vancouver" iata="YVR" />
+                <WeatherWidget weather={weather} city={articleAirport.city} iata={articleAirport.iata} />
               </div>
             )}
 
