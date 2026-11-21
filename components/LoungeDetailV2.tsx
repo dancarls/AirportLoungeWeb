@@ -559,28 +559,33 @@ export default function LoungeDetailV2({
                 </div>
 
                 {/* Sponsored — routes to FinlyWealth (Aeroplan cards for MLL,
-                    general otherwise). Same target as V1. */}
-                <div className="rounded-xl bg-gradient-to-r from-[#0e2a38] to-[#0e2a38]/80 text-white p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">
-                  <div className="space-y-1">
-                    <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#68dba9] flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[16px]">stars</span>
-                      Sponsored — Card Match
+                    general otherwise). Same target as V1. Suppressed when
+                    the lounge is `booking_only`: facilities like Wait N'
+                    Rest have no card-based access, so showing "Cards that
+                    get you into this lounge" would mislead readers. */}
+                {!l.booking_only && (
+                  <div className="rounded-xl bg-gradient-to-r from-[#0e2a38] to-[#0e2a38]/80 text-white p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">
+                    <div className="space-y-1">
+                      <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#68dba9] flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[16px]">stars</span>
+                        Sponsored — Card Match
+                      </div>
+                      <h3 className="font-semibold text-white text-[17px]">{cardsCta.heading}</h3>
+                      <p className="text-[13px] text-white/80 max-w-md">
+                        Compare current Canadian credit cards with lounge benefits, welcome bonuses, and active rebates.
+                      </p>
                     </div>
-                    <h3 className="font-semibold text-white text-[17px]">{cardsCta.heading}</h3>
-                    <p className="text-[13px] text-white/80 max-w-md">
-                      Compare current Canadian credit cards with lounge benefits, welcome bonuses, and active rebates.
-                    </p>
+                    <a
+                      href={cardsCta.href}
+                      target="_blank"
+                      rel={AFFILIATE_REL}
+                      className="shrink-0 bg-[#059669] text-white text-sm font-semibold px-5 py-3 rounded-lg hover:bg-[#047857] transition-all flex items-center gap-1.5 shadow-sm"
+                    >
+                      {cardsCta.ctaLabel}
+                      <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                    </a>
                   </div>
-                  <a
-                    href={cardsCta.href}
-                    target="_blank"
-                    rel={AFFILIATE_REL}
-                    className="shrink-0 bg-[#059669] text-white text-sm font-semibold px-5 py-3 rounded-lg hover:bg-[#047857] transition-all flex items-center gap-1.5 shadow-sm"
-                  >
-                    {cardsCta.ctaLabel}
-                    <span className="material-symbols-outlined text-[18px]">open_in_new</span>
-                  </a>
-                </div>
+                )}
               </section>
             )}
 

@@ -74,6 +74,16 @@ export interface Lounge {
   closure_reopen_estimate?: string | null
   closure_alternatives?: string | null
   closure_source_url?: string | null
+  /**
+   * When true, the lounge detail page hides the "Cards that get you into
+   * this lounge" sidebar block and the Access Eligibility section is the
+   * single source of entry truth. Set for facilities with paid booking
+   * only — Wait N' Rest Toronto and any future sleep-room / rent-by-the-
+   * hour concept where no credit card, Priority Pass, or airline status
+   * grants access. Backed by `lounges.booking_only BOOLEAN` on the VPS
+   * schema (see supabase/migrations/007).
+   */
+  booking_only?: boolean
 }
 
 export interface BusyTimes {
@@ -83,7 +93,11 @@ export interface BusyTimes {
 }
 
 export interface AccessType {
-  type: 'credit_card' | 'airline_status' | 'membership' | 'day_pass' | 'class_of_service'
+  // `paid_booking` is the sleep-rooms variant (Wait N' Rest, etc) — same
+  // visual treatment as `day_pass` (a chargeable channel, no card needed)
+  // but semantically distinct for filters that should NOT advertise the
+  // listing as a walk-in day pass.
+  type: 'credit_card' | 'airline_status' | 'membership' | 'day_pass' | 'class_of_service' | 'paid_booking'
   name: string
   details?: string
 }
