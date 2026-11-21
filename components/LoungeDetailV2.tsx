@@ -39,10 +39,12 @@ import {
   getBookingDestination,
   getLiveStatus,
   sellsWalkInDayPass,
+  closureStatusCopy,
 } from '@/lib/lounge-helpers'
 import { photoUrl as googlePhotoUrl } from '@/lib/google-places'
 import type { Lounge, Review, AccessType } from '@/lib/types'
 import type { GooglePlace } from '@/lib/google-places'
+import { formatRating } from '@/lib/format-rating'
 
 // Editorial display font, loaded once at build time. Applied via className scope
 // to avoid leaking Plus Jakarta Sans into V1 pages while we're still testing.
@@ -109,11 +111,12 @@ export default function LoungeDetailV2({
   const hasAiPhotoInHero     = heroPhotos.some(p => p?.provenance === 'ai')
 
   const accessTypes = (l.access_types ?? []) as AccessType[]
-  const isClosed = !!l.closure_status && l.closure_status !== 'open'
+  const closure = closureStatusCopy(l.closure_status, l.closure_reopen_estimate ?? null)
 
   // Prefer aggregated Google rating when local reviews are absent — this
   // matches what the V1 sidebar already shows and keeps parity in AggregateRating.
   const displayRating = l.rating ?? googlePlace?.rating ?? null
+  const formattedDisplayRating = formatRating(displayRating)
   const displayReviewCount = (l.review_count && l.review_count > 0)
     ? l.review_count
     : (googlePlace?.userRatingCount ?? 0)
@@ -149,9 +152,16 @@ export default function LoungeDetailV2({
 
   // Live open/closed calc using the airport's timezone. Falls back to
   // 'unknown' when either data is missing so the UI never invents a status.
-  const liveStatus = isClosed
-    ? { kind: 'closed' as const, label: `Closed${l.closure_reopen_estimate ? ` · reopens ${l.closure_reopen_estimate}` : ''}`, tone: 'closed' as const }
+  const liveStatus = closure
+    ? { kind: 'closed' as const, label: closure.label, tone: closure.tone }
     : getLiveStatus(l.opening_hours, l.airport?.timezone ?? null)
+  const statusBadge = closure
+    ? closure.badge
+    : liveStatus.tone === 'open'
+      ? 'Open Now'
+      : liveStatus.tone === 'closed'
+        ? 'Closed'
+        : 'Schedule'
 
   // Access-highlight bullets for the booking card — derived from real amenities,
   // never fabricated. Keeps the visual density of the mockup while staying honest.
@@ -191,7 +201,7 @@ export default function LoungeDetailV2({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
             <div className="lg:col-span-8 space-y-3">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0e2a38]/60 backdrop-blur border border-white/10 text-[#68dba9] text-[11px] font-bold uppercase tracking-[0.08em]">
-                <span className={`inline-block w-2 h-2 rounded-full ${isClosed ? 'bg-amber-400' : 'bg-[#68dba9] animate-pulse'}`} />
+                <span className={`inline-block w-2 h-2 rounded-full ${closure ? 'bg-amber-400' : 'bg-[#68dba9] animate-pulse'}`} />
                 {l.airport?.name ?? code} ({code})
                 {l.terminal && ` • Terminal ${l.terminal}`}
               </div>
@@ -215,12 +225,12 @@ export default function LoungeDetailV2({
 
             {/* Rating badge — right-aligned on desktop */}
             <div className="lg:col-span-4 flex lg:justify-end">
-              {displayRating && (
+              {displayRating && formattedDisplayRating && (
                 <div className="bg-[#0e2a38]/70 backdrop-blur border border-white/10 px-4 py-3 rounded-xl flex items-center gap-4">
                   <div className="text-right">
                     <div className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#68dba9]">Overall Score</div>
                     <div className="text-2xl font-bold text-white flex items-center justify-end gap-1">
-                      {displayRating.toFixed(1)}
+                      {formattedDisplayRating}
                       <span
                         className="material-symbols-outlined text-amber-400 text-lg"
                         style={{ fontVariationSettings: "'FILL' 1" }}
@@ -382,7 +392,7 @@ export default function LoungeDetailV2({
             <AffiliateDisclosure variant="inline" />
 
             {/* Closure banner takes precedence when applicable */}
-            {isClosed && (
+            {closure && (
               <LoungeClosureBanner
                 status={l.closure_status as 'temporary_closure' | 'reduced_capacity' | 'permanent_closure'}
                 reason={l.closure_reason ?? null}
@@ -703,9 +713,9 @@ export default function LoungeDetailV2({
                     Reviews &amp; Ratings
                   </h2>
                 </div>
-                {displayRating && displayReviewCount > 0 && (
+                {displayRating && formattedDisplayRating && displayReviewCount > 0 && (
                   <div className="text-right">
-                    <div className="text-3xl font-bold text-[#0e2a38]">{displayRating.toFixed(1)}</div>
+                    <div className="text-3xl font-bold text-[#0e2a38]">{formattedDisplayRating}</div>
                     <div className="text-[11px] text-[#42474b]">
                       {displayReviewCount.toLocaleString('en-CA')} verified reviews
                     </div>
@@ -761,9 +771,7 @@ export default function LoungeDetailV2({
                       : 'text-slate-500'
                     }`}
                   >
-                    {liveStatus.tone === 'open' ? 'Open Now'
-                     : liveStatus.tone === 'closed' ? 'Closed'
-                     : 'Schedule'}
+                    {statusBadge}
                   </span>
                 </div>
                 {l.airport?.timezone && liveStatus.kind !== 'unknown' && (
@@ -781,7 +789,7 @@ export default function LoungeDetailV2({
               <p className="text-sm text-[#0e2a38]">{liveStatus.label}</p>
 
               {/* 7-day schedule toggle — only when we have a real schedule to show */}
-              {l.opening_hours && !l.opening_hours.is_24_7 && !isClosed && (
+              {l.opening_hours && !l.opening_hours.is_24_7 && (!closure || closure.scheduleApplies) && (
                 <details className="group">
                   <summary className="flex items-center justify-between cursor-pointer list-none font-semibold text-sm text-[#0e2a38] hover:text-[#059669] py-1 transition-colors">
                     <span>View 7-day schedule</span>

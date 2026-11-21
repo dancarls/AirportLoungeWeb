@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import mapboxgl from 'mapbox-gl'
 import { INDOOR_COVERED, INDOOR_ZOOM, getIndoorManager, enableIndoor, type IndoorFloor } from '@/lib/mapbox/indoor'
+import MapUnavailable from '@/components/MapUnavailable'
 
 interface LoungeItem {
   id: string
@@ -42,46 +43,52 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
   const [selectedFloor, setSelectedFloor] = useState<IndoorFloor | null>(null)
   const [indoorActive,  setIndoorActive]  = useState(false)
   const mapInstanceRef = useRef<mapboxgl.Map | null>(null)
+  const [mapFailed, setMapFailed] = useState(false)
 
   const hasIndoor = INDOOR_COVERED.has(airport.iata_code)
 
   useEffect(() => {
     if (!containerRef.current || !airport.latitude || !airport.longitude) return
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!
+    const latitude = airport.latitude
+    const longitude = airport.longitude
 
-    const map = new mapboxgl.Map({
+    let map: mapboxgl.Map | null = null
+    try {
+    const created = new mapboxgl.Map({
       container: containerRef.current,
       style: 'mapbox://styles/mapbox/standard',
-      center: [airport.longitude, airport.latitude],
+      center: [longitude, latitude],
       zoom:   hasIndoor ? INDOOR_ZOOM : 15,
       pitch:  0,
       attributionControl: false,
     })
-    mapInstanceRef.current = map
+    map = created
+    mapInstanceRef.current = created
 
-    map.addControl(new mapboxgl.NavigationControl(), 'top-right')
-    map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
+    created.addControl(new mapboxgl.NavigationControl(), 'top-right')
+    created.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
-    map.on('load', () => {
-      requestAnimationFrame(() => map.resize())
+    created.on('load', () => {
+      requestAnimationFrame(() => created.resize())
       if (hasIndoor) {
-        try { enableIndoor(map) } catch { /* basemap doesn't support indoor — skip */ }
+        try { enableIndoor(created) } catch { /* basemap doesn't support indoor — skip */ }
       }
       // Add a marker per lounge at the airport centre (indoor floor plan source not available)
       airport.lounges.forEach(l => {
         new mapboxgl.Marker({ color: '#C9A96E' })
-          .setLngLat([airport.longitude!, airport.latitude!])
+          .setLngLat([longitude, latitude])
           .setPopup(
             new mapboxgl.Popup({ offset: 28, closeButton: false })
               .setHTML(`<div style="font-family:Inter,sans-serif;font-size:12px;font-weight:600;color:#003434;padding:6px 8px;">${l.name}</div>`)
           )
-          .addTo(map)
+          .addTo(created)
       })
     })
 
-    map.on('indoor.updated', () => {
+    created.on('indoor.updated', () => {
       try {
-        const indoor = getIndoorManager(map)
+        const indoor = getIndoorManager(created)
         if (!indoor) return
         const fl = (indoor.floors ?? []).filter(f => f && f.id)
         setFloors([...fl].sort((a, b) => b.level - a.level))
@@ -89,8 +96,23 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
         setIndoorActive(fl.length > 0)
       } catch { /* null floor_id from indoor tile — ignore */ }
     })
+    } catch {
+      // Device has no WebGL. Not an application bug — do not report it.
+      setMapFailed(true)
+      if (map) {
+        try { map.remove() } catch { /* ignore */ }
+        map = null
+      } else if (containerRef.current) {
+        containerRef.current.replaceChildren()
+      }
+      mapInstanceRef.current = null
+    }
 
-    return () => { try { map.remove() } catch { /* ignore */ } }
+    return () => {
+      if (map) {
+        try { map.remove() } catch { /* ignore */ }
+      }
+    }
   }, [airport, hasIndoor])
 
   useEffect(() => {
@@ -140,7 +162,12 @@ function AirportMapModal({ airport, onClose }: { airport: AirportData; onClose: 
 
         {/* Map */}
         <div className="relative">
-          <div ref={containerRef} style={{ height: '420px', width: '100%' }} />
+          <div className="relative" style={{ height: '420px', width: '100%' }}>
+            <div ref={containerRef} style={{ height: '420px', width: '100%' }} />
+            {mapFailed && (
+              <MapUnavailable lat={airport.latitude} lng={airport.longitude} className="absolute inset-0" />
+            )}
+          </div>
 
           {/* Floor selector inside the modal map */}
           {hasIndoor && indoorActive && floors.length > 0 && (

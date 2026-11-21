@@ -7,6 +7,8 @@
 
 import { imageUrl } from '@/lib/image-url'
 
+export { closureStatusCopy, type ClosureStatusCopy } from './closure-status'
+
 export function getImageUrl(path: string) {
   return imageUrl(path)
 }

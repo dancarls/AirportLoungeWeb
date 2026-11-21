@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import mapboxgl from 'mapbox-gl'
 import type { Lounge, Airport } from '@/lib/types'
+import { formatRating } from '@/lib/format-rating'
+import MapUnavailable from '@/components/MapUnavailable'
 
 interface Props {
   lounge: Lounge & { airport?: Airport }
@@ -146,23 +148,45 @@ function DetailsModal({ lounge, iata, onClose }: { lounge: Lounge & { airport?: 
 function MapModal({ lounge, airport, iata, onClose }: { lounge: Lounge, airport: Airport | undefined, iata: string, onClose: () => void }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const mapRef       = useRef<mapboxgl.Map | null>(null)
+  const [mapFailed, setMapFailed] = useState(false)
 
   useEffect(() => {
     if (!containerRef.current || !airport?.latitude || !airport?.longitude) return
     mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!
-    const map = new mapboxgl.Map({
-      container: containerRef.current,
-      style: 'mapbox://styles/mapbox/standard',
-      center: [airport.longitude, airport.latitude],
-      zoom: 15,
-    })
-    new mapboxgl.Marker({ color: '#003434' })
-      .setLngLat([airport.longitude, airport.latitude])
-      .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<div style="padding:10px;font-family:Inter,sans-serif;font-size:12px;font-weight:600;color:#003434;">${lounge.name}</div>`))
-      .addTo(map)
-    map.addControl(new mapboxgl.NavigationControl(), 'top-right')
-    mapRef.current = map
-    return () => { map.remove(); mapRef.current = null }
+    const latitude = airport.latitude
+    const longitude = airport.longitude
+    let map: mapboxgl.Map | null = null
+    try {
+      const created = new mapboxgl.Map({
+        container: containerRef.current,
+        style: 'mapbox://styles/mapbox/standard',
+        center: [longitude, latitude],
+        zoom: 15,
+      })
+      map = created
+      new mapboxgl.Marker({ color: '#003434' })
+        .setLngLat([longitude, latitude])
+        .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<div style="padding:10px;font-family:Inter,sans-serif;font-size:12px;font-weight:600;color:#003434;">${lounge.name}</div>`))
+        .addTo(created)
+      created.addControl(new mapboxgl.NavigationControl(), 'top-right')
+      mapRef.current = created
+    } catch {
+      // Device has no WebGL. Not an application bug — do not report it.
+      setMapFailed(true)
+      if (map) {
+        try { map.remove() } catch { /* ignore */ }
+        map = null
+      } else {
+        containerRef.current?.replaceChildren()
+      }
+      mapRef.current = null
+    }
+    return () => {
+      if (map) {
+        map.remove()
+        mapRef.current = null
+      }
+    }
   }, [airport, lounge.name])
 
   return (
@@ -178,7 +202,12 @@ function MapModal({ lounge, airport, iata, onClose }: { lounge: Lounge, airport:
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
-        <div ref={containerRef} className="w-full" style={{ height: '360px' }} />
+        <div className="relative w-full" style={{ height: '360px' }}>
+          <div ref={containerRef} className="w-full h-full" />
+          {mapFailed && (
+            <MapUnavailable lat={airport?.latitude} lng={airport?.longitude} className="absolute inset-0" />
+          )}
+        </div>
         <div className="p-5 flex flex-col sm:flex-row gap-3">
           <p className="text-xs text-secondary flex-1 self-center">
             Satellite view of {airport?.name ?? iata}. Lounge pin is at the airport centre — follow terminal signage on arrival.
@@ -238,10 +267,10 @@ export default function FeaturedLoungeSection({ lounge, primaryImageUrl }: Props
 
             {/* Info */}
             <div className="w-full lg:w-2/5">
-              {lounge.rating && (
+              {lounge.rating && formatRating(lounge.rating) && (
                 <div className="flex items-center gap-2 mb-4">
                   <span className="material-symbols-outlined text-sand-dark text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                  <span className="font-bold text-primary">{lounge.rating.toFixed(1)}</span>
+                  <span className="font-bold text-primary">{formatRating(lounge.rating)}</span>
                   <span className="text-sand-dark text-sm">({lounge.review_count.toLocaleString()} Reviews)</span>
                 </div>
               )}

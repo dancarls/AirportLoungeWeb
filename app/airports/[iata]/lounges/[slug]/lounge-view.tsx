@@ -20,6 +20,8 @@ import AdSlot from '@/components/AdSlot'
 import type { Metadata } from 'next'
 import type { Lounge, Review, AccessType, Airport, Amenity } from '@/lib/types'
 import type { GooglePlace } from '@/lib/google-places'
+import { formatRating } from '@/lib/format-rating'
+import { closureStatusCopy } from '@/lib/lounge-helpers'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // V2 editorial layout rollout.
@@ -505,6 +507,8 @@ export async function renderLoungeDetail(
     url: `https://www.airportlounges.ca/airports/${code}/lounges/${l.slug}`,
   }
 
+  const ratingLabel = formatRating(l.rating)
+
   const jsonLd: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
@@ -541,10 +545,10 @@ export async function renderLoungeDetail(
       openingHoursSpecification: openingHoursSpec,
     }),
     ...(amenityFeatures.length > 0 && { amenityFeature: amenityFeatures }),
-    ...(l.rating && l.review_count > 0 && {
+    ...(l.rating && ratingLabel && l.review_count > 0 && {
       aggregateRating: {
         '@type': 'AggregateRating',
-        ratingValue: l.rating.toFixed(1),
+        ratingValue: ratingLabel,
         reviewCount: l.review_count,
         bestRating: '5',
         worstRating: '1',
@@ -669,10 +673,10 @@ export async function renderLoungeDetail(
                   <h2 className="font-headline-lg text-headline-lg">
                     {l.description ? 'About This Lounge' : 'A Refined Travel Experience'}
                   </h2>
-                  {l.rating && (
+                  {l.rating && ratingLabel && (
                     <div className="bg-primary/5 px-3 py-1 flex items-center gap-1 border border-primary/10">
                       <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1", fontSize: '18px' }}>star</span>
-                      <span className="font-bold text-primary">{l.rating.toFixed(1)}</span>
+                      <span className="font-bold text-primary">{ratingLabel}</span>
                       <span className="text-on-surface-variant text-sm">/ 5</span>
                     </div>
                   )}
@@ -850,12 +854,12 @@ export async function renderLoungeDetail(
                   <span className="font-medium">{l.review_count}</span>
                 </div>
               )}
-              {l.rating && (
+              {l.rating && ratingLabel && (
                 <div className="flex justify-between text-sm py-2 border-b border-outline-variant/10">
                   <span className="text-on-surface-variant">Rating</span>
                   <span className="font-medium flex items-center gap-1">
                     <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1", fontSize: '14px' }}>star</span>
-                    {l.rating.toFixed(1)}
+                    {ratingLabel}
                   </span>
                 </div>
               )}
@@ -969,23 +973,27 @@ export async function renderLoungeDetail(
           )}
 
           {/* Opening hours — sidebar placement so readers see it near the top-of-fold
-              next to the terminal map. Renders as an "Currently closed" state when the
-              lounge closure_status is set, so users don't try to walk over. */}
+              next to the terminal map. The notice follows closure_status: only a
+              literal "closed" status says Closed. */}
           {l.opening_hours && Object.keys(l.opening_hours).length > 0 && (
             <div className="bg-surface border border-sand-dark/10 p-6 shadow-sm">
               <h4 className="font-label-caps text-label-caps text-sand-dark mb-4 flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary" style={{ fontSize: '16px' }}>schedule</span>
                 OPENING HOURS
               </h4>
-              {l.closure_status && l.closure_status !== 'open' ? (
-                <div className="mb-3 p-3 bg-amber-50 border border-amber-200 rounded">
-                  <p className="text-sm font-semibold text-amber-800">Currently closed</p>
-                  {l.closure_reopen_estimate && (
-                    <p className="text-xs text-amber-700 mt-1">Expected return: {l.closure_reopen_estimate}</p>
-                  )}
-                  <p className="text-[10px] text-amber-700 mt-2 italic">Hours below reflect the pre-closure schedule.</p>
-                </div>
-              ) : null}
+              {(() => {
+                const hoursClosure = closureStatusCopy(l.closure_status, l.closure_reopen_estimate ?? null)
+                if (!hoursClosure) return null
+                return (
+                  <div className="mb-3 p-3 bg-amber-50 border border-amber-200 rounded">
+                    <p className="text-sm font-semibold text-amber-800">{hoursClosure.badge}</p>
+                    <p className="text-xs text-amber-700 mt-1">{hoursClosure.label}</p>
+                    {!hoursClosure.scheduleApplies && (
+                      <p className="text-[10px] text-amber-700 mt-2 italic">Hours below reflect the pre-closure schedule.</p>
+                    )}
+                  </div>
+                )
+              })()}
               {l.opening_hours.is_24_7 ? (
                 <p className="text-green-600 font-bold text-lg">Open 24 / 7</p>
               ) : (

@@ -7,6 +7,7 @@ import { imageUrl } from '@/lib/image-url'
 import type { Lounge, Airport, Amenity } from '@/lib/types'
 import NewsletterCTA from '@/components/NewsletterCTA'
 import LoungePlaceholder from '@/components/LoungePlaceholder'
+import { formatRating } from '@/lib/format-rating'
 
 interface Props { params: Promise<{ collection: string }> }
 
@@ -210,10 +211,10 @@ export default async function CollectionPage({ params }: Props) {
                         <div className="p-5">
                           <div className="flex justify-between items-start mb-2">
                             <h3 className="font-bold text-primary leading-snug">{l.name}</h3>
-                            {l.rating && (
+                            {l.rating && formatRating(l.rating) && (
                               <div className="flex items-center gap-1 text-sm shrink-0 ml-3">
                                 <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1", fontSize: '14px' }}>star</span>
-                                <span className="font-bold">{l.rating.toFixed(1)}</span>
+                                <span className="font-bold">{formatRating(l.rating)}</span>
                               </div>
                             )}
                           </div>

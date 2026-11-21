@@ -7,6 +7,7 @@ import type { Lounge, Airport, Amenity } from '@/lib/types'
 import { compareRatingThenName } from '@/lib/lounge-sort'
 import LoungePlaceholder from './LoungePlaceholder'
 import { imageUrl } from '@/lib/image-url'
+import { formatRating } from '@/lib/format-rating'
 
 type FullLounge = Lounge & { airport?: Airport; amenities?: Amenity[]; images?: { storage_path: string; is_primary: boolean }[] }
 
@@ -362,10 +363,10 @@ export default function LoungeGrid({ lounges, airports }: Props) {
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="font-headline-md text-primary text-[18px] leading-snug">{lounge.name}</h3>
-                    {lounge.rating && (
+                    {lounge.rating && formatRating(lounge.rating) && (
                       <div className="flex items-center gap-1 shrink-0 ml-2">
                         <span className="material-symbols-outlined text-primary" style={{ fontSize: '14px', fontVariationSettings: "'FILL' 1" }}>star</span>
-                        <span className="font-bold text-sm">{lounge.rating.toFixed(1)}</span>
+                        <span className="font-bold text-sm">{formatRating(lounge.rating)}</span>
                       </div>
                     )}
                   </div>

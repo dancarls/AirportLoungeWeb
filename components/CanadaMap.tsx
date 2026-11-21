@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { formatRating } from '@/lib/format-rating'
 
 export interface AirportMapItem {
   iata_code: string
@@ -193,9 +194,9 @@ export default function CanadaMap({ airports }: { airports: AirportMapItem[] }) 
                       <span className="font-label-caps text-label-caps text-on-surface text-[10px]">
                         {lounge.name}
                       </span>
-                      {lounge.rating && (
+                      {lounge.rating && formatRating(lounge.rating) && (
                         <span className="text-primary font-bold text-sm">
-                          {lounge.rating.toFixed(1)} ★
+                          {formatRating(lounge.rating)} ★
                         </span>
                       )}
                     </Link>

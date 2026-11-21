@@ -61,6 +61,12 @@ export interface BlogPost {
   authorName?: string
   /** Short author bio for the visible byline block. */
   authorBio?: string
+  /**
+   * IATA of the airport this article is about. The weather widget uses this
+   * first, then a single IATA in the slug, and renders nothing when neither
+   * resolves to a known airport.
+   */
+  iata?: string
   /** Primary affiliate CTA rendered at the top + bottom of the article. */
   primaryCta?: BlogPostCta
   /** Comparison-card module rendered near the top of the article (below byline). */
@@ -228,7 +234,7 @@ const sleepPodsContent = `
 <p>No dedicated sleep pods for the general traveller. The <a href="/airports/YYZ/lounges/ac-signature-suite-yyz">Air Canada Signature Suite</a> at Terminal 1 offers private booth seating but is restricted to Air Canada Signature Class international passengers. Plaza Premium lounges at YYZ T1 and T3 have quiet zones but no sleep suites.</p>
 
 <h3>Are there sleep pods at Montréal (YUL) or Calgary (YYC)?</h3>
-<p>No dedicated sleep pods at either. YUL's National Bank Lounge (currently in a temporary reduced-capacity space until about June 2028) and Aspire lounges have standard seating. YYC's WestJet Elevation Lounge and both Aspire lounges are seating-focused. The <a href="/lounges/quiet-workspace">quiet-workspace collection</a> covers focus areas rather than rest.</p>
+<p>No dedicated sleep pods at either. YUL's National Bank Lounge (where a temporary lounge opened on 1 August 2026; the renovated lounge is expected in 2027) and Aspire lounges have standard seating. YYC's WestJet Elevation Lounge and both Aspire lounges are seating-focused. The <a href="/lounges/quiet-workspace">quiet-workspace collection</a> covers focus areas rather than rest.</p>
 
 <h3>What's the cheapest Canadian credit card that gets me into a lounge with rest facilities?</h3>
 <p>The <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum American Express</a> at $399 annual fee. It includes 10 Priority Pass visits per year, which cover both Plaza Premium locations on this list (YVR International 24-hour and YWG). Below that tier, the <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Passport Visa Infinite</a> ($150) uses DragonPass rather than Priority Pass — DragonPass typically accepts the same two Plaza Premium lounges but each visit uses one of only 6 annual pool entries. <a href="/credit-cards/best-for-airport-lounge-access">Full lounge-access card comparison</a>.</p>
@@ -263,7 +269,7 @@ const priorityPassContent = `
   <li><strong>Corrected:</strong> the card list. Three Visa cards previously named as Priority Pass cards are DragonPass cards. Priority Pass is Amex-only in Canada.</li>
   <li><strong>Added:</strong> the January 1, 2027 Amex Platinum caps, the Amex Aeroplan Reserve pay-per-visit trap, the Scotiabank Platinum Amex, direct membership prices and break-even math.</li>
   <li><strong>Corrected:</strong> the guest section. No Canadian Priority Pass card includes two guests; the Amex Platinum includes one.</li>
-  <li><strong>Rewritten:</strong> Montréal (National Bank Lounge in a temporary space until about June 2028; two Aspire lounges and the Desjardins transborder lounge added; Air France operator fixed), Québec City moved to pending, and details at Toronto, Vancouver, Calgary, Edmonton, Winnipeg and Ottawa.</li>
+  <li><strong>Rewritten:</strong> Montréal (National Bank Lounge temporary space opened 1 August 2026; renovated lounge expected in 2027; two Aspire lounges and the Desjardins transborder lounge added; Air France operator fixed), Québec City moved to pending, and details at Toronto, Vancouver, Calgary, Edmonton, Winnipeg and Ottawa.</li>
   <li><strong>Changed:</strong> the airport count from nine to eight confirmed plus one pending; the network size from one number to the published range.</li>
 </ul>
 
@@ -448,8 +454,8 @@ const priorityPassContent = `
 <h3>Montréal-Trudeau (YUL)</h3>
 
 <ul>
-  <li>The <strong>National Bank Lounge</strong> near Gate 53 closed at 10:00 p.m. on October 4, 2026 for a complete renovation. A temporary, reduced-capacity lounge opened at the same location near Gate 53 on October 5, 2026, with a 2-hour stay limit (3 hours for National Bank Private Banking 1859 clients). National Bank expects the full lounge back in June 2028. Priority Pass acceptance at the temporary lounge is unconfirmed in operator notices — verify in the Priority Pass app before you walk over.</li>
-  <li>Two Aspire lounges are new since 2025. The <strong>Aspire Domestic Lounge</strong> across from Gate 1 opened in July 2025 — a full lounge in the domestic zone on Priority Pass, so domestic flyers are no longer limited to a dining credit. The <strong>Aspire International Lounge</strong> between Gates 52 and 53 accepts Priority Pass, DragonPass, DreamFolks and Amex Platinum, with a three-hour stay. Published hours differ between Priority Pass and reviewers — check the app.</li>
+  <li>The <strong>National Bank Lounge</strong> near Gate 53: a temporary, reduced-capacity lounge opened at the same location on 1 August 2026, with a 2-hour stay limit (3 hours for National Bank Private Banking 1859 clients). The renovated lounge is expected in 2027. Priority Pass acceptance at the temporary lounge is unconfirmed in operator notices — verify in the Priority Pass app before you walk over.</li>
+  <li>Two Aspire lounges are new since 2025. The <strong>Aspire Domestic Lounge</strong> across from Gate 1 opened in August 2025 — a full lounge in the domestic zone on Priority Pass, so domestic flyers are no longer limited to a dining credit. The <strong>Aspire International Lounge</strong> between Gates 52 and 53 accepts Priority Pass, DragonPass, DreamFolks and Amex Platinum, with a three-hour stay. Published hours differ between Priority Pass and reviewers — check the app.</li>
   <li>The <strong>Air France Lounge</strong> between Gates 55 and 57 is an Air France lounge, not a Plaza Premium one. It is closed to everyone but Air France and KLM customers from 3:30 to 6:30 p.m. every day.</li>
   <li><strong>US-bound:</strong> the Desjardins Plaza Premium Lounge above Gate 81, 04:30 to 20:30, two-hour stay, also on DragonPass and Amex.</li>
 </ul>
@@ -505,7 +511,7 @@ const priorityPassContent = `
 <ul>
   <li><strong>Calgary Elevation Lounge:</strong> WestJet's morning and late-afternoon banks. Priority Pass members are the first refused when it is full.</li>
   <li><strong>Montréal Air France Lounge:</strong> closed to Priority Pass from 3:30 to 6:30 p.m. every day.</li>
-  <li><strong>Montréal National Bank Lounge:</strong> reduced capacity in the temporary space until about June 2028; expect queues before the evening Europe departures.</li>
+  <li><strong>Montréal National Bank Lounge:</strong> a temporary lounge that opened 1 August 2026; the renovated lounge is expected in 2027; expect queues before the evening Europe departures.</li>
   <li><strong>Toronto Pearson Terminal 3 International:</strong> Priority Pass's most-reviewed Canadian lounge, and its busiest, from mid-afternoon.</li>
   <li><strong>Vancouver Pier D:</strong> the two-hour Priority Pass limit is enforced when the Asia departures bank fills the room.</li>
 </ul>
@@ -1295,7 +1301,7 @@ const guestFeesContent = `
     <tr><td>Air Canada Maple Leaf Lounge</td><td>1 with status, Maple Leaf Club or a premium Aeroplan card</td><td>$59 in the lounge's local currency</td><td>50K+ status: up to 5 dependents under 25</td><td>Same-day Air Canada or Star Alliance departure required</td></tr>
     <tr><td>WestJet Elevation Lounge (YYC)</td><td>No standard allowance</td><td>$59 + GST on WestJet; $65 + GST other airlines</td><td>$30 / $33 + GST ages 2–17; under 2 free</td><td>Card guest allowances not confirmed by WestJet</td></tr>
     <tr><td>Desjardins Odyssey Lounges (YUL)</td><td>8 passes / year on World Elite, usable for companions</td><td>$42–44 + tax adult walk-in; 50% off with a Desjardins card</td><td>Under 3 free; $26 child rate</td><td>Zone-restricted; flight delay uses another pass</td></tr>
-    <tr><td>National Bank Lounge (YUL international)</td><td>1 guest + 2 children ≤12 with World Elite</td><td>$37 + tax adult; $26 child</td><td>Under 2 free</td><td>International departures only; temporary reduced-capacity lounge until about June 2028</td></tr>
+    <tr><td>National Bank Lounge (YUL international)</td><td>1 guest + 2 children ≤12 with World Elite</td><td>$37 + tax adult; $26 child</td><td>Under 2 free</td><td>International departures only; temporary lounge opened 1 August 2026; renovated lounge expected in 2027</td></tr>
     <tr><td>Centurion Lounge (US; none in Canada)</td><td>1 since July 8, 2026</td><td>Amex sets the fee</td><td>Set by Amex</td><td>Guest must be on the same flight</td></tr>
   </tbody>
 </table>
@@ -1369,7 +1375,7 @@ const guestFeesContent = `
 
 <p>The constraints: it applies only to departures outside Canada and the US, since the lounge sits past Gate 52. You must show the physical card and a boarding pass. Income requirements are $80,000 personal or $150,000 household. The card also has a 2.5% foreign transaction fee, a $150 annual travel credit, and paid DragonPass access elsewhere. Anyone else pays $37 plus tax per adult and $26 per child, with under-2s free. Priority Pass members can bring guests at those rates; the lounge sets the limit.</p>
 
-<p>One timing note: the original lounge closed for a full renovation at 10:00 p.m. on October 4, 2026. A temporary, reduced-capacity lounge opened at the same location near Gate 53 on October 5, 2026, with a 2-hour maximum stay (3 hours for National Bank Private Banking 1859 clients), and National Bank expects the full lounge back in June 2028. For a reader who just learned a Priority Pass guest is US$35, a $150 card with a guest and two kids included is the strongest value on this page. <a href="https://www.finlywealth.com/credit-cards/reviews/national-bank-world-elite-mastercard?utm_source=airportlounges_ca&utm_content=guest-fees-nbc" target="_blank" rel="sponsored nofollow noopener"><strong>See the current National Bank World Elite offer on FinlyWealth →</strong></a></p>
+<p>One timing note: a temporary, reduced-capacity lounge opened at the same location near Gate 53 on 1 August 2026, with a 2-hour maximum stay (3 hours for National Bank Private Banking 1859 clients). The renovated lounge is expected in 2027. For a reader who just learned a Priority Pass guest is US$35, a $150 card with a guest and two kids included is the strongest value on this page. <a href="https://www.finlywealth.com/credit-cards/reviews/national-bank-world-elite-mastercard?utm_source=airportlounges_ca&utm_content=guest-fees-nbc" target="_blank" rel="sponsored nofollow noopener"><strong>See the current National Bank World Elite offer on FinlyWealth →</strong></a></p>
 
 <h2>Bringing children to a Canadian airport lounge</h2>
 
@@ -1604,7 +1610,7 @@ const amexPlatinumContent = `
 
 <ul>
   <li><strong>YUL Domestic:</strong> the Aspire American Express Lounge near Gates 1 and 2, 5 am to 9 pm, entry within 3 hours of departure.</li>
-  <li><strong><a href="/airports/YUL">YUL</a> International:</strong> the <a href="/airports/YUL/lounges/aspire-international-lounge-yul">Aspire International Lounge</a> between Gates 52 and 53 (3-hour window), and the <a href="/airports/YUL/lounges/national-bank-lounge-yul">National Bank Lounge</a> near Gate 53, which is in a temporary reduced-capacity space from October 5, 2026 until about June 2028 with a 2-hour stay (3 hours for Private Banking 1859 clients). The <a href="/airports/YUL/lounges/air-france-klm-lounge-yul">Air France–KLM Lounge</a> by Plaza Premium is also in the international zone, reserved for Air France and KLM passengers in the late afternoon (closed to others 3:30–6:30 p.m.).</li>
+  <li><strong><a href="/airports/YUL">YUL</a> International:</strong> the <a href="/airports/YUL/lounges/aspire-international-lounge-yul">Aspire International Lounge</a> between Gates 52 and 53 (3-hour window), and the <a href="/airports/YUL/lounges/national-bank-lounge-yul">National Bank Lounge</a> near Gate 53, where a temporary lounge opened on 1 August 2026 (the renovated lounge is expected in 2027) with a 2-hour stay (3 hours for Private Banking 1859 clients). The <a href="/airports/YUL/lounges/air-france-klm-lounge-yul">Air France–KLM Lounge</a> by Plaza Premium is also in the international zone, reserved for Air France and KLM passengers in the late afternoon (closed to others 3:30–6:30 p.m.).</li>
   <li><strong>YOW:</strong> Aspire Salon on Level 2 by Gate 18. Primary cardholder plus one travelling companion. Not available for US-bound departures after pre-clearance.</li>
 </ul>
 
@@ -1932,7 +1938,7 @@ const aeroplanCardsContent = `
 `
 
 const loungeCostCanadaContent = `
-<p data-speakable="intro"><strong>Canadian airport lounge day-pass walk-in rates generally fall between C$55 and C$110 for 2 to 3 hours. Plaza Premium at Toronto Pearson and Vancouver runs C$59–75 for a 2-hour visit. Aspire lounges in Calgary, Montreal and Ottawa charge C$55–65 for 3 hours. Plaza Premium First at YVR is the premium exception at C$110 for 2 hours. The National Bank Lounge at YUL charges C$63.24 per adult / C$40.24 per child for non-cardholders. Air Canada Maple Leaf Lounges do NOT sell walk-in day passes but offer pre-booked lounge upgrades at C$25–79 added to your ticket. Priority Pass overage runs US$35 per person and DragonPass runs US$32. The cheapest route to lounge access overall is a credit card: the <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Passport Visa Infinite</a> at C$150 (often first-year waived) covers 6 DragonPass visits annually.</strong></p>
+<p data-speakable="intro"><strong>Canadian airport lounge day-pass walk-in rates generally fall between C$55 and C$110 for 2 to 3 hours. Plaza Premium at Toronto Pearson and Vancouver runs C$59–75 for a 2-hour visit. Aspire lounges in Calgary and Ottawa charge C$55–65 for 3 hours. The YUL Aspire Amex Lounge publishes a $70 CAD walk-in. Plaza Premium First at YVR is the premium exception at C$110 for 2 hours. The National Bank Lounge at YUL charges C$63.24 per adult / C$40.24 per child for non-cardholders. Air Canada Maple Leaf Lounges do NOT sell walk-in day passes but offer pre-booked lounge upgrades at C$25–79 added to your ticket. Priority Pass overage runs US$35 per person and DragonPass runs US$32. The cheapest route to lounge access overall is a credit card: the <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Passport Visa Infinite</a> at C$150 (often first-year waived) covers 6 DragonPass visits annually.</strong></p>
 
 <blockquote>
 <p><strong>Editorial disclosure:</strong> AirportLounges.ca may receive compensation if you apply for a card through links on this page. Walk-in rates and card facts verified October 14, 2026 against operator rate cards and issuer benefit guides.</p>
@@ -1947,7 +1953,7 @@ const loungeCostCanadaContent = `
   <tbody>
     <tr><td>Plaza Premium (standard)</td><td>$59–75</td><td>2 hours</td><td>Available at YYZ T1/T3, YVR Pier B/C/D/E, YEG, YUL Odyssey (US), YWG</td></tr>
     <tr><td>Plaza Premium First YVR</td><td>$110 direct or $30 upgrade</td><td>2 hours</td><td>Premium-tier; Priority Pass NOT accepted</td></tr>
-    <tr><td>Aspire Lounges</td><td>$55–65</td><td>3 hours</td><td>YYC International + Transborder, YUL Aspire Int'l + Aspire Amex Domestic, YOW Aspire Salon, YHZ, YTZ</td></tr>
+    <tr><td>Aspire Lounges</td><td>$55–65</td><td>3 hours</td><td>YYC International + Transborder, YOW Aspire Salon, YHZ, YTZ. YUL Aspire Amex Domestic is $70 CAD; YUL Aspire International does not publish a walk-in amount.</td></tr>
     <tr><td>WestJet Elevation Lounge YYC</td><td>Not sold at door</td><td>n/a</td><td>Priority Pass + DragonPass only; walk-ins turned away</td></tr>
     <tr><td>National Bank Lounge YUL (non-cardholders)</td><td>$63.24 adult / $40.24 child (ages 2–12)</td><td>2 hours</td><td>25% NBC discount; cardholders free</td></tr>
     <tr><td>Air Canada Maple Leaf Lounge (pre-booked)</td><td>$25–$79</td><td>Flight-duration access</td><td>Not sold at door; pre-book at ticket purchase or 24 hours ahead</td></tr>
@@ -1991,7 +1997,7 @@ const loungeCostCanadaContent = `
 <p>Plaza Premium walk-ins across all four locations run C$65–75 for 2 hours. Plaza Premium First (Pier D, premium tier) runs C$110 direct or C$30 upgrade from the standard Plaza Premium International next door — Priority Pass NOT accepted at Plaza Premium First. The SkyTeam Lounge is Priority Pass only; the Cathay Pacific Lounge is Cathay/oneworld only.</p>
 
 <h3>Montreal (YUL)</h3>
-<p>The National Bank Lounge charges non-cardholders C$63.24 per adult / C$40.24 per child in its temporary space (October 2026 – June 2028). Aspire International and Aspire American Express (Domestic) run C$55–65 for 3 hours. Desjardins Odyssey Transborder matches that pricing. Full detail in our <a href="/blog/best-credit-card-montreal-yul-airport-lounge-access">YUL card guide</a>.</p>
+<p>The National Bank Lounge charges non-cardholders C$63.24 per adult / C$40.24 per child in its temporary space (opened 1 August 2026; the renovated lounge is expected in 2027). Aspire American Express (Domestic) publishes a $70 CAD walk-in. Aspire International lists a paid day pass without a published dollar amount on its lounge page. Desjardins Odyssey Transborder is $42 CAD. Full detail in our <a href="/blog/best-credit-card-montreal-yul-airport-lounge-access">YUL card guide</a>.</p>
 
 <h3>Calgary (YYC), Ottawa (YOW), Edmonton (YEG), Winnipeg (YWG), Halifax (YHZ)</h3>
 <p>Aspire walk-in rates sit at C$55 (YYC International + Transborder) to C$65 (YOW Aspire Salon). Plaza Premium at YEG and YWG matches Vancouver pricing at approximately C$65–75. WestJet Elevation Lounge at YYC does not sell walk-ins. HWY MLL at Halifax is currently closed for renovation.</p>
@@ -2018,7 +2024,7 @@ const loungeCostCanadaContent = `
 <h2>Frequently Asked Questions</h2>
 
 <h3>How much does an airport lounge cost in Canada?</h3>
-<p>Walk-in day passes at Canadian airport lounges typically cost between C$55 and C$75 for 2–3 hours. Plaza Premium charges C$59–75 for 2 hours; Aspire lounges charge C$55–65 for 3 hours; the premium Plaza Premium First at Vancouver costs C$110 for 2 hours. The National Bank Lounge at Montreal charges non-cardholders C$63.24 per adult. Air Canada Maple Leaf Lounges don't sell walk-in day passes but offer pre-booked lounge access at C$25–79 added to your ticket.</p>
+<p>Walk-in day passes at Canadian airport lounges typically cost between C$55 and C$75 for 2–3 hours. Plaza Premium charges C$59–75 for 2 hours; Aspire lounges generally charge C$55–65 for 3 hours (the YUL Aspire Amex Lounge publishes $70 CAD); the premium Plaza Premium First at Vancouver costs C$110 for 2 hours. The National Bank Lounge at Montreal charges non-cardholders C$63.24 per adult. Air Canada Maple Leaf Lounges don't sell walk-in day passes but offer pre-booked lounge access at C$25–79 added to your ticket.</p>
 
 <h3>What's the cheapest way to get lounge access in Canada?</h3>
 <p>A C$150 credit card is the cheapest sustainable route. The <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Passport Visa Infinite</a> (C$150, often first-year waived) includes 6 DragonPass visits per year plus no foreign transaction fees. For Montreal residents, the National Bank World Elite Mastercard (C$150) with unlimited National Bank Lounge access + 1 guest + 2 kids is unmatched.</p>
@@ -2108,7 +2114,7 @@ const loungeEntryTimingCanadaContent = `
   <li><strong>Priority Pass:</strong> 3-hour stay limit at most Canadian lounges; 2 hours at Plaza Premium Vancouver Pier D and Pier E.</li>
   <li><strong>DragonPass (Visa Airport Companion / Mastercard Travel Pass):</strong> matches Priority Pass stay limits per lounge.</li>
   <li><strong>Amex Platinum direct entry:</strong> typically 3-hour stay; longer than Priority Pass at some Plaza Premium locations.</li>
-  <li><strong>National Bank Lounge YUL:</strong> 2 hours (3 hours for Private Banking 1859 clients) during the temporary space period (October 2026 – June 2028).</li>
+  <li><strong>National Bank Lounge YUL:</strong> 2 hours (3 hours for Private Banking 1859 clients) during the temporary space (opened 1 August 2026; the renovated lounge is expected in 2027).</li>
   <li><strong>Air Canada Maple Leaf Lounge (ticket or status):</strong> no fixed limit — stay until your flight boards.</li>
   <li><strong>Air Canada Signature Suite:</strong> 3-hour pre-departure window; stay until board.</li>
   <li><strong>Walk-in paid entry:</strong> explicit duration tied to the fare — 2 or 3 hours.</li>
@@ -2596,7 +2602,7 @@ const airFranceYulContent = `
 
 <ul>
   <li><strong>Aspire International Lounge</strong> (Gates 52–53) — same Priority Pass acceptance, same 3-hour stay window, next door. The direct Priority Pass substitute. Also accepts DragonPass, DreamFolks, and Amex Platinum direct entry. Verified 06:00–22:00 daily.</li>
-  <li><strong>National Bank Lounge</strong> (temporary space near Gate 53, Oct 2026 – June 2028) — Priority Pass acceptance at the temporary lounge is unconfirmed as of October 13, 2026. Verify in the Priority Pass app before you walk over.</li>
+  <li><strong>National Bank Lounge</strong> (temporary lounge near Gate 53 opened 1 August 2026; renovated lounge expected in 2027) — Priority Pass acceptance at the temporary lounge is unconfirmed as of October 13, 2026. Verify in the Priority Pass app before you walk over.</li>
   <li><strong>Air Canada Maple Leaf Lounge</strong> near Gate 53 — not Priority Pass eligible. Requires Air Canada Business ticket, Aeroplan 50K+, Star Alliance Gold, Maple Leaf Club, or one of the <a href="https://www.finlywealth.com/credit-cards/reviews/td-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">TD</a>, <a href="https://www.finlywealth.com/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">CIBC</a> or <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a> cards.</li>
 </ul>
 
@@ -2657,7 +2663,7 @@ const airFranceYulContent = `
 `
 
 const priorityPassYulContent = `
-<p data-speakable="intro"><strong>Priority Pass accepts five Canadian lounges at Montréal-Trudeau (YUL) across all three terminal zones. Domestic: Aspire American Express Lounge (Gates 1–2, opened July 2025). International: Aspire International Lounge (Gates 52–53), Air France – KLM Lounge by Plaza Premium (outside 3:30–6:30 p.m.), and National Bank Lounge (temporary space, acceptance unconfirmed as of October 13, 2026). US Transborder: Desjardins Odyssey Lounge by Plaza Premium (Gate 81). Three Canadian credit cards include Priority Pass — the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a>, Business Platinum, and <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum Amex</a>. The Aspire American Express Lounge is on the Priority Pass pre-book list — reserve a seat ahead of your flight.</strong></p>
+<p data-speakable="intro"><strong>Priority Pass accepts five Canadian lounges at Montréal-Trudeau (YUL) across all three terminal zones. Domestic: Aspire American Express Lounge (Gates 1–2, opened August 2025). International: Aspire International Lounge (Gates 52–53), Air France – KLM Lounge by Plaza Premium (outside 3:30–6:30 p.m.), and National Bank Lounge (temporary space, acceptance unconfirmed as of October 13, 2026). US Transborder: Desjardins Odyssey Lounge by Plaza Premium (Gate 81). Three Canadian credit cards include Priority Pass — the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a>, Business Platinum, and <a href="https://www.finlywealth.com/credit-cards/reviews/scotia-passport-visa-infinite" target="_blank" rel="sponsored nofollow noopener">Scotiabank Platinum Amex</a>. The Aspire American Express Lounge is on the Priority Pass pre-book list — reserve a seat ahead of your flight.</strong></p>
 
 <h2>Every Priority Pass lounge at YUL</h2>
 
@@ -2666,10 +2672,10 @@ const priorityPassYulContent = `
     <tr><th>Lounge</th><th>Zone</th><th>Hours</th><th>Priority Pass stay</th><th>Notes</th></tr>
   </thead>
   <tbody>
-    <tr><td><a href="/airports/YUL/lounges/aspire-amex-lounge-yul">Aspire American Express Lounge</a></td><td>Domestic (Gates 1–2)</td><td>05:00 – 21:00</td><td>3 hours</td><td>Opened July 2025. Pre-book eligible via the Priority Pass app.</td></tr>
+    <tr><td><a href="/airports/YUL/lounges/aspire-amex-lounge-yul">Aspire American Express Lounge</a></td><td>Domestic (Gates 1–2)</td><td>05:00 – 21:00</td><td>3 hours</td><td>Opened August 2025. Pre-book eligible via the Priority Pass app.</td></tr>
     <tr><td><a href="/airports/YUL/lounges/aspire-international-lounge-yul">Aspire International Lounge</a></td><td>International (Gates 52–53)</td><td>06:00 – 22:00</td><td>3 hours</td><td>Also accepts DragonPass, DreamFolks, Amex Platinum direct entry.</td></tr>
     <tr><td><a href="/airports/YUL/lounges/air-france-klm-lounge-yul">Air France – KLM Lounge</a></td><td>International (Gates 55–57)</td><td>05:30 – 22:00</td><td>3 hours</td><td><strong>Closed to Priority Pass 3:30 p.m. – 6:30 p.m. daily</strong> (reserved for AF/KL Business + Elite Plus). See our <a href="/blog/air-france-klm-lounge-montreal-yul-access">dedicated AF-KLM guide</a>.</td></tr>
-    <tr><td><a href="/airports/YUL/lounges/national-bank-lounge-yul">National Bank Lounge</a></td><td>International (near Gate 53, temporary space)</td><td>Reduced capacity</td><td>2 hours (3 for NB Private Banking)</td><td>Original lounge closed Oct 4 2026, reopens June 2028. <strong>Priority Pass acceptance at the temporary lounge is unconfirmed as of Oct 13 2026</strong> — verify in the app.</td></tr>
+    <tr><td><a href="/airports/YUL/lounges/national-bank-lounge-yul">National Bank Lounge</a></td><td>International (near Gate 53, temporary space)</td><td>Reduced capacity</td><td>2 hours (3 for NB Private Banking)</td><td>Temporary lounge opened 1 August 2026; renovated lounge expected in 2027. <strong>Priority Pass acceptance at the temporary lounge is unconfirmed as of Oct 13 2026</strong> — verify in the app.</td></tr>
     <tr><td><a href="/airports/YUL/lounges/desjardins-odyssey-lounge-transborder-yul">Desjardins Odyssey Lounge</a></td><td>US Transborder (above Gate 81)</td><td>04:30 – 20:30</td><td>2 hours</td><td>After US preclearance — cannot return. Also accepts DragonPass, Amex Platinum direct, and the Desjardins Odyssey Visa Infinite.</td></tr>
   </tbody>
 </table>
@@ -2732,7 +2738,7 @@ const priorityPassYulContent = `
 <p>Yes, outside the daily 3:30 p.m. – 6:30 p.m. window. Full detail in our <a href="/blog/air-france-klm-lounge-montreal-yul-access">Air France – KLM Lounge Montreal YUL access guide</a>.</p>
 
 <h3>Does Priority Pass work at the National Bank Lounge at YUL right now?</h3>
-<p>Acceptance at the temporary National Bank Lounge (operating since Oct 5 2026) is unconfirmed in operator notices as of Oct 13 2026. Verify in the Priority Pass app before you walk over. The Aspire International Lounge next door is a confirmed alternative.</p>
+<p>Acceptance at the temporary National Bank Lounge (opened 1 August 2026) is unconfirmed in operator notices as of Oct 13 2026. Verify in the Priority Pass app before you walk over. The Aspire International Lounge next door is a confirmed alternative.</p>
 
 <h2>Sources</h2>
 <ul>
@@ -2746,7 +2752,7 @@ const priorityPassYulContent = `
 `
 
 const yulLoungeAccessContent = `
-<p data-speakable="intro"><strong>Six lounges operate at Montréal-Trudeau (YUL) and each one has its own card and status rules. For a Montreal-based traveller who flies two or three times a year, the <a href="https://www.finlywealth.com/credit-cards/reviews/national-bank-world-elite-mastercard" target="_blank" rel="sponsored nofollow noopener">National Bank World Elite Mastercard</a> ($150) is the best-value lounge card in Canada — unlimited access to the National Bank Lounge for the cardholder plus one guest and two children. For international flyers who want options at every Canadian airport the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a> ($799) remains the strongest card — Priority Pass plus direct Plaza Premium plus Aspire access. For Air Canada regulars the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a> ($599) is the only Canadian card that stacks Maple Leaf Lounge with Priority Pass. One operational note: the National Bank Lounge moved to a reduced-capacity temporary space near Gate 53 on October 5, 2026 and stays there until the full renovation reopens in June 2028, with a 2-hour stay limit.</strong></p>
+<p data-speakable="intro"><strong>Six lounges operate at Montréal-Trudeau (YUL) and each one has its own card and status rules. For a Montreal-based traveller who flies two or three times a year, the <a href="https://www.finlywealth.com/credit-cards/reviews/national-bank-world-elite-mastercard" target="_blank" rel="sponsored nofollow noopener">National Bank World Elite Mastercard</a> ($150) is the best-value lounge card in Canada — unlimited access to the National Bank Lounge for the cardholder plus one guest and two children. For international flyers who want options at every Canadian airport the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a> ($799) remains the strongest card — Priority Pass plus direct Plaza Premium plus Aspire access. For Air Canada regulars the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a> ($599) is the only Canadian card that stacks Maple Leaf Lounge with Priority Pass. One operational note: a temporary National Bank Lounge opened near Gate 53 on 1 August 2026 and the renovated lounge is expected in 2027, with a 2-hour stay limit.</strong></p>
 
 <blockquote>
 <p><strong>Editorial disclosure:</strong> AirportLounges.ca may receive compensation if you apply for a card through links on this page. This does not affect the issuer's terms or the price you pay. Card facts and lounge access rules were verified against issuer pages, National Bank's lounge notice, and Milesopedia's Oct 2026 reporting on October 13, 2026.</p>
@@ -2759,9 +2765,9 @@ const yulLoungeAccessContent = `
     <tr><th>Lounge</th><th>Zone</th><th>Direct card access</th><th>Membership networks</th></tr>
   </thead>
   <tbody>
-    <tr><td><strong>National Bank Lounge</strong> (near Gate 53, temporary space Oct 5 2026 – June 2028)</td><td>International</td><td>National Bank World Elite Mastercard (unlimited, +1 guest, +2 kids)</td><td>Priority Pass acceptance at the temporary lounge is unconfirmed in operator notices — verify in the Priority Pass app before you walk over</td></tr>
+    <tr><td><strong>National Bank Lounge</strong> (near Gate 53, temporary lounge opened 1 August 2026; renovated lounge expected in 2027)</td><td>International</td><td>National Bank World Elite Mastercard (unlimited, +1 guest, +2 kids)</td><td>Priority Pass acceptance at the temporary lounge is unconfirmed in operator notices — verify in the Priority Pass app before you walk over</td></tr>
     <tr><td><strong>Aspire International Lounge</strong> (Gates 52–53)</td><td>International</td><td>Amex Platinum, Business Platinum (direct entry)</td><td>Priority Pass, DragonPass, DreamFolks, walk-in day pass</td></tr>
-    <tr><td><strong>Aspire American Express Lounge</strong> (Gates 1–2, opened Jul 2025)</td><td>Domestic</td><td>Amex Platinum, Business Platinum (direct entry)</td><td>Priority Pass, DragonPass, DreamFolks, walk-in day pass</td></tr>
+    <tr><td><strong>Aspire American Express Lounge</strong> (Gates 1–2, opened August 2025)</td><td>Domestic</td><td>Amex Platinum, Business Platinum (direct entry)</td><td>Priority Pass, DragonPass, DreamFolks, walk-in day pass</td></tr>
     <tr><td><strong>Air France – KLM Lounge by Plaza Premium</strong> (Gates 55–57)</td><td>International</td><td>Air France / KLM Business or Elite+ ticket only; closed to Priority Pass 3:30 p.m. – 6:30 p.m. daily</td><td>Priority Pass outside the AF/KL window — call ahead</td></tr>
     <tr><td><strong>Desjardins Odyssey Lounge</strong> by Plaza Premium (above Gate 81)</td><td>US Transborder</td><td>Desjardins Odyssey Visa Infinite (direct), <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a></td><td>Priority Pass, DragonPass, walk-in day pass (04:30–20:30, 2-hr stay)</td></tr>
     <tr><td><strong>Air Canada Maple Leaf Lounge</strong> (Gate 53 international, Gate 1-2 domestic, Gate 73-74 transborder)</td><td>All three zones</td><td><a href="https://www.finlywealth.com/credit-cards/reviews/td-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">TD Aeroplan Visa Infinite Privilege</a>, <a href="https://www.finlywealth.com/credit-cards/reviews/cibc-aeroplan-visa-infinite-privilege" target="_blank" rel="sponsored nofollow noopener">CIBC Aeroplan Visa Infinite Privilege</a>, <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a></td><td>Not Priority Pass eligible; Aeroplan 50K+, Star Alliance Gold or Business class ticket</td></tr>
@@ -2777,7 +2783,7 @@ const yulLoungeAccessContent = `
 
 <p>This is the single best-value lounge card in Canada if your home airport is YUL and most of your flights are international. The National Bank Lounge is Montreal's only private-brand lounge, and this is the only card that opens it at no additional fee. Primary cardholder, one guest and two accompanying children get in free. Secondary cardholders also get free access with the same +1+2 rule.</p>
 
-<p>Current catch: from October 5, 2026 the lounge is in a temporary reduced-capacity space (same spot near Gate 53) with a 2-hour stay limit, until the renovated main lounge reopens in June 2028. Private Banking 1859 clients get a 3-hour stay instead.</p>
+<p>Current catch: a temporary lounge opened on 1 August 2026 (same spot near Gate 53) with a 2-hour stay limit. The renovated lounge is expected in 2027. Private Banking 1859 clients get a 3-hour stay instead.</p>
 
 <ul>
   <li><strong>Annual fee:</strong> $150 (standard $150; often promoted at $0 first year)</li>
@@ -2861,10 +2867,10 @@ const yulLoungeAccessContent = `
 <p>If the National Bank Lounge is why you were going to apply for a <a href="https://www.finlywealth.com/credit-cards/reviews/national-bank-world-elite-mastercard" target="_blank" rel="sponsored nofollow noopener">National Bank World Elite Mastercard</a>, read this first.</p>
 
 <ul>
-  <li><strong>Current state (October 2026 through about June 2028):</strong> the lounge is operating in a temporary, reduced-capacity space at the same location near Gate 53. Buffet service, table service in some cases, 2-hour maximum stay (3 hours for National Bank Private Banking 1859 clients).</li>
+  <li><strong>Current state (temporary lounge opened 1 August 2026; renovated lounge expected in 2027):</strong> the lounge is operating in a temporary, reduced-capacity space at the same location near Gate 53. The lounge page describes self-service snacks and non-alcoholic drinks (no alcohol bar), with a 2-hour maximum stay (3 hours for National Bank Private Banking 1859 clients).</li>
   <li><strong>What that means in practice:</strong> expect queues during evening international departure banks (Air France, Air Transat, Lufthansa, KLM). The 2-hour cap is enforced — plan around it rather than against it.</li>
   <li><strong>Fallback if the temp lounge is full:</strong> the Aspire International Lounge between Gates 52 and 53 is next door, accepts Priority Pass and DragonPass, and runs on a 3-hour window.</li>
-  <li><strong>If you don't yet have the card:</strong> the renovation doesn't change the $150 math — you still get unlimited lounge access, just in a smaller space for the next 18 months, with a dramatically upgraded space to look forward to in 2028. Many Montreal travellers hold both the National Bank card (for Montreal) and Priority Pass via another card (for everywhere else).</li>
+  <li><strong>If you don't yet have the card:</strong> the renovation doesn't change the $150 math — you still get unlimited lounge access, just in a smaller space until the renovated lounge expected in 2027. Many Montreal travellers hold both the National Bank card (for Montreal) and Priority Pass via another card (for everywhere else).</li>
 </ul>
 
 <h2>YUL-specific tactics</h2>
@@ -2872,7 +2878,7 @@ const yulLoungeAccessContent = `
 <ul>
   <li><strong>Flying Air France out of Montreal?</strong> The <a href="https://airportlounges.ca/airports/YUL/lounges/air-france-klm-lounge-yul">Air France – KLM Lounge</a> (Gates 55–57) is reserved for AF/KL customers from 3:30 p.m. to 6:30 p.m. daily. Outside that window Priority Pass works. If you have an evening Paris departure, the Aspire International next door is your Priority Pass home.</li>
   <li><strong>Flying US-bound after preclearance?</strong> You cross CBP first — only the Desjardins Odyssey Plaza Premium Lounge above Gate 81 is airside after US customs. Priority Pass + DragonPass + Amex Platinum + Desjardins Odyssey Visa Infinite all work. 04:30–20:30 daily, 2-hour stay. An evening US departure after 20:30 has no lounge option on this side.</li>
-  <li><strong>Flying domestic through YUL?</strong> The Aspire American Express Lounge across from Gate 1 (opened July 2025) is the Priority Pass answer in the domestic zone — before 2025 there was none. The Air Canada Café at Gate A2 is the Aeroplan-cardholder alternative.</li>
+  <li><strong>Flying domestic through YUL?</strong> The Aspire American Express Lounge across from Gate 1 (opened August 2025) is the Priority Pass answer in the domestic zone — before 2025 there was none. The Air Canada Café at Gate A2 is the Aeroplan-cardholder alternative.</li>
   <li><strong>Family of four?</strong> The National Bank World Elite's "+1 guest +2 kids under 12" rule is the only Canadian card that admits a family of four into any lounge free of charge. Everyone else charges per guest at Priority Pass's US$35 rate.</li>
   <li><strong>Pre-booking:</strong> the Aspire Domestic Lounge is on the Priority Pass pre-book list. If you have a tight connection, reserve a seat ahead — a reserved spot is one a full lounge cannot refuse.</li>
 </ul>
@@ -2883,10 +2889,10 @@ const yulLoungeAccessContent = `
 <p>For Montreal-based travellers who fly a few international trips a year, the <a href="https://www.finlywealth.com/credit-cards/reviews/national-bank-world-elite-mastercard" target="_blank" rel="sponsored nofollow noopener">National Bank World Elite Mastercard</a> at $150 is unmatched. It is the only Canadian card that opens the National Bank Lounge at YUL — unlimited visits for the primary cardholder, one guest, and two children under 12. For global coverage across every Canadian airport the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a> at $799 is the stronger choice; for Air Canada regulars the <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a> stacks Maple Leaf Lounge with Priority Pass. All verified October 13, 2026.</p>
 
 <h3>Does Priority Pass work at the National Bank Lounge at YUL right now?</h3>
-<p>Priority Pass acceptance at the temporary National Bank Lounge (operating since October 5, 2026) is unconfirmed in operator notices as of October 13, 2026. Previous acceptance at the main lounge was by Priority Pass arrangement — but the temporary space may have different rules while renovation runs through about June 2028. Verify in the Priority Pass app before you walk over, or use the Aspire International Lounge next door (Gates 52–53), which accepts Priority Pass without ambiguity.</p>
+<p>Priority Pass acceptance at the temporary National Bank Lounge (opened 1 August 2026) is unconfirmed in operator notices as of October 13, 2026. Previous acceptance at the main lounge was by Priority Pass arrangement — but the temporary space may have different rules while the renovated lounge is expected in 2027. Verify in the Priority Pass app before you walk over, or use the Aspire International Lounge next door (Gates 52–53), which accepts Priority Pass without ambiguity.</p>
 
 <h3>How many lounges does Montreal-Trudeau airport have?</h3>
-<p>Seven distinct lounge spaces across three zones: the National Bank Lounge (international, temporary space), the Aspire International Lounge (international), the Aspire American Express Lounge (domestic, opened July 2025), the Air France–KLM Lounge by Plaza Premium (international), the Desjardins Odyssey Plaza Premium Lounge (US transborder), the Air Canada Maple Leaf Lounge (one in each zone), and the two Air Canada Cafés (Gate A2 domestic since March 2025, Gates 73–74 transborder since March 2026).</p>
+<p>Seven distinct lounge spaces across three zones: the National Bank Lounge (international, temporary space), the Aspire International Lounge (international), the Aspire American Express Lounge (domestic, opened August 2025), the Air France–KLM Lounge by Plaza Premium (international), the Desjardins Odyssey Plaza Premium Lounge (US transborder), the Air Canada Maple Leaf Lounge (one in each zone), and the two Air Canada Cafés (Gate A2 domestic since March 2025, Gates 73–74 transborder since March 2026).</p>
 
 <h3>Can I get into an airport lounge at YUL without a credit card?</h3>
 <p>Yes, but it is pricey. Walk-in day passes are available at the Aspire lounges (both International and Domestic) and at the Desjardins Odyssey transborder lounge. Current rates run roughly C$55 to C$75 for a 3-hour stay. The National Bank Lounge in its temporary state publishes a pay-per-visit rate for non-cardholder Mastercard holders: $63.24 per adult, $40.24 per child (ages 2–12), with a 25% National Bank discount. The Air France–KLM lounge and the Air Canada Maple Leaf Lounges do not sell walk-in passes.</p>
@@ -2901,7 +2907,7 @@ const yulLoungeAccessContent = `
 <p>Yes — direct entry to the Desjardins Odyssey Plaza Premium Lounge above Gate 81 in the US transborder zone. The card also includes Visa Airport Companion access, which overlaps with the other YUL lounges that take DragonPass. Our full card comparison is in the <a href="/blog/best-aeroplan-credit-card-airport-lounge-access">best Aeroplan credit card guide</a>; for Priority Pass alternatives see the <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a> guide.</p>
 
 <h3>Which YUL lounge has the best food?</h3>
-<p>Among Priority Pass–eligible lounges, the <a href="/airports/YUL/lounges/aspire-international-lounge-yul">Aspire International Lounge</a> (Gates 52–53) is consistently rated the strongest for food — hot buffet, barista coffee, Quebec beer and wine selection. The <a href="/airports/YUL/lounges/national-bank-lounge-yul">National Bank Lounge</a> was historically the YUL benchmark for food but the temporary space has a reduced menu until June 2028. For a US-bound flight, the <a href="/airports/YUL/lounges/desjardins-odyssey-lounge-transborder-yul">Desjardins Odyssey</a> matches Aspire quality.</p>
+<p>Among Priority Pass–eligible lounges, the <a href="/airports/YUL/lounges/aspire-international-lounge-yul">Aspire International Lounge</a> (Gates 52–53) is consistently rated the strongest for food — hot buffet, barista coffee, Quebec beer and wine selection. The <a href="/airports/YUL/lounges/national-bank-lounge-yul">National Bank Lounge</a> was historically the YUL benchmark for food but the temporary space has a reduced menu until the renovated lounge expected in 2027. For a US-bound flight, the <a href="/airports/YUL/lounges/desjardins-odyssey-lounge-transborder-yul">Desjardins Odyssey</a> matches Aspire quality.</p>
 
 <h2>Methodology</h2>
 
@@ -2909,7 +2915,7 @@ const yulLoungeAccessContent = `
 
 <h2>Change log</h2>
 <ul>
-  <li><strong>October 13, 2026:</strong> First published. National Bank Lounge temporary space in operation since October 5, 2026 (previously our content said August 1 — corrected site-wide in the same update). Priority Pass acceptance at the temporary lounge noted as unconfirmed per operator notices.</li>
+  <li><strong>October 13, 2026:</strong> First published. National Bank Lounge: a temporary lounge opened 1 August 2026 and the renovated lounge is expected in 2027, matching the lounge page. Priority Pass acceptance at the temporary lounge noted as unconfirmed per operator notices.</li>
 </ul>
 
 <h2>Sources</h2>
@@ -2925,7 +2931,7 @@ const yulLoungeAccessContent = `
   <li>AirportLounges.ca — <a href="/airports/YUL">Montreal YUL airport lounge directory</a>, <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a>, <a href="/blog/best-aeroplan-credit-card-airport-lounge-access">best Aeroplan credit card for lounge access</a>, <a href="/blog/airport-lounge-guest-fees-canada">airport lounge guest fees in Canada</a>.</li>
 </ul>
 
-<p><em>All card facts and lounge access rules on this page reflect information current as of October 13, 2026. Rules change without notice — always confirm with the issuer and the lounge operator before travelling. Next scheduled review: May 2028 (ahead of the National Bank Lounge renovation reopening).</em></p>
+<p><em>All card facts and lounge access rules on this page reflect information current as of October 13, 2026. Rules change without notice — always confirm with the issuer and the lounge operator before travelling. Next scheduled review: 2027 (ahead of the renovated National Bank Lounge, expected that year).</em></p>
 `
 
 const yvrDomesticClosureContent = `
@@ -3129,7 +3135,7 @@ export const blogPosts: BlogPost[] = [
     faqs: [
       {
         question: 'How much does an airport lounge cost in Canada?',
-        answer: 'Walk-in day passes at Canadian airport lounges typically cost between C$55 and C$75 for 2–3 hours. Plaza Premium charges C$59–75 for 2 hours; Aspire lounges charge C$55–65 for 3 hours; the premium Plaza Premium First at Vancouver costs C$110 for 2 hours. The National Bank Lounge at Montreal charges non-cardholders C$63.24 per adult.',
+        answer: 'Walk-in day passes at Canadian airport lounges typically cost between C$55 and C$75 for 2–3 hours. Plaza Premium charges C$59–75 for 2 hours; Aspire lounges generally charge C$55–65 for 3 hours (the YUL Aspire Amex Lounge publishes $70 CAD); the premium Plaza Premium First at Vancouver costs C$110 for 2 hours. The National Bank Lounge at Montreal charges non-cardholders C$63.24 per adult.',
       },
       {
         question: 'What is the cheapest way to get lounge access in Canada?',
@@ -3440,7 +3446,7 @@ export const blogPosts: BlogPost[] = [
     metaDescription: 'Every lounge at Montreal-Trudeau (YUL) mapped to the card that opens it — National Bank World Elite, Amex Platinum, Aeroplan Reserve, Scotiabank Platinum Amex, TD and CIBC Aeroplan VIP. Includes the October 2026 National Bank Lounge renovation update and 2027 Amex cap guidance.',
     content: yulLoungeAccessContent,
     authorName: 'AirportLounges.ca Editorial Team',
-    authorBio: 'YUL lounge access rules verified against National Bank, Aspire, Plaza Premium and Air Canada issuer pages plus Milesopedia\'s October 2026 reporting on the National Bank Lounge renovation. Next scheduled review: May 2028, ahead of the renovated National Bank Lounge reopening.',
+    authorBio: 'YUL lounge access rules verified against National Bank, Aspire, Plaza Premium and Air Canada issuer pages plus Milesopedia\'s October 2026 reporting on the National Bank Lounge renovation. Next scheduled review: 2027, ahead of the renovated National Bank Lounge expected that year.',
     primaryCta: {
       heading: 'Compare the cards that open Montreal lounges',
       subheading: 'National Bank World Elite, Amex Platinum, Aeroplan Reserve and Scotiabank Platinum Amex — current fees, welcome offers and 2027 cap changes side by side.',
@@ -3454,11 +3460,11 @@ export const blogPosts: BlogPost[] = [
       },
       {
         question: 'How many lounges does Montreal-Trudeau airport have?',
-        answer: 'Seven distinct lounge spaces across three zones: the National Bank Lounge (international, temporary space Oct 5 2026 – June 2028), the Aspire International Lounge (international), the Aspire American Express Lounge (domestic, opened July 2025), the Air France–KLM Lounge by Plaza Premium (international), the Desjardins Odyssey Plaza Premium Lounge (US transborder), the three Air Canada Maple Leaf Lounges (one per zone), and the two Air Canada Cafés (Gate A2 domestic since March 2025, Gates 73–74 transborder since March 2026).',
+        answer: 'Seven distinct lounge spaces across three zones: the National Bank Lounge (international, temporary lounge opened 1 August 2026; renovated lounge expected in 2027), the Aspire International Lounge (international), the Aspire American Express Lounge (domestic, opened August 2025), the Air France–KLM Lounge by Plaza Premium (international), the Desjardins Odyssey Plaza Premium Lounge (US transborder), the three Air Canada Maple Leaf Lounges (one per zone), and the two Air Canada Cafés (Gate A2 domestic since March 2025, Gates 73–74 transborder since March 2026).',
       },
       {
         question: 'Does Priority Pass work at the National Bank Lounge at YUL?',
-        answer: 'Priority Pass acceptance at the temporary National Bank Lounge (operating since October 5, 2026) is unconfirmed in operator notices as of October 13, 2026. The main lounge was Priority Pass eligible before renovation; the temporary space may have different rules while the renovation runs through about June 2028. Verify in the Priority Pass app before you walk over, or use the Aspire International Lounge next door (Gates 52–53), which accepts Priority Pass without ambiguity.',
+        answer: 'Priority Pass acceptance at the temporary National Bank Lounge (opened 1 August 2026) is unconfirmed in operator notices as of October 13, 2026. The main lounge was Priority Pass eligible before renovation; the temporary space may have different rules while the renovated lounge is expected in 2027. Verify in the Priority Pass app before you walk over, or use the Aspire International Lounge next door (Gates 52–53), which accepts Priority Pass without ambiguity.',
       },
       {
         question: 'Is the National Bank World Elite Mastercard worth it just for the YUL lounge?',
@@ -3677,7 +3683,7 @@ export const blogPosts: BlogPost[] = [
       },
       {
         question: 'How do I get lounge access at Montréal airport for the least money?',
-        answer: 'For international departures out of YUL, the National Bank World Elite Mastercard ($150 annual fee) is the cheapest card in Canada with a guest included. It grants unlimited access to the National Bank Lounge near Gate 53 for the cardholder plus one guest and two children aged 12 or under. The lounge is currently in a temporary reduced-capacity space (August 2026 through about June 2028) during renovation, with a two-hour stay. Income requirements are $80,000 personal or $150,000 household.',
+        answer: 'For international departures out of YUL, the National Bank World Elite Mastercard ($150 annual fee) is the cheapest card in Canada with a guest included. It grants unlimited access to the National Bank Lounge near Gate 53 for the cardholder plus one guest and two children aged 12 or under. A temporary lounge opened on 1 August 2026; the renovated lounge is expected in 2027, with a two-hour stay. Income requirements are $80,000 personal or $150,000 household.',
       },
       {
         question: 'Do children pay guest fees at Canadian airport lounges?',
@@ -3881,6 +3887,7 @@ export const blogPosts: BlogPost[] = [
   // ──────────────────────────────────────────────────────────────────────────
   {
     slug: 'yul-airport-lounge-day-pass',
+    iata: 'YUL',
     title: 'Can You Buy a Day Pass at Montréal (YUL)? Every Lounge, Every Price',
     excerpt:
       'Yes — five Montréal-Trudeau lounges sell walk-in day passes. Current prices, how to pre-book, and the cheaper way in with the right credit card.',
@@ -3901,26 +3908,26 @@ export const blogPosts: BlogPost[] = [
       affiliateKey: 'finlywealth-lounge-access-cards',
     },
     content: `
-<p data-speakable="intro"><strong>Yes — you can buy a walk-in day pass at five lounges at Montréal-Trudeau (YUL). The cheapest is the Desjardins Odyssey Lounge at $42 CAD. The National Bank Lounge is the priciest at around $60. Air Canada Maple Leaf Lounges do not sell day passes at any price. This guide lists every YUL lounge that sells walk-in access right now (verified November 2026), what each costs, where it is in the terminal, and the one credit card that makes most of these payments unnecessary.</strong></p>
+<p data-speakable="intro"><strong>Yes — you can buy a walk-in day pass at five lounges at Montréal-Trudeau (YUL). The cheapest published rate is the Desjardins Odyssey Lounge at $42 CAD. The Aspire Amex Lounge (domestic) publishes a $70 CAD walk-in. The National Bank Lounge is about $60 CAD. Air Canada Maple Leaf Lounges do not sell day passes at any price. This guide lists every YUL lounge that sells walk-in access right now (verified November 2026), what each costs, where it is in the terminal, and the one credit card that makes most of these payments unnecessary.</strong></p>
 
 <h2 id="yul-day-pass-lounges">YUL lounges that sell walk-in day passes</h2>
 
 <p>Five of YUL's lounges accept paid day-pass guests. All are in the Main Terminal — YUL has only one terminal, which simplifies things compared to YYZ or YVR. Prices below are current as of November 2026 and are for adult walk-in rates; children's rates and reduced "work day" options exist at some lounges.</p>
 
-<h3>1. Aspire International Lounge — ~$45 CAD</h3>
-<p>Near Gate 52, international concourse. Open to any traveller with an international boarding pass. Takes <strong>Priority Pass</strong> and <strong>DragonPass</strong> for free — if you don't have either, it's one of the cheaper paid options at YUL. Food is a small buffet; drinks included. Best for budget-conscious international travellers before a long-haul flight.</p>
+<h3>1. Aspire International Lounge</h3>
+<p>Near Gate 52, international concourse. Open to any traveller with an international boarding pass. Takes <strong>Priority Pass</strong> and <strong>DragonPass</strong>. The lounge page lists a paid day pass but does not publish a dollar amount — confirm the current walk-in rate with Aspire before you go. Food is a small buffet; drinks included. Best for budget-conscious international travellers before a long-haul flight.</p>
 
-<h3>2. Aspire Amex Lounge (Domestic) — ~$45 CAD</h3>
-<p>The domestic equivalent, between Gates 1 and 2. Opened July 2025 as a replacement for earlier domestic walk-in options. Same price range, same Priority Pass / DragonPass acceptance. Best for anyone flying Porter, Air Canada rouge, or domestic Air Canada without status.</p>
+<h3>2. Aspire Amex Lounge (Domestic) — $70 CAD</h3>
+<p>The domestic equivalent, between Gates 1 and 2. Opened August 2025 as a replacement for earlier domestic walk-in options. The published walk-in rate on the lounge page is $70 CAD. Same Priority Pass / DragonPass acceptance. Best for anyone flying Porter, Air Canada rouge, or domestic Air Canada without status.</p>
 
 <h3>3. Desjardins Odyssey Lounge (International) — $42 CAD adults / $26 CAD ages 12–17</h3>
-<p>Near Gate 63 in the international departures concourse. The cheapest sit-down option at YUL, run by Desjardins (the Québec credit union). Hot food, local wine, quiet work zones. Accepts Priority Pass and DragonPass, plus any Desjardins Odyssey card gets in free.</p>
+<p>Near Gate 63 in the international departures concourse. The cheapest sit-down option at YUL, run by Desjardins (the Québec credit union). Hot food, local wine, quiet work zones. Accepts Priority Pass and DragonPass. A Desjardins card is not free entry on its own: Odyssey World Elite includes 8 free visits, Odyssey Visa Infinite Privilege includes 12 free visits, and Odyssey Gold Visa is 50% off.</p>
 
 <h3>4. Desjardins Odyssey Lounge (Transborder) — $42 CAD</h3>
 <p>Past US pre-clearance, near Gates 76/77. Smaller than the international branch but same food and drink. If you're flying to the US via YUL, this is the only non-Maple-Leaf option in the transborder zone — worth the $42 if you have a longer connection.</p>
 
 <h3>5. National Bank Lounge — ~$60 CAD</h3>
-<p><strong>Note: currently operating at reduced capacity</strong> due to renovation work through late 2026. Near Gate 53, international. The most expensive YUL day pass, but the highest-rated — proper hot food, premium bar, excellent views of the apron. Accepts Priority Pass, DragonPass, and the National Bank World Elite Mastercard (free).</p>
+<p><strong>Note: a temporary lounge opened on 1 August 2026</strong> and the renovated lounge is expected in 2027. Near Gate 53, international. The lounge page lists a walk-in of about $60 CAD. The temporary space is reduced capacity — self-service snacks and non-alcoholic drinks, not the main lounge's hot food and bar. Accepts Priority Pass, DragonPass, and the National Bank World Elite Mastercard (free).</p>
 
 <h2 id="pre-book-yul">How to pre-book a YUL day pass</h2>
 
@@ -3956,7 +3963,7 @@ export const blogPosts: BlogPost[] = [
 
 <h2 id="yul-closure-notes">YUL lounge closures and 2026 updates</h2>
 
-<p>The <strong>National Bank Lounge</strong> is in a reduced-capacity temporary space through Q4 2026. Priority Pass acceptance at the temp lounge is intermittent — call ahead or check the Priority Pass app before counting on it. The <strong>original National Bank Lounge</strong> is being fully renovated with reopening scheduled for June 2028.</p>
+<p>A temporary <strong>National Bank Lounge</strong> opened on 1 August 2026 at reduced capacity. Priority Pass acceptance at the temp lounge is intermittent — call ahead or check the Priority Pass app before counting on it. The renovated lounge is expected in 2027.</p>
 
 <p>All other YUL walk-in options listed above are fully operational.</p>
 `,
@@ -3964,7 +3971,7 @@ export const blogPosts: BlogPost[] = [
       {
         question: 'How much is a day pass at YUL?',
         answer:
-          'YUL day-pass prices range from $42 CAD (Desjardins Odyssey Lounge) to approximately $60 CAD (National Bank Lounge). The Aspire lounges (domestic and international) are typically $45 CAD. Children and reduced "work day" rates are available at some lounges.',
+          'Published YUL walk-in rates: Desjardins Odyssey Lounge $42 CAD, National Bank Lounge about $60 CAD, and Aspire Amex Lounge (domestic) $70 CAD. The Aspire International Lounge lists a paid day pass but does not publish a dollar amount on its lounge page. Children and reduced "work day" rates are available at some lounges.',
       },
       {
         question: 'Can I buy a day pass to the Maple Leaf Lounge at YUL?',
@@ -3992,6 +3999,7 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'yyz-airport-lounge-day-pass',
+    iata: 'YYZ',
     title: 'Can You Buy a Day Pass at Toronto Pearson (YYZ)? Terminal-by-Terminal Guide',
     excerpt:
       'Yes — five Plaza Premium lounges + the Air France/KLM Crown Lounge sell walk-in day passes at YYZ. Terminal 1 vs Terminal 3, prices, and the credit card alternative.',
@@ -4110,6 +4118,7 @@ Level 2, near Gate C33 in international departures. Open to any traveller with a
   },
   {
     slug: 'yvr-airport-lounge-day-pass',
+    iata: 'YVR',
     title: 'Can You Buy a Day Pass at Vancouver (YVR)? 2026 Price List + Alternatives',
     excerpt:
       'Yes — Plaza Premium runs multiple walk-in lounges at YVR. Prices, locations, and why one credit card beats paying four day passes a year.',

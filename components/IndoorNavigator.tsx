@@ -4,6 +4,8 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import mapboxgl from 'mapbox-gl'
 import type { LoungeSummary } from '@/components/AirportLoungeGridFiltered'
+import { formatRating } from '@/lib/format-rating'
+import MapUnavailable from '@/components/MapUnavailable'
 
 // Extended lounge type used only on the navigate page
 export interface NavigatorLounge extends LoungeSummary {
@@ -114,6 +116,7 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
 
   const [mapReady,      setMapReady]      = useState(false)
   const [mapError,      setMapError]      = useState<string | null>(null)
+  const [mapFailed,     setMapFailed]     = useState(false)
   const [activeLounge,  setActiveLounge]  = useState<string | null>(null)
   const [activeDetail,  setActiveDetail]  = useState<NavigatorLounge | null>(null)
   // hovered = the lounge currently under the cursor on EITHER the map or sidebar.
@@ -166,38 +169,41 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
       mapboxgl.accessToken = token
 
       const [tcLng, tcLat] = terminalCenter(airport)
-      const map = new mapboxgl.Map({
-        container,
-        style:   'mapbox://styles/mapbox/standard',
-        center:  [tcLng, tcLat],
-        zoom:    16,
-        pitch:   0,
-        bearing: 0,
-        attributionControl: false,
-      })
-      mapRef.current = map
+      let map: mapboxgl.Map | null = null
+      try {
+        const created = new mapboxgl.Map({
+          container,
+          style:   'mapbox://styles/mapbox/standard',
+          center:  [tcLng, tcLat],
+          zoom:    16,
+          pitch:   0,
+          bearing: 0,
+          attributionControl: false,
+        })
+        map = created
+        mapRef.current = created
 
-      map.addControl(new mapboxgl.NavigationControl(), 'top-left')
-      map.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
+        created.addControl(new mapboxgl.NavigationControl(), 'top-left')
+        created.addControl(new mapboxgl.AttributionControl({ compact: true }), 'bottom-right')
 
-      map.on('error', (e) => {
-        console.error('Mapbox error:', e?.error ?? e)
-        setMapError(e?.error?.message ?? 'Failed to load the map.')
-      })
+        created.on('error', (e) => {
+          console.error('Mapbox error:', e?.error ?? e)
+          setMapError(e?.error?.message ?? 'Failed to load the map.')
+        })
 
-      loadTimeoutId = setTimeout(() => {
-        setMapError(prev => prev ?? 'Map is taking longer than expected to load. Check your connection or try refreshing.')
-      }, 15000)
+        loadTimeoutId = setTimeout(() => {
+          setMapError(prev => prev ?? 'Map is taking longer than expected to load. Check your connection or try refreshing.')
+        }, 15000)
 
-      map.on('load', () => {
-        if (loadTimeoutId) { clearTimeout(loadTimeoutId); loadTimeoutId = null }
-        setMapError(null)
-        map.resize()
-        try {
-          map.setConfigProperty('basemap', 'showPointOfInterestLabels', true)
-          map.setConfigProperty('basemap', 'showPlaceLabels', true)
-          map.setConfigProperty('basemap', 'showTransitLabels', true)
-        } catch {}
+        created.on('load', () => {
+          if (loadTimeoutId) { clearTimeout(loadTimeoutId); loadTimeoutId = null }
+          setMapError(null)
+          created.resize()
+          try {
+            created.setConfigProperty('basemap', 'showPointOfInterestLabels', true)
+            created.setConfigProperty('basemap', 'showPlaceLabels', true)
+            created.setConfigProperty('basemap', 'showTransitLabels', true)
+          } catch {}
 
         setMapReady(true)
 
@@ -249,12 +255,23 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
           // Drop-pin shape → anchor at bottom so the tip touches the lat/lng.
           const marker = new mapboxgl.Marker({ element: el, anchor: 'bottom' })
             .setLngLat([lng, lat])
-            .addTo(map)
+            .addTo(created)
 
           markersRef.current.push(marker)
           markerMapRef.current[lounge.id] = marker
         })
       })
+      } catch {
+        // Device has no WebGL. Not an application bug — do not report it.
+        setMapFailed(true)
+        if (map) {
+          try { map.remove() } catch { /* ignore */ }
+          map = null
+        } else {
+          container.replaceChildren()
+        }
+        mapRef.current = null
+      }
     }
 
     const ro = new ResizeObserver((entries) => {
@@ -317,7 +334,14 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
             parent's definite flex height instead of from inset positioning. */}
         <div ref={containerRef} className="h-full w-full" />
 
-        {!mapReady && !mapError && (
+        {mapFailed && (
+          <MapUnavailable
+            lat={airport.latitude}
+            lng={airport.longitude}
+            className="absolute inset-0 z-20"
+          />
+        )}
+        {!mapReady && !mapError && !mapFailed && (
           <div className="absolute inset-0 bg-primary/10 flex items-center justify-center z-10 pointer-events-none">
             <div className="bg-white px-6 py-4 shadow-lg flex items-center gap-3">
               <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
@@ -388,11 +412,11 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
                     <p className="text-xs text-secondary">{fmtTerminal(activeDetail.terminal)}</p>
                   </div>
                 )}
-                {activeDetail.rating && (
+                {activeDetail.rating && formatRating(activeDetail.rating) && (
                   <div className="flex items-center gap-2.5">
                     <span className="material-symbols-outlined text-sand-dark shrink-0" style={{ fontSize: '14px', fontVariationSettings: "'FILL' 1" }}>star</span>
                     <p className="text-xs text-secondary">
-                      {activeDetail.rating.toFixed(1)}
+                      {formatRating(activeDetail.rating)}
                       {activeDetail.review_count ? ` (${activeDetail.review_count} reviews)` : ''}
                     </p>
                   </div>
@@ -565,10 +589,10 @@ export default function IndoorNavigator({ airport, lounges }: Props) {
                         {lounge.location_detail}
                       </p>
                     )}
-                    {lounge.rating && (
+                    {lounge.rating && formatRating(lounge.rating) && (
                       <div className="flex items-center gap-1 mt-1.5">
                         <span className="material-symbols-outlined text-sand-dark" style={{ fontSize: '11px', fontVariationSettings: "'FILL' 1" }}>star</span>
-                        <span className="font-label-caps text-[10px] text-sand-dark">{lounge.rating.toFixed(1)}</span>
+                        <span className="font-label-caps text-[10px] text-sand-dark">{formatRating(lounge.rating)}</span>
                       </div>
                     )}
                   </button>

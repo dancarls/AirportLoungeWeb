@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { db } from '@/lib/db'
+import { formatRating } from '@/lib/format-rating'
 
 // nodejs runtime required — the postgres driver uses native TCP+TLS which
 // isn't available on the Edge runtime. OG image generation is crawler-only
@@ -44,8 +45,9 @@ export default async function OG({ params }: Props) {
       sub = data.airport_city
         ? `${code} • ${data.airport_city}${data.terminal ? ` • Terminal ${data.terminal}` : ''}`
         : `${code} ${data.terminal ? `• Terminal ${data.terminal}` : ''}`
-      if (data.rating) {
-        rating = `★ ${Number(data.rating).toFixed(1)}${data.review_count ? ` · ${data.review_count} review${data.review_count !== 1 ? 's' : ''}` : ''}`
+      const formattedRating = formatRating(data.rating)
+      if (data.rating && formattedRating) {
+        rating = `★ ${formattedRating}${data.review_count ? ` · ${data.review_count} review${data.review_count !== 1 ? 's' : ''}` : ''}`
       }
     }
   } catch (err) {
