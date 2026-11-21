@@ -11,7 +11,12 @@ const BASE = 'https://www.airportlounges.ca'
 export const metadata: Metadata = {
   metadataBase: new URL(BASE),
   title: {
-    default: 'AirportLounges.ca | Find the right lounge before you reach the gate.',
+    // Shortened 2026-11-21 (Ahrefs audit): the previous "AirportLounges.ca
+    // | Find the right lounge before you reach the gate." (68 chars) was
+    // rejected in SERPs — Google kept only the tagline. Lead with the
+    // tagline now, drop the brand prefix (Google appends it anyway via
+    // Organization schema + OG site_name).
+    default: 'Find the right lounge before you reach the gate.',
     template: '%s | AirportLounges.ca',
   },
   description: 'Search by airport, terminal, access card, or amenity. Verified lounge data, terminal maps, and real traveller reviews for a seamless transit experience.',

@@ -3,11 +3,13 @@ import type { Metadata } from 'next'
 import { affiliate, AFFILIATE_REL, pointsCalculator } from '@/lib/affiliates'
 
 export const metadata: Metadata = {
-  title: 'Canadian Credit Cards for Airport Lounge Access',
+  // Shortened 2026-11-21 (Ahrefs audit) — 47-char title + template brand suffix
+  // fits SERP cleanly without truncation.
+  title: 'Credit Cards for Airport Lounge Access',
   description: 'Independent, up-to-date guides to Canadian credit cards that unlock airport lounge access — Amex Platinum, Aeroplan cards compared, and where to stack a cashback rebate.',
   alternates: { canonical: 'https://www.airportlounges.ca/credit-cards' },
   openGraph: {
-    title: 'Canadian Credit Cards for Airport Lounge Access',
+    title: 'Credit Cards for Airport Lounge Access',
     description: 'Independent guides to Canadian credit cards with airport lounge access.',
     url: 'https://www.airportlounges.ca/credit-cards',
   },

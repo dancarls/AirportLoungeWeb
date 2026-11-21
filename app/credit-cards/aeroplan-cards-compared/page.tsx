@@ -5,7 +5,9 @@ import NewsletterCTA from '@/components/NewsletterCTA'
 
 export const metadata: Metadata = {
   // `absolute` bypasses the root layout's `%s | AirportLounges.ca` template.
-  title: { absolute: 'TD vs CIBC vs Amex Aeroplan Cards (2026)' },
+  // Realigned 2026-11-21 to match the H1 after Ahrefs showed Google
+  // rewriting the previous title. H1-prefix aligns the token-overlap check.
+  title: { absolute: 'Best Aeroplan Credit Card (2026): TD vs CIBC vs Amex' },
   description: 'TD vs CIBC Aeroplan Visa Infinite Privilege vs Amex Aeroplan Reserve in 2026. Earn rates, Maple Leaf access, guest rules, and which card wins.',
   keywords: [
     'best aeroplan credit card',
@@ -16,7 +18,7 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: 'https://www.airportlounges.ca/credit-cards/aeroplan-cards-compared' },
   openGraph: {
-    title: 'TD vs CIBC vs Amex Aeroplan Cards (2026)',
+    title: 'Best Aeroplan Credit Card (2026): TD vs CIBC vs Amex',
     description: 'TD vs CIBC Aeroplan Visa Infinite Privilege vs Amex Aeroplan Reserve in 2026. Earn rates, Maple Leaf access, guest rules, and which card wins.',
     url: 'https://www.airportlounges.ca/credit-cards/aeroplan-cards-compared',
   },
