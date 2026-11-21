@@ -3130,6 +3130,8 @@ const yvrDomesticClosureContent = `
 // screenshots + room renderings) live at /blog/wait-n-rest-toronto/.
 // ─────────────────────────────────────────────────────────────────────────
 const waitNRestTorontoContent = `
+<p style="margin:0 0 1.25rem;font-size:0.85em;color:#8a7967;font-style:italic;">Hero image courtesy of Wait N' Rest — Toronto Pearson Terminal 3 entrance.</p>
+
 <blockquote>
   <p><strong>How we checked this:</strong> We have not stayed at Wait N' Rest. Prices come from the operator's Toronto booking system, checked on November 20, 2026, for a sample check-in on November 24 at 10 a.m. On November 21, we also walked through the full booking flow for two guests, up to the room selection step, and saved screenshots of each screen. We did not place or pay for a booking. Room, access and shower details were checked against the operator's Toronto page and terms and against Toronto Pearson's official listing. Where those sources leave a question open, we say so. Next review: December 2026.</p>
 </blockquote>
@@ -3163,7 +3165,7 @@ const waitNRestTorontoContent = `
 <p>For the full picture of rest options across the country, including lounges with nap areas, see our guide to <a href="/blog/canadian-airport-lounges-sleep-pods">Canadian airport lounges with sleep pods and rest facilities</a>.</p>
 
 <h2>Where to find it</h2>
-<p>Head to Terminal 3 and clear security. The rooms are near Gate B26, in the part of the terminal for flights within Canada and international flights. Pearson's listing has a gate map you can pull up on your phone (<a href="https://www.torontopearson.com/en/at-the-airport/toronto-airport-services/wait-n-rest-t3-post-security" rel="noopener" target="_blank">Pearson's listing</a>).</p>
+<p>Head to Terminal 3 and clear security. The rooms are near Gate B26, in the part of the terminal for flights within Canada and international flights. Pearson's listing has a gate map you can pull up on your phone (<a href="https://www.torontopearson.com/en/at-the-airport/toronto-airport-services/wait-n-rest-t3-post-security" rel="noopener" target="_blank">Pearson's listing</a>). For the quick directory card with hours, phone, and access rules at a glance, see our <a href="/airports/YYZ/lounges/wait-n-rest-t3-yyz">Wait N' Rest directory entry</a> in the YYZ lounge index.</p>
 <p><em>The rule that matters most:</em> Wait N' Rest says you need a same-day flight departing from Terminal 3 (<a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Toronto booking conditions</a>). If your flight leaves from Terminal 1, you can't use it, even with hours to kill.</p>
 <p>Need help getting around? Our <a href="/airports/YYZ/navigate">Toronto Pearson terminal navigation</a> page covers walking routes and the train between terminals.</p>
 
@@ -3230,58 +3232,79 @@ const waitNRestTorontoContent = `
 <p><em>A second sample, for two guests:</em> on November 21 we priced the group room for two adults on Saturday, January 23, 2027, from noon to 4 p.m. The system called this a "Duo Stay." It showed $70 an hour, $280 before taxes, and a total of $335.38. That's the same roughly 20% markup as our other samples. The eight-hour option for two was $315, and the system said that saved $245 compared with paying the hourly rate for eight hours.</p>
 
 <h2>What booking looks like, step by step</h2>
-<p>We walked through the Toronto booking flow on November 21, 2026, for two adults, stopping at the room selection step. We didn't pay. Here's each screen, so you know what to expect before you start. Booking happens on the <a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Wait N' Rest Toronto page</a>.</p>
+<p>We walked through the Toronto booking flow on November 21, 2026, for two adults, stopping at the room selection step. We didn't pay.</p>
 
-<h3>Step 1: The welcome screen</h3>
-<p>The first popup lists what's included: Wi-Fi, smart climate, a charging station, a workspace, a premium bed, soundproofing, TV streaming, sleeping essentials, a snack selection, a private shower with fresh towels, and premium bed linen.</p>
-<figure>
-  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-1-welcome-amenities.webp" width="644" height="798" loading="lazy" alt="Wait N' Rest Toronto booking welcome screen listing room amenities including Wi-Fi, premium bed, soundproofing and private shower">
-  <figcaption>Step 1: amenities listed on the Toronto welcome screen. Screenshot taken November 21, 2026.</figcaption>
-</figure>
+<p><strong>If you're short on time:</strong> the price on the first screens is the base rate. The total with taxes and fees only appears at step 7, so budget about 20% more than the base. And if you're two or more, there's only one room you can book, so it can be gone fast.</p>
 
-<h3>Step 2: Pick your times and read the security notice</h3>
-<p>You choose your check-in and check-out times. A notice then reminds you that access depends on security screening and your flight's check-in and boarding times. If you can't get through airport security, you can't get in.</p>
-<figure>
-  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-2-post-security-notice.webp" width="544" height="287" loading="lazy" alt="Wait N' Rest Toronto post-security location notice explaining that guests must clear airport security to enter">
-  <figcaption>Step 2: the post-security notice.</figcaption>
-</figure>
+<details style="margin:1.75rem 0 2.25rem;border:1px solid rgba(166,141,116,0.25);border-radius:6px;background:#faf7f2;">
+  <summary style="padding:1rem 1.25rem;cursor:pointer;font-weight:600;color:#003434;font-family:var(--font-playfair,Georgia,serif);list-style:none;">📸 View all 7 booking screens (click any screenshot to enlarge)</summary>
+  <div style="padding:0.5rem 1.25rem 1.25rem;">
 
-<h3>Step 3: Add your guests</h3>
-<p>You enter adults (12 and up), children (3 to 12) and infants (under 3). Rooms take up to four guests, and infants don't count toward that limit. This is also where you tick the box if someone in your group needs an accessible room.</p>
-<figure>
-  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-3-guest-count.webp" width="544" height="501" loading="lazy" alt="Wait N' Rest Toronto guest selector for adults, children and infants with an accessible room checkbox">
-  <figcaption>Step 3: guest count and the accessible room option.</figcaption>
-</figure>
+    <h3>Step 1: The welcome screen</h3>
+    <p>The first popup lists what's included: Wi-Fi, smart climate, a charging station, a workspace, a premium bed, soundproofing, TV streaming, sleeping essentials, a snack selection, a private shower with fresh towels, and premium bed linen.</p>
+    <figure style="max-width:460px;margin:1rem auto 1.5rem;">
+      <a href="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-1-welcome-amenities.webp" target="_blank" rel="noopener" aria-label="Open full-size Step 1 screenshot">
+        <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-1-welcome-amenities.webp" width="644" height="798" loading="lazy" alt="Wait N' Rest Toronto booking welcome screen listing room amenities including Wi-Fi, premium bed, soundproofing and private shower" style="width:100%;height:auto;cursor:zoom-in;">
+      </a>
+      <figcaption>Step 1: amenities on the Toronto welcome screen. Screenshot taken November 21, 2026.</figcaption>
+    </figure>
 
-<h3>Step 4: Confirm your guests</h3>
-<p>A short check screen confirms the head count before the system shows you any rooms.</p>
-<figure>
-  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-4-confirm-guests.webp" width="544" height="443" loading="lazy" alt="Wait N' Rest Toronto confirm guests screen showing two adults">
-  <figcaption>Step 4: guest confirmation.</figcaption>
-</figure>
+    <h3>Step 2: Pick your times and read the security notice</h3>
+    <p>You choose your check-in and check-out times. A notice then reminds you that access depends on security screening and your flight's check-in and boarding times. If you can't get through airport security, you can't get in.</p>
+    <figure style="max-width:460px;margin:1rem auto 1.5rem;">
+      <a href="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-2-post-security-notice.webp" target="_blank" rel="noopener" aria-label="Open full-size Step 2 screenshot">
+        <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-2-post-security-notice.webp" width="544" height="287" loading="lazy" alt="Wait N' Rest Toronto post-security location notice explaining that guests must clear airport security to enter" style="width:100%;height:auto;cursor:zoom-in;">
+      </a>
+      <figcaption>Step 2: the post-security notice.</figcaption>
+    </figure>
 
-<h3>Step 5: Choose hourly or extended stay</h3>
-<p>This is the screen to slow down on. You pick between the hourly rate and an eight-hour "Extended stay." For two guests, hourly was $70 an hour and the eight-hour rate was $315. If you'll be there more than four or five hours, check the extended option before you continue.</p>
-<figure>
-  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-5-rate-type.webp" width="744" height="425" loading="lazy" alt="Wait N' Rest Toronto rate type screen comparing a $70 hourly rate with a $315 eight-hour extended stay for two guests">
-  <figcaption>Step 5: hourly vs. eight-hour rates for two guests, base prices before taxes and fees.</figcaption>
-</figure>
+    <h3>Step 3: Add your guests</h3>
+    <p>You enter adults (12 and up), children (3 to 12) and infants (under 3). Rooms take up to four guests, and infants don't count toward that limit. This is also where you tick the box if someone in your group needs an accessible room.</p>
+    <figure style="max-width:460px;margin:1rem auto 1.5rem;">
+      <a href="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-3-guest-count.webp" target="_blank" rel="noopener" aria-label="Open full-size Step 3 screenshot">
+        <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-3-guest-count.webp" width="544" height="501" loading="lazy" alt="Wait N' Rest Toronto guest selector for adults, children and infants with an accessible room checkbox" style="width:100%;height:auto;cursor:zoom-in;">
+      </a>
+      <figcaption>Step 3: guest count and the accessible room option.</figcaption>
+    </figure>
 
-<h3>Step 6: Review your selection</h3>
-<p>A summary shows your guests, check-in and check-out times in Toronto time, and the rate. For our four-hour sample, that was $70 an hour and $280 before taxes.</p>
-<figure>
-  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-6-confirm-selection.webp" width="584" height="643" loading="lazy" alt="Wait N' Rest Toronto selection summary showing two adults, a four-hour stay and a $280 base total">
-  <figcaption>Step 6: the selection summary.</figcaption>
-</figure>
+    <h3>Step 4: Confirm your guests</h3>
+    <p>A short check screen confirms the head count before the system shows you any rooms.</p>
+    <figure style="max-width:460px;margin:1rem auto 1.5rem;">
+      <a href="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-4-confirm-guests.webp" target="_blank" rel="noopener" aria-label="Open full-size Step 4 screenshot">
+        <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-4-confirm-guests.webp" width="544" height="443" loading="lazy" alt="Wait N' Rest Toronto confirm guests screen showing two adults" style="width:100%;height:auto;cursor:zoom-in;">
+      </a>
+      <figcaption>Step 4: guest confirmation.</figcaption>
+    </figure>
 
-<h3>Step 7: See available rooms and the full price</h3>
-<p>Now you see which rooms are free and the total with taxes and fees. For two adults, only the step-free group room (listed as "Barrier Free") came up, with one room available. The total was $335.38. After this, the flow moves on to setting your access code, then your details and payment. We stopped here.</p>
-<figure>
-  <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-7-available-rooms.webp" width="1093" height="769" loading="lazy" alt="Wait N' Rest Toronto available rooms screen showing the Barrier Free room for two guests at CAD $335.38 total">
-  <figcaption>Step 7: the group room result for two adults, Saturday, January 23, 2027, noon to 4 p.m.</figcaption>
-</figure>
+    <h3>Step 5: Choose hourly or extended stay</h3>
+    <p>This is the screen to slow down on. You pick between the hourly rate and an eight-hour "Extended stay." For two guests, hourly was $70 an hour and the eight-hour rate was $315. If you'll be there more than four or five hours, check the extended option before you continue.</p>
+    <figure style="max-width:460px;margin:1rem auto 1.5rem;">
+      <a href="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-5-rate-type.webp" target="_blank" rel="noopener" aria-label="Open full-size Step 5 screenshot">
+        <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-5-rate-type.webp" width="744" height="425" loading="lazy" alt="Wait N' Rest Toronto rate type screen comparing a $70 hourly rate with a $315 eight-hour extended stay for two guests" style="width:100%;height:auto;cursor:zoom-in;">
+      </a>
+      <figcaption>Step 5: hourly vs. eight-hour rates for two guests, base prices before taxes and fees.</figcaption>
+    </figure>
 
-<p><em>What stood out:</em> the price you see on the first screens is the base rate. The total with taxes and fees only appears at step 7, so budget about 20% more than the base. And if you're two or more, there's just one room you can book, so it can be gone fast.</p>
+    <h3>Step 6: Review your selection</h3>
+    <p>A summary shows your guests, check-in and check-out times in Toronto time, and the rate. For our four-hour sample, that was $70 an hour and $280 before taxes.</p>
+    <figure style="max-width:460px;margin:1rem auto 1.5rem;">
+      <a href="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-6-confirm-selection.webp" target="_blank" rel="noopener" aria-label="Open full-size Step 6 screenshot">
+        <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-6-confirm-selection.webp" width="584" height="643" loading="lazy" alt="Wait N' Rest Toronto selection summary showing two adults, a four-hour stay and a $280 base total" style="width:100%;height:auto;cursor:zoom-in;">
+      </a>
+      <figcaption>Step 6: the selection summary.</figcaption>
+    </figure>
+
+    <h3>Step 7: See available rooms and the full price</h3>
+    <p>Now you see which rooms are free and the total with taxes and fees. For two adults, only the step-free group room (listed as "Barrier Free") came up, with one room available. The total was $335.38. After this, the flow moves on to setting your access code, then your details and payment. We stopped here.</p>
+    <figure style="max-width:460px;margin:1rem auto 1.5rem;">
+      <a href="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-7-available-rooms.webp" target="_blank" rel="noopener" aria-label="Open full-size Step 7 screenshot">
+        <img src="/blog/wait-n-rest-toronto/wait-n-rest-toronto-booking-step-7-available-rooms.webp" width="1093" height="769" loading="lazy" alt="Wait N' Rest Toronto available rooms screen showing the Barrier Free room for two guests at CAD $335.38 total" style="width:100%;height:auto;cursor:zoom-in;">
+      </a>
+      <figcaption>Step 7: the group room result for two adults, Saturday, January 23, 2027, noon to 4 p.m.</figcaption>
+    </figure>
+
+  </div>
+</details>
 
 <h2>Booking rules to know before you pay</h2>
 <p>Most frustration with services like this comes from rules people didn't read. Here's what Wait N' Rest publishes for Toronto.</p>
@@ -4541,7 +4564,7 @@ Level 2, near Gate C33 in international departures. Open to any traveller with a
     title: "Wait N' Rest at Toronto Pearson: Private Sleep Rooms in Terminal 3",
     excerpt:
       "Toronto Pearson now has private rooms with a real bed and a door that locks, bookable by the hour past security in Terminal 3 near Gate B26. Five rooms, open 24/7, from CAD $55/hour base — and a few booking rules that trip people up.",
-    coverImage: '/blog/wait-n-rest-toronto/wait-n-rest-toronto-group-room-rendering-front.webp',
+    coverImage: '/blog/wait-n-rest-toronto/wait-n-rest-toronto-exterior-hero.webp',
     publishedAt: '2026-11-21',
     lastReviewed: '2026-11-21',
     category: 'Lounge Guides',

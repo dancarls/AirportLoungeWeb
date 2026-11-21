@@ -40,13 +40,17 @@ const V2_SLUGS = new Set<string>([
   'skyteam-lounge-yvr',
 ])
 
-// Route a walk-in day-pass CTA to the most likely affiliate operator based on
-// the lounge name. Falls back to Priority Pass if no operator brand matches.
+// Route a walk-in day-pass / paid-booking CTA to the most likely affiliate
+// operator based on the lounge name. The Wait N' Rest sleep-room facility
+// goes direct to the operator's Toronto booking page (no affiliate deal in
+// place yet — see the Wait N' Rest blog post for the attribution rationale).
+// Falls back to Priority Pass if no operator brand matches.
 function dayPassAffiliate(loungeName: string) {
   const n = loungeName.toLowerCase()
   if (n.includes('plaza premium')) return affiliate('plaza-premium-booking')
   if (n.includes('aspire'))         return affiliate('aspire-lounge-booking')
   if (n.includes('westjet'))        return affiliate('westjet-elevation-booking')
+  if (n.includes('wait n'))         return 'https://www.waitnrest.com/en/toronto'
   return affiliate('priority-pass-membership')
 }
 

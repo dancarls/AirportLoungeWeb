@@ -83,10 +83,15 @@ function getOperator(name: string): string {
 
 function getLoungeTier(name: string): string | null {
   const n = name.toLowerCase()
-  if (n.includes('signature suite')) return 'SIGNATURE'
-  if (n.includes('maple leaf'))      return 'MAPLE LEAF'
-  if (n.includes('café') || n.includes('cafe')) return 'CAFÉ'
-  if (n.includes('first'))           return 'FIRST CLASS'
+  if (n.includes('signature suite'))                     return 'SIGNATURE'
+  if (n.includes('maple leaf'))                          return 'MAPLE LEAF'
+  if (n.includes('café') || n.includes('cafe'))          return 'CAFÉ'
+  if (n.includes('first'))                               return 'FIRST CLASS'
+  // New sleep-rooms category — matches "Wait N' Rest" (and any future
+  // name-matched sleep-room facility). The listing itself is paid-booking
+  // only, so the badge signals "this isn't a lounge" at a glance from the
+  // hub grid.
+  if (n.includes('wait n'))                              return 'SLEEP ROOMS'
   return null
 }
 
