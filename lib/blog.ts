@@ -90,6 +90,10 @@ const yvrDomesticClosureAddendum = `
 const sleepPodsContent = `
 <p data-speakable="intro"><strong>Canada does not have Napcabs, GoSleep pods or dedicated per-hour nap suites like Munich, Helsinki or Singapore Changi. What we have are five lounges with real rest facilities: individual reclining pods, spa-style rest suites, day-bed corners, or an all-night operating schedule that lets you actually stretch out between flights. Only one of them accepts Priority Pass. Only one is open 24 hours a day. Full breakdown below, with the card that unlocks each. Verified September 12, 2026.</strong></p>
 
+<aside style="margin:1.5em 0;padding:1em 1.25em;border-left:4px solid #c8a96e;background:#faf7f2;">
+  <p style="margin:0;font-size:0.95em;line-height:1.55;color:#3d3d3d;"><strong>November 21, 2026 update:</strong> That first line now has an exception. Wait N' Rest has opened five private sleep rooms past security at Toronto Pearson Terminal 3 — the first dedicated per-hour sleep facility at a Canadian airport. They are private rooms with a real bed and a door, not capsule pods, and a booking is a paid room rather than any kind of lounge pass. See our <a href="/blog/wait-n-rest-toronto-pearson">Wait N' Rest Toronto Pearson guide</a> for prices, booking rules, and who can use it.</p>
+</aside>
+
 <blockquote>
 <p><strong>Editorial disclosure:</strong> AirportLounges.ca may receive compensation if you apply for a card through links on this page. This does not affect the issuer's terms or the price you pay. Rest-facility descriptions were verified against operator pages and our own on-file lounge data on September 12, 2026.</p>
 </blockquote>
