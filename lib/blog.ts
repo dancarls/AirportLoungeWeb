@@ -3445,6 +3445,123 @@ const waitNRestTorontoContent = `
 `
 
 // ─────────────────────────────────────────────────────────────────────────
+// Vancouver (YVR) credit-card guide — parallel to the YYZ card post.
+// GSC queries driving it: "air canada lounge vancouver" (233 wk imp,
+// pos 11.6), "cathay pacific lounge yvr" (366 wk imp, pos 8.73),
+// "cathay pacific lounge vancouver" (290 wk imp, pos 9.04). Also captures
+// the "best credit card vancouver lounge" long-tail cluster. YVR has
+// Canada's strongest Plaza Premium network, so Amex Platinum is the clear
+// winner — but the Jan 2027 Priority Pass caps change the math.
+// ─────────────────────────────────────────────────────────────────────────
+const yvrCreditCardContent = `
+<p data-speakable="intro"><strong>Vancouver International (YVR) has Canada's strongest Plaza Premium network — five locations covering every departure zone, including the spa-grade Plaza Premium First at Gate D67-D68. The single card that unlocks the most YVR lounges is the American Express Platinum, which gets direct entry at all five Plaza Premium lounges plus Priority Pass coverage for the SkyTeam Lounge. For Air Canada loyalists, the three $599 Aeroplan credit cards open the Maple Leaf Lounges — but note that the Domestic Maple Leaf Lounge is closed for a major renovation through early 2028. This guide maps every YVR lounge to the card that opens it. Verified October 2026.</strong></p>
+
+<blockquote>
+<p><strong>Operational alert, October 2026:</strong> The <a href="/airports/YVR/lounges/ac-maple-leaf-lounge-domestic-yvr">Air Canada Maple Leaf Lounge Domestic at YVR</a> is closed from October 14, 2026 through early 2028 for a complete renovation. During the closure, eligible travellers can use the two Air Canada Cafés at YVR (Gate C50 and Gate C46). Full timeline and alternatives: our <a href="/blog/yvr-domestic-maple-leaf-lounge-closure-2026">YVR Domestic Maple Leaf Lounge closure guide</a>.</p>
+</blockquote>
+
+<h2>The YVR lounge landscape at a glance</h2>
+<table>
+  <thead>
+    <tr><th>Lounge</th><th>Zone</th><th>Who gets in</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong><a href="/airports/YVR/lounges/plaza-premium-first-yvr">Plaza Premium First</a></strong></td><td>International (Gates D67-D68)</td><td>Amex Platinum direct; walk-in ~$110 CAD; $30 CAD upgrade from Plaza Premium International</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/plaza-premium-international-24h-yvr">Plaza Premium International (24h)</a></strong></td><td>International</td><td>Amex Platinum, Priority Pass, DragonPass, walk-in day pass</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/plaza-premium-pier-b-yvr">Plaza Premium Pier B</a></strong></td><td>Domestic (Pier B)</td><td>Same as International (shower surcharge $25 CAD)</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/plaza-premium-pier-c-yvr">Plaza Premium Pier C</a></strong></td><td>Domestic (Pier C)</td><td>Same as International</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/plaza-premium-pier-e-yvr">Plaza Premium Pier E (Transborder)</a></strong></td><td>Transborder (post U.S. preclearance)</td><td>Same as International</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/cathay-pacific-lounge-yvr">Cathay Pacific Lounge</a></strong></td><td>International (Gate D70)</td><td>Cathay / oneworld Business+; oneworld Emerald/Sapphire</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/skyteam-lounge-yvr">SkyTeam Lounge</a></strong></td><td>International</td><td>SkyTeam Elite Plus; SkyTeam Business/First; Priority Pass; DragonPass</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/ac-maple-leaf-lounge-domestic-yvr">Maple Leaf Lounge Domestic</a></strong></td><td>Domestic</td><td><em>Closed Oct 14, 2026 – early 2028</em></td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/ac-maple-leaf-lounge-international-yvr">Maple Leaf Lounge International</a></strong></td><td>International (Gate D52)</td><td>Aeroplan premium cards / status / AC Business</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/ac-maple-leaf-lounge-transborder-yvr">Maple Leaf Lounge Transborder</a></strong></td><td>Transborder</td><td>Same as International MLL</td></tr>
+  </tbody>
+</table>
+
+<h2>The 7 Canadian credit cards ranked for YVR access</h2>
+
+<h3>1. American Express Platinum ($799) — the widest YVR coverage</h3>
+<p>The <a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Canadian Amex Platinum</a> is the single best card for YVR by a wide margin. It gets direct entry at all five Plaza Premium lounges — including Plaza Premium First, the spa-grade premium-tier lounge that does NOT accept Priority Pass. Add Priority Pass coverage for the SkyTeam Lounge and you're inside 6 of the 10 YVR lounges on one card. The $200 travel credit + $200 dining credit bring the net cost to roughly $399, which clears break-even at 6-8 lounge visits a year for a Vancouver-based traveller.</p>
+<p><strong>YVR coverage:</strong> 5 Plaza Premium (direct) + SkyTeam Lounge (Priority Pass) = 6 of 10.<br>
+<strong>Guest:</strong> 1 guest at Plaza Premium + Priority Pass (through Dec 31, 2026; from Jan 1, 2027 the guest uses a visit from the 6 + 6 capped pool unless you spend $20,000 CAD/year).<br>
+<strong>What it does NOT unlock at YVR:</strong> Cathay Pacific Lounge (ticket/status only), Maple Leaf Lounges (Air Canada only).</p>
+
+<h3>2. CIBC or TD Aeroplan Visa Infinite Privilege ($599) — for Air Canada loyalists</h3>
+<p>If you fly Air Canada out of YVR regularly, the <a href="/credit-cards/aeroplan-cards-compared">three $599 Aeroplan premium cards</a> all open the Maple Leaf Lounge International and Transborder (the Domestic location is closed through early 2028). The CIBC version has a slight edge over TD on supplementary card pricing ($149 vs $199) and insurance limits, but the two are otherwise interchangeable for YVR access purposes.</p>
+<p><strong>YVR coverage:</strong> 2 Maple Leaf Lounges (Int'l, Transborder) + Visa Airport Companion for 6 DragonPass visits/year (covers Plaza Premium + SkyTeam).<br>
+<strong>Guest:</strong> 1 Maple Leaf guest per visit through Dec 31, 2026; 4 one-time Maple Leaf guest passes/year.<br>
+<strong>What it unlocks that Amex Platinum does NOT:</strong> the Maple Leaf Lounges.</p>
+
+<h3>3. American Express Aeroplan Reserve ($599) — conditional pick</h3>
+<p>The <a href="https://www.finlywealth.com/credit-cards/reviews/amex-aeroplan-reserve" target="_blank" rel="sponsored nofollow noopener">Amex Aeroplan Reserve</a> opens the same Maple Leaf Lounges as the CIBC and TD Aeroplan VIP cards. The differentiator: 3x Aeroplan earn on Air Canada (vs 2x on the Visa cards) and priority security + 15% YYZ parking (useful if you fly Toronto to Vancouver regularly). The Priority Pass benefit on this card has the annual fee waived but every visit is still charged at the prevailing rate — which is why it does NOT replace a paid Priority Pass or the Amex Platinum's included visits for YVR shower/Plaza Premium access.</p>
+
+<h3>4. Scotiabank Platinum American Express ($399) — Priority Pass on a budget</h3>
+<p>The Scotiabank Platinum Amex includes 10 Priority Pass visits per year — enough for someone who travels through YVR 5-10 times a year and uses Priority Pass for Plaza Premium International (24h), Pier B/C, Pier E, or the SkyTeam Lounge. At $399 it's significantly cheaper than the Amex Platinum, but you lose direct Plaza Premium First access and the 11 extra Plaza Premium visits beyond the 10-visit cap.</p>
+
+<h3>5. Scotiabank Passport Visa Infinite ($150) — the cheapest real YVR option</h3>
+<p>The Scotiabank Passport Visa Infinite includes 6 Visa Airport Companion visits (DragonPass network) per year, which covers Plaza Premium lounges at YVR and the SkyTeam Lounge. For a Vancouver traveller flying 3-5 times a year, this is a genuinely good $150 card — it absolutely clears break-even. It does NOT unlock Plaza Premium First or the Cathay Pacific Lounge, and does not include the Maple Leaf Lounges.</p>
+
+<h3>6. RBC Avion Visa Infinite Privilege ($399) — DragonPass with earn</h3>
+<p>The RBC Avion VIP includes 6 DragonPass visits per year (same network as Scotiabank Passport Visa Infinite). For the extra $249 over the Scotiabank Passport, you get RBC Avion earn flexibility (transferable to multiple airlines) rather than a strictly better YVR lounge footprint. Choose on earn structure, not on lounge coverage at YVR.</p>
+
+<h3>7. HSBC World Elite Mastercard ($199) — DragonPass via Mastercard Travel Pass</h3>
+<p>HSBC (now RBC in Canada) World Elite Mastercard includes DragonPass via Mastercard Travel Pass — functionally equivalent to the Scotiabank Passport's Visa Airport Companion. At $199 with the earn structure, it's a reasonable alternative to the Scotiabank Passport if you prefer HSBC/RBC banking.</p>
+
+<h2>Which card for your YVR flight direction</h2>
+<ul>
+  <li><strong>Flying domestic from Pier B or C:</strong> Amex Platinum (direct Plaza Premium Pier B/C) or any DragonPass card (6 visits/year caps who can use it). Note Pier B charges a $25 CAD shower surcharge; Pier C does not.</li>
+  <li><strong>Flying internationally:</strong> Amex Platinum is the clear winner — it's the ONLY card that gets direct entry to Plaza Premium First, YVR's premium independent lounge. Priority Pass does not cover PPF.</li>
+  <li><strong>Flying to the U.S. (transborder):</strong> Amex Platinum opens Plaza Premium Pier E after preclearance. Aeroplan cards open Maple Leaf Lounge Transborder on Air Canada. Pick based on which flight you're on.</li>
+  <li><strong>Flying Cathay Pacific or oneworld Business+:</strong> your ticket opens the Cathay Pacific Lounge (Canada's best shower). No credit card substitutes.</li>
+  <li><strong>Flying Delta, Air France, KLM, or another SkyTeam carrier:</strong> SkyTeam Elite Plus plus any Priority Pass card opens the SkyTeam Lounge.</li>
+</ul>
+
+<h2>Three YVR-specific hacks</h2>
+
+<h3>1. The $30 Plaza Premium First upgrade</h3>
+<p>Plaza Premium First at YVR is the newest spa-grade premium lounge in Canada. Priority Pass doesn't cover it, and the walk-in rate is roughly $110 CAD. But from the adjacent Plaza Premium International, you can upgrade to Plaza Premium First for just $30 CAD — including the spa-grade shower suites. This is the single best value upgrade at any Canadian airport. You need lounge entry via Priority Pass / DragonPass / Amex Platinum first, then pay $30 at the Plaza Premium First reception.</p>
+
+<h3>2. The Cathay Pacific Lounge morning advantage</h3>
+<p>The Cathay Pacific Lounge at Gate D70 has the best shower in Canada and no credit card unlocks it — only a Cathay/oneworld Business+ ticket or oneworld Emerald/Sapphire status. BUT: with only two daily YVR departures (morning and evening), it's almost never busy. If you're on a morning Cathay flight, arriving 3 hours early virtually guarantees no shower wait and often the lounge to yourself.</p>
+
+<h3>3. The 24-hour Plaza Premium International</h3>
+<p>The Plaza Premium International Lounge is the only 24-hour airport lounge in Canada. If you're on an overnight connection at YVR, this is where to go — Priority Pass covers it, includes showers (no surcharge, unlike Pier B), and you can nap on the daybed sections through the night.</p>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Which credit card is best for Vancouver (YVR) airport lounge access?</h3>
+<p>The American Express Platinum ($799) opens more YVR lounges than any other Canadian card — all five Plaza Premium lounges (including Plaza Premium First, the only lounge that doesn't accept Priority Pass) plus Priority Pass coverage for the SkyTeam Lounge. That's 6 of 10 YVR lounges. For Air Canada loyalists needing Maple Leaf Lounge access, the CIBC or TD Aeroplan Visa Infinite Privilege ($599) is the second card worth holding.</p>
+
+<h3>Does Amex Platinum get me into the Cathay Pacific Lounge at YVR?</h3>
+<p>No. The Cathay Pacific Lounge requires a same-day Cathay Pacific or oneworld Business/First class ticket, or oneworld Emerald or Sapphire status. No Canadian credit card substitutes, and there is no walk-in rate.</p>
+
+<h3>Does Priority Pass cover Plaza Premium First at YVR?</h3>
+<p>No. Plaza Premium First at YVR Gate D67-D68 is the ONLY Plaza Premium lounge at YVR that does not accept Priority Pass. Access routes: Amex Platinum (direct benefit, included), walk-in day pass (~$110 CAD), or the $30 CAD upgrade from the adjacent Plaza Premium International Lounge.</p>
+
+<h3>Which card is best if I only travel through YVR 3-5 times a year?</h3>
+<p>The Scotiabank Passport Visa Infinite ($150 annual fee) with 6 Visa Airport Companion (DragonPass) visits per year covers most Plaza Premium and the SkyTeam Lounge at YVR. At $150, it clears break-even in 2-3 visits. If you want Plaza Premium First or more than 6 visits, step up to Amex Platinum.</p>
+
+<h3>Can I use the Maple Leaf Lounge Domestic at YVR right now?</h3>
+<p>No — the YVR Maple Leaf Lounge Domestic is closed for a full renovation from October 14, 2026 through early 2028. During the closure, Aeroplan premium cardholders flying domestic from YVR can use the two Air Canada Cafés (Gate C50 and C46) or the Plaza Premium Pier B (via Priority Pass or DragonPass). Full alternatives in our <a href="/blog/yvr-domestic-maple-leaf-lounge-closure-2026">YVR Domestic MLL closure guide</a>.</p>
+
+<h3>What changes on January 1, 2027 for YVR Amex Platinum holders?</h3>
+<p>The Canadian Amex Platinum's unlimited Plaza Premium + Priority Pass visits end December 31, 2026. From January 1, 2027, those two networks are capped at 6 + 6 visits per year (2 each on a supplementary card), unless you spend $20,000 CAD on the card in a calendar year. For YVR regulars who visit Plaza Premium 10+ times a year, the spend threshold is the critical number to clear.</p>
+
+<h2>Change log</h2>
+<ul>
+  <li><strong>November 24, 2026:</strong> First published as the dedicated Vancouver (YVR) credit card guide. Parallel to our <a href="/blog/best-credit-card-toronto-pearson-yyz-airport-lounge-access">YYZ card guide</a> and <a href="/blog/best-credit-card-montreal-yul-airport-lounge-access">YUL card guide</a>.</li>
+</ul>
+
+<h2>Sources</h2>
+<ul>
+  <li>AirportLounges.ca — <a href="/airports/YVR">YVR hub</a>, <a href="/blog/yvr-domestic-maple-leaf-lounge-closure-2026">YVR Domestic MLL closure guide</a>, <a href="/blog/yvr-airport-lounge-showers">YVR shower guide</a>, <a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum guide</a>, <a href="/blog/best-credit-card-toronto-pearson-yyz-airport-lounge-access">YYZ card guide</a>.</li>
+  <li><a href="https://www.waitnrest.com/en/toronto" rel="nofollow noopener" target="_blank">Plaza Premium — YVR directory</a></li>
+  <li><a href="https://www.aircanada.com/ca/en/aco/home/fly/premium-services/maple-leaf-lounges.html" rel="noopener" target="_blank">Air Canada — Maple Leaf Lounges master directory</a></li>
+</ul>
+`
+
+// ─────────────────────────────────────────────────────────────────────────
 // Hub post that captures the "maple leaf lounge pearson" query cluster.
 // Before this ran, GSC showed ~3,570 wk impressions at avg position ~10.5
 // across 5 near-identical individual MLL lounge pages — classic
@@ -4975,6 +5092,56 @@ Level 2, near Gate C33 in international departures. Open to any traveller with a
       ctaLabel: 'Compare Lounge-Access Cards',
       affiliateKey: 'finlywealth-lounge-access-cards',
     },
+  },
+  {
+    slug: 'best-credit-card-vancouver-yvr-airport-lounge-access',
+    title: 'Best Credit Card for Vancouver (YVR) Airport Lounge Access (2026)',
+    excerpt: 'Amex Platinum opens 6 of 10 YVR lounges — all 5 Plaza Premium (including Plaza Premium First) plus SkyTeam via Priority Pass. CIBC/TD Aeroplan VIP unlock the Maple Leaf Lounges. Every YVR lounge mapped to the card that gets you in. Verified October 2026.',
+    coverImage: imageUrl('airports/yvr/hero.jpg'),
+    publishedAt: '2026-11-24',
+    lastReviewed: '2026-11-24',
+    category: 'Credit Cards',
+    readingTime: '10 min read',
+    // Dec 1 slot in the weekly schedule — parallel to the YYZ card post.
+    // Targets "best credit card vancouver lounge" long-tail + the AC
+    // Vancouver and Cathay Pacific YVR query clusters.
+    metaTitle: 'Best Credit Card for Vancouver (YVR) Lounge Access (2026)',
+    metaDescription: 'Every YVR lounge mapped to the card that opens it. Amex Platinum (5 Plaza Premium direct + PP), Aeroplan VIP (Maple Leaf), Scotia Passport ($150 budget pick).',
+    content: yvrCreditCardContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: 'YVR lounge access rules verified against issuer pages, Priority Pass Canadian directory, and operator pages. Reflects the October 2026 Domestic Maple Leaf Lounge closure.',
+    primaryCta: {
+      heading: 'The card that opens the most YVR lounges',
+      subheading: 'The Amex Platinum gets direct entry at all 5 Plaza Premium lounges at YVR (including Plaza Premium First, which Priority Pass does not cover) plus Priority Pass coverage for SkyTeam — the widest YVR coverage on any Canadian card.',
+      ctaLabel: 'Compare Lounge-Access Cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
+    faqs: [
+      {
+        question: 'Which credit card is best for Vancouver (YVR) airport lounge access?',
+        answer: 'The American Express Platinum ($799) opens more YVR lounges than any other Canadian card — all five Plaza Premium lounges (including Plaza Premium First, the only lounge that does not accept Priority Pass) plus Priority Pass coverage for the SkyTeam Lounge. That is 6 of 10 YVR lounges. For Air Canada loyalists needing Maple Leaf Lounge access, the CIBC or TD Aeroplan Visa Infinite Privilege ($599) is the second card worth holding.',
+      },
+      {
+        question: 'Does Amex Platinum get me into the Cathay Pacific Lounge at YVR?',
+        answer: 'No. The Cathay Pacific Lounge requires a same-day Cathay Pacific or oneworld Business/First class ticket, or oneworld Emerald or Sapphire status. No Canadian credit card substitutes, and there is no walk-in rate.',
+      },
+      {
+        question: 'Does Priority Pass cover Plaza Premium First at YVR?',
+        answer: 'No. Plaza Premium First at YVR Gate D67-D68 is the only Plaza Premium lounge at YVR that does not accept Priority Pass. Access routes: Amex Platinum (direct, included), walk-in day pass (about $110 CAD), or the $30 CAD upgrade from the adjacent Plaza Premium International Lounge.',
+      },
+      {
+        question: 'Which card is best if I only travel through YVR 3-5 times a year?',
+        answer: 'The Scotiabank Passport Visa Infinite ($150 annual fee) with 6 Visa Airport Companion (DragonPass) visits per year covers most Plaza Premium lounges and the SkyTeam Lounge at YVR. At $150, it clears break-even in 2-3 visits. If you want Plaza Premium First or more than 6 visits per year, step up to Amex Platinum.',
+      },
+      {
+        question: 'Can I use the Maple Leaf Lounge Domestic at YVR right now?',
+        answer: 'No — the YVR Maple Leaf Lounge Domestic is closed for a full renovation from October 14, 2026 through early 2028. During the closure, Aeroplan premium cardholders flying domestic from YVR can use the two Air Canada Cafés (Gate C50 and C46) or the Plaza Premium Pier B via Priority Pass or DragonPass.',
+      },
+      {
+        question: 'What changes on January 1, 2027 for YVR Amex Platinum holders?',
+        answer: 'The Canadian Amex Platinum unlimited Plaza Premium + Priority Pass visits end December 31, 2026. From January 1, 2027, those two networks are capped at 6 + 6 visits per year (2 each on a supplementary card), unless you spend $20,000 CAD on the card in a calendar year. For YVR regulars who visit Plaza Premium 10+ times a year, the spend threshold is the critical number to clear.',
+      },
+    ],
   },
   {
     slug: 'yvr-airport-lounge-showers',
