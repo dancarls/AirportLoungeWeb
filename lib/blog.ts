@@ -3444,6 +3444,277 @@ const waitNRestTorontoContent = `
 <p><em>AirportLounges.ca is independent and is not paid by Wait N' Rest. Prices and rules can change without notice. Always confirm with the operator before you book.</em></p>
 `
 
+// ─────────────────────────────────────────────────────────────────────────
+// Hub post that captures the "maple leaf lounge pearson" query cluster.
+// Before this ran, GSC showed ~3,570 wk impressions at avg position ~10.5
+// across 5 near-identical individual MLL lounge pages — classic
+// cannibalization. This single aggregated hub becomes the canonical answer
+// to "maple leaf lounge pearson" style queries, links down to each
+// individual page, and lets Google surface one authoritative result
+// instead of choosing between four.
+// ─────────────────────────────────────────────────────────────────────────
+const mapleLeafPearsonHubContent = `
+<p data-speakable="intro"><strong>Toronto Pearson is the largest Maple Leaf Lounge network in Canada: three dedicated Maple Leaf Lounges plus an Air Canada Café in Terminal 1, plus the invitation-only Air Canada Signature Suite that sits above all of them. This guide covers every one — what makes each different, which cards get you in, how the hours and amenities compare, and which lounge to aim for based on your flight. Verified October 2026.</strong></p>
+
+<blockquote>
+<p><strong>At a glance:</strong> Air Canada operates the Maple Leaf Lounge <a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-domestic-yyz">Domestic</a> (24h, showers, D51–D57), <a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-international-yyz">International</a>, and <a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-transborder-yyz">Transborder</a> lounges at YYZ, plus the smaller <a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-express-yyz">Express</a> location (5–8:30, no shower, no walk-up). The <a href="/airports/YYZ/lounges/ac-cafe-yyz">Air Canada Café</a> at D20 is a smaller spin-off. The <a href="/airports/YYZ/lounges/ac-signature-suite-yyz">Signature Suite</a> is accessible only on a same-day Air Canada Signature Class ticket — no card gets you in.</p>
+</blockquote>
+
+<h2>All five Air Canada lounge spaces at Pearson, compared</h2>
+<table>
+  <thead>
+    <tr><th>Lounge</th><th>Terminal / Zone</th><th>Hours</th><th>Showers</th><th>Walk-in?</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong><a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-domestic-yyz">MLL Domestic</a></strong></td><td>T1, Level 2, gates D51–D57</td><td>Open 24 hours</td><td>Yes</td><td>No (eligibility only)</td></tr>
+    <tr><td><strong><a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-international-yyz">MLL International</a></strong></td><td>T1, international pier (post-security)</td><td>5:00 AM – midnight</td><td>Yes</td><td>No</td></tr>
+    <tr><td><strong><a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-transborder-yyz">MLL Transborder</a></strong></td><td>T1, transborder pier (post U.S. preclearance)</td><td>4:30 AM – 10:00 PM</td><td>Yes</td><td>No</td></tr>
+    <tr><td><strong><a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-express-yyz">MLL Express</a></strong></td><td>T1, domestic area</td><td>5:00 AM – 8:30 PM</td><td>No</td><td>No</td></tr>
+    <tr><td><strong><a href="/airports/YYZ/lounges/ac-cafe-yyz">Air Canada Café</a></strong></td><td>T1, Level 2 near Gate D20</td><td>5:00 AM – 9:30 PM</td><td>No</td><td>No</td></tr>
+    <tr><td><strong><a href="/airports/YYZ/lounges/ac-signature-suite-yyz">Signature Suite</a></strong></td><td>T1, international pier</td><td>Aligned to AC Signature Class departures</td><td>Yes</td><td>Invitation only</td></tr>
+  </tbody>
+</table>
+
+<h2>Which lounge for your flight</h2>
+<ul>
+  <li><strong>Flying domestic (within Canada):</strong> Maple Leaf Lounge Domestic near D51–D57 is the headline facility. It's the only 24-hour Maple Leaf Lounge in the system and has showers.</li>
+  <li><strong>Flying internationally (not U.S.):</strong> Maple Leaf Lounge International on the international pier. Open 5 AM to midnight with showers.</li>
+  <li><strong>Flying to the United States:</strong> Clear U.S. preclearance first, then head to the Maple Leaf Lounge Transborder. You can't access the domestic or international MLL once you're past U.S. preclearance — the lounges aren't connected.</li>
+  <li><strong>Need a quick workspace before a short-haul?</strong> Maple Leaf Lounge Express is the smaller satellite — faster to reach from some gates, no shower, closes by 8:30 PM.</li>
+  <li><strong>Grab-and-go food instead of a sit-down lounge?</strong> Air Canada Café at Gate D20 serves the same access list but in a smaller café format.</li>
+</ul>
+
+<h2>Who gets in — the card and status matrix</h2>
+<p>Every Maple Leaf Lounge at Pearson (including the Café, excluding the Signature Suite) accepts the same list of eligibility credentials. Access is confirmed at the door — no walk-up day pass, no pre-booking.</p>
+<table>
+  <thead>
+    <tr><th>Access route</th><th>Includes 1 guest?</th><th>Confirmed at</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Air Canada Signature Class ticket (international)</td><td>Yes</td><td>Boarding pass scan</td></tr>
+    <tr><td>Air Canada Business Class ticket</td><td>Yes (international)</td><td>Boarding pass scan</td></tr>
+    <tr><td>Aeroplan Elite 50K / 75K / Super Elite 100K + same-day AC flight</td><td>Yes (50K+)</td><td>Aeroplan number on ticket</td></tr>
+    <tr><td>Star Alliance Gold status + same-day Star Alliance flight</td><td>Yes</td><td>Status on ticket</td></tr>
+    <tr><td>Maple Leaf Club worldwide membership</td><td>Yes</td><td>Membership card</td></tr>
+    <tr><td><a href="/credit-cards/aeroplan-cards-compared">TD Aeroplan Visa Infinite Privilege</a> ($599) + same-day AC flight</td><td>Yes (through Dec 31, 2026; reviewed 2027)</td><td>Card at desk</td></tr>
+    <tr><td><a href="/credit-cards/aeroplan-cards-compared">CIBC Aeroplan Visa Infinite Privilege</a> ($599) + same-day AC flight</td><td>Yes (through Dec 31, 2026)</td><td>Card at desk</td></tr>
+    <tr><td>American Express Aeroplan Reserve ($599) + same-day AC flight</td><td>Yes</td><td>Card at desk</td></tr>
+  </tbody>
+</table>
+
+<p><strong>What does NOT grant access:</strong> American Express Platinum (unlimited Plaza Premium + Priority Pass, but no MLL access), any Priority Pass card, DragonPass, Visa Airport Companion, or walking up and offering to pay. There is no walk-in day pass to any Maple Leaf Lounge at Pearson.</p>
+
+<h3>Note on the Air Canada Signature Suite</h3>
+<p>The <a href="/airports/YYZ/lounges/ac-signature-suite-yyz">Air Canada Signature Suite</a> at YYZ T1 is the most exclusive lounge in Canada and sits above the Maple Leaf system. Access requires a <strong>same-day Air Canada Signature Class ticket</strong> on an international flight, or a Super Elite 100K Aeroplan member travelling on a Signature Class routing. No credit card, no status short of Super Elite, and no walk-up option unlocks it. It is often described as the best airport lounge in Canada when you can get into it — à la carte dining prepared by a dedicated chef, private booth seating with reclining chairs, dedicated boarding staff.</p>
+
+<h2>Priority Pass alternatives at YYZ if you're not eligible for MLL</h2>
+<p>If none of the MLL access routes apply, Pearson has strong Priority Pass alternatives that take Amex Platinum, Business Platinum and Scotiabank Platinum Amex (the three Canadian cards with Priority Pass), plus DragonPass cards:</p>
+<ul>
+  <li>Plaza Premium T1 Domestic, Plaza Premium T1 Transborder (<em>note: the T1 International Plaza Premium is permanently closed as of December 27, 2025</em>)</li>
+  <li>Plaza Premium T3 Landmark, Plaza Premium T3 Domestic, Plaza Premium T3 Transborder</li>
+  <li>Aspire Lounge T3</li>
+</ul>
+<p>Full breakdown in our <a href="/blog/yyz-airport-lounge-day-pass">YYZ airport lounge day-pass guide</a> or the <a href="/blog/priority-pass-lounges-canada">Priority Pass lounges in Canada</a> post.</p>
+
+<h2>Showers and food, head to head</h2>
+<p>If a shower before your flight matters, three of the four Maple Leaf Lounges have one — Domestic, International, and Transborder. Express does not. The 24-hour operating schedule at Domestic plus the showers makes it the preferred lounge for red-eye arrivals needing a reset before an onward flight.</p>
+<p>Food at all four Maple Leaf Lounges and the Café is complimentary, with a hot-food-and-bar setup at the three full-service lounges and a lighter grab-and-go spread at the Café. The Signature Suite is a different category entirely — a chef-made à la carte menu with table service.</p>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Can I use the Maple Leaf Lounge with Amex Platinum?</h3>
+<p>No. The Canadian American Express Platinum ($799) opens Plaza Premium (direct), Priority Pass Select, Aspire and the Delta Sky Club network — but it does NOT include Maple Leaf Lounge access. For MLL at Pearson, you need an Aeroplan premium card (TD, CIBC, Amex Reserve), Aeroplan Elite status, Star Alliance Gold status on a Star Alliance flight, or a business/first-class ticket on Air Canada.</p>
+
+<h3>Do I need to book a Maple Leaf Lounge at Pearson in advance?</h3>
+<p>No. Maple Leaf Lounges do not take reservations. Access is verified at the door on your same-day boarding pass plus proof of eligibility (status card, Aeroplan premium credit card, Maple Leaf Club card). Walk in, show your credentials, walk through — no pre-booking anywhere in the system.</p>
+
+<h3>Can I walk in and pay for a day pass?</h3>
+<p>No. Unlike Plaza Premium at Pearson, Air Canada does not sell walk-up day passes to the Maple Leaf Lounges. If you don't meet one of the eligibility routes above, Plaza Premium (T1 Domestic/Transborder, T3) and Aspire T3 are your Priority Pass / walk-in options. See the <a href="/blog/yyz-airport-lounge-day-pass">YYZ day pass guide</a>.</p>
+
+<h3>Which Pearson Maple Leaf Lounge has the best showers?</h3>
+<p>The Maple Leaf Lounge International is the largest facility with the most shower suites, including an accessible stall. Our full <a href="/blog/yyz-airport-lounge-showers">YYZ shower guide</a> covers wait times, products stocked, and arrival timing.</p>
+
+<h3>Can I bring a guest into the Maple Leaf Lounge at Pearson?</h3>
+<p>Depends on access route. Every eligible premium credit card and status tier allows 1 guest free. Business class ticket holders may bring 1 guest on international flights (not domestic). From January 1, 2027 some guest rules on Aeroplan premium credit cards may be reviewed — confirm with your issuer before travelling in 2027.</p>
+
+<h3>Can I use a Pearson Maple Leaf Lounge if I'm connecting through Toronto on another airline?</h3>
+<p>Only if you have Star Alliance Gold status plus a same-day Star Alliance flight (not required to be Air Canada), or you hold Maple Leaf Club worldwide membership. An Aeroplan status or Aeroplan credit card access only applies to same-day AC-operated or AC-marketed flights.</p>
+
+<h2>Change log</h2>
+<ul>
+  <li><strong>November 24, 2026:</strong> First published as a dedicated Pearson Maple Leaf hub. Consolidates coverage across Domestic / International / Transborder / Express / Café / Signature Suite into one authoritative answer.</li>
+</ul>
+
+<h2>Sources</h2>
+<ul>
+  <li><a href="https://www.aircanada.com/ca/en/aco/home/fly/premium-services/maple-leaf-lounges.html" rel="noopener" target="_blank">Air Canada — Maple Leaf Lounges master directory</a></li>
+  <li>AirportLounges.ca lounge pages — <a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-domestic-yyz">Domestic</a>, <a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-international-yyz">International</a>, <a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-transborder-yyz">Transborder</a>, <a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-express-yyz">Express</a>, <a href="/airports/YYZ/lounges/ac-cafe-yyz">Café</a>, <a href="/airports/YYZ/lounges/ac-signature-suite-yyz">Signature Suite</a></li>
+  <li><a href="/credit-cards/aeroplan-cards-compared">AirportLounges.ca — Aeroplan cards compared</a></li>
+</ul>
+`
+
+// ─────────────────────────────────────────────────────────────────────────
+// Airport-specific shower pages — fix GSC gap where
+// "toronto airport lounge shower" (700 imp/wk, 0 clicks, pos 13.68) and
+// "vancouver airport lounge shower" (740 imp/wk, 0 clicks, pos 14.95)
+// are being served by the generic Canada-wide shower post but losing to
+// more specific competitors. Each airport-specific post inherits the
+// relevant shower-coverage content and links back to the master.
+// ─────────────────────────────────────────────────────────────────────────
+const yyzShowerContent = `
+<p data-speakable="intro"><strong>Toronto Pearson has six airport lounges with showers, split across Terminals 1 and 3, covering every direction of travel — domestic, U.S. transborder, and international. All six are accessible with either Air Canada status, a Priority Pass card, or a walk-in day pass. This guide covers which lounge has the best shower, who can get in, what's stocked, and how to avoid the wait. Verified October 2026.</strong></p>
+
+<h2>Every YYZ lounge with a shower, at a glance</h2>
+<table>
+  <thead>
+    <tr><th>Lounge</th><th>Terminal / Zone</th><th>Access</th><th>Shower notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong><a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-domestic-yyz">Maple Leaf Lounge Domestic</a></strong></td><td>T1, 24h, gates D51–D57</td><td>Aeroplan premium card / status / AC Business Class — see our <a href="/blog/maple-leaf-lounges-toronto-pearson">Pearson MLL guide</a></td><td>Multiple stalls incl. 1 accessible; towels + full products</td></tr>
+    <tr><td><strong><a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-international-yyz">Maple Leaf Lounge International</a></strong></td><td>T1 international pier</td><td>Same as Domestic MLL</td><td>Largest shower complex in the MLL system</td></tr>
+    <tr><td><strong><a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-transborder-yyz">Maple Leaf Lounge Transborder</a></strong></td><td>T1 after U.S. preclearance</td><td>Same as Domestic MLL</td><td>Showers refurbished 2024</td></tr>
+    <tr><td><strong><a href="/airports/YYZ/lounges/plaza-premium-domestic-t1-yyz">Plaza Premium T1 Domestic</a></strong></td><td>T1 domestic area</td><td>Amex Platinum (direct), Priority Pass, DragonPass, or walk-in day pass</td><td>Shower on first-come basis; towels included</td></tr>
+    <tr><td><strong><a href="/airports/YYZ/lounges/plaza-premium-landmark-yyz">Plaza Premium Landmark T3</a></strong></td><td>T3 international</td><td>Same as T1 Domestic Plaza Premium</td><td>Premium shower suites — best Plaza Premium shower at YYZ</td></tr>
+    <tr><td><strong><a href="/airports/YYZ/lounges/plaza-premium-transborder-t3-yyz">Plaza Premium T3 Transborder</a></strong></td><td>T3 after U.S. preclearance</td><td>Same access</td><td>Compact shower stalls</td></tr>
+  </tbody>
+</table>
+
+<p><em>Not on this list:</em> Plaza Premium T1 International (<strong>permanently closed December 27, 2025</strong>), Air France-KLM Crown Lounge T3 (business class only), Aspire T3 (no on-site shower).</p>
+
+<h2>Best shower at YYZ — editorial pick</h2>
+<p>The <a href="/airports/YYZ/lounges/plaza-premium-landmark-yyz">Plaza Premium Landmark Lounge at T3</a> has the most consistently well-reviewed shower experience at Pearson. Private suites with a sink, toilet and walk-in shower, full-size bath products stocked (not single-use sachets), and clean, matched linens.</p>
+<p>The <a href="/airports/YYZ/lounges/ac-maple-leaf-lounge-international-yyz">Maple Leaf Lounge International</a> runs a close second — more stalls (lower wait risk) and the premium product line Air Canada rolled out in 2024. But it requires MLL eligibility (no walk-in).</p>
+<p>If you only have Priority Pass, head to Plaza Premium Landmark T3 if you're on an international or transborder flight, or Plaza Premium T1 Domestic if you're on a domestic leg.</p>
+
+<h2>Which cards get you into a shower at YYZ</h2>
+
+<h3>Direct lounge-benefit cards</h3>
+<ul>
+  <li><strong><a href="/blog/amex-platinum-airport-lounge-access-canada">American Express Platinum</a> ($799):</strong> Direct entry to any Plaza Premium at Pearson. Plus Priority Pass covers the same lounges.</li>
+  <li><strong>Scotiabank Platinum Amex ($399):</strong> Includes 10 Priority Pass visits per year.</li>
+</ul>
+
+<h3>Priority Pass + DragonPass cards</h3>
+<ul>
+  <li>Scotiabank Passport Visa Infinite ($150) — 6 DragonPass visits/year</li>
+  <li>HSBC World Elite Mastercard ($199) — DragonPass through Mastercard Travel Pass</li>
+  <li>RBC Avion Visa Infinite Privilege ($399) — 6 DragonPass visits/year</li>
+</ul>
+
+<h3>Air Canada / Maple Leaf access</h3>
+<p>Any of the three $599 Aeroplan cards unlocks Maple Leaf Lounge Domestic / International / Transborder showers — see our <a href="/credit-cards/aeroplan-cards-compared">Aeroplan cards compared</a> guide.</p>
+
+<h2>How to avoid the shower wait at YYZ</h2>
+<ul>
+  <li><strong>Arrive early.</strong> Shower queues peak between 7–9 AM (red-eye arrivals) and after 4 PM (long-haul connections). If you can shower outside those windows, you'll walk straight in.</li>
+  <li><strong>Register at the desk the moment you walk in.</strong> Most YYZ lounges keep a timed shower list. Register, then eat/work, then take the shower when they call you.</li>
+  <li><strong>Prefer Terminal 1 Domestic or Terminal 3 Landmark on busy mornings.</strong> They have the most shower stalls at YYZ and absorb the demand better than the smaller satellites.</li>
+  <li><strong>Avoid Plaza Premium T3 Transborder for showers.</strong> Only two compact stalls — wait times can exceed 45 minutes during the morning U.S. preclearance rush.</li>
+</ul>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Is the shower free at a YYZ lounge?</h3>
+<p>Yes, if lounge entry is included with your access. Showers are complimentary at all six YYZ lounges with a shower listed above — no Pearson lounge charges a shower surcharge. Our Canada-wide <a href="/blog/canadian-airport-lounges-shower-access">shower access guide</a> covers the lounges that do (Plaza Premium Pier B at YVR, for example).</p>
+
+<h3>Which YYZ lounge has the best shower products?</h3>
+<p>Plaza Premium Landmark T3 — full-size pump bottles instead of single-use sachets, towels regularly replenished. The Maple Leaf Lounge International upgraded to a premium product line in 2024 and is now a close second.</p>
+
+<h3>Can I use the lounge just for a shower?</h3>
+<p>Yes — none of the six YYZ lounges charge separately for the shower. Your lounge entry fee or eligibility covers it. One person per shower session, with towels and bath products provided.</p>
+
+<h3>Do I need to book the shower ahead?</h3>
+<p>No. Showers at every YYZ lounge are first-come, first-served, with an on-site list at the front desk during busy periods. Register when you arrive.</p>
+
+<h3>Is there a shower at Pearson without using a lounge?</h3>
+<p>No. There is no public pay-per-use shower facility at Toronto Pearson. The lounges above are the only on-airport shower option.</p>
+
+<h2>Change log</h2>
+<ul>
+  <li><strong>November 24, 2026:</strong> First published as the dedicated YYZ shower guide. Based on our Canada-wide <a href="/blog/canadian-airport-lounges-shower-access">shower access review</a>, filtered to Pearson-only coverage.</li>
+</ul>
+`
+
+const yvrShowerContent = `
+<p data-speakable="intro"><strong>Vancouver has the best airport shower experience in Canada — and it's not particularly close. Seven lounges at YVR have showers, including the limestone-clad Aesop-stocked suites at the Cathay Pacific Lounge (the best shower at any Canadian airport), the newly-opened Plaza Premium First spa-grade suites, and the 24-hour Plaza Premium International Lounge. This guide covers which lounge has the best shower at YVR, what's stocked, who can get in, and how to minimize the wait. Verified October 2026.</strong></p>
+
+<h2>Every YVR lounge with a shower, at a glance</h2>
+<table>
+  <thead>
+    <tr><th>Lounge</th><th>Zone</th><th>Access</th><th>Shower highlight</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong><a href="/airports/YVR/lounges/cathay-pacific-lounge-yvr">Cathay Pacific Lounge</a></strong></td><td>International (Gate D70)</td><td>Cathay Business / First ticket or oneworld Business+</td><td>Best shower in Canada — limestone suites, Aesop products</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/plaza-premium-first-yvr">Plaza Premium First</a></strong></td><td>International (Gates D67–D68)</td><td>Amex Platinum (direct), day pass (~$110 CAD), or $30 upgrade from Plaza Premium International</td><td>Spa-grade private suites, included with entry</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/plaza-premium-international-24h-yvr">Plaza Premium International (24h)</a></strong></td><td>International</td><td>Amex Platinum (direct), Priority Pass, DragonPass, or walk-in day pass</td><td>24 hours a day — only one in Canada</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/plaza-premium-pier-b-yvr">Plaza Premium Pier B</a></strong></td><td>Domestic (Pier B)</td><td>Same as Plaza Premium International (though a $25 CAD shower surcharge applies here)</td><td>Shower surcharge — the only Plaza Premium that charges extra</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/skyteam-lounge-yvr">SkyTeam Lounge</a></strong></td><td>International</td><td>SkyTeam Elite Plus, Priority Pass, DragonPass, or SkyTeam Business/First</td><td>Two oversized shower suites, no surcharge for PP</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/ac-maple-leaf-lounge-international-yvr">Maple Leaf Lounge International</a></strong></td><td>International (Gate D52)</td><td>Aeroplan premium card / status / AC Business</td><td>Stall count reduced during 2026 renovation at Domestic MLL</td></tr>
+    <tr><td><strong><a href="/airports/YVR/lounges/ac-maple-leaf-lounge-transborder-yvr">Maple Leaf Lounge Transborder</a></strong></td><td>Transborder (post U.S. preclearance)</td><td>Same as MLL International</td><td>Smaller shower facility</td></tr>
+  </tbody>
+</table>
+
+<p><em>Closed until early 2028:</em> The Air Canada <strong>Maple Leaf Lounge Domestic at YVR</strong> is closed for a full renovation from October 14, 2026 through early 2028 — see our <a href="/blog/yvr-domestic-maple-leaf-lounge-closure-2026">YVR Domestic Maple Leaf Lounge closure guide</a> for alternatives during the construction period.</p>
+
+<h2>Best shower at YVR — the three-tier pick</h2>
+
+<h3>If you can get in: Cathay Pacific Lounge (Gate D70)</h3>
+<p>Two private suites clad in limestone with walk-in rain showers, Aesop bath products, plush towels, and a cleaning standard that is consistently praised. One suite is ADA-compliant. With only two suites and no reservation system, arriving early is the only way to guarantee no wait. The lounge opens in line with Cathay's two daily YVR departures (morning and evening), so early arrivals almost always walk straight in.</p>
+<p><strong>Who gets in:</strong> Same-day Cathay Pacific or oneworld Business/First class ticket; oneworld Emerald or Sapphire status.</p>
+
+<h3>If you have Amex Platinum: Plaza Premium First (Gates D67–D68)</h3>
+<p>The newest premium independent lounge in Canada, opened December 2024. Spa-grade private shower suites are included as part of the entry — no surcharge, no second-class treatment. Enter with Amex Platinum's direct benefit, or pay the roughly $110 CAD day pass, or (clever hack) buy a $30 upgrade from the adjacent standard Plaza Premium International.</p>
+
+<h3>If you have Priority Pass: SkyTeam Lounge at YVR</h3>
+<p>Two oversized shower suites with no shower surcharge for Priority Pass members — rare in the YVR Plaza Premium stable (Pier B charges $25 CAD extra). The SkyTeam Lounge is the best free Priority Pass shower option at YVR by a meaningful margin.</p>
+
+<h2>The Plaza Premium Pier B surcharge — watch out</h2>
+<p>Among the four Plaza Premium lounges at YVR, only Pier B (domestic pier) charges an extra <strong>$25 CAD per shower</strong> on top of lounge entry. Priority Pass covers the lounge entry but not the shower surcharge. Plaza Premium International (24h), Plaza Premium First, and Plaza Premium Pier C all include showers with entry.</p>
+
+<h2>Which cards get you into a shower at YVR</h2>
+
+<h3>Direct-benefit cards</h3>
+<ul>
+  <li><strong><a href="/blog/amex-platinum-airport-lounge-access-canada">American Express Platinum</a> ($799):</strong> Direct entry to all four YVR Plaza Premium lounges (including Plaza Premium First with the spa-grade showers) and Priority Pass for the rest. Best card for YVR showers overall.</li>
+  <li><strong>Scotiabank Platinum Amex ($399):</strong> Includes 10 Priority Pass visits per year.</li>
+</ul>
+
+<h3>Priority Pass + DragonPass cards</h3>
+<p>Any Visa / Mastercard with DragonPass (RBC Avion, Scotiabank Passport, HSBC World Elite, TD/CIBC Aeroplan VIP) gets into Plaza Premium Pier B (with the $25 shower surcharge) and the SkyTeam Lounge (no surcharge). Pre-booking on the Priority Pass or DragonPass app is possible 7 days ahead.</p>
+
+<h3>Air Canada cards and status</h3>
+<p>Any of the three $599 <a href="/credit-cards/aeroplan-cards-compared">Aeroplan premium credit cards</a> opens the Maple Leaf Lounge International and Transborder showers at YVR — but note that these aren't the premium shower suites of the Plaza Premium network.</p>
+
+<h2>How to avoid the shower wait at YVR</h2>
+<ul>
+  <li><strong>Avoid Priority Pass showers at Plaza Premium International (24h) mid-morning.</strong> The 24-hour operation plus busy morning transpacific departures make 8–10 AM the hardest window.</li>
+  <li><strong>Target Plaza Premium Pier C or SkyTeam Lounge early.</strong> Both open later than Plaza Premium International but have shorter queues when they do.</li>
+  <li><strong>Plaza Premium First bypass trick.</strong> If you have Priority Pass but not Amex Platinum, the $30 CAD upgrade from Plaza Premium International to Plaza Premium First for a shower is the single best "shower upgrade" value at any Canadian airport.</li>
+</ul>
+
+<h2>Frequently asked questions</h2>
+
+<h3>Which YVR lounge has the best shower?</h3>
+<p>The Cathay Pacific Lounge at Gate D70 — limestone suites, Aesop products, and the best overall shower experience at any Canadian airport. Requires Cathay Business/First ticket or oneworld Business+ status. Second place: Plaza Premium First for Amex Platinum holders.</p>
+
+<h3>Can I use a YVR shower for free with Priority Pass?</h3>
+<p>Yes, at the SkyTeam Lounge (no surcharge) and Plaza Premium International 24h (no surcharge for the shower). Plaza Premium Pier B charges an extra $25 CAD even with Priority Pass.</p>
+
+<h3>Is there a public shower at YVR without a lounge?</h3>
+<p>No. There is no public pay-per-use shower facility at Vancouver International Airport. The seven lounges above are the only on-airport shower option.</p>
+
+<h3>Is the Cathay Pacific shower really worth it?</h3>
+<p>Yes, if you can get in. It is the best airport shower in Canada by a clear margin — reviewed as the "editorial favourite" in every independent comparison. Access is limited (two suites, no reservations) so morning arrivals are the easiest way in.</p>
+
+<h3>Does Plaza Premium First at YVR take Priority Pass?</h3>
+<p>No. Plaza Premium First is the only Plaza Premium lounge at YVR that does NOT accept Priority Pass. Entry is either Amex Platinum (direct), a $110 CAD day pass, or a $30 CAD upgrade from the adjacent Plaza Premium International.</p>
+
+<h2>Change log</h2>
+<ul>
+  <li><strong>November 24, 2026:</strong> First published as the dedicated YVR shower guide. Based on our Canada-wide <a href="/blog/canadian-airport-lounges-shower-access">shower access review</a>, filtered to Vancouver-only coverage.</li>
+</ul>
+`
+
 export const blogPosts: BlogPost[] = [
   {
     slug: 'airport-lounge-cost-canada',
@@ -3991,7 +4262,10 @@ export const blogPosts: BlogPost[] = [
     category: 'Access Guides',
     readingTime: '14 min read',
     metaTitle: 'Airport Lounge Guest Fees in Canada (2026)',
-    metaDescription: "What you'll pay in 2026: Maple Leaf guest fee $59 local, Priority Pass guests US$35, WestJet Elevation $59–$65 + GST. Who gets in free vs pays at the door.",
+    // CTR fix 2026-11-24: the previous description buried the numbers in
+    // mid-sentence. Lead with the four prices up front — that's what
+    // travellers are scanning for in the SERP.
+    metaDescription: 'Maple Leaf $59, Priority Pass US$35, WestJet Elevation $59-$65+GST, Desjardins Odyssey varies. Every Canadian lounge guest fee for 2026, with who gets in free.',
     content: guestFeesContent,
     authorName: 'AirportLounges.ca Editorial Team',
     authorBio: 'Every guest fee on this page comes from an operator page or issuer benefits guide, cross-referenced with Milesopedia, Prince of Travel and Frugal Flyer. Re-verified September 11, 2026; next scheduled review December 2026.',
@@ -4168,7 +4442,7 @@ export const blogPosts: BlogPost[] = [
     lastReviewed: '2026-09-11',
     category: 'Lounge Guides',
     readingTime: '16 min read',
-    metaTitle: 'Priority Pass Lounges in Canada: Every Card (2026)',
+    metaTitle: '23 Priority Pass Lounges in Canada (2026)',
     metaDescription: 'Priority Pass in Canada, 2026: 23 lounges at 8 airports. Only three cards include it — Amex Platinum, Business Platinum, and Scotiabank Platinum Amex.',
     content: priorityPassContent,
     authorName: 'AirportLounges.ca Editorial Team',
@@ -4653,6 +4927,78 @@ Level 2, near Gate C33 in international departures. Open to any traveller with a
         answer: "We found no Toronto-specific confirmation that Priority Pass, DragonPass or any credit card covers Wait N' Rest. Plan to pay the posted rate.",
       },
     ],
+  },
+  {
+    slug: 'maple-leaf-lounges-toronto-pearson',
+    title: 'Maple Leaf Lounges at Toronto Pearson (YYZ): Every Lounge, Access Rules and Showers',
+    excerpt: 'All five Air Canada lounge spaces at Toronto Pearson: Domestic, International, Transborder, Express, Café, and the invitation-only Signature Suite. Which card gets you in, which has showers, and which to aim for based on your flight.',
+    coverImage: imageUrl('airports/yyz/hero.jpg'),
+    publishedAt: '2026-11-24',
+    lastReviewed: '2026-11-24',
+    category: 'Airport Guides',
+    readingTime: '9 min read',
+    // Lead with the exact query pattern Google sees in GSC. Previously these
+    // 3,570 weekly impressions were split across 5 individual lounge pages
+    // (classic cannibalization). This hub becomes the canonical answer.
+    metaTitle: 'Maple Leaf Lounges at Toronto Pearson (YYZ) 2026',
+    metaDescription: 'All 5 Air Canada lounges at Toronto Pearson — Domestic, International, Transborder, Express, Café + the Signature Suite. Access rules, showers, which card gets you in.',
+    content: mapleLeafPearsonHubContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: "Toronto Pearson lounge coverage, verified against Air Canada's own Maple Leaf Lounge directory and cross-checked with operator pages.",
+    primaryCta: {
+      heading: 'The card that opens every Maple Leaf Lounge',
+      subheading: 'Compare the three $599 Aeroplan cards that grant Maple Leaf Lounge access across the Pearson network.',
+      ctaLabel: 'Compare Aeroplan Cards',
+      affiliateKey: 'finlywealth-aeroplan-cards',
+    },
+  },
+  {
+    slug: 'yyz-airport-lounge-showers',
+    title: 'Airport Lounge Showers at Toronto Pearson (YYZ): Every Lounge, Who Gets In, and How to Avoid the Wait',
+    excerpt: 'Toronto Pearson has six airport lounges with showers across Terminals 1 and 3. Which has the best shower, who can get in with Priority Pass vs Aeroplan, and how to minimize the wait on busy mornings.',
+    coverImage: '/blog/shower-access-canada-hero.png',
+    publishedAt: '2026-11-24',
+    lastReviewed: '2026-11-24',
+    category: 'Airport Guides',
+    readingTime: '8 min read',
+    // Targets "toronto airport lounge shower" (700 wk impressions, 0 clicks,
+    // pos 13.68) and sister variants. H1-aligned title + direct "toronto"
+    // token to displace the Canada-wide shower post from this query.
+    metaTitle: 'Toronto Pearson Airport Lounges with Showers 2026',
+    metaDescription: 'Six YYZ lounges with showers across T1 and T3. Which has the best shower, who gets in with Priority Pass or Aeroplan, and how to avoid the morning rush.',
+    content: yyzShowerContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: 'Toronto Pearson shower coverage, cross-checked against operator pages and our Canada-wide shower audit.',
+    primaryCta: {
+      heading: 'The card that opens every YYZ shower lounge',
+      subheading: 'Amex Platinum (direct Plaza Premium + Priority Pass) is the single card that unlocks every YYZ shower lounge. Compare against the Aeroplan cards that open the Maple Leaf showers.',
+      ctaLabel: 'Compare Lounge-Access Cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
+  },
+  {
+    slug: 'yvr-airport-lounge-showers',
+    title: 'Airport Lounge Showers at Vancouver (YVR): The Best Shower in Canada',
+    excerpt: 'Seven YVR lounges have showers — including the limestone-clad Aesop suites at Cathay Pacific (the best shower in Canada) and the brand-new Plaza Premium First spa-grade suites. Who gets in, which card is worth it, and how to avoid the queue.',
+    coverImage: '/blog/premium-shower-suite-yvr.png',
+    publishedAt: '2026-11-24',
+    lastReviewed: '2026-11-24',
+    category: 'Airport Guides',
+    readingTime: '8 min read',
+    // Targets "vancouver airport lounge shower" (740 wk impressions, 0
+    // clicks, pos 14.95). YVR genuinely has the best Canadian lounge
+    // showers — lead with that specificity.
+    metaTitle: 'Vancouver (YVR) Airport Lounges with Showers 2026',
+    metaDescription: 'Seven YVR lounges with showers — Cathay Pacific (best in Canada), Plaza Premium First (newly opened), SkyTeam, and MLL. Access rules, the $25 CAD Pier B surcharge, and how to beat the queue.',
+    content: yvrShowerContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: 'Vancouver airport lounge coverage, verified against operator pages and in-lounge reports.',
+    primaryCta: {
+      heading: 'Best card for YVR showers',
+      subheading: 'Amex Platinum is the single card that directly opens every YVR Plaza Premium (including Plaza Premium First with the spa-grade showers) and Priority Pass covers the rest.',
+      ctaLabel: 'Compare Lounge-Access Cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
   },
 ]
 
