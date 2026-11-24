@@ -146,8 +146,12 @@ const AIRPORT_META_OVERRIDES: Record<string, { title: string; description: strin
     description: 'Compare all 11 Montreal (YUL) lounges for 2026 — Maple Leaf, National Bank, Desjardins Odyssey, and Aspire. Access rules, hours, and day-pass options.',
   },
   YYC: {
+    // CTR refresh 2026-11-24: GSC showed YYC at 0.36% CTR (worst of any
+    // 10k+ impression page). Previous title was clean but generic — new
+    // description leads with the walk-in / card-access hook, which is the
+    // underlying query intent at YYC (travellers deciding how to get in).
     title: 'Calgary Airport Lounges (YYC): 6 in 2026',
-    description: 'All 6 Calgary (YYC) airport lounges in 2026 — WestJet Elevation, Maple Leaf, two Aspire lounges, M Club, and Quiet Space. Hours, cards, and how to get in.',
+    description: 'All 6 Calgary lounges: which accepts walk-ins, which cards get you in, and which has the only on-airport shower (WestJet Elevation). Updated 2026.',
   },
   YVR: {
     title: 'Vancouver Airport Lounges (YVR) 2026',
