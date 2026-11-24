@@ -3445,6 +3445,136 @@ const waitNRestTorontoContent = `
 `
 
 // ─────────────────────────────────────────────────────────────────────────
+// Desjardins Odyssey Lounges at Montreal (YUL) — Dec 1 Monday slot.
+// Target queries from GSC: "desjardins odyssey lounge" (202 wk imp, 0
+// clicks, pos 10.54), "lounge desjardins yul" (~12 pos ranked). Unique
+// Canadian operator — a Quebec credit union running two of the five
+// Priority Pass lounges at YUL. Low-competition content opportunity.
+// ─────────────────────────────────────────────────────────────────────────
+const desjardinsOdysseyYulContent = `
+<p data-speakable="intro"><strong>Desjardins — a Quebec credit union cooperative — runs two of the five Priority Pass lounges at Montréal-Trudeau: the Odyssey International Lounge near Gate 63 and the Odyssey Transborder Lounge near Gate 76 (opened March 1, 2024). You can get in with a Desjardins Odyssey World Elite Mastercard (8 passes/year + 50% off thereafter), the Visa Infinite Privilège Odyssée, Priority Pass, DragonPass, Amex Platinum, or a walk-in day pass. This guide covers both locations, every access route, and when the Desjardins card is worth it vs. alternatives. Verified October 2026.</strong></p>
+
+<blockquote>
+<p><strong>Quick answer:</strong> If you fly YUL a few times a year and the Odyssey lounges are near your gate, the <strong>Desjardins Odyssey World Elite Mastercard</strong> (~$130/year) is the cheapest break-even card in Canada for lounge access — under $20/visit at 8 visits. If you need lounge access at multiple Canadian airports, skip Desjardins and use the <a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum</a>, Priority Pass, or DragonPass instead.</p>
+</blockquote>
+
+<h2>Where the two Desjardins Odyssey lounges are at YUL</h2>
+<table>
+  <thead>
+    <tr><th>Lounge</th><th>Zone</th><th>Flights it serves</th><th>Notable</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong><a href="/airports/YUL/lounges/desjardins-odyssey-lounge-international-yul">Odyssey International Lounge</a></strong></td><td>International (near Gate 63)</td><td>Flights outside Canada and the U.S.</td><td>Not open to U.S.-bound or domestic flyers</td></tr>
+    <tr><td><strong><a href="/airports/YUL/lounges/desjardins-odyssey-lounge-transborder-yul">Odyssey Transborder Lounge</a></strong></td><td>Transborder (near Gate 76)</td><td>U.S.-bound passengers (Gates 72-89, post-preclearance)</td><td>Opened March 1, 2024. Listed in Priority Pass directory.</td></tr>
+  </tbody>
+</table>
+<p><em>Neither Desjardins Odyssey lounge admits domestic flyers.</em> If you're flying domestic from YUL, the <a href="/airports/YUL/lounges/aspire-amex-lounge-yul">Aspire American Express Lounge</a>, the <a href="/airports/YUL/lounges/national-bank-lounge-yul">National Bank Lounge</a>, or an Air Canada Maple Leaf Lounge is your access path.</p>
+
+<h2>Every way to get into a Desjardins Odyssey lounge</h2>
+
+<h3>Access route #1 — Desjardins Odyssey World Elite Mastercard (~$130/year)</h3>
+<p>The World Elite Mastercard tier of the Desjardins Odyssey program is the primary purpose-built card for these lounges. It includes 8 lounge passes per account per year. Beyond 8, you get 50% off the walk-in rate. A single pass covers one companion on the same visit (or another cardholder on the account), plus up to three children under 18.</p>
+<ul>
+  <li><strong>Pros:</strong> By far the cheapest break-even math for YUL-only travellers. 8 visits = under $20/visit effective cost.</li>
+  <li><strong>Cons:</strong> YUL-only coverage. No Priority Pass visits at other Canadian airports. Flight delays still consume a pass.</li>
+</ul>
+
+<h3>Access route #2 — Visa Infinite Privilège Odyssée Desjardins</h3>
+<p>Desjardins's Visa Infinite Privilège Odyssée has its own pass structure (different from the World Elite Mastercard). It also unlocks the Odyssey lounges plus DragonPass access at Priority Pass / DragonPass lounges at other Canadian airports — a broader footprint than the World Elite Mastercard.</p>
+
+<h3>Access route #3 — Priority Pass</h3>
+<p>Both Desjardins Odyssey lounges appear in the Priority Pass directory. That means the three Canadian cards with Priority Pass (<a href="https://www.finlywealth.com/credit-cards/reviews/amex-platinum" target="_blank" rel="sponsored nofollow noopener">Amex Platinum</a>, Business Platinum, Scotiabank Platinum American Express) grant access on your included Priority Pass visits.</p>
+
+<h3>Access route #4 — DragonPass / Visa Airport Companion</h3>
+<p>The DragonPass network (sold as Visa Airport Companion on CIBC/TD Aeroplan VIP and Scotiabank Passport Visa Infinite, and as Mastercard Travel Pass on HSBC World Elite) also covers the Odyssey lounges. Same visit allotment rules as your card's standard DragonPass benefit.</p>
+
+<h3>Access route #5 — Amex Platinum direct benefit</h3>
+<p>The Canadian Amex Platinum's direct Plaza Premium / lounge benefit covers the Desjardins Odyssey Transborder lounge (listed in the Amex Global Lounge Collection). Direct entry means it does NOT consume a Priority Pass visit.</p>
+
+<h3>Access route #6 — Desjardins Gold Visa or Platinum Visa</h3>
+<p>These non-premium Desjardins cards do not include lounge passes, but they do get a 50% discount on the walk-in rate at Odyssey lounges. Modest benefit — only worth it if you already have the card and are at YUL.</p>
+
+<h3>Access route #7 — Walk-in day pass</h3>
+<p>The walk-in rate is $42-$44 CAD plus tax per adult (varies by season and lounge). Under 3 is free. Children 3 to 17 are $26 CAD plus tax. The Desjardins card 50% discount applies here. No reservations — availability at the door.</p>
+
+<h2>Is the Desjardins Odyssey World Elite Mastercard worth it?</h2>
+
+<h3>Yes, if you match all of these</h3>
+<ul>
+  <li>You fly YUL at least 3-4 times a year on international or U.S.-bound routes (not domestic — these lounges don't admit domestic flyers)</li>
+  <li>You don't need lounge access at other Canadian airports (YYZ, YVR, YYC)</li>
+  <li>You can use the 8 annual passes before they expire — Desjardins does not roll unused passes forward</li>
+</ul>
+
+<h3>Skip it, pick another card, if any of these</h3>
+<ul>
+  <li>You fly out of multiple Canadian airports — the <a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum</a> at $799 opens Plaza Premium at YVR + YYZ + YHZ + YUL + YOW + YWG + YEG and includes Priority Pass for everything else. Wider coverage at higher cost, but typically cheaper per visit at scale.</li>
+  <li>You fly domestic from YUL — you'd never use the Odyssey lounges. The <a href="https://www.finlywealth.com/credit-cards/reviews/national-bank-world-elite-mastercard" target="_blank" rel="sponsored nofollow noopener">National Bank World Elite Mastercard</a> ($150) with unlimited National Bank Lounge access is the better YUL-specific card for domestic flyers.</li>
+  <li>You want unlimited visits per year — Desjardins caps at 8 (then 50% off). Priority Pass Prestige or an Amex Platinum before the 2027 caps are the "unlimited" options.</li>
+</ul>
+
+<h2>Desjardins Odyssey vs. the other YUL lounge options</h2>
+<table>
+  <thead>
+    <tr><th>Card</th><th>Annual fee</th><th>What it unlocks at YUL</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Desjardins Odyssey World Elite Mastercard</strong></td><td>~$130</td><td>Desjardins Odyssey Int'l + Transborder (8 passes + 50% off thereafter)</td></tr>
+    <tr><td><strong>Desjardins Visa Infinite Privilège Odyssée</strong></td><td>~$150</td><td>Odyssey + DragonPass at other Canadian airports</td></tr>
+    <tr><td><strong>National Bank World Elite Mastercard</strong></td><td>$150</td><td>Unlimited National Bank Lounge (international zone) + 1 guest + 2 kids</td></tr>
+    <tr><td><strong><a href="/blog/amex-platinum-airport-lounge-access-canada">Amex Platinum</a></strong></td><td>$799</td><td>Direct Aspire + Plaza Premium + Odyssey Transborder; Priority Pass covers the rest at YUL. Full Canadian + global coverage.</td></tr>
+    <tr><td><strong>Scotiabank Platinum American Express</strong></td><td>$399</td><td>10 Priority Pass visits/year (covers all 5 PP lounges at YUL)</td></tr>
+    <tr><td><strong>Scotiabank Passport Visa Infinite</strong></td><td>$150</td><td>6 DragonPass visits/year (covers Odyssey + Aspire + AF-KLM at YUL)</td></tr>
+  </tbody>
+</table>
+
+<h2>How to use the 8-pass benefit efficiently</h2>
+<ul>
+  <li><strong>Start the year with 8 passes.</strong> Desjardins doesn't roll unused ones into the next year. Plan your visits early if you'll fly less than 8 times.</li>
+  <li><strong>One pass covers you + 1 companion + up to 3 children under 18.</strong> Two adults travelling together = one pass, not two.</li>
+  <li><strong>Children over 3 count against the 3-child cap.</strong> A fourth child uses a second pass.</li>
+  <li><strong>Delays burn a pass.</strong> If your flight is delayed and you re-enter the lounge, that's a second pass. Call ahead.</li>
+  <li><strong>After 8 passes, the 50% discount kicks in</strong> — $21-22 per adult. Still cheaper than full walk-in but no longer a "free" visit.</li>
+</ul>
+
+<h2>Frequently asked questions</h2>
+
+<h3>What is Desjardins Odyssey?</h3>
+<p>Desjardins Odyssey is the airport lounge and travel benefits program offered by Desjardins, a Quebec-based credit union cooperative. It operates two Priority Pass-listed lounges at Montréal-Trudeau Airport (YUL) — one in the International zone near Gate 63 and one in the Transborder zone near Gate 76. The Odyssey World Elite Mastercard is the primary purpose-built card for these lounges.</p>
+
+<h3>Which card is best for Desjardins Odyssey Lounge access?</h3>
+<p>The Desjardins Odyssey World Elite Mastercard (~$130) is the cheapest dedicated card for YUL-only travellers. For travellers who need wider Canadian lounge access, the Amex Platinum ($799) or Scotiabank Platinum American Express ($399) both cover the Odyssey Transborder via Priority Pass plus every other major Canadian lounge.</p>
+
+<h3>Does Priority Pass cover Desjardins Odyssey at YUL?</h3>
+<p>Yes — both Odyssey lounges appear in the Priority Pass directory, so the three Canadian cards that include Priority Pass (Amex Platinum, Business Platinum, Scotiabank Platinum Amex) grant access on your included visits. DragonPass cards also cover both locations.</p>
+
+<h3>Can I use a Desjardins Odyssey Lounge on a domestic flight at YUL?</h3>
+<p>No. Both Desjardins Odyssey lounges serve only international (non-Canada / non-U.S.) and U.S.-bound (transborder) flights. If you're flying domestic from YUL, use the <a href="/airports/YUL/lounges/aspire-amex-lounge-yul">Aspire American Express Lounge</a>, the <a href="/airports/YUL/lounges/national-bank-lounge-yul">National Bank Lounge</a>, or an Air Canada Maple Leaf Lounge instead.</p>
+
+<h3>What's the Transborder Odyssey Lounge's status with Priority Pass?</h3>
+<p>Listed and accepted. The Desjardins Odyssey Transborder Lounge opened March 1, 2024 and appears in the Priority Pass directory. Priority Pass members access it with their included visits, same as any other PP lounge.</p>
+
+<h3>How much does the Desjardins Odyssey Lounge cost to walk into without a card?</h3>
+<p>Walk-in is $42-$44 CAD plus tax per adult; children 3-17 are $26 plus tax; under 3 is free. The Desjardins Gold Visa or Platinum Visa get 50% off at the door. Reservations are not available — availability is first-come.</p>
+
+<h3>Is Desjardins Odyssey World Elite worth the $130 annual fee?</h3>
+<p>Yes, if you fly international or U.S. out of YUL at least 3-4 times a year and don't need Canadian lounge access at other airports. At 8 visits per year, your effective cost is under $20 per visit — the cheapest sustainable lounge access card in Canada for a single-airport frequent flyer. If you fly multiple Canadian airports, the Amex Platinum or Scotiabank Platinum Amex is better value.</p>
+
+<h2>Change log</h2>
+<ul>
+  <li><strong>November 24, 2026:</strong> First published as the dedicated Desjardins Odyssey guide for Montreal (YUL). Supplements our <a href="/blog/best-credit-card-montreal-yul-airport-lounge-access">YUL card guide</a> and the <a href="/blog/airport-lounge-guest-fees-canada">Canadian lounge guest fees</a> deep dive.</li>
+</ul>
+
+<h2>Sources</h2>
+<ul>
+  <li>AirportLounges.ca lounge pages — <a href="/airports/YUL/lounges/desjardins-odyssey-lounge-international-yul">Desjardins Odyssey International</a>, <a href="/airports/YUL/lounges/desjardins-odyssey-lounge-transborder-yul">Desjardins Odyssey Transborder</a>, <a href="/airports/YUL">YUL hub</a></li>
+  <li><a href="/blog/best-credit-card-montreal-yul-airport-lounge-access">AirportLounges.ca — Best credit card for Montreal YUL</a></li>
+  <li><a href="/blog/airport-lounge-guest-fees-canada">AirportLounges.ca — Canadian lounge guest fees</a></li>
+  <li><a href="/blog/priority-pass-lounges-canada">AirportLounges.ca — Priority Pass lounges in Canada</a></li>
+</ul>
+`
+
+// ─────────────────────────────────────────────────────────────────────────
 // Vancouver (YVR) credit-card guide — parallel to the YYZ card post.
 // GSC queries driving it: "air canada lounge vancouver" (233 wk imp,
 // pos 11.6), "cathay pacific lounge yvr" (366 wk imp, pos 8.73),
@@ -5092,6 +5222,57 @@ Level 2, near Gate C33 in international departures. Open to any traveller with a
       ctaLabel: 'Compare Lounge-Access Cards',
       affiliateKey: 'finlywealth-lounge-access-cards',
     },
+  },
+  {
+    slug: 'desjardins-odyssey-lounges-montreal-yul',
+    title: 'Desjardins Odyssey Lounges at Montreal (YUL): Every Access Route',
+    excerpt: 'Desjardins — a Quebec credit union — runs two of the five Priority Pass lounges at Montréal-Trudeau. Here\'s every way in (Desjardins cards, Priority Pass, DragonPass, Amex Platinum, walk-in) and when the ~$130 Desjardins Odyssey World Elite is worth it.',
+    coverImage: imageUrl('airports/yul/hero.jpg'),
+    publishedAt: '2026-11-24',
+    lastReviewed: '2026-11-24',
+    category: 'Airport Guides',
+    readingTime: '7 min read',
+    // Dec 1 Monday slot. Target: "desjardins odyssey lounge" (202 wk
+    // imp, 0 clicks, pos 10.54). Low-competition niche — the Desjardins
+    // Odyssey operator is YUL-exclusive, so our content faces almost no
+    // competing authoritative sources.
+    metaTitle: 'Desjardins Odyssey Lounges at Montreal (YUL) 2026',
+    metaDescription: 'Desjardins runs 2 Priority Pass lounges at YUL — International (Gate 63) + Transborder (Gate 76). Every access route + is the $130 Desjardins Odyssey card worth it?',
+    content: desjardinsOdysseyYulContent,
+    authorName: 'AirportLounges.ca Editorial Team',
+    authorBio: 'Montreal airport coverage, verified against Desjardins operator pages + the Priority Pass Canadian directory.',
+    primaryCta: {
+      heading: 'The cheapest YUL-only lounge card',
+      subheading: 'The Desjardins Odyssey World Elite Mastercard is Canada\'s cheapest single-airport lounge card. For wider coverage, compare it against the Amex Platinum and Scotiabank options.',
+      ctaLabel: 'Compare Lounge-Access Cards',
+      affiliateKey: 'finlywealth-lounge-access-cards',
+    },
+    faqs: [
+      {
+        question: 'What is Desjardins Odyssey?',
+        answer: 'Desjardins Odyssey is the airport lounge and travel benefits program run by Desjardins, a Quebec-based credit union cooperative. It operates two Priority Pass-listed lounges at Montréal-Trudeau Airport (YUL) — one in the International zone near Gate 63 and one in the Transborder zone near Gate 76. The Odyssey World Elite Mastercard is the primary purpose-built card for these lounges.',
+      },
+      {
+        question: 'Which card is best for Desjardins Odyssey Lounge access?',
+        answer: 'The Desjardins Odyssey World Elite Mastercard (about $130) is the cheapest dedicated card for YUL-only travellers. For travellers who need wider Canadian lounge access, the Amex Platinum ($799) or Scotiabank Platinum American Express ($399) both cover the Odyssey Transborder via Priority Pass plus every other major Canadian lounge.',
+      },
+      {
+        question: 'Does Priority Pass cover Desjardins Odyssey at YUL?',
+        answer: 'Yes — both Odyssey lounges appear in the Priority Pass directory, so the three Canadian cards that include Priority Pass (Amex Platinum, Business Platinum, Scotiabank Platinum Amex) grant access on your included visits. DragonPass cards also cover both locations.',
+      },
+      {
+        question: 'Can I use a Desjardins Odyssey Lounge on a domestic flight at YUL?',
+        answer: 'No. Both Desjardins Odyssey lounges serve only international (non-Canada, non-U.S.) and U.S.-bound (transborder) flights. If you are flying domestic from YUL, use the Aspire American Express Lounge, the National Bank Lounge, or an Air Canada Maple Leaf Lounge instead.',
+      },
+      {
+        question: 'How much does the Desjardins Odyssey Lounge cost to walk into?',
+        answer: 'Walk-in is $42-$44 CAD plus tax per adult; children 3-17 are $26 plus tax; under 3 is free. The Desjardins Gold Visa or Platinum Visa get 50% off at the door. Reservations are not available — availability is first-come.',
+      },
+      {
+        question: 'Is the Desjardins Odyssey World Elite worth the $130 annual fee?',
+        answer: 'Yes, if you fly international or U.S. out of YUL at least 3-4 times a year and do not need Canadian lounge access at other airports. At 8 visits per year, the effective cost is under $20 per visit — the cheapest sustainable lounge access card in Canada for a single-airport frequent flyer. If you fly multiple Canadian airports, the Amex Platinum or Scotiabank Platinum Amex is better value.',
+      },
+    ],
   },
   {
     slug: 'best-credit-card-vancouver-yvr-airport-lounge-access',
